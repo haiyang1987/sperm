@@ -71,9 +71,9 @@ ln -s $HOME/.private/files/build.sbt $HOME/.sbt/build.sbt
 
 echo "installing .oh-my-zsh"
 rm -rf $HOME/.oh-my-zsh
-ln -s $HOME/.private/.oh-my-zsh $HOME/.oh-my-zsh
+ln -s $HOME/.private/oh-my-zsh $HOME/.oh-my-zsh
 
 echo "installing .emacs.d"
 rm -rf $HOME/.emacs.d
-ln -s $HOME/.private/.emacs.d $HOME/.emacs.d
+ln -s $HOME/.private/emacs.d $HOME/.emacs.d
 
