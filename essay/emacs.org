@@ -1,0 +1,5 @@
+* emacs
+从研究生一年级开始使用Emacs，至今觉得自己只是使用了基本功能：（
+
+我的.emacs以及.emacs.d托管在了github上面 https://github.com/dirtysalt/sperm.
+Please feel free to use it because I just feel free to steal them from someone else:)

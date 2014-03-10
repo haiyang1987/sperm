@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+#Copyright (C) dirlt
+
+if [ $# -lt 5 ]
+then
+    echo "oprofile wrapper"
+    echo "usage:$0 image-file(ELF) report-file source-dir asm-file command"
+    exit 1
+else
+    ifile=$1
+    shift 1
+    rfile=$1
+    shift 1
+    srcdir=$1
+    shift 1
+    afile=$1
+    shift 1
+    command=$@
+    echo "Image file: $ifile"
+    echo "Report file: $rfile"
+    echo "Source directory: $srcdir"
+    echo "Assembly file: $afile"
+    echo "Command: $command"
+
+    sudo opcontrol --reset
+    sudo opcontrol --no-vmlinux --separate=lib --start --image=$ifile
+    $command
+    sudo opcontrol --dump
+    sudo opcontrol --shutdown
+    sudo opreport -l image:$ifile -o $rfile
+    sudo opannotate -s --output-dir=$srcdir $ifile
+    sudo opannotate -a $ifile > $afile
+    exit 0
+fi

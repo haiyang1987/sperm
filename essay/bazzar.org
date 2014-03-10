@@ -1,0 +1,10 @@
+* bazzar
+#+OPTIONS: H:5
+
+参考资源：
+   - http://bazaar.canonical.com/en/
+   - https://launchpad.net/
+
+Bazzar本质上也是一个DVCS（Distributed Version Control System），因为许多概念和Git是共享的。
+
+

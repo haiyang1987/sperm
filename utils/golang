@@ -1,0 +1,8 @@
+#!/bin/bash
+# go doc server
+function start() {
+    echo "godoc -http=:6060"
+    godoc -http=:6060
+}
+
+start
