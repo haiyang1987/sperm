@@ -4,18 +4,6 @@ echo "installing index.html..."
 rm -rf ~/index.html
 ln -s $BINDIR/index.html ~/index.html
 
-echo "installing .shrc"
-rm -rf $HOME/.shrc
-ln -s $BINDIR/.shrc $HOME/.shrc
-
-echo "installing .oh-my-zsh"
-rm -rf $HOME/.oh-my-zsh
-ln -s $BINDIR/.oh-my-zsh $HOME/.oh-my-zsh
-
-echo "installing .zshrc"
-rm -rf $HOME/.zshrc
-ln -s $BINDIR/.zshrc $HOME/.zshrc
-
 TARGETS="cxxindent vpn-umeng-dp ppp rhs golang einstall uinstall time-machine apt-update dp0-ssh-proxy ihosts"
 
 INSTALLDIR=$HOME/utils/bin
@@ -30,7 +18,7 @@ do
   ln -s $BINDIR/$target $INSTALLDIR/$target
 done
 
-TARGETS=".emacs .emacs.d .screenrc .tmux.conf"
+TARGETS=".emacs .shrc .zhrc .bashrc .screenrc .tmux.conf"
 for target in $TARGETS
 do
   echo "installing $target..."
@@ -80,3 +68,12 @@ rm -rf $HOME/.sbt/plugins/build.sbt
 rm -rf $HOME/.sbt/build.sbt
 ln -s $HOME/.private/files/plugins.sbt $HOME/.sbt/plugins/build.sbt
 ln -s $HOME/.private/files/build.sbt $HOME/.sbt/build.sbt
+
+echo "installing .oh-my-zsh"
+rm -rf $HOME/.oh-my-zsh
+ln -s $HOME/.private/.oh-my-zsh $HOME/.oh-my-zsh
+
+echo "installing .emacs.d"
+rm -rf $HOME/.emacs.d
+ln -s $HOME/.private/.emacs.d $HOME/.emacs.d
+
