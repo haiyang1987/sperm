@@ -123,8 +123,8 @@ Info.(@2012)
    - post_rollback 事务回滚之后
    - replay_trx 回放事务（自身回放事务）
    - abort_pre_commit 中断事务提交之前
-   - append_key 将key添加到事务ws（TODO：要写入的行，来判断是否存在冲突？）
-   - append_data 将data添加到事务ws（TODO：对应行的数据内容，也就是binlog？）
+   - append_key 将key添加到事务ws. 修改行对应的key，可以用来检测冲突。
+   - append_data 将data添加到事务ws. 修改行对应的value。
    - casual_read  TODO（dirlt）：
    - free_connection 释放链接
    - to_execute_start 开始执行total order isolation事务（上锁）
@@ -273,7 +273,7 @@ To control memory usage for writeset caching, check Galera parameters: *NOTE（d
 There are two conceptually different ways to transfer a state from one MySQL server to another:
    - Using mysqldump. This requires the receiving server to be fully initialized and ready to accept connections *before* the transfer. This method is by definition blocking, in that it blocks donor server from modifying its own state for the duration of transfer. It is also the slowest of all, and in the loaded cluster that might be an issue in a loaded cluster.（使用mysqldump。要求在transfer之前配置好。会阻塞donor操作，速度比较慢，高负载情况下会有问题）
    - Copying data files directly. This requires that the receiving server is initialized *after* the transfer. rsync, xtrabackup and other methods fall into this category. These methods a much faster than mysqldump, but they have certain limitations, like they can be used only on server startup and receiving server must be configured very similarly to the donor (e.g. innodb_file_per_table should be the same and so on). Some of these methods, e.g. xtrabackup, can be potentially made non-blocking on donor.（直接copy文件。要求transfer之后配置好？？速度比较快，但是要求配置源和目的配置相同。使用xtrabackup不会阻塞donor)
-   - *Xtrabackup and rsync SST cannot be used for a running server.* It is not possible to copy datafiles under running InnoDB. Having wsrep_address set to a list of node addresses and starting replication on a running node can lead to node crash. *TODO（dirlt）：Xtrabackup需要停机处理吗？*
+   - *Xtrabackup and rsync SST cannot be used for a running server.* It is not possible to copy datafiles under running InnoDB. Having wsrep_address set to a list of node addresses and starting replication on a running node can lead to node crash. *TODO（dirlt）：Xtrabackup需要停机处理吗？* *NOTE（dirlt）：xtrabackup不需要停机处理*
 
 SST Donor
    - All SST methods cause some disturbance for donor node
@@ -385,20 +385,22 @@ Retry Autocommit:
 *** Parameters
 http://www.codership.com/wiki/doku.php?id=galera_parameters
 
+http://www.codership.com/wiki/doku.php?id=mysql_galera_configuration
+
 *** Status Variables
 http://www.codership.com/wiki/doku.php?id=galera_status_0.8 
    - mysql> SHOW STATUS LIKE 'wsrep_%';
 
-*** Configuration 
+*** Configuration
 http://www.codership.com/wiki/doku.php?id=configuration_tips
 
    - wsrep_provider # a path to Galera library.
    - wsrep_cluster_address # cluster connection URL.
-   - binlog_format=ROW # TODO（dirlt）：？？
+   - binlog_format=ROW # TODO(dirlt):??
    - default_storage_engine=InnoDB
-   - innodb_autoinc_lock_mode=2 # TODO（dirlt）：？？
-   - innodb_flush_log_at_trx_commit=2 # TODO（dirlt）：？？
-   - innodb_doublewrite=1 #TODO（dirlt）：？？
+   - innodb_autoinc_lock_mode=2 # TODO(dirlt):??
+   - innodb_flush_log_at_trx_commit=2 # TODO(dirlt):??
+   - innodb_doublewrite=1 #TODO(dirlt):??
 
 *** Monitoring
 http://www.codership.com/wiki/doku.php?id=monitoring 
