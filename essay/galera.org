@@ -300,6 +300,7 @@ file:./images/galera-parallel-applying.png
 *** Primary Component
    - http://www.codership.com/wiki/doku.php?id=galera_arbitrator
    - http://www.codership.com/wiki/doku.php?id=weighted_quorum
+   - http://www.codership.com/wiki/doku.php?id=galera_url
 
 TODO(dirlt):
 
@@ -383,9 +384,8 @@ Retry Autocommit:
 
 ** Miscellaneous 
 *** Parameters
-http://www.codership.com/wiki/doku.php?id=galera_parameters
-
-http://www.codership.com/wiki/doku.php?id=mysql_galera_configuration
+   - http://www.codership.com/wiki/doku.php?id=galera_parameters
+   - http://www.codership.com/wiki/doku.php?id=mysql_galera_configuration
 
 *** Status Variables
 http://www.codership.com/wiki/doku.php?id=galera_status_0.8 
