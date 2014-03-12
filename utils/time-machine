@@ -56,14 +56,14 @@ VM="no"
 while test $# -gt 0
 do
     case $1 in 
-	--utils)
-	    UTILS="yes"
+	--no-utils)
+	    UTILS="no"
 	    ;;
-	--share)
-	    SHARE="yes"
+	--no-share)
+	    SHARE="no"
 	    ;;
-	--m2)
-	    M2="yes"
+	--no-m2)
+	    M2="no"
 	    ;;
 	--vm)
 	    VM="yes"
@@ -75,4 +75,4 @@ done
 if [ $UTILS == "yes" ] ; then sync_utils ; fi
 if [ $SHARE == "yes" ] ; then sync_dir "share" ; fi
 if [ $M2 == "yes" ] ; then sync_dir ".m2" ; fi
-if [ $VM == "yes" ] ; then sync_dir "VirtualBox VMs" fi
+if [ $VM == "yes" ] ; then sync_dir "VirtualBox VMs" ; fi
