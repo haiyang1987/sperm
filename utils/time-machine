@@ -30,29 +30,49 @@ echo "$src ---> $dst"
     
 # do rsync.
 
-# packages.
-mkdir -p "$dst/utils"
-pkgs=`find $src/utils/ -maxdepth 1 -type f`
-for p in $pkgs
+function sync_dir() {
+    d=$1    
+    mkdir -p "$dst/$d/"
+    echo "sync $d..."
+    rsync -arz --no-times "$src/$d/" "$dst/$d/"    
+}
+
+function sync_utils() {
+    mkdir -p "$dst/utils"
+    pkgs=`find $src/utils/ -maxdepth 1 -type f`
+    for p in $pkgs
+    do
+	echo "sync $p..."
+	p=`basename $p`
+	rsync -az --no-times $src/utils/$p $dst/utils/$p
+    done
+}
+
+UTILS="yes"
+SHARE="yes"
+M2="yes"
+VM="no"
+
+while test $# -gt 0
 do
-    echo "$p..."
-    p=`basename $p`
-    rsync -az --no-times $src/utils/$p $dst/utils/$p
+    case $1 in 
+	--utils)
+	    UTILS="yes"
+	    ;;
+	--share)
+	    SHARE="yes"
+	    ;;
+	--m2)
+	    M2="yes"
+	    ;;
+	--vm)
+	    VM="yes"
+	    ;;
+    esac
+    shift 1
 done
 
-# directories
-for d in share .m2
-do
-    echo "$d..."
-    rsync -arz --no-times "$src/$d/" "$dst/$d/"
-done
-
-# virtual machine
-VM=$1
-shift 1
-if [ $VM"x" == "--vmx" ]
-then
-    d="VirtualBox VMs"
-    echo "$d..."
-    rsync -arz --no-times "$src/$d/" "$dst/$d/"
-fi
+if [ $UTILS == "yes" ] ; then sync_utils ; fi
+if [ $SHARE == "yes" ] ; then sync_dir "share" ; fi
+if [ $M2 == "yes" ] ; then sync_dir ".m2" ; fi
+if [ $VM == "yes" ] ; then sync_dir "VirtualBox VMs" fi
