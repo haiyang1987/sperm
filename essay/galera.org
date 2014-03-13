@@ -24,6 +24,7 @@ Abbr.
    - pc(primary component)
    - rbr(row-based replication)
    - sbr(statement-based replication)
+   - mst(multi segment transaction)
 
 Info.(@2012)
    - Galera Cluster for MySQL

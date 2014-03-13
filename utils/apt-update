@@ -18,6 +18,7 @@ sudo apt-add-repository "deb http://download.virtualbox.org/virtualbox/debian le
 sudo apt-add-repository "deb http://ppa.launchpad.net/tualatrix/ppa/ubuntu precise main"
 
 sudo apt-add-repository "deb http://archive.canonical.com/ $(lsb_release -sc) partner"
+sudo add-apt-repository ppa:tualatrix/ppa
 
 sudo apt-get update
 

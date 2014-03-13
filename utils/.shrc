@@ -20,7 +20,7 @@ CDH4_3_0=1
 if [ $MAC = 1 ]
 then
     export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.7.0_17.jdk/Contents/Home/
-    export HADOOP_LZO=/Users/dirlt/github/hadoop-lzo/
+    export HADOOP_LZO=/Users/dirlt/repo/hadoop-lzo/
     export HADOOP_CLASSPATH=.:$HADOOP_LZO/build/hadoop-lzo-0.4.17-SNAPSHOT.jar
     export JAVA_LIBRARY_PATH=$HADOOP_LZO/build/native/Mac_OS_X-x86_64-64/lib/
 else
@@ -126,7 +126,7 @@ MANPATH=$HOME/utils/autoconf/share/man:$MANPATH
 MANPATH=$HOME/utils/automake/share/man:$MANPATH
 PATH=$HOME/utils/clisp/bin:$PATH
 MANPATH=$HOME/utils/clisp/share/man:$MANPATH
-PATH=$HOME/github/depot_tools:$PATH
+PATH=$HOME/repo/depot_tools:$PATH
 PATH=$HOME/utils/nginx/sbin:$PATH
 PATH=$HOME/utils/uwsgi-1.4.4:$PATH
 
@@ -195,3 +195,7 @@ ssh-add ~/.ssh/github 2>/dev/null
 # sbt
 SBT_OPTS="-Dsbt.global.base=$HOME/.sbt -Dsbt.ivy.home=$HOME/.ivy2"
 export SBT_OPTS
+
+# galera
+export MYSQL_SRC=$HOME/repo/codership-mysql/5.6
+export MYSQL_DIR=$MYSQL_SRC/build_release

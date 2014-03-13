@@ -5,11 +5,13 @@
 千万不要抱有一朝一兮就可以搞定的想法。最好的话身边有一个群体，大家都使用Ubuntu这个东西。
 这样如果有什么问题的话，大家就比较容易找到解决办法，直到自己完全适应为止。推荐安装下面这些软件：
 
-   - #sudo apt-get install vlc # 视频
+   - sudo apt-get install vlc # 视频
    - #sudo apt-get install pidgin # 聊天
    - #sudo apt-get install stardict # 词典
    - #sudo apt-get install amarok # 音乐
    - sudo apt-get install okular # pdf阅读
+   - #sudo apt-get install recordmydesktop # 录制桌面
+   - sudo apt-get install kchmviewer # chm阅读
    - sudo apt-get install git
    - sudo apt-get install subversion
    - sudo apt-get install htop
@@ -26,12 +28,11 @@
    - sudo apt-get install sqlite3
    - #sudo apt-get install eclipse
    - sudo apt-get install python-dev
-   - #sudo apt-get install libevent-dev
-   - #sudo apt-get install python-gevent
-   - #sudo apt-get install python-gevent-doc
+   - sudo apt-get install libevent-dev
+   - sudo apt-get install python-gevent
+   - sudo apt-get install python-gevent-doc
    - #sudo apt-get install gunicorn
-   - #sudo apt-get install recordmydesktop # 录制桌面
-   - sudo apt-get install maven2
+   - #sudo apt-get install maven2
    - sudo apt-get install maven
    - #sudo apt-get install ttyload
    - sudo apt-get install autoconf
@@ -54,7 +55,6 @@
    - sudo apt-get install linux-base
    - #sudo apt-get install mercurial
    - sudo apt-get install golang-go
-   - sudo apt-get install kchmviewer # chm阅读
    - sudo apt-get install flex
    - sudo apt-get install bison
    - sudo apt-get install iotop
@@ -64,7 +64,7 @@
    - sudo apt-get install xsunpinyin
    - sudo apt-get install python-xlib # 需要在emacs下面调用ibus
    - #sudo apt-get install chromium-browser # 实验性质版本
-   - sudo apt-get install google-chrome-stable # 稳定版本
+   - #sudo apt-get install google-chrome-stable # 稳定版本
    - #sudo apt-get install firefox
    - #sudo apt-get install thunderbird
    - sudo apt-get install dkms 
@@ -95,7 +95,15 @@
    - sudo apt-get install skype
    - sudo apt-get install bzr
    - sudo apt-get install scons
-
+   - sudo apt-get install cmake
+   - sudo apt-get install libboost-all-dev
+   - sudo apt-get install check
+   - sudo apt-get install libaio-dev
+   - sudo apt-get install libncurses5-dev
+   - sudo apt-get install google-mock
+   - sudo apt-get install tsocks
+   - sudo apt-get install mysql-server
+   
 ** 系统配置
 *** 察看ubuntu内部版本
 lsb_release -a
