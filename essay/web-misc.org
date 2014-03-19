@@ -1,5 +1,5 @@
 * web-misc
-** Wordpress Related
+** WordPress Related
 *** 解决WordPress半角引号变成全角引号问题的方法
 
 http://www.imzhang.com/archives/756.html
@@ -122,7 +122,7 @@ r=client.post.statuses__update(source='1144364821',
 print(r)
 #+END_SRC
 
---------------------
+-----
 
 下面是支持Basic Auth之后的weibo.py. 在修改的地方增加了NOTICE.这个是在weibo-pysdk-1.05版本上面修改的。
 

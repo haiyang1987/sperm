@@ -19,7 +19,7 @@
    - Dremel can execute many queries over such data that would ordinarily require a sequence of MapReduce jobs, but at a fraction of the execution time. （dremel所作的工作非常类似于多个MR一起工作，但是时间远远比这些MR一起执行要少）
    - Dremel is not intended as a replacement for MR and is often used in conjunction with it to analyze outputs of MR pipelines or rapidly prototype larger computations.（dremel定位来说不是MR的replacement，并且经常和MR配合使用）
 
---------------------
+-----
 
 下面是一些在google内部使用到dremel的地方：
    - Analysis of crawled web documents.
@@ -34,7 +34,7 @@
    - Resource monitoring for jobs run in Google’s data centers.
    - Symbols and dependencies in Google’s codebase.
 
---------------------
+-----
 
 下面是dremel三个比较重要的技术点： Dremel builds on ideas from web search and parallel DBMSs.（dremel很多技术来自与web检索以及并行DMBS）
    - First, its architecture borrows the concept of a serving tree used in distributed search engines . Just like a web search request, a query gets pushed down the tree and is rewritten at each step. The result of the query is assembled by aggregating the replies received from lower levels of the tree. （首先在架构上面借鉴了分布式搜索引擎的serving tree概念，能够将一个query进行rewrite成为多个小的查询，分摊到底层节点执行然后在上层聚合起来）
@@ -80,7 +80,7 @@ file:./images/dremel-sample-column.png
 
 ** Query Language
 ** Query Execution
---------------------
+-----
 
 Tree architecture. Dremel uses a multi-level serving tree to execute queries (see Figure 7). A root server receives incoming queries, reads metadata from the tables, and routes the queries to the next level in the serving tree. The leaf servers communicate with the storage layer or access the data on local disk. 
 
@@ -88,7 +88,7 @@ file:./images/dremel-tree-architecture.png
 
 The execution model presented above is well-suited for aggregation queries returning small and medium-sized results, which are a very common class of interactive queries. Large aggregations and other classes of queries may need to rely on execution mechanisms known from parallel DBMSs and MR. （需要注意的是，这种模型只是适合返回中小规模数据聚合结果，因为这个是交互式查询里面最典型的场景。而对于需要返回大规模数据的话，还是使用并行数据库或者是MR会更好）
 
---------------------
+-----
 
 Query dispatcher. Dremel is a multi-user system, i.e., usually several queries are executed simultaneously. A query dispatcher schedules queries based on their priorities and balances the load. Its other important role is to provide fault tolerance when one server becomes much slower than others or a tablet replica becomes un-reachable. （一方面可以用来处理优先级以及平衡负载，另外一方面可以用来监控哪些server运行比较慢来完成容错处理。文中提到的模型类似于threadpool机制，每个server上面启动多少个thread，每个thread相当于一个slot。和MR差别就是，因为这个thread可以执行任何工作，所以可以把thread看作slot，而在MR里面只能将process看做slot）
 

@@ -90,7 +90,7 @@ combiner可以使得在mapper本地就进行一些reducer操作。通常这些�
 
 *NOTE（dirlt）：如果是这样的话，那么可以认为mapper阶段是要做排序的，不然combiner和reducer就不能够使用相同代码了。排序要是有好处的，这样在reducer排序直接使用归并排序即可。*
 
---------------------
+-----
 
 *NOTE（dirlt）：关于reduce语义问题*
 

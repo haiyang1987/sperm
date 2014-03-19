@@ -13,7 +13,7 @@ In summary, Google clusters follow three key design principles:
    - Using commodity PCs reduces the cost of computation. As a result, we can afford to use more computational resources per query, employ more expensive techniques in our ranking algorithm, or search a larger index of documents（使用廉价PC来构建集群）
 
 ** Leveraging commodity parts
---------------------
+-----
    - Google’s racks consist of 40 to 80 x86-based servers mounted on either side of a custom made rack (each side of the rack contains twenty 20u or forty 1u servers).（每个rack上面有40-80台x86服务器，rack每一面可以放下20个2u或者是40个1u服务器）
      - Our focus on price/performance favors servers that resemble mid-range desktop PCs in terms of their com-ponents, except for the choice of large disk drives.（主要使用普通的桌面PC但是换成大容量硬盘）
      - Several CPU generations are in active service, ranging from single-processor 533- MHz Intel-Celeron-based servers to dual 1.4-GHz Intel Pentium III servers.（CPU有从533MHz的赛扬到1.4GHz的奔腾）
@@ -23,7 +23,7 @@ In summary, Google clusters follow three key design principles:
      - Realistically, a server will not last beyond two or three years, because of its disparity in performance when compared to newer machines. Machines older than three years are so much slower than current-gener-ation machines that it is difficult to achieve proper load distribution and configuration in clusters containing both types.（但是实际情况是，一台服务器可能在2-3年之后相比更新的机器性能就有非常大的差距，因此对于一台服务器的寿命而言就是2-3年的时间）
      - Given the rel-atively short amortization period, the equip-ment cost figures prominently in the overall cost equation.（考虑到这点因素之后，因此开销主要还是集中在设备上）
 
---------------------
+-----
    - For example, in late 2002 a rack of 88 dual-CPU 2-GHz Intel Xeon servers with 2 Gbytes of RAM and an 80-Gbyte hard disk was offered on RackSaver.com for around $278,000. This figure translates into a monthly capital cost of $7,700 per rack over three years. (2002年一个rack上面88个双核CPU的Xeon服务器，配备2G内存以及80GB的磁盘在racksaver.com上面大概需要278000美元，平均每年7700美元）.
    - The relative importance of equipment cost makes traditional server solutions less appeal-ing for our problem because they increase per-formance but decrease the price/performance. （一些传统的服务器解决方案对于我们来说缺乏吸引力，主要是因为虽然增加了性能，但是降低了performance/price)
      - For example, four-processor motherboards are expensive, and because our application paral-lelizes very well, such a motherboard doesn’t recoup its additional cost with better perfor-mance. （比如对于能够支持4个CPU的主板，因为我们自身程序并行性已经非常好了，所以额外的开销并没有带来更好的性能）

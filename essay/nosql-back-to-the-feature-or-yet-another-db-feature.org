@@ -5,7 +5,7 @@ https://speakerdeck.com/mas/nosql-back-to-the-future-or-yet-another-db-feature
 
 “For those of you who think we are engaged in some sort of darwinian processes that make things better for us, it’s actually quite the opposite.” http://bit.ly/AlanKay2011
 
---------------------
+-----
 NoSQL Technology is a step back.
    - Myth1: NoSQL Technology models Applications more closely than traditional Databases.
      - Data is scattered all over NoSQL land!
@@ -18,7 +18,7 @@ file:./images/calvin-fast-distributed-transactions-for-partitioned-database-syst
    - Myth3: NoSQL Data Stores are faster.
      - Yes, they are fast. Except the other guys do their homework, too.
 
---------------------
+-----
 Databases over Files
 
 file:./images/database-over-files.png
@@ -28,7 +28,7 @@ Relational Databases and NoSQL
 
 file:./images/relational-databases-and-nosql.png
 
---------------------
+-----
 Clain:
    - Claim #1: NoSQL Technology is a step back.
    - Claim #2: NoSQL will become yet another DB Feature and/or Cloud Computing Service.
