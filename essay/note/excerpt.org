@@ -1,7 +1,7 @@
 * excerpt
 #+TITLE: 网络摘抄
 #+META: ~/repo/sperm/essay -> ..
-   - updated @ 2014-02-19
+   - updated @ 2014-03-19
 
 -----
 一定要小心挑选敌人，因为你会发现，你自己和敌人变得越来越像。—— 泰戈尔
