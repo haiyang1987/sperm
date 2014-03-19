@@ -368,7 +368,7 @@ file:./images/hdfs-sequence-file-metadata.png
 file:./images/hdfs-sequence-file-record.png file:./images/hdfs-sequence-file-block.png
 至于Compress算法，这个在Header里面的Compress Codec Class Name里面就指定了。
 
---------------------
+-----
 
 Hadoop SequenceFile is the base data structure for the other types of files, like MapFile, SetFile, ArrayFile and BloomMapFile.
 
@@ -463,7 +463,7 @@ The filesystem under path '/hbase/.corrupt/dp18.umeng.com%3A60020.1349065853563'
 
 #+END_EXAMPLE
 
---------------------
+-----
 
 默认情况下面如果hdfs发现某个block under replicated的话，会自动对这个block做replication的，直到replicaion factor达到需求。但是有时候hdfs也会stuck住。除了重启的话，也可以试试上面链接提到的方法。
    - 首先将这个文件的rep factor设置为1，hadoop fs -setrep 1 <file>
@@ -1760,7 +1760,7 @@ BlockPlacementPolicyDefault实现上将srcPath忽略了，并没有对某个文�
   }
 #+END_SRC
 
---------------------
+-----
 每个参数含义如下
    - numOfReplicas # replicas数目
    - writer # 发起者，如果这个发起者是client的话，那么可能是null.注意发起者和target节点没有必然联系，但是在选择算法中会优先考虑
@@ -1823,7 +1823,7 @@ BlockPlacementPolicyDefault实现上将srcPath忽略了，并没有对某个文�
   }
 #+END_SRC
 
---------------------
+-----
 选出一系列节点出来存放在results里面，同时返回一个发起节点
 
 *NOTE（dirlt）：返回发起节点是有意义的，这样我们才能根据计算其他节点到这个发起节点的距离来做排序*
@@ -1964,7 +1964,7 @@ BlockPlacementPolicyDefault实现上将srcPath忽略了，并没有对某个文�
 
 其中considerLoad应该是考虑负载均衡，默认是true, 通过dfs.namenode.replication.considerLoad指定
 
---------------------
+-----
 
 #+BEGIN_SRC Java
   /**

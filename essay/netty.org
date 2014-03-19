@@ -240,7 +240,7 @@ public class HashedWheelTimer implements Timer {
      - *NOTE(dirlt):也就是将delay这个时间概念，转换成为两个状态变量。timer内部通过判断这两个状态变量来判断超时与否*
    - 后台线程每隔tickDuration会检查下一个wheelCursor上的Timeout请求，判断那些存在超时，如果超时的话那么触发TimerTask这个操作。
 
---------------------
+-----
 初始化
 #+BEGIN_SRC Java
     public HashedWheelTimer(
@@ -289,7 +289,7 @@ public class HashedWheelTimer implements Timer {
     }
 #+END_SRC
 
---------------------
+-----
 提交Timeout
 #+BEGIN_SRC Java
     public Timeout newTimeout(TimerTask task, long delay, TimeUnit unit) {
@@ -348,7 +348,7 @@ public class HashedWheelTimer implements Timer {
     }
 #+END_SRC
 
---------------------
+-----
 后台线程 *NOTE（dirlt）：注意里面的deadline并不是每次调用currentTimeMillis, 而是在startTime上面不断叠加的，然后在sleep过程中进行修正*
 
 @org.jboss.netty.util.HashedWheelTimer.Worker

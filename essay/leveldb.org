@@ -10171,7 +10171,7 @@ void Version::AddIterators(const ReadOptions& options,
 这样的策略的话会不会导致较老的数据被留下，较新的被删除 ？
 #+END_EXAMPLE
 
---------------------
+-----
 
 *Answer*
 

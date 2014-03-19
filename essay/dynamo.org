@@ -40,7 +40,7 @@
 
 file:./images/soa-amazon-platform.png
 
---------------------
+-----
    - A common approach in the industry for forming a performance oriented SLA is to describe it using average, median and expected variance. *At Amazon we have found that these metrics are not good enough if the goal is to build a system where all customers have a good experience, rather than just the majority.* For example if extensive personalization techniques are used then customers with longer histories require more processing which impacts performance at the high-end of the distribution.     
    - An SLA stated in terms of mean or median response times will not address the performance of this important customer segment. To address this issue, at Amazon, SLAs are expressed and measured at the 99.9th percentile of the distribution. *The choice for 99.9% over an even higher percentile has been made based on a cost-benefit analysis which demonstrated a significant increase in cost to improve performance that much.* （选择在99.9%是因为这是cost-benifit平衡点）
    - Storage systems often play an important role in establishing a service’s SLA, especially if the business logic is relatively lightweight, as is the case for many Amazon services. State management then becomes the main component of a service’s SLA. *One of the main design considerations for Dynamo is to give services control over their system properties, such as durability and consistency, and to let services make their own tradeoffs between functionality, performance and cost-effectiveness.* 
@@ -59,7 +59,7 @@ file:./images/soa-amazon-platform.png
        - Despite this flexibility, some application developers may not want to write their own conflict resolution mechanisms and choose to push it down to the data store, which in turn chooses a simple policy such as “last write wins”.
    - Dynamo is designed to be an eventually consistent data store; that is all updates reach all replicas eventually.（最终一致性）
 
---------------------
+-----
 
 *Other key principles embraced in the design are:* （其实这些都是分布式系统里面重要的问题）
    - Incremental scalability: Dynamo should be able to scale out one storage host (henceforth, referred to as “node”) at a time, with minimal impact on both operators of the system and the system itself.（增量扩展）
@@ -264,7 +264,7 @@ file:./images/dynamo-balance.png
 
 As seen in the figure, the imbalance ratio decreases with increasing load. For instance, during low loads the imbalance ratio is as high as 20% and during high loads it is close to 10%. Intuitively, this can be explained by the fact that under high loads, a large number of popular keys are accessed and due to uniform distribution of keys the load is evenly distributed. However, during low loads (where load is 1/8th of the measured peak load), fewer popular keys are accessed, resulting in a higher load imbalance.（情况是在高负载的情况下面，还是相对比较均衡的。可是在低负载的情况下，分布就不均衡了） NOTE（dirlt）：可能这个结论适合几乎所有的分布式系统
 
---------------------
+-----
 
 This section discusses how Dynamo’s partitioning scheme has evolved over time and its implications on load distribution.
 
@@ -288,7 +288,7 @@ file:./images/dynamo-partition-strategy.png
      - Moreover, each node is assigned Q/S tokens where S is the number of nodes in the system. When a node leaves the system, its tokens are randomly distributed to the remaining nodes such that these properties are preserved. Similarly, when a node joins the system it "steals" tokens from nodes in the system in a way that preserves these properties.
      - NOTE（dirlt）：和strategy 2非常类似，但是这些节点对应的token都是在对应的partition point上面。相对于2来说更加容易管理和实现，而且分布更加均匀。
 
---------------------
+-----
 
 The results are given in Figure 8. As seen in the figure, strategy 3 achieves the best load balancing efficiency and strategy 2 has the worst load balancing efficiency.
 

@@ -16,12 +16,12 @@ scan过程大致是这样的：
    - scanner会重新组织这些内容，根据上次读取到的value,忽路duplicated的数据。   
 这样的好处就是通常在scanner的时候不会阻塞其他操作。
 
---------------------
+-----
 
 但是我看了一下leveldb代码，觉得实现上更好。对于immutable memtable以及memtable做引用计数，在iterator里面保存两个table。
 如果memtable compaction之后的话，那么直接创建一个新的memtable即可。原有的table在iterator销毁的时候就会自动释放。
 
---------------------
+-----
 
 对于column family是可以设置超时时间的。在进行flush或者是compaction的时候，会判断这个value是否超过ttl。如果超过ttl的话那么就会直接丢弃。
 
@@ -40,7 +40,7 @@ https://github.com/stumbleupon/asynchbase
 实现上asynchbase没有使用任何org.apache.hbase的代码，从头完成了自己的协议访问，这个可以从HBaseClient的构造参数可以看到，在里面没有使用configuration,
 而是直接传入quorumSpec就是zookeeper的地址。
 
---------------------
+-----
 
 *NOTE(dirlt):关于Deferred实现有点出乎自己的意料*
 
@@ -186,7 +186,7 @@ file:./images/hbase-log-splitting.png
    - 指定新的region server来serve某些region，并且读取这个region对应的HDFS看是否有恢复文件，如果存在恢复文件的话那么就需要进行replay.
 
 
---------------------
+-----
 
 Times to complete single threaded log splitting vary, but the process may take several hours if multiple region servers have crashed. Distributed log splitting was added in HBase version 0.92 (HBASE-1364) by Prakash Khemani from Facebook.  It reduces the time to complete the process dramatically, and hence improves the availability of regions and tables. For example, we knew a cluster crashed. With single threaded log splitting, it took around 9 hours to recover.  With distributed log splitting, it just took around 6 minutes.（由单个master来完成log splitting的工作非常耗时，所以引入了distributed log splitting这个机制，由facebook的工程师实现的）
 
@@ -781,7 +781,7 @@ org.apache.hadoop.ipc.RemoteException: org.apache.hadoop.ipc.RemoteException: ja
 
 另外如果put是empty的话会抛出异常，因此在调用put之前最好判断put.isEmpty().
 
---------------------
+-----
 *NOTE(dirlt):实际还是有大小限制的，可以看代码HBaseConfiguration.create
 #+BEGIN_SRC Java
   public static Configuration addHbaseResources(Configuration conf) {

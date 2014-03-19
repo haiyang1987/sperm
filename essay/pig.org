@@ -145,7 +145,7 @@ join_result = FOREACH temp_var GENERATE
 #+END_EXAMPLE
    - JOIN可以通过COGROUP来完成，上面两个语句生成的效果是等价的
 
---------------------
+-----
 *NOTE（dirlt）：需要注意的是，上面JOIN那个图输出结果是错误的，我们可以使用下面的例子做验证*
 
 #+BEGIN_EXAMPLE

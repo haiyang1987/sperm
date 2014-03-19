@@ -23,7 +23,7 @@
      - Given that the system will be processing many small updates concurrently, an ideal system would also provide mech- anisms for maintaining invariants despite concurrent up-dates and for keeping track of which updates have been processed.（对于这个增量系统需要提供的机制包括下面两个，这也是percolator主要关注的两个方面：1）提供机制来维护不变量 2）能够追踪那些updates已经被处理过）
 
 
---------------------
+-----
 
 The remainder of this paper describes a particular in-cremental processing system: Percolator. 
    - Percolator pro-vides the user with random access to a multi-PB reposi-tory. Random access allows us to process documents in-dividually, avoiding the global scans of the repository that MapReduce requires. To achieve high throughput, many threads on many machines need to transform the repository concurrently, so Percolator provides ACID-compliant transactions to make it easier for programmers to reason about the state of the repository; we currently implement snapshot isolation semantics.（提供随即访问PB级别repo的能力，允许对数据进行随机访问。为了达到高并发在多个机器上面使用多个线程同时对repo进行更新，因此percolator也提供了ACID兼容的事务实现来满足维持不变量这个需求，事务实现是snapshot isolation的语义） *TODO（dirlt）：snapshot isolation wikipedia？*
@@ -82,7 +82,7 @@ bool UpdateDocument(Document doc) {
 #+END_SRC
 还是非常简洁的，事务都是通过Transaction封装，只有三个简单的方法Get/Set/Commit。这里的Set并不会立刻写table，而是在Commit时候才会发起真正的写，这个在使用的时候需要注意。
 
---------------------
+-----
 *TODO（dirlt）：timestamp snapshot isolation？理解这个语义还是比较重要的，因为按照这种语义实现的逻辑和我们想象的还不太一样？*
 
 关于snapshot isolation wikipedia上有专门的页面介绍 Snapshot isolation - Wikipedia, the free encyclopedia http://en.wikipedia.org/wiki/Snapshot_isolation
@@ -119,7 +119,7 @@ wikipedia最后面还提到了使用snapshot isolation转换成为serializabilit
 With additional communication between transactions, the anomalies that snapshot isolation normally allows can be blocked by aborting one of the transactions involved, turning a snapshot isolation implementation into a full serializability guarantee[8]. This implementation of serializability is well-suited to multiversion concurrency control databases, and has been adopted in PostgreSQL 9.1[6], where it is referred to as "Serializable Snapshot Isolation", abbreviated to SSI. When used consistently, this eliminates the need for the above workarounds. The downside over snapshot isolation is an increase in aborted transactions. This can perform better or worse than snapshot isolation with the above workarounds, depending on workload.
 #+END_VERSE
 
---------------------
+-----
 
 *TODO（dirlt）：事务失败如何处理？如果是因为和server断开的话，那么就应该重新尝试。相反如果是因为其他transaction造成冲突的话，那么是否重试就应该根据应用来判断了。感觉这种增量处理还是没有MR简洁*
 
@@ -205,7 +205,7 @@ class Transaction {
 
 *TODO（dirlt）：page5-page6这个部分的异常处理没有看懂！！！WTF！*
 
---------------------
+-----
 
    - Transaction processing is complicated by the possibil-ity of client failure (tablet server failure does not affect the system since Bigtable guarantees that written locks persist across tablet server failures). If a client fails while a transaction is being committed, locks will be left be-hind. Percolator must clean up those locks or they will cause future transactions to hang indefinitely. （考虑到client出现failure的情况的话，那么这个问题就稍微有点复杂，因为client可能会出现一些锁遗留下来没有清除。而percolator必须清除它，这样后面的事务才不会被阻塞住）
    - Percolator takes a lazy approach to cleanup: when a transaction A encounters a conflicting lock left behind by transaction B, A may determine that B has failed and erase its locks（percolator采取一种lazy的办法，就是只有当A遇到遗留锁的时候，A才决定是否需要清除掉遇到的锁，这个锁可能是正在被某些事务持有的，也可能是遗留的）

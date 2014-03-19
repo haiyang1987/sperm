@@ -917,7 +917,7 @@ vm.swappiness = 0
    - OVERCOMMIT_NEVER=2 用户一次申请内存的大小不允许超过<可用内存>的大小。关于这个<可用内存>的大小计算可以看下面overcommit_ration这个参数，可以上面两种所说的可用内存不太一样。
      - Don't overcommit. The total address space commit for the system is not permitted to exceed swap + a configurable percentage (default is 50) of physical RAM. Depending on the percentage you use, in most situations this means a process will not be killed while accessing pages but will receive errors on memory allocation as appropriate.
 
---------------------
+-----
 下午将dp3的overcommit_memory参数修改成为2之后，首先出现的问题就是不能够再执行任何shell命令了，错误是fork can't allocate enough memory,就是fork没有那么多的内存可用。然后推出会话之后没有办法再登陆dp3了。这个主要是因为jvm应该基本上占用满了物理内存，而overcommit_ration=0.5,并且没有swap空间，所以没有办法allocate更多的memory了。
 
 从/var/log/syslog里面可以看到，修改了这个参数之后，很多程序受到影响(ganglia挂掉了，cron不能够fork出进程了，init也不能够分配出更多的tty，导致我们没有办法登陆上去）在ganglia里面看到内存以及CPU使用都是一条直线，不是因为系统稳定而是因为gmond挂掉了。
@@ -1710,7 +1710,7 @@ sar - Collect, report, or save system activity information.
       - rcvin/s 每个serial line接收中断数目/s
       - xmtin/s 每个serial line发出中断数目/s
 
-------------------------------------------------------------
+-----
 
 关于网络接口数据显示的话，下面是使用DEV可以查看的字段
    - IFACE network interface
@@ -1737,7 +1737,7 @@ sar - Collect, report, or save system activity information.
    - rawsck 正在使用RAW socket数目
    - ip-frag 当前使用IP fragments数目
 
-------------------------------------------------------------
+-----
 
 选项非常多，但是很多选项没有必要打开。对于网络程序来说的话，通常我们使用到的选项会包括
    - -n DEV 网卡流量
@@ -1773,7 +1773,7 @@ NOTE
 #+END_EXAMPLE
 我们这里打算对netstat使用限制在查看网络连接，以及各种协议的统计数据上.
 
-------------------------------------------------------------
+-----
 
 首先我们看看如何查看各种协议的统计数据.
 #+BEGIN_EXAMPLE
@@ -1883,7 +1883,7 @@ IpExt:
 #+END_EXAMPLE
 内容非常多这里也不详细分析了。
 
-------------------------------------------------------------
+-----
 
 然后看看连接这个部分的功能
 #+BEGIN_EXAMPLE
@@ -2308,7 +2308,7 @@ TODO(dirlt): http://iptraf.seul.org/
    - l    is multi-threaded (using CLONE_THREAD, like NPTL pthreads do)
    - +    is in the foreground process group.
 
---------------------
+-----
 
 在使用ubuntu的apt-get时候，可能会出现一些异常的状况，我们直接终止了apt-get。但是这个时候apt-get软件本身出于一个不正常的状态，
 导致之后不能够启动apt-get。如果观察进程的话会出现下面一些可疑的进程
@@ -2407,7 +2407,7 @@ http://www.ece.virginia.edu/cheetah/documents/papers/TCPlinux.pdf
 
 *NOTE（dirlt）：后面影响拥塞部分没有看*
 
---------------------
+-----
 packet reception
 
 file:./images/tcp-packet-reception.png
@@ -2425,7 +2425,7 @@ file:./images/tcp-packet-reception.png
    - /proc/sys/net/ipv4/tcp_rmem tcp recv buffer大小
    - /proc/sys/net/core/netdev_max_backlog socket backlog大小
 
---------------------
+-----
 packet transmission
 
 file:./images/tcp-packet-transmission.png
@@ -2470,7 +2470,7 @@ file:./images/kernel-panic-not-syncing-attempted-to-kill-init.png
 
 ** application
 *** 返回值问题
---------------------
+-----
 首先看下面一段Java程序
 #+BEGIN_SRC Java
 /* coding:utf-8
@@ -2500,7 +2500,7 @@ print os.system('java X')
 a 16-bit number, whose low byte is the signal number that killed the process, and whose high byte is the exit status (if the signal number is zero); the high bit of the low byte is set if a core file was produced. 
 #+END_EXAMPLE
 
---------------------
+-----
 然后下面这段Python程序，使用echo $?判断返回值为0而不是256
 #+BEGIN_SRC Python
 #!/usr/bin/env python
@@ -2597,7 +2597,7 @@ May  2 18:24:21 umeng-ubuntu-pc kernel: [ 1188.717622] CPU3: Package temperature
 
 TODO(dirlt): what is the correct way to do it(change glibc)
 
---------------------
+-----
 @2013-08-03 
 
 A copy of the C library was found in an unexpected directory | Blog : http://blog.i-al.net/2013/03/a-copy-of-the-c-library-was-found-in-an-unexpected-directory/
