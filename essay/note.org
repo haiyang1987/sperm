@@ -35,6 +35,8 @@
    - [[file:./note/how-to-build-wordpress.org][简单搭建WordPress]]
    - [[file:./note/my-virgin-english-conversation][初次英语对话]]
    - [[file:./note/thousands-pv.org][千次PV]]
+   - [[file:./note/cmb-hk-account.org][招商银行香港一卡通]]
+   - [[file:./note/tj-car-checkout.org][天津验车]]
  
 ** 印记
    - [[file:note/fun.org][挺搞笑的]]

@@ -94,9 +94,9 @@
 (require 'google-c-style)
 (setq c-default-style "java")
 (defun my-c-mode-common-hook()
-  (setq tab-width 2)
+  (setq tab-width 4)
   (setq indent-tabs-mode nil)
-  (setq c-basic-offset 2))
+  (setq c-basic-offset 4))
 
 (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
 (add-hook 'c-mode-common-hook 'google-set-c-style)
@@ -109,9 +109,9 @@
                                auto-mode-alist))
 (setq-default nuke-trailing-whitespace-p t)
 ;; no harm to repeat it.
-(setq tab-width 2)
+(setq tab-width 4)
 (setq indent-tabs-mode nil)
-(setq c-basic-offset 2)
+(setq c-basic-offset 4)
 
 ;;; doxymacs.
 ;; sudo apt-get install doxymacs

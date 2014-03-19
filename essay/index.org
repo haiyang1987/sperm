@@ -45,8 +45,9 @@
      - [[file:license.org][License]] 一些常见的开源协议。不知道自己以后是否可以用得上：）
      - [[file:web-misc.org][Web Misc]] Web开发遇到的一些问题。因为自己对于Web开发不太了解，所以内容上的话可能显得有点弱智。
      - [[file:swig.org][SWIG]] C/C++多语言扩展接口生成器，使用起来非常方便(至于生成的代码没有看过效率如何).个人觉得比较适合quick & dirty的方案。
-     - [[file:git.org][Git]] 分布式版本控制系统。很多项目都在使用Git进行版本管理包括Linux Kernel, Ruby on Rails, WINE, X.org等。
-     - [[file:./bazzar.org][Bazzar]] 分布式版本控制系统。很多项目都在使用Bazzar进行版本管理包括MySQL, Ubuntu, OpenStack, Debain, Bugzilla, MariaDB等。
+     - [[file:git.org][Git]] 分布式版本控制系统(DCVS)。很多项目都在使用Git进行版本管理包括Linux Kernel, Ruby on Rails, WINE, X.org等。
+     - [[file:./bazzar.org][Bazzar]] 分布式版本控制系统(DCVS)。很多项目都在使用Bazzar进行版本管理包括MySQL, Ubuntu, OpenStack, Debain, Bugzilla, MariaDB等。
+     - [[file:./svn.org][SVN]] 集中式版本控制系统(CVS)。没有分布式控制版本系统(DCVS)那么灵活，比较适合中小团队使用。
      - [[file:folly.org][Folly]] Folly is an open-source C++ library developed and used at Facebook.
      - [[file:flex-bison.org][Flex/Bison]] 可以用来书写词法和语法分析器，Bison支持的语法是LALR（1）。
      - [[file:valgrind.org][Valgrind]] CPU和内核模拟器，通过暴露接口可以构建动态分析工具，比如内存调试，检测内存泄露，多线程分析和性能分析等。
