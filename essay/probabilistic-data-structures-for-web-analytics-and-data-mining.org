@@ -91,7 +91,7 @@ Dependency between the sketch size and accuracy is shown in the table below. It 
 
 file:./images/count-min-sketch-analysis.png
 
---------------------
+-----
 count-min sketch这种算法只有在dataset本身比较skewed的情况下才能够获得比较好的结果，也就是说如果d w比较小的话，那么对于skewed dataset是比较合适的。
 
 Two experiments were done with the Count-Min sketch of size 3×64, i.e. 192 counters total. In the first case the sketch was populated with moderately skewed data set of 10k elements, about 8500 distinct values (element frequencies follow Zipfian distribution which models, for example, distribution of words in natural texts). The real histogram (for most frequent elements, it has a long flat tail in the right that was truncated in this figure) and the histogram recovered from the sketch are shown in the figure below:

@@ -47,7 +47,7 @@ verse, and a production-only universe.（一个spanner实例称为universe）
      - Zones can be added to or removed from a running system as new datacenters are brought into service and old ones are turned off, respec-tively. （zone能够自由地进入和从数据中心移除）
      - Zones are also the unit of physical isolation: there may be one or more zones in a datacenter, for example, if different applications’ data must be partitioned across different sets of servers in the same datacenter.（zone也是物理隔离的单元，可以在一个datacenter里面存在几个zone实例，这样在一个datacenter就可以存在同一个数据的replication多份）
 
---------------------
+-----
 
 file:./images/spanner-server-organization.png
 

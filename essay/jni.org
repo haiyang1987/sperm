@@ -165,7 +165,7 @@ Cache fieldID/methodID:
    - 第二种方法是在类static区域调用初始化函数，初始化函数一次性获取所有的ID然后缓存。
    - 可以认为第一种方法就是lazy evaluation.
 
---------------------
+-----
 
 Let us start by comparing the cost of Java/native calls with the cost of Java/Java calls. Java/native calls are potentially slower than Java/Java calls for the fol-lowing reasons: (Java/Java calls和Java/native calls的对比，Java/native calls通常更慢）：
    - Native methods most likely follow a different calling convention than that used by Java/Java calls inside the Java virtual machine implementation. As a result, the virtual machine must perform additional operations to build argu-ments and set up the stack frame before jumping to a native method entry point.（额外操作来建立stack frame调用native method)
@@ -349,7 +349,7 @@ load/unload工作流程是这样的：
    - Mismatched Thread Models
 
 *** Overview of the JNI Design
---------------------
+-----
 
 Locating Native Libraries
      - System.loadLibrary throws an UnsatisfiedLinkError if it fails to load the named native library. 如果找不到native library就会抛出UnsatisfiedLinkError异常。
@@ -357,7 +357,7 @@ Locating Native Libraries
      - If the underly-ing operating system does not support dynamic linking, all native methods must be prelinked with the virtual machine. 如果不支持动态链接的话就只能够预先链接做静态链接。
      - ClassLoader.findLibrary 定位library路径
 
---------------------
+-----
 
 Linking Native Methods
   - the native method by concatenating the following components:
@@ -369,7 +369,7 @@ Linking Native Methods
   - If native functions matching an encoded native method name are present in multiple native libraries, the function in the native library that is loaded first is linked with the native method. 如果存在多个定义那么使用找到的第一个使用。
   - If no function matches the native method name, an UnsatisfiedLinkError is thrown. 否则抛出异常。
 
---------------------
+-----
 
 Passing Data
 
@@ -377,7 +377,7 @@ Passing Data
 
 file:./images/jni-passing-date-in-reference.png
 
---------------------
+-----
 
 Accessing Objects
    - Accessing Primitive Arrays

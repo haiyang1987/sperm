@@ -123,7 +123,7 @@ Returned 1 row(s) in 0.65s
 
 
 *** TroubleShooting
---------------------
+-----
 启动sudo impalad start出现下面错误
 #+BEGIN_EXAMPLE
 0314 16:41:13.884233 18187 impala-server.cc:573] ERROR: short-circuit local reads is disabled because

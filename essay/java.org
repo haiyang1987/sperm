@@ -398,7 +398,7 @@ jmx似乎是一个标准，在JDK里面有默认的实现。通过jmx可以暴�
    - *so advanced, so powerful, yet so complex*
 
 *** Future
---------------------
+-----
 关于Future的一点个人感想： 
 
 *Future这个概念非常好，可以做成一个Callable对象的continuation.*  但是曾经一段时间我非常希望将其当作一个类似Nio下面的Channel对象来看待，因为一旦如此那么便可以使用类似Select/Epoll这种多路复用组件，来管理众多的continuation，可以检测continuation是否ready或者是是否超时，并且触发回调，整个过程和Nio多路复用非常类似，然后在这上面做异步就非常容易了。但是后来考虑清楚了，这件事情是不靠谱的。原因如下：
@@ -498,7 +498,7 @@ Warnings
 
 代码处理选项部分还是比较诡异的，可以看看代码是如何处理的 https://cluster.earlham.edu/trac/bccd-ng/browser/branches/skylar-install_jdk/trees/software/bccd/software/jdk1.6.0_14/demo/jvmti/hprof/src/hprof_init.c?rev=1854
 
----------------------
+-----
 How Does HPROF Work?
    - a dynamically-linked native library that uses JVM TI and writes out profiling information either to a file descriptor or to a socket in ascii or binary format. （native动态链接库完成的，使用了JVM TI接口，将数据写到socket或者是文件）
      - [[http://docs.oracle.com/javase/7/docs/technotes/guides/jvmti/index.html][JVM TI]] Java Virtual Machine Tool Interface

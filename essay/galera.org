@@ -74,7 +74,7 @@ Info.(@2012)
    - wsrep_init_args(arguments)
    - wsrep_t(interface)
 
---------------------
+-----
 
    - Replication provider library
      - load/unload
@@ -173,7 +173,7 @@ file:./images/galera-overview.png file:./images/galera-library.png
    - 多点写入时的锁冲突检测机制
    - 等待队列中事务的并发提交
 
---------------------
+-----
 
 file:./images/galera-gcs2.png
 
@@ -186,7 +186,7 @@ file:./images/galera-gcs.jpg
    - 节点接收请求后在commit之前，由wsrep API调用galera库进行集群内广播，所有其他节点验证（certification）成功后事务在集群所有节点进行提交，反之roll back。
    - Replication层完成数据同步，由slave queue和applier组成，在事务的同步过程中，事务在队列中以及应用线程中时于节点本地产生锁冲突处理方式。效率直接影响整个集群的写入性能。
 
---------------------
+-----
 
 file:./images/galera-certification.png file:./images/galera-certification-en.png
 

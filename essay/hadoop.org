@@ -325,7 +325,7 @@ export PATH=$PATH:$JAVA_HOME/bin:$HADOOP_HOME/bin:$HBASE_HOME/bin:$ZK_HOME/bin
 </configuration>
 #+END_SRC
 
---------------------
+-----
 
 #+BEGIN_SRC XML
 <configuration>
@@ -392,7 +392,7 @@ export PATH=$PATH:$JAVA_HOME/bin:$HADOOP_HOME/bin:$HBASE_HOME/bin:$ZK_HOME/bin
 </configuration>
 #+END_SRC
 
---------------------
+-----
 
 #+BEGIN_SRC XML
 <configuration>
@@ -595,7 +595,7 @@ export HBASE_OPTS="-ea -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+UseCMSCompa
       - hadoop fs -ls har://schema-<host>/<path> 是通用的访问方式
 	
 *** Hadoop IO
---------------------
+-----
    - 文件系统
      - ChecksumFileSystem 
        - 使用decorator设计模式，底层filesystem称为RawFileSystem
@@ -614,7 +614,7 @@ export HBASE_OPTS="-ea -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+UseCMSCompa
      - ChecksumDistributedFileSystem
        - DistributedFileSystem + ChecksumFileSystem
 
---------------------
+-----
    - 压缩解压
      - DEFLATE org.apache.hadoop.io.compress.DefaultCodec 扩展名.defalte
      - Gzip org.apache.hadoop.io.compress.GzipCodec 扩展名.gz 使用DEFLATE算法但是增加了额外的文件头。
@@ -640,7 +640,7 @@ export HBASE_OPTS="-ea -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+UseCMSCompa
        - mapred.compress.map.output = true 将map结果做压缩
        - mapred.map.output.compression.codec map压缩格式
 
---------------------
+-----
    - 序列化
      - Hadoop的序列化都是基于Writable实现的，WritableComparable则是同时继承Writable,Comparable<T>.
      - 序列化对象需要实现RawComparator，接口为public int compare(byte[] b1, int s1, int l1, byte[] b2, int s2, int l2)进行二进制比较。
@@ -666,14 +666,14 @@ export HBASE_OPTS="-ea -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+UseCMSCompa
            - 然后调用hadoop MapFileFixer来建立索引
 
 *** MapReduce应用开发
---------------------
+-----
    - Configuration用来读取配置文件，功能还是比较强大的，有变量替换的功能
      - <property><name>...</name><value>...</value></property>
      - 如果使用<final>true</final>标记的话那么这个变量不允许被重置
      - 变量替换可以使用${variable}
      - 通过addResource来添加读取的配置文件
 
---------------------
+-----
    - Hadoop集群有三种工作方式，分别为
      - standalone 使用单个JVM进程来模拟
        - 如果不进行任何配置的话默认使用这个模式 *NOTE（dirlt）：这个模式确实不错*
@@ -686,7 +686,7 @@ export HBASE_OPTS="-ea -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+UseCMSCompa
        - fs.default.name = hdfs://<namenode>
        - mapred.job.tracer = <jobtracker>:8021
 
---------------------
+-----
    - 使用hadoop启动MapReduce任务的常用参数
      1. -D property=value 覆盖默认配置属性
      2. -conf filename 添加配置文件
@@ -697,7 +697,7 @@ export HBASE_OPTS="-ea -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+UseCMSCompa
 	- 突然觉得这个差别在files只能是平级结构，而archive可以是层级结构。
      7. -libjars jar1,jar2 和files类似，通常这些JAR文件是MapReduce所需要的。
 
---------------------
+-----
 如果希望运行时候动态创建集群的话，可以通过这几个类来创建
    - MiniDFSCluster
    - MiniMRCluster
@@ -708,7 +708,7 @@ export HBASE_OPTS="-ea -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+UseCMSCompa
 
 *NOTE（dirlt）：但是个人觉得可能还是没有本地测试方便，不过倒是可以试试* 
 
---------------------
+-----
 job，task and attempt
    - jobID常见格式为 job_200904110811_0002
      - 其中200904110811表示jobtracker从2009.04.11的08:11启动的
@@ -722,7 +722,7 @@ job，task and attempt
      - attempt出现的原因是因为一个task可能会因为失败重启或者是预测执行而执行多次
      - 如果jobtracker重启而导致作业重启的话，那么做后面id从1000开始避免和原来的attempt冲突。
 
---------------------
+-----
 作业调试
 
    - 相关配置
@@ -759,7 +759,7 @@ job，task and attempt
      - 如果希望任务都保留而不仅仅是失败任务保留的话，那么可以设置 keep.task.files.pattern 为正则表达式（与保留的任务ID匹配）
 
 *** MapReduce的工作机制
---------------------
+-----
 Hadoop运行MapReduce作业的工作原理
 
 file:./images/mapreduce-workflow-architecture.png
@@ -772,7 +772,7 @@ file:./images/mapreduce-workflow-architecture.png
 
 file:./images/mapreduce-streamming-pipes.jpg
 
---------------------
+-----
 进度和状态的更新
    - map任务进度是已经处理输入的比例
    - reduce任务进度分为三个部分
@@ -795,7 +795,7 @@ file:./images/mapreduce-streamming-pipes.jpg
        - jobClient也可以设置属性job.end.notification.url,任务完成jobtracker会调用这个url
        - 可以认为就是推拉方式的结合。
        
---------------------
+-----
 失败检测和处理
    - 任务失败
      - 子进程抛出异常的话，tasktracker将异常信息记录到日志文件然后标记失败
@@ -812,7 +812,7 @@ file:./images/mapreduce-streamming-pipes.jpg
      - 如果一个job超过一定的task在某个tt上面运行失败的话，那么就会将这个tt加入到这个job的blacklist. mapred.max.tracker.failures = 4
      - 如果job成功的话，检查运行task失败的tt并且标记，如果超过一定阈值的话，那么会将tt加入到全局的blacklist. mapred.max.tracker.blacklists = 4
 
---------------------
+-----
 作业的调度
    - fifo scheduler
      - 可以通过mapred.job.priority或者是setJobPriority设置
@@ -820,7 +820,7 @@ file:./images/mapreduce-streamming-pipes.jpg
    - fair scheduler
    - capacity scheduler
 
---------------------
+-----
 shuffle和排序
 
 file:./images/mapreduce-shuffle-sort.jpg
@@ -846,7 +846,7 @@ file:./images/mapreduce-shuffle-sort-2.png
     - mapred.job.shuffle.merge.percent = 0.66 缓存的内存中多少百分比后开始做merge操作
     - mapred.job.reduce.input.buffer.percent = 0.0 sort完成后reduce计算阶段用来缓存数据的百分比. 默认来说不会使用任何内存来缓存，因此完全从磁盘上进行读取。
 
---------------------
+-----
 任务的执行
    - 推测执行参数
      - 如果某个任务执行缓慢的话会执行另外一个备份任务
@@ -872,7 +872,7 @@ file:./images/mapreduce-shuffle-sort-2.png
      - mapred.job.queue.name # 选择执行queue
 
 *** MapReduce的类型与格式
---------------------
+-----
 MapReduce的类型
 
 老API里面还有MapRunner这个类，这个类主要的作用是可以用来控制Mapper运行的方法，比如可以多线程来控制Mapper的运行。
@@ -907,7 +907,7 @@ MapReduce的类型
    - mapred.reducer.class setReducerClass
    - mapred.output.format.class setOutputFormat
 
---------------------
+-----
 输入格式
 
 对于InputFormat来说包含两个任务
@@ -988,7 +988,7 @@ public abstract class RecordReader<KEYIN, VALUEIN> implements Closeable {
    - DBInputFormat/DBOutputFormat JDBC数据库输入输出
    - TableInputFormat/TableOutputFormat HBase输入输出
 
---------------------
+-----
 输出格式
    - TextOutputFormat
      - 使用mpared.textoutputformat.seperator来控制kv的分隔，默认是\t

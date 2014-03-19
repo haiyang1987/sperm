@@ -19,12 +19,12 @@ Akka implements a unique hybrid
      - Transactors combine actors and Software Transactional Memory (STM) into transactional actors. （actors + STM = transactors）
      - It allows you to compose atomic message flows with automatic retry and rollback.
 
---------------------
+-----
 Akka can be used in different ways:
    - As a library: used as a regular JAR on the classpath and/or in a web app, to be put into WEB-INF/lib. This is most likely what you want if you are building Web applications. There are several ways you can use Akka in Library mode by adding more and more modules to the stack.
    - As a stand alone application by instantiating ActorSystem in a main class or using the Microkernel (Scala) / Microkernel (Java). The Akka distribution includes the microkernel. To run the microkernel put your application jar in the deploy directory and use the scripts in the bin directory. （类似插件方式启动）
 
---------------------
+-----
 *NOTE(dirlt):参考akka@github的example编写的。这里使用的方式就是手工创建ActorSystem，而不是使用Akka.main指定main class来启动*
 
 #+BEGIN_SRC Scala
@@ -79,7 +79,7 @@ Related Terminology, Concepts
      - The Art of Multiprocessor Programming, M. Herlihy and N Shavit, 2008. ISBN 978-0123705914
      -  Java Concurrency in Practice, B. Goetz, T. Peierls, J. Bloch, J. Bowbeer, D. Holmes and D. Lea, 2006. ISBN 978-0321349606
 
---------------------
+-----
 An ActorSystem is a heavyweight structure that will allocate 1. . . N Threads, *so create one per logical application.*
 
 Actors are objects which encapsulate state and behavior, they communicate exclusively by exchanging messages which are placed into the recipient’s mailbox. In a sense, actors are the most stringent form of object-oriented programming, but it serves better to view them as persons: while modeling a solution with actors, envision a group of people and assign sub-tasks to them, arrange their functions into an organizational structure and think about how to escalate failure (all with the benefit of not actually dealing with people, which means that we need not concern ourselves with their emotional state or moral issues). The result can then serve as a mental scaffolding for building the software implementation. （类似群体概念。将任务分解给群体里面每个人来完成。组织每个人的只能以及思考如何处理任务失败的情况）
@@ -116,7 +116,7 @@ file:./images/akka-actor-system.png
    - This split into inner and outer object enables transparency for all the desired operations: restarting an actor without needing to update references elsewhere, placing the actual actor object on remote hosts, sending messages to actors in completely different applications.
    - But the most important aspect is that it is not possible to look inside an actor and get hold of its state from the outside, unless the actor unwisely publishes this information itself.
 
---------------------
+-----
 
 There are several different types of actor references that are supported depending on the configuration of the actor system:
    - *Purely local actor* references are used by actor systems which are not configured to support networking functions. These actor references will not function if sent across a network connection to a remote JVM.（完全本地，没有任何通信）
@@ -133,7 +133,7 @@ There are several different types of actor references that are supported dependi
    - *Cluster actor references* represent clustered actor services which may be replicated, migrated or load-balanced across multiple cluster nodes. As such they are virtual names which the cluster service translates into local or remote actor references as appropriate.
 
 
---------------------
+-----
 
 There are two general categories to how actor references may be obtained: by creating actors or by looking them up, where the latter functionality comes in the two flavours of creating actor references from concrete actor paths and querying the logical actor hierarchy.（创建actor reference有两种方式，一种是创建，一种是查找）
    - Creating Actors. 
@@ -144,7 +144,7 @@ There are two general categories to how actor references may be obtained: by cre
      - The selection can be used for communicating with said actor and *the actor corresponding to the selection is looked up when delivering each message.* TODO(dirlt): cost issue?
      - *NOTE(dirlt):support relative path and wildcard. like ../sibling or ../? *
 
---------------------
+-----
 
 Equality of ActorRef match the intention that an ActorRef corresponds to the target actor incarnation. Two actor references are compared equal *when they have the same path and point to the same actor incarnation.* A reference pointing to a terminated actor does not compare equal to a reference pointing to another (re-created) actor with the same path. Note that a restart of an actor caused by a failure still means that it is the same actor incarnation, i.e. a restart is not visible for the consumer of the ActorRef.(仅仅比较path是不行的。相同path可能会出现这样的情况：a是died actor，而b是re-created actor. 两者虽然有相同的path，但是却并不相同。不过ActorRef内部重启没有任何影响）
  
@@ -170,7 +170,7 @@ An actor path consists of an anchor, which identifies the actor system, followed
    - "cluster://my-cluster/service-c"                         // clustered
 
 
---------------------
+-----
 
 When sending an actor reference across the network, it is represented by its path. Hence, the path must fully encode all information necessary to send messages to the underlying actor. This is achieved by encoding protocol, host and port in the address part of the path string. *When an actor system receives an actor path from a remote node, it checks whether that path’s address matches the address of this actor system, in which case it will be resolved to the actor’s local reference. Otherwise, it will be represented by a remote actor reference.*
 
@@ -178,7 +178,7 @@ When an actor creates a child, the actor system’s deployer will decide whether
 
 file:./images/akka-actor-on-remote-node.png
 
---------------------
+-----
 
 *NOTE(dirlt):可以参照后面的Supervision and Monitoring来看这些path*
 
@@ -246,7 +246,7 @@ Akka implements a specific form called *“parental supervision”.*
    - The actual creation and termination actions happen behind the scenes in an asynchronous way, so they do not “block” their supervisor.（对于children的创建和终止是异步完成的）
 
 
---------------------
+-----
 Depending on the nature of the work to be supervised and the nature of the failure, the supervisor has a choice of the following four options:（监控发现失败的话通常会采取下面几种策略）
    1. Resume the subordinate, keeping its accumulated internal state（恢复）
    2. Restart the subordinate, clearing out its accumulated internal state（重启）
@@ -254,10 +254,10 @@ Depending on the nature of the work to be supervised and the nature of the failu
    4. Escalate the failure, thereby failing itself（向上传递）
 This strategy cannot be changed afterwards as it is an integral part of the actor system’s structure.(策略一旦选定之后就不能够改变）
 
---------------------
+-----
 Each supervisor is configured with a function translating all possible failure causes (i.e. exceptions) into one of the four choices given above; notably, this function does not take the failed actor’s identity as an input. It is quite easy to come up with examples of structures where this might not seem flexible enough, e.g. wishing for different strategies to be applied to different subordinates. At this point it is vital to understand that supervision is about forming a recursive fault handling structure. If you try to do too much at one level, it will become hard to reason about, hence the recommended way in this case is to add a level of supervision. Considering that there is only one such strategy for each actor, this means that if different strategies apply to the various children of an actor, the children should be grouped beneath intermediate supervisors with matching strategies, preferring once more the structuring of actor systems according to the splitting of tasks into sub-tasks. （supervisor处理失败函数并不能够是被actor的身份，所以不能够根据actor身份来选择不同的处理策略。如果确实有需求的话，那么需要考虑增加层级，引入间接的actor来分别管理它们）
 
---------------------
+-----
 file:./images/akka-top-level-supervisors.png
 
 An actor system will during its creation start at least three actors, shown in the image above.
@@ -273,7 +273,7 @@ An actor system will during its creation start at least three actors, shown in t
      - Since every real actor has a supervisor, the supervisor of the root guardian cannot be a real actor. And because this means that it is “outside of the bubble”, it is called the “bubble-walker”. 
      - *This is a synthetic ActorRef which in effect stops its child upon the first sign of trouble* and sets the actor system’s isTerminated status to true as soon as the root guardian is fully terminated (all children recursively stopped)
 
---------------------
+-----
 Lifecycle Monitoring
    - In contrast to the special relationship between parent and child described above, each actor may monitor any other actor. （没有直接parent-child关系的actor也能够相互监控）
    - Since actors emerge from creation fully alive and restarts are not visible outside of the affected supervisors, the only state change available for monitoring is the transition from alive to dead. （但是之能够监控从alive->dead这个过程）
@@ -284,7 +284,7 @@ Lifecycle Monitoring
 
 Monitoring is particularly useful if a supervisor cannot simply restart its children and has to terminate them, e.g. in case of errors during actor initialization. In that case it should monitor those children and re-create them or schedule itself to retry this at a later time. Another common use case is that an actor needs to fail in the absence of an external resource, which may also be one of its own children. If a third party terminates a child by way of the system.stop(child) method or sending a PoisonPill, the supervisor might well be affected.
 
---------------------
+-----
 One-For-One Strategy vs. All-For-One Strategy
 
 There are two classes of supervision strategies which come with Akka: OneForOneStrategy and AllForOneStrategy. Both are configured with a mapping from exception type to supervision directive (see above) and limits on how often a child is allowed to fail before terminating it. *The difference between them is that the former applies the obtained directive only to the failed child, whereas the latter applies it to all siblings as well.* Normally, you should use the OneForOneStrategy, which also is the default if none is specified explicitly.（前面只是处理失败的child，而后面处理所有的child包括失败和非失败的）
@@ -301,7 +301,7 @@ These are the rules for message sends (i.e. the tell or ! method, which also und
    - message ordering per sender–receiver pair *NOTE(dirlt):可以参考Memory Model这个部分的内容* 
 The first rule is typically found also in other actor implementations while the second is specific to Akka.
 
---------------------
+-----
 
 A local tell operation can however fail for the same reasons as a normal method call can on the JVM:
    - StackOverflowError
@@ -312,11 +312,11 @@ In addition, local sends can fail in Akka-specific ways:
    - if the receiving actor fails while processing the message or is already terminated
 While the first is clearly a matter of configuration the second deserves some thought: the sender of a message does not get feedback if there was an exception while processing, that notification goes to the supervisor instead. This is in general not distinguishable from a lost message for an outside observer.
 
---------------------
+-----
 
 Supervision related parent-child communication happens by special system messages that have their own mailboxes separate from user messages. This implies that supervision related events are not deter-ministically ordered relative to ordinary messages. In general, the user cannot influence the order of normal messages and failure notifications.（对于正常消息和监控消息是分开存放的，这也意味着监控消息和正常消息会混合在一起，并且以一种用户不能够确定的顺序出现） 
 
---------------------
+-----
 
 *Something about DeadLetters*
 

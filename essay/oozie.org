@@ -46,11 +46,11 @@ oozie执行分为三种模式：
    - Expand the oozie-examples.tar.gz 并且 hadoop fs -put examples examples 可以用来进行一些example测试
      - http://localhost/utils/oozie-2.3.2-cdh3u3/docs/DG_Examples.html
 
---------------------
+-----
 
 提交任务之前先需要将hadoop cluster启动。关于如何搭建single node cluster可以参考 http://localhost/utils/hadoop-0.20.2-cdh3u3/docs/single_node_setup.html 。但是启动之后，默认的nameNode是hdfs://localhost:9000，而默认的jobTracker是localhost:9001。而oozie自带的examples里面不是这样的，所以需要修改过来。
 
---------------------
+-----
 
 另外一个问题就是oozie提交任务涉及到hadoop权限问题，需要在hadoop的core-site.xml里面添加如下内容：
 #+BEGIN_SRC XML
@@ -65,7 +65,7 @@ oozie执行分为三种模式：
 #+END_SRC
 其中dirlt更换成为用户名称。
 
---------------------
+-----
 
 有时候我们会碰到下面这个错误信息导致HDFS不能够修改文件（删除文件），因为HDFS处于safe mode
 #+BEGIN_EXAMPLE

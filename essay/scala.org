@@ -37,7 +37,7 @@ res1: scala.collection.immutable.Range.Inclusive = Range(2, 3, 4)
 
 *NOTE(dirlt):实际上scala内部提供了隐式转换到其他类来提供扩展方法的，比如将Int->RichInt.可以学习一下这些扩展方法*
 
---------------------
+-----
 数组类型则是 Array[<type>] 比如
    - Array[String]
    - Array[Array[String]]
@@ -57,7 +57,7 @@ res2: Array[String] = null
 #+END_EXAMPLE
 注意这里不能够在用[]这种方式来访问数组，而必须使用()的方式来访问。实际上scala将()调用方法定向到了apply这个函数，可以认为是操作符重载。 
 
---------------------
+-----
 scala允许使用type关键字来为类型做别名，类型别名能够很大程度上简化代码
 #+BEGIN_SRC Scala
 type Counter = Long;
@@ -148,7 +148,7 @@ object x extends((Int,Int)=>Long) {
 }
 #+END_SRC
 
---------------------
+-----
 java里面使用...来表示参数列表比如
 #+BEGIN_SRC Java
   public static void main(String... args) {
@@ -172,7 +172,7 @@ val x = Array("Hello","World");
 foo(x:_*)
 #+END_SRC
 
---------------------
+-----
 函数调用上，如果没有参数的话可以省去(), 同时scala也支持指定参数传值而不是顺序传值
 #+BEGIN_SRC Scala
 def printX() = println("X")
@@ -194,7 +194,7 @@ One thing you will notice is that almost all of Scala’s control structures res
    - try/catch/finally # exception handling.
    - *NOTE(dirlt):没有break/continue语句*
 
---------------------
+-----
 对于for来说分为两个部分，一个是循环部分，一个是执行部分。
 
 循环部分的大致语法就是arg <- args. 但是允许在后面接上过滤条件，然后允许多重嵌套用;分开。比如下面一段代码
@@ -228,7 +228,7 @@ Coursera Reactive Programming
    - for(x<-e1 if f; s) yield e2 => for(x<-e1 withFilter f;s) yield e2
    - for(x<-e1; y<-e2; s) yield e3 => e1.flatMap(x => for(y<-e2; s) yield e3)
 
---------------------
+-----
 异常的触发和java类似都是throw new Exception(). catch部分可以通过模式匹配来完成。finally则主要用于处理清理资源释放等问题。
 #+BEGIN_SRC Scala
 def f() {
@@ -250,7 +250,7 @@ finally里面的返回值会被忽略，除非使用return来强制返回。但�
 
 One difference from Java that you’ll quickly notice in Scala is that unlike Java, Scala does not require you to catch checked exceptions.（不强制捕获检查异常）
 
---------------------
+-----
 match和switch非常类似，但是有下面两个比较重要的差别：
    - One is that any kind of constant, as well as other things, can be used in cases in Scala, not just the integer-type and enum constants of Java’s case statements.
    - Another difference is that there are no breaks at the end of each alternative. Instead the break is implicit, and there is no fall through from one alternative to the next.
@@ -417,7 +417,7 @@ pattern matching过程中还有下面几个问题需要注意：
      - A(1,e,e) 比如希望后面两个元素相等，但是这个在pm里面没有办法表达
      - A(1,x,y) if x == y => <body> // 通过guard来完成
 
---------------------
+-----
 scala为了方便扩展pm对象的case, 提供case class这个概念。case class和普通class大致相同，不过有以下三个区别，定义上只需要在class之前加上case即可：
    - 提供factory method来方便构造object
    - class parameter隐含val prefix
@@ -430,7 +430,7 @@ println(a); // toString = A(1)
 #+END_SRC
 case class最大就是可以很方便地用来做pattern matching.
 
---------------------
+-----
 如果我们能够知道某个selector所有可能的pattern的话，那么就能够在编译期做一些安全性检查。但是selector这个过于宽泛，如果将selector限制在类层次上的话，那么还是可以实现的。举例如下：
 #+BEGIN_SRC Scala
 abstract class A; // sealed abstract class A
@@ -468,7 +468,7 @@ a match {
 }
 #+END_SRC
 
---------------------
+-----
 模式匹配除了能够直接作用在case class上之外，也可以作用在普通的class上面，但是需要普通的class提供一些辅助的方法将转换成为case class或者是constant/string上面。这个机制在scala里面称为 *extractor* 
 
 下面是一个例子
@@ -544,7 +544,7 @@ annotation通常格式如下
 #+END_EXAMPLE
 其中annot是名字，exp是对应参数，而后面部分一些可选命名参数，没有顺序要求。
 
---------------------
+-----
 一些常用的annotation包括
    - @deprecated
    - @volatile
@@ -708,7 +708,7 @@ h op 2;
 
 Because im- plicit conversions are applied implicitly by the compiler, not explicitly writ- ten down in the source code, it can be non-obvious to client programmers what implicit conversions are being applied. 隐式转换这个东西还是尽量少用比较好。
 
---------------------
+-----
 关于隐式转换有下面几个通用规则 Implicit conversions are governed by the following general rules:
    1. Marking Rule: Only definitions marked implicit are available. 必须显示指明implicit. 
    2. Scope Rule: An inserted implicit conversion must be in scope as a single identifier, or be associated with the source or target type of the conver- sion. 隐式转换函数必须能够以单个id来访问，或者是在转换类型共生对象内部有定义
@@ -768,7 +768,7 @@ val y = new D(2)
 x op y
 #+END_SRC
 
---------------------
+-----
 
 隐式转换会发生在下面三个地方：
    1. conversions to an expected type, 
@@ -801,7 +801,7 @@ foo(1) // 1,hello,hello
 #+END_SRC
 这里需要注意的是，隐式参数的匹配不是靠名字而是靠类型来匹配的。又因为这个方式有点类似全局变量，所以隐式参数类型定义上一定要选择比较unique的，这样才不容易出现冲突。As a style rule, it is best to use a custom named type in the types of implicit parameters. 
 
---------------------
+-----
 Note that when you use implicit on a parameter, then not only will the compiler try to supply that parameter with an implicit value, but the compiler will also use that parameter as an available implicit in the body of the method! 
 
 使用隐式参数的话，编译器不仅仅会在外部调用时候使用这个参数，在函数体内也会使用这个参数，以下面代码为例
@@ -936,7 +936,7 @@ def divide(x: Int, y: Int): Int =
 #+END_SRC
 我们必须确保类型能够统一，所以error类型必须和Int兼容，因此Nothing在设计上必须是所有类型的子类。
 
---------------------
+-----
 Option type能够很好地解决java里面null的问题. 举个例子我们在java里面处理map.get("hello")返回值的时候，都需要判断是否为null然后在做处理，否则可能会出现NullPointerException. 同样在scala里面，map.get("hello")返回一个Option对象，这个对象必然是一个有效的引用对象。对于一个Option对象而言：
    1. Some(x). 表示其value是x
    2. None. 表示缺失value.
@@ -1043,7 +1043,7 @@ file:./images/scala-linearization.png
 
 *NOTE（dirlt）：这种动态执行的效果就是，你不能够确定super到底是哪个，取决于context.*
 
---------------------
+-----
 和java inteface一样，scala也允许构造匿名对象实现trait. 不过因为trait相比interface引入了字段，所以也引入了一些问题。这个问题主要是字段初始化顺序问题。下面是一个例子
 #+BEGIN_SRC Scala
 trait A{  
@@ -1175,7 +1175,7 @@ NOTE(dirlt@2013-11-04) 匿名函数也可以有下面的表达方式
 val c = { a:Int => a + 1 }
 #+END_SRC
 
---------------------
+-----
 
 但是在某些特殊情况则不需要指定parameter-type, 因为parameter-type可以通过上下文推导出来。 
 #+BEGIN_SRC Scala
@@ -1321,7 +1321,7 @@ val x = new A[Int];
 val y:A[Any] = x.asInstanceOf[A[Any]];
 #+END_SRC
 
---------------------
+-----
 scala引入variance也带来了一些问题
 
 #+BEGIN_SRC Scala

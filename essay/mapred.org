@@ -24,7 +24,7 @@ For a while, we have understood that the Apache Hadoop MapReduce framework neede
    - 灵活地控制software stack。我的理解是对于软件的升级，可能不能够完全替换，因此需要支持集群中有多个版本的MR运行。主要还是兼容性问题。
    - 服务不同的workload而非MR。比如MPI，graph-processing，realtime-processing，并且减少HDFS到自己存储系统之间数据的迁移（现在MR输入一定要在HDFS上面）
 
---------------------
+-----
 
 YARN主要做的工作就是在资源利用的改进上面，将资源利用已经workflow分离：
    - 资源利用通过引入的ResouceManager（RM）以及NodeManager（NM）来管理。
@@ -304,7 +304,7 @@ boolean canFitInMemory(long requestedSize) {
    - mapper没有做任何事情就是直接输出输入，没有reducer. 工作主要集中在LzoSplitInputFormat和LzoIndexOutputFormat这两个类上。
    - output key = Path, output value = LongWritable，key表示输入的文件，value表示每个lzo可以decompress的起始offset. 
 
---------------------
+-----
 先说说LzoIndexOutputFormat这个类，writer是LzoIndexRecordWriter。这个writer没有做什么特别的事情.在开始的时候建立临时的index文件，
 #+BEGIN_SRC Java
   private FSDataOutputStream setupOutputFile(Path path) throws IOException {
@@ -353,7 +353,7 @@ boolean canFitInMemory(long requestedSize) {
   }
 #+END_SRC
 
---------------------
+-----
 主要工作还是在LzoSplitInputFormat上面。记住这个input format给出的key是Path，value是offset. 主要工作也是LzoSplitRecordReader完成的。从代码上来看，主要的两个函数分别是
    - initialize. 这个函数会初始化lzo decompressor input stream用来准备读数据，并且首先读取一些元信息。
    - nextKeyValue. 这个函数则用input stream来读数据。但是注意实际上它只是在寻找split point，也就是block boundary. 这个算法和lzo压缩格式本身相关。
@@ -1339,7 +1339,7 @@ Heap
 
 磁盘空间不足的机器上面都出现了很多非常诡异的日志，比如找不到job directory目录，或者是读取map output出现错误等
 
---------------------
+-----
 
 dp24 OOM
 

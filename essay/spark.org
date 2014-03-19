@@ -15,7 +15,7 @@ In this paper, we focus on one such class of applications: those that reuse a wo
    - *Iterative jobs*: Many common machine learning algo- rithms apply a function repeatedly to the same dataset to optimize a parameter (e.g., through gradient de- scent). While each iteration can be expressed as a MapReduce/Dryad job, each job must reload the data from disk, incurring a significant performance penalty.
    - *Interactive analytics*: Hadoop is often used to run ad-hoc exploratory queries on large datasets, through SQL interfaces such as Pig and Hive. Ideally, a user would be able to load a dataset of interest into memory across a number of machines and query it re- peatedly. However, with Hadoop, each query incurs significant latency (tens of seconds) because it runs as a separate MapReduce job and reads data from disk.
 
---------------------
+-----
    - The main abstraction in Spark is that of a resilient dis- tributed dataset (RDD), which represents a read-only col- lection of objects partitioned across a set of machines that can be rebuilt if a partition is lost. Users can explicitly cache an RDD in memory across machines and reuse it in multiple MapReduce-like parallel operations. （RDD可以存储在内存中，并且可以重复使用）
    - RDDs achieve fault tolerance through a notion of lineage: if a partition of an RDD is lost, the RDD has enough infor- mation about how it was derived from other RDDs to be able to rebuild just that partition.（RDD通过lineage来达到fault-tolerant. 一个RDD内部包含足够信息来重新构造自己。因为RDD是只读的，所以这个信息只需要是input + sequence of transformatios)
    - Although RDDs are not a general shared memory abstraction, they represent a sweet-spot between expressivity on the one hand and scalability and reliability on the other hand, and we have found them well-suited for a variety of applications.
@@ -70,7 +70,7 @@ file:./images/spark-rdd-code-examples.png
 
 *NOTE(dirlt):rdd = direct input + function as closure*
 
---------------------
+-----
 
 Internally, each RDD object implements the same sim- ple interface, which consists of three operations:（RDD interface)
    - getPartitions, which returns a list of partition IDs.（这个RDD有哪些partitions)
@@ -119,7 +119,7 @@ In future work, we plan to focus on four areas:
    - Unfortu- nately, in most current frameworks, the only way to reuse data between computations (e.g., between two MapRe- duce jobs) is to write it to an external stable storage sys- tem, e.g., a distributed file system. This incurs substantial overheads due to data replication, disk I/O, and serializa-tion, which can dominate application execution times.（而现在对于数据的重用都是依赖于外部持久化系统比如分布式文件系统，data replication, disk I/O, 序列化都带来比较大的overhead)
    - Recognizing this problem, researchers have developed specialized frameworks for some applications that re- quire data reuse. For example, Pregel is a system for iterative graph computations that keeps intermediate data in memory, while HaLoop offers an iterative MapRe- duce interface. However, these frameworks only support specific computation patterns (e.g., looping a series of MapReduce steps), and perform data sharing implicitly for these patterns. They do not provide abstractions for more general reuse, e.g., to let a user load several datasets into memory and run ad-hoc queries across them.
 
---------------------
+-----
 
    - In this paper, we propose a new abstraction called re- silient distributed datasets (RDDs) that enables efficient data reuse in a broad range of applications. RDDs are 
      - fault-tolerant, 
@@ -163,7 +163,7 @@ file:./images/spark-rdd-interface.png
 
 For example, an RDD representing an HDFS file has a partition for each block of the file and knows which machines each block is on. Meanwhile, the result of a map on this RDD has the same partitions, but applies the map function to the parent’s data when computing its elements.
 
---------------------
+-----
 
 The most interesting question in designing this inter- face is how to represent dependencies between RDDs. We found it both sufficient and useful to classify depen- dencies into two types:
    - *narrow dependencies(ND), where each partition of the parent RDD is used by at most one parti- tion of the child RDD, （一个partition只会被child RDD中的一个partition所使用）*

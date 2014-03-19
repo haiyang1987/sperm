@@ -10,13 +10,12 @@
    - 图解Git. http://blog.jobbole.com/22647
    - Git Reference. http://gitref.org/
 
-** FAQ
-*** git仓库
+** git repo
 git分为远程仓库和本地仓库。可以从不同的远程仓库拉下内容到本地仓库，并且也可以推送本地仓库到不同的远程仓库去。
 可以通过git remote add origin https://github.com/dirtysalt/sperm 来为仓库建立别名。在pull或者是push的时候就
 可以指定远程仓库。
 
-**** git本地
+*** local
 git本地仓库由下面三棵树构成：
    - 工作目录(working directory/WD).我们实际持有的文件。分为untracked和tracked两类。
    - 缓存区(index/stage,INDEX).临时保存我们所做的修改。
@@ -39,14 +38,14 @@ git本地仓库由下面三棵树构成：
    - git mv 重命名文件
    - git log 察看日志   
 
-**** git远程
+*** remote
    - git remote -v 显示远程仓库信息（本地信息）
    - git remote add <alias> <path> 添加远程仓库
    - git remote show <repo> 显示远程仓库信息（远程信息）
    - git remote rename <old> <new>
    - git remote rm <repo> 删除某个远程仓库
 
-*** git分支
+** git branch
 默认来说git包含一个master分支，也可以很容易地创建和删除分支。当从远程clone到本地的时候，
 会将远程repo里面所有的分支内容全部clone到本地，维护所有版本信息以及历史文件，所以本地切换分支非常快。
 
@@ -62,7 +61,7 @@ git本地仓库由下面三棵树构成：
 
 如果合并过来的分支，是当前分支的child的话，那么执行fast-forward合并，否则会执行普通的合并生成一个新的node，这个node是两个分支的共同child。
 
-*** git标签
+** git tag
 Git使用的标签有两种类型：轻量级的（lightweight）和含附注的（annotated）。轻量级标签就像是个不会变化的分支，实际上它就是个指向特 定提交对象的引用。而含附注标签，实际上是存储在仓库中的一个独立对象，它有自身的校验和信息，包含着标签的名字，电子邮件地址和日期，以及标签说明，标签本身也允许使用 GNU Privacy Guard (GPG) 来签署或验证。一般我们都建议使用含附注型的标签，以便保留相关信息；当然，如果只是临时性加注标签，或者不需要旁注额外信息，用轻量级标签也没问题。
 
    - git tag 列出所有的标签
@@ -71,7 +70,10 @@ Git使用的标签有两种类型：轻量级的（lightweight）和含附注的
    - git tag <tag-name> [<sha1>] 添加轻量标签
    - git push <repo> <tag> /--tags 推送某个标签或者是全部的标签
 
-** git-flow
+** git log/diff
+TODO(dirlt):
+
+** git flow
 参考资源
    - Git flow 开发流程。http://ihower.tw/blog/archives/5140/
    - A successful Git branching model. http://nvie.com/posts/a-successful-git-branching-model/

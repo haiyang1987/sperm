@@ -79,7 +79,7 @@ Resume screeners look for the same things that interviewers do:
    - *Can you code?*
 That means that you should present your resume to show those two things. Your love of tennis, traveling, or magic cards won’t do much to show that, so it’s likely just wasting space.Keep in mind that recruiters only spend a fixed amount of time (about 20 seconds) looking at your resume. If you limit the content to the best, most impressive, most relevant items, they’ll jump out at the recruiter Weak items only dilute your resume and distract the re- cruiter from what you’d like them to see.
 
---------------------
+-----
 
 *Writing Strong Bullets:*
    - For each role, try to discuss your accomplishments with the following approach: “Accom- plished X by implementing Y which led to Z” Here’s an example:
@@ -87,7 +87,7 @@ That means that you should present your resume to show those two things. Your lo
    - “Increased average match accu- racy from 1.2 to 1.5 by implement- ing a new comparison algorithm based on windiff”
 Not everything you did will fit into this approach, but the principle is the same: show what you did, how you did it, and what the results were Ideally, you should try to make the results “measurable” somehow.
 
---------------------
+-----
 
 *Advice for Non-Native English Speakers and Internationals:*
    - Proofreading: Some companies will throw out your resume just because of a typo. Please get at least one native English speaker to proofread your resume.
@@ -108,11 +108,11 @@ Behavioral questions are usually of the form “tell me about a time when you �
 | Most Interesting         |          |          |          |          |
 | Hardest Bug              |          |          |          |          |
 | Enjoyed Most             |          |          |          |          |
-| Conflicts with Teammates |          |          |          |          | 
+| Conflicts with Teammates |          |          |          |          |
 
 In each cell, put the corresponding story. We recommend reducing each story to just a couple keywords that you can write in each cell This will make the grid easier to study  
 
---------------------
+-----
 
 *What questions should you ask the interviewer?*
    - Genuine Questions: These are the questions you actually want to know ideas of questions that are valuable to many candidates:
@@ -208,7 +208,7 @@ Here’s why we strongly recommend that you tell your interviewer that you’ve 
    - 1.7 Write an algorithm such that if an element in an MxN matrix is 0, its entire row and column is set to 0.
    - 1.8 Assume you have a method isSubstring which checks if one word is a substring of another. Given two strings, s1 and s2, write code to check if s2 is a rotation of s1 using only one call to isSubstring (i e , “waterbottle” is a rotation of “erbottlewat”).
 
---------------------
+-----
 1.6
 
 #+BEGIN_SRC C++
@@ -271,7 +271,7 @@ Questions:
    - 4.7 You have two very large binary trees: T1, with millions of nodes, and T2, with hun- dreds of nodes. Create an algorithm to decide if T2 is a subtree of T1.
    - 4.8 You are given a binary tree in which each node contains a value. Design an algorithm to print all paths which sum up to that value.
 
---------------------
+-----
 4.6
 
 #+BEGIN_SRC C++
@@ -324,7 +324,7 @@ Questions:
    - 5.5 Write a function to determine the number of bits required to convert integer A to integer B.
    - 5.6 Write a program to swap odd and even bits in an integer with as few instructions as possible (e g , bit 0 and bit 1 are swapped, bit 2 and bit 3 are swapped, etc).
 
---------------------
+-----
 5.3
 
 #+BEGIN_SRC C++
@@ -411,7 +411,7 @@ Questions:
    - (x) 6.6 There are one hundred closed lockers in a hallway. A man begins by opening all one hundred lockers Next, he closes every second locker. Then he goes to every third locker and closes it if it is open or opens it if it is closed (e g , he toggles every third locker). After his one hundredth pass in the hallway, in which he toggles only locker number one hundred, how many lockers are open?
      - only n = p * p have been flipped with odd number and final status is open.
 
---------------------
+-----
 6.5
 
 #+BEGIN_SRC C++
@@ -519,7 +519,7 @@ Questions:
    - 9.6 Given a matrix in which each row and each column is sorted, write a method to find an element in it.
    - 9.7 A circus is designing a tower routine consisting of people standing atop one anoth- er’s shoulders. For practical and aesthetic reasons, each person must be both shorter and lighter than the person below him or her. Given the heights and weights of each person in the circus, write a method to compute the largest possible number of peo- ple in such a tower. EXAMPLE: Input (ht, wt): (65, 100) (70, 150) (56, 90) (75, 190) (60, 95) (68, 110) Output: The longest tower is length 6 and includes from top to bottom: (56, 90) (60,95) (65,100) (68,110) (70,150) (75,190)
 
---------------------
+-----
 9.3
 
 #+BEGIN_SRC C++
@@ -561,7 +561,7 @@ int main() {
 
 #+END_SRC
 
---------------------
+-----
 9.5
 
 #+BEGIN_SRC C++
@@ -630,7 +630,7 @@ Questions:
    - (x) 10.6 Given a two dimensional graph with points on it, find a line which passes the most number of points.
    - (x) 10.7 Design an algorithm to find the kth number such that the only prime factors are 3, 5, and 7.
 
---------------------
+-----
 10.7
 
 #+BEGIN_SRC C++
@@ -729,7 +729,7 @@ Questions:
    - (x) 19.10 Write a method to generate a random number between 1 and 7, given a method that generates a random number between 1 and 5 (i e , implement rand7() using rand5()).
    - 19.11 Design an algorithm to find all pairs of integers within an array which sum to a speci- fied value.
 
---------------------
+-----
 19.3
 
 #+BEGIN_SRC C++
@@ -742,7 +742,7 @@ int zeros(int n) {
 }
 #+END_SRC
 
---------------------
+-----
 19.6
 
 #+BEGIN_SRC C++
@@ -821,7 +821,7 @@ Questions:
    - (x) 20.12 Given an NxN matrix of positive and negative integers, write code to find the sub- matrix with the largest possible sum.
    - (x) 20.13 Given a dictionary of millions of words, give an algorithm to find the largest possible rectangle of letters such that every row forms a word (reading left to right) and every column forms a word (reading top to bottom).
 
---------------------
+-----
 20.1
 
 #+BEGIN_SRC C++
@@ -841,7 +841,7 @@ int main() {
 
 #+END_SRC
 
---------------------
+-----
 20.4
 
 #+BEGIN_SRC C++
@@ -875,7 +875,7 @@ int main() {
 
 #+END_SRC
 
---------------------
+-----
 20.9
 
 #+BEGIN_SRC C++
@@ -951,7 +951,7 @@ int main() {
 
 #+END_SRC
 
---------------------
+-----
 20.11
 
 #+BEGIN_SRC C++
@@ -968,7 +968,7 @@ for(int n=N;n>=1;n--) {
 
 #+END_SRC
 
---------------------
+-----
 20.12
 
 #+BEGIN_SRC C++

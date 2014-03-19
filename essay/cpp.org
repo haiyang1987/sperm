@@ -565,7 +565,7 @@ playboard git:(master) ✗ g++ map_perf_test.cc -O2
 
 *NOTE(dirlt):另外我让同事在其他机器上使用g++3.4.5编译运行，时间差别也非常大*
 
---------------------
+-----
 
 看来确实是glibc的内存分配问题，多谢微博 @Thomas 的指导。strace两个binary发现：
    - action调用了很多brk（8288次）,mmap（17次）来分配内存，每次都是分配小内存.运行完成之后这些内存buffer起来了。

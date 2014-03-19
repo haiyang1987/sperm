@@ -295,7 +295,7 @@ System Settings => Appearance => Launcher icon size.
 
 对于这种东西我觉得还是使用默认的比较好，convention over configuration!!!
 
---------------------
+-----
 
 如果登陆过程中出现 "Agent admitted failure to sign using the key" 的话，可以尝试下面的命令
 #+BEGIN_EXAMPLE

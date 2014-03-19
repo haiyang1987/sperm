@@ -31,7 +31,7 @@ metadata store主要是用来存储数据库的一些元数据信息，有下面
    - javax.jdo.option.ConnectionDriverName.
 默认实现是在本地的derby db，默认存储位置是./metastore_db. metastore其他实现需要支持JPO（Java Persistent Object） Metastore can be stored in any database that is supported by JPOX. The database schema is defined in JDO metadata annotations file package.jdo at src/contrib/hive/metastore/src/model.
 
---------------------
+-----
 
 *配置remote server*
 

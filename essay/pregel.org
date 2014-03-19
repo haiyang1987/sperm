@@ -24,7 +24,7 @@
    - Distribution over many machines exacerbates the locality issue, and increases the probability that a machine will fail during computation.（分布式需要考虑locality问题，并且还需要failover的情况）
    - MapReduce [14，], for example, is a very good fit for a wide array of large-scale computing problems. It is sometimes used to mine large graphs [11, 30], but this can lead to sub-optimal performance and usability issues. The basic models for processing data have been extended to fa-cilitate aggregation [41，] and SQL-like queries [40, 47], but these extensions are usually not ideal for graph al-gorithms that often better fit a message passing model.（对于MR来说非常适合大规模的计算问题，并且有时候能够用来最一些挖掘工作，但是并不是最优的解决方案，并且还需要考虑一些可用性问题。本质上对于图算法来说的话，使用消息传递机制会更加合适。/另外MR计算方式和图算法似乎还需要一个转换过程，而并不是intuitive的）
 
---------------------
+-----
 
    - Pregel computations consist of a sequence of iterations, called su-persteps. During a superstep the framework invokes a user-defined function for each vertex, conceptually in parallel. （每次迭代称为superstep，在每个superstep框架会调用每个vertex的自定义函数，这个过程是并行都的）
    - The function specifies behavior at a single vertex V and a single superstep S. It can read messages sent to V in su-perstep S − 1, send messages to other vertices that will be received at superstep S + 1, and modify the state of V and its outgoing edges. （每个节点会读取S-1时候其他节点发送给它的小心，处理完成之后就可以向其他节点发送消息，让这些节点在S+1时候处理。同时还可以修改整个图的拓扑结构）

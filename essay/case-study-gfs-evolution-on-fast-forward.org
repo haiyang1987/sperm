@@ -3,7 +3,7 @@
    - http://queue.acm.org/detail.cfm?id=1594206
    - date: 2009
 
---------------------
+-----
 #+BEGIN_VERSE
 MCKUSICK Now, under the current schema for GFS, you have one master per cell, right?
 
@@ -17,7 +17,7 @@ QUINLAN That was initially the goal, but it didn’t work out like that to a lar
 
 GFS初始设计是在一个data center/cell部署一个master. 但是事实证明这种方式不太好，一方面是因为master本身限制造成压力，另外一方面是在单master上面完成隔离比较困难。因此后来采用了mult-cell的方法，在一个data center/cell部署多个master,但是这些master贡献一个chunkserver pool. 用户程序通过自己partition决定数据元信息存放在哪个master上面。
 
---------------------
+-----
 #+BEGIN_VERSE
 MCKUSICK What longer-term strategy have you come up with for dealing with the file-count issue? Certainly, it doesn’t seem that a distributed master is really going to help with that—not if the master still has to keep all the metadata in memory, that is.
 
@@ -39,7 +39,7 @@ QUINLAN That’s the idea.
 
 *NOTE（dirlt）：没有太看懂* 解决文件数量限制问题可以通过分布式master来解决。 *NOTE（dirlt）：但是个人觉得降低chunkszie似乎没有什么意义？*
 
---------------------
+-----
 With the recent emergence within Google of BigTable, a distributed storage system for managing structured data, one potential remedy for the file-count problem—albeit perhaps not the very best one—is now available.
 
 #+BEGIN_VERSE
@@ -55,7 +55,7 @@ Our user base has definitely migrated from being a MapReduce-based world to more
 
 *BigTable的出现解决了GFS出现的两个问题，一个侧面地解决了大量小文件存储问题虽然不是非常优雅但也可用，另外一方面是来处理延迟敏感的user-face application*
 
---------------------
+-----
 #+BEGIN_VERSE
 MCKUSICK Was this done by design?
 
