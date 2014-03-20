@@ -22,6 +22,7 @@ then
 else
     bzr branch -r1 $REPO $DIR
     if test "$?" != "0"; then
+	rm -rf $DIR
 	echo "bzr branch failure";
 	exit 1;
     fi
@@ -36,7 +37,7 @@ pull()
     echo "current revision: $start"
     echo
 
-    for (( i=$start; i<=$revno; i=i+$batch ))
+    for (( i=$start; i<=$revno; i=$i+$batch ))
     do
 	echo "pulling up to $i";
 	bzr pull -r$i $REPO
@@ -48,23 +49,8 @@ pull()
     return 0;
 }
 
-for (( batch=$BATCH; batch>0; batch=batch-1 ))
-do
-    echo "pulling with batch size: $batch"
-    pull
-    if test "$?" != "0"
-    then
-	echo
-	echo "=> retrying with decremented batch size"
-	echo
-    else
-	popd
-	echo "Done"
-	exit 0
-    fi
-done
-
+pull
 
 popd
-echo "FAIL"
+echo "bzr-pull failure"
 exit 1
