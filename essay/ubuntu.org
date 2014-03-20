@@ -63,7 +63,7 @@
    - sudo apt-get install ibus-sunpinyin
    - sudo apt-get install xsunpinyin
    - sudo apt-get install python-xlib # 需要在emacs下面调用ibus
-   - #sudo apt-get install chromium-browser # 实验性质版本
+   - sudo apt-get install chromium-browser # 实验性质版本
    - #sudo apt-get install google-chrome-stable # 稳定版本
    - #sudo apt-get install firefox
    - #sudo apt-get install thunderbird

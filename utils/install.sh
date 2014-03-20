@@ -4,7 +4,8 @@ echo "installing index.html..."
 rm -rf ~/index.html
 ln -s $BINDIR/index.html ~/index.html
 
-TARGETS="cxxindent vpn-umeng-dp ppp rhs golang einstall uinstall time-machine apt-update dp0-ssh-proxy ihosts"
+TARGETS="cxxindent vpn-umeng-dp ppp rhs golang einstall uinstall time-machine apt-update dp0-ssh-proxy ihosts \
+bzr-pull"
 
 INSTALLDIR=$HOME/utils/bin
 if [ ! -d $INSTALLDIR ]

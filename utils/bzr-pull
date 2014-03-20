@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+#Copyright (C) dirlt
+
+REPO=$1
+DIR=${2:-"new_bzr_repo"}
+BATCH=${3:-50}
+
+
+echo "bzr branch for"
+echo "  repository: $REPO"
+echo "  directory:  $DIR"
+echo "  batch size: $BATCH"
+echo
+
+revno=$(bzr revno $REPO)
+
+echo "target revision: $revno"
+
+if test -d $DIR
+then
+    echo "target repository exists => pulling only"
+else
+    bzr branch -r1 $REPO $DIR
+    if test "$?" != "0"; then
+	echo "bzr branch failure";
+	exit 1;
+    fi
+fi
+
+pushd $DIR
+
+pull()
+{
+    start=$(bzr revno)
+
+    echo "current revision: $start"
+    echo
+
+    for (( i=$start; i<=$revno; i=i+$batch ))
+    do
+	echo "pulling up to $i";
+	bzr pull -r$i $REPO
+	if test "$?" != "0"; then
+	    echo "bzr pull failure";
+	    return 1;
+	fi
+    done
+    return 0;
+}
+
+for (( batch=$BATCH; batch>0; batch=batch-1 ))
+do
+    echo "pulling with batch size: $batch"
+    pull
+    if test "$?" != "0"
+    then
+	echo
+	echo "=> retrying with decremented batch size"
+	echo
+    else
+	popd
+	echo "Done"
+	exit 0
+    fi
+done
+
+
+popd
+echo "FAIL"
+exit 1
