@@ -187,7 +187,12 @@ git config --global alias.last 'log -1 HEAD'
 
 # some useful alias.
 alias dstat='dstat -cdlmnpsy'
-alias chrome='google-chrome --proxy-pac-url="file://$HOME/.proxy.pac" &'
+if [ $MAC = 1 ]
+then
+    alias chrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --proxy-pac-url="file://$HOME/.proxy.pac" &'
+else
+    alias chrome='google-chrome --proxy-pac-url="file://$HOME/.proxy.pac" &'
+fi
 
 # private key.
 ssh-add ~/.ssh/id_rsa 2>/dev/null 
