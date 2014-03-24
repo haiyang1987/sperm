@@ -19,7 +19,7 @@ do
   ln -s $BINDIR/$target $INSTALLDIR/$target
 done
 
-TARGETS=".emacs .shrc .zhrc .bashrc .screenrc .tmux.conf"
+TARGETS=".emacs .shrc .zshrc .bashrc .screenrc .tmux.conf"
 for target in $TARGETS
 do
   echo "installing $target..."
