@@ -187,6 +187,7 @@ git config --global alias.last 'log -1 HEAD'
 
 # some useful alias.
 alias dstat='dstat -cdlmnpsy'
+alias chrome='google-chrome --proxy-pac-url="file://$HOME/.proxy.pac" &'
 
 # private key.
 ssh-add ~/.ssh/id_rsa 2>/dev/null 
@@ -197,5 +198,7 @@ SBT_OPTS="-Dsbt.global.base=$HOME/.sbt -Dsbt.ivy.home=$HOME/.ivy2"
 export SBT_OPTS
 
 # galera
-export MYSQL_SRC=$HOME/repo/codership-mysql/5.6
+#export MYSQL_SRC=$HOME/repo/wsrep-5.6
+export MYSQL_SRC=$HOME/repo/wsrep-5.5
 export MYSQL_DIR=$MYSQL_SRC/build_release
+

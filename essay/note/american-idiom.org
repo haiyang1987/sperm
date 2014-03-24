@@ -9,11 +9,17 @@
    - why not？
 
 ** 议论
-   - low hanging fruit 比较低可以很容易摘到的果实，可以顺手完成的事情
-   - chicken and egg 鸡和蛋问题，纠缠不清没有头绪的问题
-   - here are my two cents 我来说两句
-   - yes and no 不全对
-   - sit on my fingers/hands 置之不理
+   - low hanging fruit #
+   - chicken and egg #
+   - here are my two cents #
+   - yes and no #
+   - sit on my fingers/hands #
+   - do the trick #
+
+** 缩写
+   - IIRC # If I Remember/Recall Correctly
+   - AFAIR(K) # As Far As I Remember/Recall/Know
+   - smth # something
 
 ** 动词
    - Accelerated 

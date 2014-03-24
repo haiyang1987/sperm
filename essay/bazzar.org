@@ -3,4 +3,22 @@
    - http://bazaar.canonical.com/en/
    - https://launchpad.net/
 
-TODO(dirlt):
+-----
+   - bzr branch <repo> # git clone
+   - bzr pull #
+   - bzr push <repo>
+     - --create-prefix #
+
+-----
+
+   - bzr commit -m ''
+   - bzr uncommit
+   - bzr add/remove
+   - bzr revert # git checkout
+   - bzr merge
+     - --uncommited #
+
+-----
+   - bzr log/diff -r[a]..[b]
+   - bzr status
+   - bzr revno # revision number

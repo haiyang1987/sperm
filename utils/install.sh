@@ -4,8 +4,8 @@ echo "installing index.html..."
 rm -rf ~/index.html
 ln -s $BINDIR/index.html ~/index.html
 
-TARGETS="cxxindent vpn-umeng-dp ppp rhs golang einstall uinstall time-machine apt-update dp0-ssh-proxy ihosts \
-bzr-pull"
+TARGETS="cxxindent vpn-umeng-dp ppp rhs golang einstall uinstall time-machine \
+apt-update dp0-ssh-proxy ihosts bzr-pull uproxy"
 
 INSTALLDIR=$HOME/utils/bin
 if [ ! -d $INSTALLDIR ]
@@ -19,7 +19,7 @@ do
   ln -s $BINDIR/$target $INSTALLDIR/$target
 done
 
-TARGETS=".emacs .shrc .zshrc .bashrc .screenrc .tmux.conf"
+TARGETS=".emacs .shrc .zshrc .bashrc .screenrc .tmux.conf .proxy.list"
 for target in $TARGETS
 do
   echo "installing $target..."
