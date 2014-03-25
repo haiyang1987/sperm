@@ -40,3 +40,10 @@ essay/*.html
 essay/note/*.html
 
 target/
+
+cscope.out
+cscope.files
+GPATH
+GRTAGS
+GSYMS
+GTAGS
