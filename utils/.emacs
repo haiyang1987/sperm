@@ -289,12 +289,15 @@
 ;; (setq cscope-do-not-update-database t) ;; don't need to update database
 
 ;;; global.
+;; M-. # search symbol
+;; m-* # go back
+;; M-n # next match
+;; N-p # previous match
 (require 'ggtags)
 (add-hook 'c-mode-common-hook
           (lambda ()
             (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
               (ggtags-mode 1))))
-
 
 ;;; org-mode.
 ;; BEGIN_VERSE
@@ -419,4 +422,5 @@
 ;; (global-set-key "\C-chdv" 'describe-variable) ;; help describe variable.
 ;; (global-set-key "\C-chdk" 'describe-key) ;; help describe key.
 (global-set-key "\C-c;" 'comment-or-uncomment-region)
-(global-set-key "\C-x." 'multi-term)
+;; (global-set-key "\C-x." 'multi-term)
+(menu-bar-mode 1)
