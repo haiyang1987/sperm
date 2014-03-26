@@ -1,5 +1,5 @@
 #!/bin/bash
-# wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add - 
+# wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
 # sudo apt-add-repository "deb http://dl.google.com/linux/chrome/deb/ stable main"
 
 # wget -q -O - http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc -O- | sudo apt-key add -
@@ -20,6 +20,6 @@
 sudo apt-add-repository "deb http://archive.canonical.com/ $(lsb_release -sc) partner"
 sudo add-apt-repository ppa:tualatrix/ppa
 sudo add-apt-repository ppa:cassou/emacs
+sudo add-apt-repository ppa:rquillo/ansible
 
 sudo apt-get update
-
