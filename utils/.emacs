@@ -289,8 +289,9 @@
 ;; (setq cscope-do-not-update-database t) ;; don't need to update database
 
 ;;; global.
-;; M-. # search symbol
-;; m-* # go back
+;; M-. # search tag/definition
+;; M-* # go back
+;; M-] # search reference
 ;; M-n # next match
 ;; N-p # previous match
 (require 'ggtags)
@@ -298,6 +299,9 @@
           (lambda ()
             (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
               (ggtags-mode 1))))
+(setq-local imenu-create-index-function #'ggtags-build-imenu-index)
+(setq-local hippie-expand-try-functions-list
+            (cons 'ggtags-try-complete-tag hippie-expand-try-functions-list))
 
 ;;; org-mode.
 ;; BEGIN_VERSE
@@ -423,4 +427,7 @@
 ;; (global-set-key "\C-chdk" 'describe-key) ;; help describe key.
 (global-set-key "\C-c;" 'comment-or-uncomment-region)
 ;; (global-set-key "\C-x." 'multi-term)
+
 (menu-bar-mode 1)
+(global-set-key "\M->" 'end-of-buffer)
+(global-set-key "\M-<" 'beginning-of-buffer)
