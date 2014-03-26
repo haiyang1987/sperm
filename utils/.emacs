@@ -40,7 +40,7 @@
      '(default ((t (:inherit nil :stipple nil :background "black" :foreground "cornsilk" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 110 :width normal :foundry "unknown" :family "DejaVu Sans Mono"))))))
 
 ;; (setq inhibit-default-init t)
-(when (fboundp 'global-font-lock-mode) 
+(when (fboundp 'global-font-lock-mode)
   (global-font-lock-mode t))
 (setq frame-title-format "%b")
 ;; uncomment it if backspace doesn't work.
@@ -49,7 +49,7 @@
 (setq column-number-mode t)
 (setq default-fill-column 80)
 (setq hl-line-mode t)
-(setq bookmark-save-flag 1) 
+(setq bookmark-save-flag 1)
 (setq inhibit-startup-message t)
 (setq inhibit-splash-screen t)
 ;; allow to use clipboard on X System.
@@ -62,26 +62,27 @@
 (setq kill-ring-max 200)
 (show-paren-mode t)
 (setq show-paren-style 'parentheses)
-;; turn off tool-bar, menu-bar, and scroll-bar
 (tool-bar-mode -1)
 (menu-bar-mode 1)
 (scroll-bar-mode -1)
 ;; allow to view image directly.
-(auto-image-file-mode t) 
+(auto-image-file-mode t)
 ;; use version control to backup. but seems useless to me.
 ;; http://stackoverflow.com/questions/151945/how-do-i-control-how-emacs-makes-backup-files
-(setq version-control t) 
+(setq version-control t)
 (setq kept-new-versions 3)
 (setq delete-old-versions t)
 (setq kept-old-versions 2)
 (setq dired-kept-versions 1)
 ;; (setq backup-directory-alist '(("." . "~/.backups")))
 ;; so turn it off.
-(setq make-backup-files nil) 
-(setq user-full-name "dirtysalt") 
+(setq make-backup-files nil)
+(setq user-full-name "dirtysalt")
 (setq user-mail-address "dirtysalt1987@gmail.com")
 (setq dired-recursive-copies 'top)
 (setq dired-recursive-deletes 'top)
+
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;;; ####################
 ;;; utility
@@ -95,16 +96,16 @@
 
 ;;; hippie-expand.
 (setq hippie-expand-try-functions-list
-      '(try-expand-dabbrev-visible 
-        try-expand-dabbrev 
-        try-expand-dabbrev-all-buffers 
-        try-expand-dabbrev-from-kill 
-        try-complete-file-name-partially 
-        try-complete-file-name 
-        try-expand-all-abbrevs 
-        try-expand-list 
-        try-expand-line 
-        try-complete-lisp-symbol-partially 
+      '(try-expand-dabbrev-visible
+        try-expand-dabbrev
+        try-expand-dabbrev-all-buffers
+        try-expand-dabbrev-from-kill
+        try-complete-file-name-partially
+        try-complete-file-name
+        try-expand-all-abbrevs
+        try-expand-list
+        try-expand-line
+        try-complete-lisp-symbol-partially
         try-complete-lisp-symbol
         try-expand-whole-kill))
 
@@ -119,13 +120,13 @@
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 (global-auto-complete-mode 1)
 (setq ac-modes
-      (append ac-modes '(org-mode 
-                         objc-mode 
+      (append ac-modes '(org-mode
+                         objc-mode
                          sql-mode
                          c++-mode
                          java-mode
                          python-mode
-                         change-log-mode 
+                         change-log-mode
                          text-mode
                          conf-mode
                          makefile-mode
@@ -168,7 +169,7 @@
 ;; (setq multi-term-program "/bin/bash")
 (setq multi-term-buffer-name "multi-term")
 ;; select the right opening window.
-(setq multi-term-dedicated-select-after-open-p t) 
+(setq multi-term-dedicated-select-after-open-p t)
 
 ;;; encoding.
 (set-language-environment "UTF-8")
@@ -180,9 +181,9 @@
 (prefer-coding-system 'utf-8)
 
 ;;; default browser.
-(setq browse-url-browser-function 
+(setq browse-url-browser-function
       'browse-url-generic)
-(setq browse-url-generic-program 
+(setq browse-url-generic-program
       (executable-find "google-chrome"))
 (if mac-system
     (setq browse-url-browser-function 'browse-url-default-macosx-browser))
@@ -207,10 +208,10 @@
 (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
 (add-hook 'c-mode-common-hook 'google-set-c-style)
 (add-hook 'c-mode-common-hook 'google-make-newline-indent)
-(setq auto-mode-alist  (append '(("\\.h\\'" . c++-mode)) 
+(setq auto-mode-alist  (append '(("\\.h\\'" . c++-mode))
                                '(("\\.hpp\\'" . c++-mode))
-                               '(("\\.c\\'" . c++-mode)) 
-                               '(("\\.cc\\'" . c++-mode)) 
+                               '(("\\.c\\'" . c++-mode))
+                               '(("\\.cc\\'" . c++-mode))
                                '(("\\.cpp\\'" . c++-mode))
                                auto-mode-alist))
 (setq-default nuke-trailing-whitespace-p t)
@@ -218,7 +219,7 @@
 (setq indent-tabs-mode nil)
 (setq c-basic-offset 4)
 
-;;; go 
+;;; go
 (require 'go-mode-load)
 ;;; clojure
 (require 'clojure-mode)
@@ -261,7 +262,7 @@
 ;;         (define-key map "\C-c\C-d" 'nxml-dynamic-markup-word)
 ;;         (define-key map "\C-c\C-u" 'nxml-insert-named-char)
 ;;         (define-key map "/"        'nxml-electric-slash)
-;;         (define-key map [C-return] 'nxml-complete) 
+;;         (define-key map [C-return] 'nxml-complete)
 ;;         (when nxml-bind-meta-tab-to-complete-flag
 ;;           (define-key map "\M-\t"  'nxml-complete))
 ;;         map)
@@ -294,6 +295,9 @@
 ;; M-] # search reference
 ;; M-n # next match
 ;; N-p # previous match
+;; ggtags-browse-file-as-hypertext
+;; ggtags-update-tags
+;; ggtags-reload
 (require 'ggtags)
 (add-hook 'c-mode-common-hook
           (lambda ()
@@ -308,7 +312,7 @@
 ;; BEGIN_QUOTE
 ;; BEGIN_CENTER
 ;; BEGIN_EXAMPLE
-;; BEGIN_SOURCE 
+;; BEGIN_SOURCE
 ;; C-C C-e t // insert export template.
 ;; C-c C-n // next section.
 ;; C-c C-p // previous section.
@@ -333,8 +337,8 @@
 (require 'org-publish)
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 (add-hook 'org-mode-hook 'turn-on-font-lock)
-(add-hook 'org-mode-hook 
-          (lambda () (progn 
+(add-hook 'org-mode-hook
+          (lambda () (progn
 		       (setq truncate-lines nil)
 		       (local-unset-key (kbd "<M-up>"))
 		       (local-unset-key (kbd "<M-down>"))
@@ -418,7 +422,7 @@
 (global-set-key "\M-g" 'goto-line)
 (global-set-key "\M-m" 'compile)
 (global-set-key "\M-/" 'hippie-expand)
-(global-set-key "\C-xp" 'previous-error) 
+(global-set-key "\C-xp" 'previous-error)
 (global-set-key "\C-xn" 'next-error)
 ;; (global-set-key "\C-cbml" 'list-bookmarks) ;; book mark list.
 ;; (global-set-key "\C-cbms" 'bookmark-set) ;; book mark set.
@@ -427,7 +431,4 @@
 ;; (global-set-key "\C-chdk" 'describe-key) ;; help describe key.
 (global-set-key "\C-c;" 'comment-or-uncomment-region)
 ;; (global-set-key "\C-x." 'multi-term)
-
 (menu-bar-mode 1)
-(global-set-key "\M->" 'end-of-buffer)
-(global-set-key "\M-<" 'beginning-of-buffer)
