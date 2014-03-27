@@ -4,8 +4,8 @@ echo "installing index.html..."
 rm -rf ~/index.html
 ln -s $BINDIR/index.html ~/index.html
 
-TARGETS="cxxindent vpn-umeng-dp ppp rhs golang einstall uinstall time-machine \
-apt-update dp0-ssh-proxy ihosts bzr-pull uproxy"
+TARGETS="cxxindent vpn-umeng-dp rhs uinstall time-machine \
+apt-update dp0-ssh-proxy ihosts uproxy"
 
 INSTALLDIR=$HOME/utils/bin
 if [ ! -d $INSTALLDIR ]
@@ -77,4 +77,3 @@ ln -s $HOME/.private/oh-my-zsh $HOME/.oh-my-zsh
 echo "installing .emacs.d"
 rm -rf $HOME/.emacs.d
 ln -s $HOME/.private/emacs.d $HOME/.emacs.d
-

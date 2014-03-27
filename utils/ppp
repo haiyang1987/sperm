@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-#Copyright (C) dirlt
-
-ts=`date +'%Y%m%d%H%M'`
-p=private.$ts.tgz
-cd ~/ && tar czvf $p .private

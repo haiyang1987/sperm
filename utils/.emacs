@@ -385,7 +385,6 @@
 
 
 ;;; yasnippet.
-;; sudo apt-get install yasnippet
 ;; http://capitaomorte.github.com/yasnippet/
 (require 'yasnippet)
 (yas-global-mode 1)

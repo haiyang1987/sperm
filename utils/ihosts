@@ -34,9 +34,12 @@ def update():
 def install():
     print 'installing hosts...'
     os.system('sudo cp %s /etc/hosts'%(HOSTS))
-    
-if __name__ == '__main__':
+ 
+def main():   
     if len(sys.argv)>1 and sys.argv[1].lower().startswith('u'):
         update()
     else:
         install()
+
+if __name__ == '__main__':
+    main()

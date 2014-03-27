@@ -34,10 +34,13 @@
    - #sudo apt-get install gunicorn
    - #sudo apt-get install maven2
    - sudo apt-get install maven
+   - sudo apt-get install ant
    - #sudo apt-get install ttyload
    - sudo apt-get install autoconf
    - sudo apt-get install libtool
    - sudo apt-get install automake
+   - sudo apt-get install autotools-dev
+   - sudo apt-get install m4
    - #sudo apt-get install alien
    - sudo apt-get install dos2unix
    - sudo apt-get install astyle
@@ -55,6 +58,7 @@
    - sudo apt-get install linux-base
    - #sudo apt-get install mercurial
    - sudo apt-get install golang-go
+   - sudo apt-get install clisp
    - sudo apt-get install flex
    - sudo apt-get install bison
    - sudo apt-get install iotop
@@ -67,7 +71,7 @@
    - #sudo apt-get install google-chrome-stable # 稳定版本
    - #sudo apt-get install firefox
    - #sudo apt-get install thunderbird
-   - sudo apt-get install dkms 
+   - sudo apt-get install dkms
    - sudo apt-get install virtualbox
    - sudo apt-get install virtualbox-guest-additions # 设置windows虚拟机共享文件夹
    - sudo apt-get install ntp
@@ -103,7 +107,14 @@
    - sudo apt-get install google-mock
    - sudo apt-get install tsocks
    - sudo apt-get install mysql-server
-   
+   - sudo apt-get install graphviz
+   - sudo apt-get install rar
+   - sudo apt-get install ccache
+   - sudo apt-get install distcc
+   - sudo apt-get install tree
+   - sudo apt-get install swig
+   - sudo apt-get install tcpdump
+
 ** 系统配置
 *** 察看ubuntu内部版本
 lsb_release -a
@@ -222,11 +233,11 @@ System Settings =》 Details 里面可以设置默认浏览器。至于emacs里�
    - smtp smtp.gmail.com SSL/TLS 465 normal password
    - *NOTE(dirlt):需要确认gmail允许pop3来访问*
    - 不过似乎现在thunderbird已经非常智能了，只要输入username以及email的话就可以自动进行配置了。nice！！！（现在看起来选择iamp模式也没有什么问题）
-   - server settings => 
+   - server settings =>
      - 1) leave mesages on server until I delete them. （对于imap模式来说的话，就使用默认移动到Trash下面即可）
-     - 2) empty trash on exit. 
-     - 3) check for new messages at startup. 
-     - 4) check for new messages every 10 minutes.     
+     - 2) empty trash on exit.
+     - 3) check for new messages at startup.
+     - 4) check for new messages every 10 minutes.
    - copies and folders => 1) cc these email addresses: dirtysalt1987@gmail.com（如果使用imap模式可以不使用）
    - composition and addressing => 1) start my reply above the quote and place my signature below the quote.
    - 设置签名
@@ -248,7 +259,7 @@ NOTE（dirlt）：其实thunderbird超过一定大小就会自动提醒是否需
 *** 窗口常用快捷键
   - Ctrl+Alt+T // 打开一个terminal。
   - Ctrl+Alt+上下左右 // 在不同的workspace之间切换。
-  - 
+  -
 *** 调整字体大小
 System Settings =》 Universal Access里面的Seeing部分可以用来调整字体大小。但是只有等级没有具体的数字可以进行调整。
 可以通过安装gnome-tweak-tool并且运行之来进行微调。
@@ -256,7 +267,7 @@ System Settings =》 Universal Access里面的Seeing部分可以用来调整字�
 参考链接 http://ltek.dyndns.org/wordpress/?p=282
 
 *** 调整边栏大小
-System Settings => Appearance => Launcher icon size. 
+System Settings => Appearance => Launcher icon size.
 
 ** 编程环境
 *** bash的tab自动补全
@@ -269,13 +280,13 @@ System Settings => Appearance => Launcher icon size.
 *** 加快ssh登陆
 对于服务器的话可以修改/etc/ssh/sshd_config
 #+BEGIN_EXAMPLE
-    UseDNS no 
+    UseDNS no
 
 #+END_EXAMPLE
 对于客户端的话可以修改/etc/ssh/ssh_config
 #+BEGIN_EXAMPLE
     GSSAPIAuthentication no
-    GSSAPIDelegateCredentials no 
+    GSSAPIDelegateCredentials no
 #+END_EXAMPLE
 
 *TODO(dirlt):具体为什么? sorry I have no idea!!!*
@@ -359,7 +370,7 @@ NOTE(dirlt):这里对于0 0不太清楚是什么意思，只是知道分别是du
    - 之后就会在虚拟机里面提示安装相关的驱动程序。
    - 完成之后在设置virtualbox的settings/share folder，创建本地share folder
    - 然后进入虚拟机“我的电脑”右键选择映射网络驱动器，通过浏览可以找到对应的网络驱动器。
-   
+
 我是参考这篇图文并茂的文章的 http://hi.baidu.com/hifinan/item/79f22545a8400ed3c1a592f3
 
 *** virtualbox下使用U盾
