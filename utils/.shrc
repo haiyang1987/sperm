@@ -84,6 +84,11 @@ PATH=$HOME/utils/protobuf-2.3.0/build/bin:$PATH
 PATH=$HOME/utils/protobuf-2.5.0/build/bin:$PATH
 PATH=$HOME/utils/protobuf-2.4.1/build/bin:$PATH
 
+# golang
+export GOROOT=$HOME/utils/go
+export GOPATH=$HOME/go/
+PATH=$GOROOT/bin:$PATH
+
 # scala.
 export SCALA_HOME=$HOME/utils/scala-2.10.2
 PATH=$SCALA_HOME/bin:$PATH
