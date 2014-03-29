@@ -37,6 +37,10 @@
    - [[file:./note/thousands-pv.org][千次PV]]
    - [[file:./note/cmb-hk-account.org][招商银行香港一卡通]]
    - [[file:./note/tj-car-checkout.org][天津验车]]
+   - [[file:./note/apply-visa-for-finland.org][申请芬兰签证]]
+   - [[file:./note/apply-visa-for-usa.org][申请美国签证]]
+   - [[file:./note/mobile-foreign-business.org][手机国际业务]]
+   - [[file:./note/helsinki-travel.org][赫尔辛基印象]]
  
 ** 印记
    - [[file:note/fun.org][挺搞笑的]]
@@ -77,7 +81,8 @@
    - [[file:note/to-death.org][给离去的亲人们]]
    - [[file:note/american-idiom.org][海哥教你学英语]]
    - [[file:note/music.org][音乐]] | [[file:note/movie.org][电影]] | [[file:note/photo.org][摄影]] | [[file:./note/travel.org][旅行]]
-   - [[file:note/pregnancy.org][怀孕]] | [[file:note/health.org][健康]] | [[file:note/recipe.org][菜谱]] | [[file:note/house.org][住房]] 
+   - [[file:note/pregnancy.org][怀孕]] | [[file:note/health.org][健康]] | [[file:note/recipe.org][菜谱]] | [[file:note/house.org][住房]]
+   - [[file:note/cross-ocean.org][Cross Ocean]] 远渡重洋
 
 ** 思考
    - [[file:note/new-era-carmack.org][新时代的卡马克]]

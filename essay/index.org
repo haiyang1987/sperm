@@ -200,7 +200,6 @@
        - [[file:./effective-scala.org][Effective Scala]]
 
 ** Software Design
-   - [[file:./cross-ocean.org][Cross Ocean]] 远渡重洋
    - [[file:design-reading.org][Design Reading]] 关于设计方面的一些文章以及阅读心得。
      - [[file:./suffering-oriented-programming.org][Suffering-oriented programming]]
      - [[file:./the-tyranny-of-the-clock.org][The Tyranny of the Clock]]

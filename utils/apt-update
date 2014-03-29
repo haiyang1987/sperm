@@ -21,5 +21,6 @@ sudo apt-add-repository "deb http://archive.canonical.com/ $(lsb_release -sc) pa
 sudo add-apt-repository ppa:tualatrix/ppa
 sudo add-apt-repository ppa:cassou/emacs
 sudo add-apt-repository ppa:rquillo/ansible
+sudo add-apt-repository ppa:dominik-stadler/subversion-1.8
 
 sudo apt-get update
