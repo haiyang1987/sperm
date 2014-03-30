@@ -1283,7 +1283,7 @@ class CExecMan
     APF_ERROR QueueExec(AsyncContext* pCtx, bool bClientReferred);
     // 插入一个紧急任务
     APF_ERROR QueueExecEmergent(AsyncContext* pCtx, bool bClientReferred);
-    // TODO(zhangyan04):
+    // todo(zhangyan04):
     APF_ERROR ProxyExec(int nAckCode, CAsyncClient* pClient, PROXY_EXEC_PROC fProc, ProxyExecCtx* pCtx);
     // 提交一个定时器任务
     APF_ERROR DelayExec(int nAction, CAsyncClient* pClient, uint32 nMilliseconds, AsyncContext* pCtx);
@@ -1886,9 +1886,9 @@ enum SocketState {
 // Socket Flag
 enum SocketFlag {
     SF_DIRECT_CALLBACK  = 0x1, // 处理完成之后回调函数直接在Network线程执行而不丢到CPU线程
-    SF_PERMANENT        = 0x2, // TODO(zhangyan04):???
+    SF_PERMANENT        = 0x2, // todo(zhangyan04):???
     SF_UDP              = 0x4, // 使用UDP协议
-    SF_DONT_EXHAUST     = 0x8, // TODO(zhangyan04):???
+    SF_DONT_EXHAUST     = 0x8, // todo(zhangyan04):???
 };
 
 // 网络相关操作的Context
@@ -1897,7 +1897,7 @@ struct NetContext {
     SocketState state; // socket状态
 
     DLINK link;                 // to link all active sockets
-    CLockedInt tWrite, tRead; // TODO(zhangyan04):???
+    CLockedInt tWrite, tRead; // todo(zhangyan04):???
     TranQueue qRead, qWrite; // 读写请求队列，push_back和pop_front需要加锁但是不用等待。
     NetRequest *pReadReq, *pWriteReq; // 当前读写请求
     BufHandle wHdl; // 写BufHandle,StartWrite里面多次写的话当前BufHandle就保存在这里。
@@ -2299,7 +2299,7 @@ bool CEPoller::CancelDelay(NetContext* pCtx)
 #+END_SRC
 
 **** DoWithDelayed & DoWithError
-TODO(zhangyan04):这两个部分都非常杂并且细节很多，没有完全看懂。另外一个疑问就是对于Delay这种超时事件的话为什么不放在CPU的超时时间里面去完成。这样似乎会更加优雅。
+todo(zhangyan04):这两个部分都非常杂并且细节很多，没有完全看懂。另外一个疑问就是对于Delay这种超时事件的话为什么不放在CPU的超时时间里面去完成。这样似乎会更加优雅。
 而现在的情况就是NetworkMan里面管理了一个定时器，而CPU线程也有一个定时器，而从代码编写者的demo来没有使用过networkman定时器。
 
 **** Read & Write
@@ -2329,7 +2329,7 @@ bool CEPoller::StartRead(NetContext* pCtx, bool bUser)
     NetRequest* pReq;
     int t, n;
 
-    while (0 == (t=pCtx->tRead.Add())) { // TODO(zhangyan04):这个地方完全没有看懂
+    while (0 == (t=pCtx->tRead.Add())) { // todo(zhangyan04):这个地方完全没有看懂
         if (SS_CONNECTED != AtomicGetValue(pCtx->state)) {
             TRACE1("Not read due to state=%s\n", State2Str(pCtx->state));
             if (1 == pCtx->tRead.Set(0)) {
@@ -2394,7 +2394,7 @@ bool CEPoller::StartRead(NetContext* pCtx, bool bUser)
      * 2. it has been notified in the failure handler of CSocketV.
      */
     pReq = pCtx->qRead.pop_back();
-    if (pReq) { // TODO(zhangyan04):???
+    if (pReq) { // todo(zhangyan04):???
         NotifyClient(APFE_AFTER_BROKEN, pCtx, pReq);
     }
     return false;
@@ -2408,7 +2408,7 @@ bool CEPoller::StartWrite(NetContext* pCtx, bool bUser)
     BufHandle* pHdl;
     int t, n;
 
-    while (0 == (t=pCtx->tWrite.Add())) { // TODO(zhangyan04):完全没有看懂
+    while (0 == (t=pCtx->tWrite.Add())) { // todo(zhangyan04):完全没有看懂
         if (SS_CONNECTED != AtomicGetValue(pCtx->state)) {
             TRACE1("Not write due to state=%s\n", State2Str(pCtx->state));
             /*if (SS_ERROR == pCtx->state) {
@@ -2475,7 +2475,7 @@ bool CEPoller::StartWrite(NetContext* pCtx, bool bUser)
      * 2. it has been notified in the failure handler of CSocketV.
      */
     NetRequest* pReq = pCtx->qWrite.pop_back();
-    if (pReq) { // TODO(zhangyan04):???
+    if (pReq) { // todo(zhangyan04):???
         NotifyClient(APFE_AFTER_BROKEN, pCtx, pReq);
     }
     return false;
@@ -2815,7 +2815,7 @@ retry2:
         TRACE0("Error in bind(%s, %d): %s\n", bTCP?"TCP":"UDP", port, strerror(err));
 
         retry ++;
-        if (retry<3 || (0==port && retry<10)) { // TODO(zhangyan04):这里重试原因不太清楚
+        if (retry<3 || (0==port && retry<10)) { // todo(zhangyan04):这里重试原因不太清楚
             Sleep(500);
             TRACE0("Retry %d\n", retry);
             goto retry2;
@@ -2976,8 +2976,8 @@ void CSocketV::OnCompletion(AsyncContext* pContext)
     switch (nAction) {
     case AA_READ: // 如果我们发起的是READ的话，那么触发OnRead回调
         // 可能存在的ErrCode包括
-        // APFE_AFTER_BROKEN TODO(zhangyan04):how to handle
-        // APFE_NET_ERROR TODO(zhangyan04):how to handle
+        // APFE_AFTER_BROKEN todo(zhangyan04):how to handle
+        // APFE_NET_ERROR todo(zhangyan04):how to handle
         // APFE_NOTIFY 需要我们自己释放pReq,因为这个是new出来的.通常我们有新的client连接上来应该发起读操作了
         // APFE_OK 发起的读操作没有任何错误
         OnRead(pContext->nErrCode, pReq);
@@ -2985,8 +2985,8 @@ void CSocketV::OnCompletion(AsyncContext* pContext)
 
     case AA_WRITE: // 如果我们发起的是WRITE操作的话，那么触发OnWrite回调
         // 可能存在的ErrCode包括
-        // APFE_AFTER_BROKEN TODO(zhangyan04):how to handle
-        // APFE_NET_ERROR TODO(zhangyan04):how to handle
+        // APFE_AFTER_BROKEN todo(zhangyan04):how to handle
+        // APFE_NET_ERROR todo(zhangyan04):how to handle
         // APFE_OK 发起的写操作没有任何错误
         OnWritten(pContext->nErrCode, pReq);
         break;
@@ -3024,7 +3024,7 @@ void CSocketV::OnCompletion(AsyncContext* pContext)
         }
 
         pContext->nErrCode = APFE_CONNECT_ERROR; // 如果认为connect这样是一个错误的话，那么后面的错误都是APFE_CONNECT_ERROR
-        Release(); // TODO(zhangyan04):这个地方为什么需要Release
+        Release(); // todo(zhangyan04):这个地方为什么需要Release
         // 原因是因为作者假设我们编写方式都是在初始化开始AddRef一下，然后对于OnBorken这类错误的话通常需要析构CAsyncClient,所以Release让我们可以销毁
         // goes here
 
@@ -3032,8 +3032,8 @@ void CSocketV::OnCompletion(AsyncContext* pContext)
         // 但是错误码可能有下面这些
         // APFE_CONNECT_ERROR 连接出现错误
         // APFE_TIMEDOUT 连接出现超时
-        // APFE_SYS_ERROR TODO(zhangyan04):???
-        // APFE_NET_ERROR TODO(zhangyan04):???
+        // APFE_SYS_ERROR todo(zhangyan04):???
+        // APFE_NET_ERROR todo(zhangyan04):???
         TRACE5("CSocket::OnBroken(%x): %d\n", m_s, pContext->nErrCode);
         AtomicSetValue(m_type, ST_ERROR);
         ASSERT(NULL == m_Ctx.pReadReq);

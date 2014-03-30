@@ -11,7 +11,7 @@ Druid currently allows for single-table queries in a similar manner to Dremel an
    - indexing for quick filtering（使用index进行快速过滤）
    - realtime ingestion (ingested data is immediately available for querying)（能够处理实时的数据）
    - fault-tolerant distributed architecture that doesn’t lose data（容错性）
-As far as a comparison of systems is concerned, Druid sits in between PowerDrill and Dremel on the spectrum of functionality. It implements almost everything Dremel offers (Dremel handles arbitrary nested data structures while Druid only allows for a single level of array-based nesting) and gets into some of the interesting data layout and compression methods from PowerDrill. （druid基本提供了dremel所提到的功能，但是不允许嵌套数据结构只允许数组，而借鉴了一些powerdrill的数据存储方式和压缩算法） *NOTE(drirlt):druid不支持跨表查询，只是支持单表query，这点和dremel非常类似，而cloudera的impala支持join操作）*
+As far as a comparison of systems is concerned, Druid sits in between PowerDrill and Dremel on the spectrum of functionality. It implements almost everything Dremel offers (Dremel handles arbitrary nested data structures while Druid only allows for a single level of array-based nesting) and gets into some of the interesting data layout and compression methods from PowerDrill. （druid基本提供了dremel所提到的功能，但是不允许嵌套数据结构只允许数组，而借鉴了一些powerdrill的数据存储方式和压缩算法） *note(dirlt): druid不支持跨表查询，只是支持单表query，这点和dremel非常类似，而cloudera的impala支持join操作）*
 
 *** Architecture
    - The name comes from the Druid class in many role-playing games: it is a shape-shifter, capable of taking many different forms to fulfill various different roles in a group.(druid名字在许多角色游戏里面都有出现，它能够变形以适应各种不同的角色）

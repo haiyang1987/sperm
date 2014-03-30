@@ -141,7 +141,7 @@ val x = new Function2[Int,Int,Long] {
 }
 #+END_SRC
 
-NOTE(dirlt@2013-11-04):much shorter code. Function2[Int,Int,Long] = (Int,Int)=>Long
+note(dirlt)@2013-11-04: much shorter code. Function2[Int,Int,Long] = (Int,Int)=>Long
 #+BEGIN_SRC Scala
 object x extends((Int,Int)=>Long) {
   def apply(x:Int,y:Int) = x + y
@@ -1163,7 +1163,7 @@ val y = new Function1[Int,Int] {
 }
 #+END_SRC
 
-NOTE(dirlt@2013-11-04) 匿名函数也可以有下面的表达方式
+note(dirlt)@2013-11-04 匿名函数也可以有下面的表达方式
 #+BEGIN_EXAMPLE
 { (<param1>:<type1>,<param2>:<type2> ...) => <function-body> }
 // if only one parameter

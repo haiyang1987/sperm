@@ -119,7 +119,7 @@ Info.(@2012)
    - connect 建立和集群的连接
    - disconnect 断开和集群的连接
    - recv 开始接收replication event. 正常情况下这个函数一直运行，期间执行其他操作，如果返回的话那么表明出错或者是退出。
-   - pre_commit 事务提交之前 （NOTE：向集群提交验证？）
+   - pre_commit 事务提交之前
    - post_commit 事务提交之后
    - post_rollback 事务回滚之后
    - replay_trx 回放事务（自身回放事务）

@@ -1,7 +1,7 @@
 * mac
 相对ubuntu来说，mac还是非常容易上手的。我相信同学的说法:"你拿到的是世界上最好的笔记本"
 
-*NOTE（dirlt@2013-01-22）：但是从买来到现在，我主要用它阅读文档和浏览网页，有在上面做开发。开发还是觉得linux好点*
+*note(dirlt)@2013-01-22: 但是从买来到现在，我主要用它阅读文档和浏览网页，有在上面做开发。开发还是觉得linux好点*
 
 ** 软件
 mac软件还是非常齐全的，我大致安装了下面这些东西:
@@ -29,7 +29,7 @@ mac软件还是非常齐全的，我大致安装了下面这些东西:
 下面软件是通过homebrew自动安装的: 
    - # brew install openvpn # 翻墙代理
    - brew install emacs --cocoa --srgb
-     - *NOTE(dirlt@2013-10-30):中途有段时间我想重装，但是在安装patch的时候需要访问raw.github.com被墙*
+     - *note(dirlt)@2013-10-30: 中途有段时间我想重装，但是在安装patch的时候需要访问raw.github.com被墙*
      - http://emacsformacosx.com/ 从这里可以直接安装发行版本
    - # brew install svn --unicode-path
    - # brew install ispell

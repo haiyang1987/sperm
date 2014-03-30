@@ -1871,7 +1871,7 @@ BlockPlacementPolicyDefault实现上将srcPath忽略了，并没有对某个文�
           chooseRemoteRack(1, results.get(0), excludedNodes,
                            blocksize, maxNodesPerRack, 
                            results, avoidStaleNodes);
-        } else if (newBlock){ // NOTE (dirlt):应该不会到达这个条件的
+        } else if (newBlock){ // note(dirlt): 应该不会到达这个条件的
           chooseLocalRack(results.get(1), excludedNodes, blocksize, 
                           maxNodesPerRack, results, avoidStaleNodes);
         } else { // 从发起者write相同的rack选择一个节点

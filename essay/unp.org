@@ -422,7 +422,7 @@ link-local      *               255.255.0.0     U     0      0        0 eth1
 default         192.168.189.2   0.0.0.0         UG    0      0        0 eth1
 #+END_EXAMPLE
 
-TODO(zhangyan04):如何复现一个主机不可达的错误???
+todo(zhangyan04):如何复现一个主机不可达的错误???
 
 **** EADDRINUSE
 Local address is already in use. 
@@ -618,7 +618,7 @@ write failed:Broken pipe
 #+END_EXAMPLE
 
 *** getsockname/getpeername
-TODO(zhangyan04):
+todo(zhangyan04):
 
 *** option
 **** 概览
@@ -733,7 +733,7 @@ struct linger
 在我们设置缓冲区大小的时候，需要考虑管道的容量。如果管道容量越大的话，那么我们设置的缓冲区大小也必须越大。如果管道容量很大
 缓冲区大小也很大的话，那么TCP层必须允许交换这么大的窗口大小，这就是TCP的长胖管道特征(long fat pipe).
 
-TODO(zhangyan04):设置了缓冲区大小的话，但是取出来似乎不是设置的值。并且通过tcpdump观察的话，似乎窗口并没有什么变化。
+todo(zhangyan04):设置了缓冲区大小的话，但是取出来似乎不是设置的值。并且通过tcpdump观察的话，似乎窗口并没有什么变化。
 每次交换窗口大小和设置的没有任何关系。
 
 **** SO_RCVTIMEO/SO_SNDTIMEO
@@ -816,7 +816,7 @@ bind failed:Address already in use
 536,但是实际发送的mss还是1460,这点可以从tcpdump中观察到)，建立之后的MSS是双方较小的MSS.之前说过，MSS取决于路径MTU,
 如果路由发生变化的话造成路径MTU发生变化的话，那么MSS可能发生改变。
 
-TODO(zhangyan04):TCP_MAXSEG默认值是536,但是实际连接发现交换还是按照1460来进行交换。以及如何侦测路径MTU.
+todo(zhangyan04):TCP_MAXSEG默认值是536,但是实际连接发现交换还是按照1460来进行交换。以及如何侦测路径MTU.
 DONE(zhangyan04):路径MTU发现实现上并不复杂，原理上说只需要在IP首部加上DF标记(donnot-fragment不要分片)，然后按照一个小的MTU对应MSS进行传输。
 如果路径上MTU小于这次传输数据的话，那么会返回一个ICMP错误。原理上通过这种反馈的方式就可以得到路径MTU.但是因为路径MTU取决于IP报文路由选择的路径
 ，所以这是一个动态变化值，路径MTU也必须不断地进行修改和调整。
@@ -824,7 +824,7 @@ DONE(zhangyan04):路径MTU发现实现上并不复杂，原理上说只需要在
 **** TCP_NODELAY
 开启本选项将禁止Nagel算法，默认情况下面是使用Nagel算法。使用Nagel算法效果是数据并不会立即发送，而是等待到一定大小的时候
 才会进行发送，这样可以减少分组。通过减少传输分组的数目，防止一个连接在任何时刻存在多个小分组确认。这点对于广域网网络环境
-非常合适，能够有效地利用网络。TODO(zhangyan04):减少网络上分组有什么好处？和所处的网络状况是否相关？DONE(zhangyan04):网络拥塞
+非常合适，能够有效地利用网络。todo(zhangyan04):减少网络上分组有什么好处？和所处的网络状况是否相关？DONE(zhangyan04):网络拥塞
 通常是因为网络上分组非常多造成的，一旦出现网络拥塞的话那么丢包概率就会上升。在广域网下面丢包重传代价是非常大的，所以都会尽可能地
 减少网络分组来提高在广域网下面传输效率。
 
@@ -1197,7 +1197,7 @@ extern ssize_t recvmsg (int __fd, struct msghdr *__message, int __flags);
    - CMSG_NXTHDR(cmsg,hdr).
 
 ***** epoll
-TODO(zhangyan04):
+todo(zhangyan04):
 
 *** conversion
 **** 使用说明
@@ -1340,7 +1340,7 @@ listening on eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
 #+END_EXAMPLE
 
 ** TCP
-TODO(zhangyan04):man 7 tcp
+todo(zhangyan04):man 7 tcp
 *** 特点
 TCP(Transmission Control Protocol,传输控制协议)相对于UDP来说更加复杂而功能也更加强大。首先TCP是面向连接的，
 这就意味着如果两端需要进行通信的话，那么双方必须首先建立连接然后才可以交换数据。其次TCP提供了可靠性的保证，
@@ -1393,14 +1393,14 @@ struct tcp_header_t{
 半打开连接(half-open connection),server会以RST分节响应。
 
 **** PSH分节
-TODO(zhangyan04):
+todo(zhangyan04):
 
 **** URG分节
-TODO(zhangyan04):
+todo(zhangyan04):
 
 *** TCP状态
 关于状态转换图的话，基本在很多书上都有介绍，所以在这里就不画出来了。
-TODO(zhangyan04):为了更好的理解状态转换，我们通过代码来描述。
+todo(zhangyan04):为了更好的理解状态转换，我们通过代码来描述。
 
 file:./images/tcp-status-transmission.png
 
@@ -1504,7 +1504,7 @@ ACK为x的话，那么就可以认为x以前的所有数据都已经被确认了
 因为窗口大小是接收端来规定的，那么窗口大小是多少才合适呢？因为这个影响到了TCP的性能。其实和CPU流水线一样，如果数据能够充满通信介质的话，那么吞吐量是最高的。
 计算通道容量为capacity(bit)=bandwidth(b/s)*round-trip-time(s),这个被称为带宽时延乘积，也就是窗口大小最合适的值。当不管有多少个报文段填充了这个管道，
 返回路径上总是具有相同数目的ACK,那么这个时候就是连接理想稳定状态。
-TODO(zhangyan04):关于带宽和RTT需要更加深入理解。
+todo(zhangyan04):关于带宽和RTT需要更加深入理解。
 
 **** 慢启动算法
 滑动窗口规定和发送端和接收端的数据发送多少，但是却没有规定如何进行发送。一种粗暴方式就是发送端一开始便向网络发送多个报文段，
@@ -1640,7 +1640,7 @@ RTO=R+4D
 
 *** 读写数据
 **** 读数据
-TODO(zhangyan04):
+todo(zhangyan04):
 
 **** 写数据
 首先应用层只是调用write将应用层数据完全copy到内核的tcp send buffer上，至于这个tcp send buffer大小是SO_SNDBUF来控制的。
@@ -1653,7 +1653,7 @@ tcp send buffer不会被丢弃直到对端收到这块buffer所包含内容的�
 直到数据完全写完为止。如果使用的是非阻塞IO的话，那么如果有部分空间的话就会返回已经成功写入的字节数，否则返回错误EAGAIN.
 
 ** UDP
-TODO(zhangyan04):man 7 udp
+todo(zhangyan04):man 7 udp
 *** 特点
 UDP(User Datagram Procotol,数据报传输协议)是一个简单的传输层协议，在RFC768中有详细说明。
 应用程序向UDP socket写入消息之后消息被封装到一个UDP数据包，然后UDP数据包封装到IP数据包，然后发送到目的地。
@@ -1670,7 +1670,7 @@ UDP可以是全双工的，只要在UDP层面上提供链接这样的概念。�
 
 *** 读写数据
 **** 读数据
-TODO(zhangyan04):
+todo(zhangyan04):
 
 **** 写数据
 和TCP输出一样，UDP也维护着内核udp send buffer,大小可以通过SO_SNDBUF来控制，而这个参数控制着一次写UDP数据报的大小上限。
@@ -1680,7 +1680,7 @@ TODO(zhangyan04):
 那么会返回ENOBUFS给应用程序。
 
 ** Unix域套接字
-TODO(zhangyan04):unix domain socket
+todo(zhangyan04):unix domain socket
 
 Unix domain socket走的是loopback接口。loopback接口是没有网卡流量限制，同时也没有网络软中断限制的。
 

@@ -105,7 +105,7 @@ void perror(const char* msg); //msg:<错误消息>打印到标准错误上
 gid和sgid存在的理由。gid就好比用户所属部门的一个编号，而sgid引入原因是有时候希望这个用户
 属于多个其他部门，这些其他部门的gid就是sgid.
 
-TODO(zhangyan04):对于附加组ID并不是很了解，而且觉得没有必要去了解。关于附加组ID主要包括下面
+todo(zhangyan04):对于附加组ID并不是很了解，而且觉得没有必要去了解。关于附加组ID主要包括下面
 这些问题，包括附加组ID在文件权限检查作用，对应系统数据什么文件这些。
 
 *** 信号
@@ -1153,7 +1153,7 @@ tmpfs                   127628         0    127628   0% /dev/shm
 /dev/tty0 dev=0/16 (character) rdev=4/0
 #+END_EXAMPLE
 
-TODO(zhangyan04):其实对于设备号这个东西还不是非常地了解，认识有待加深。
+todo(zhangyan04):其实对于设备号这个东西还不是非常地了解，认识有待加深。
 
 *** inotify
 http://www.ibm.com/developerworks/cn/linux/l-inotifynew/index.html
@@ -1324,7 +1324,7 @@ man里面对于每个事件有详细说明
    - freopen.这个函数清除了流的定向。
    - fwide(FILE* fp,int mode).这个函数修改流的定向。
 
-TODO(zhangyan04):其实对于定向问题并不是非常低了解，而且也不太确定，为什么需要使用宽字符。
+todo(zhangyan04):其实对于定向问题并不是非常低了解，而且也不太确定，为什么需要使用宽字符。
 是否使用宽字符的话，那么很多编码方面的问题就可以在标准IO层面操作而不需要上层操作呢？
 
 对于文件IO使用了0,1,2分别表示标准输入，输出和错误，对应的标准IO也提供了预定义的三个
@@ -1428,7 +1428,7 @@ int setvbuf(FILE* restrict fp,char* restrict buf,int mode,size_t size);
 如果程序退出之前没有关闭流的话，那么标准IO会自动帮助我们关闭。那么基本上可以了解，
 在实现层面上，我们打开一个流对象，在标准IO都会进行簿记的。
 
-TODO(zhangyan04):关于行缓冲模式，包括和输入和输出，分别是什么样的行为，现在还不是很确定:(
+todo(zhangyan04):关于行缓冲模式，包括和输入和输出，分别是什么样的行为，现在还不是很确定:(
 
 *** 打开和关闭流
 打开流提供了下面这些函数：
@@ -2716,7 +2716,7 @@ clock_t times(struct tms* buf); //返回wall clock time.但是需要通过差值
 有些是不支持会话的，但是现在基本上shell都支持会话，所以我们这里也只是以支持会话的shell为例。
 
 *** 登录过程
-TODO(zhangyan04):这里对于终端不是很了解，所以这里没有区分是从终端登录还是网络登录，只是
+todo(zhangyan04):这里对于终端不是很了解，所以这里没有区分是从终端登录还是网络登录，只是
 统一说明为登录过程。但是介绍的时候，还是区分两种登录方式的。
 
 首先看看终端登录过程，这个过程是BSD的，但是Linux基本相同：
@@ -3964,7 +3964,7 @@ int pthread_setconcurrency(int level); //如果为0的话那么让用户自己�
 #+END_SRC
 不过这里只是提供接口，系统可以决定是否采用。
 
-TODO(zhangyan04):不太理解这里并发度想要修改什么东西，系统线程的个数呢，还是只多少个用户线程绑定到一个系统线程呢？
+todo(zhangyan04):不太理解这里并发度想要修改什么东西，系统线程的个数呢，还是只多少个用户线程绑定到一个系统线程呢？
 
 *** 同步属性
 **** 进程共享
@@ -4211,7 +4211,7 @@ int pthread_kill(pthread_t thread,int signo);
 注意闹钟定时器是进程资源，并且所有的线程共享相同的alarm.所以进程中的多个线程不可能互不干扰地使用闹钟定时器。
 
 *** 线程和fork
-TODO(zhangyan04):个人觉得相当无用而且异常繁琐。为了保证锁和条件变量的状态，使用到了pthread_atfork.
+todo(zhangyan04):个人觉得相当无用而且异常繁琐。为了保证锁和条件变量的状态，使用到了pthread_atfork.
 
 *** 线程和IO
 多线程IO下面读写文件的话，底层能够保证一次read/write的串行化，可以认为是一个原子操作。
@@ -4248,7 +4248,7 @@ TODO(zhangyan04):个人觉得相当无用而且异常繁琐。为了保证锁和
    - pthread_attr_setschedpolicy
 inheritsched可以设置如果我们调用pthread_create创建线程的话，调度策略是自己显示设置还是继承于创建线程的线程。
 schedpolicy可以设置调度策略，而schedparam可以设置调度策略所涉及的参数，不过从现在文件里面只有priority这个参数。
-调度策略有下面这些.TODO(zhangyan04):调度策略分别是怎么样的???
+调度策略有下面这些.todo(zhangyan04):调度策略分别是怎么样的???
    - SCHED_FIFO
    - SCHED_RR
    - SCHED_SPORADIC
@@ -4286,13 +4286,13 @@ system contention scope是只线程直接和系统范围内其他线程竞争，
    - pthread_mutex_timedlock
    - pthread_mutex_trylock
    - pthread_mutex_unlock
-   - pthread_mutex_getprioceiling // priority ceiling.TODO(zhangyan04):???
+   - pthread_mutex_getprioceiling // priority ceiling.todo(zhangyan04):???
    - pthread_mutex_setprioceiling
    - pthread_mutexattr_init
    - pthread_mutexattr_destroy
    - pthread_mutexattr_getprioceiling
    - pthread_mutexattr_setprioceiling
-   - pthread_mutexattr_getprotocol // protocol.TODO(zhangyan04):???
+   - pthread_mutexattr_getprotocol // protocol.todo(zhangyan04):???
    - pthread_mutexattr_setprotocol
    - pthread_mutexattr_getpshared
    - pthread_mutexattr_setpshared
@@ -4396,7 +4396,7 @@ cancellation point有一类函数，如果我们希望在自己构造cancellatio
 getcpuclockid可以获得clock_id,每一个线程/进程都会绑定一个CPU-time clock,然后通过clock_id来区分。线程可以通过pthread_getcpuclockid获取，
 而进程可以通过clock_getcpuclockid获取。取得clock_id之后，我们可以clock_getres来获得时钟精度，clock_gettime来获得运行时间。
 还可以timer_create来创建高精度定时器。不过这些内容都是猜测从manpage里面看的，似乎没有任何一本手册提到过这些内容。这些内容都是rt(realtime)范畴的。
-TODO(zhangyan04):需要系统了解clock_id相关知识
+todo(zhangyan04):需要系统了解clock_id相关知识
 #+BEGIN_SRC C++
 #include <pthread.h>
 #include <cstdio>
@@ -4424,7 +4424,7 @@ exhausted 2002.648246 ms
 resolution 0.000001 ms
 #+END_EXAMPLE
 
-阅读代码之后发现concurrency这个实现上没有任何影响。TODO(zhangyan04):不管是概念上还是实现上都没有理解
+阅读代码之后发现concurrency这个实现上没有任何影响。todo(zhangyan04):不管是概念上还是实现上都没有理解
 #+BEGIN_SRC C++
 /* Global definition.  Needed in pthread_getconcurrency as well.  */
 int __concurrency_level;
@@ -4719,7 +4719,7 @@ int main(){
 建议锁和强制锁之间的差别，建议锁更强调协作方面的特性只是一个软规定，而对于强制锁来说，
 如果我们加上强制锁的话那么以阻塞方式来读写的话那么就一定会阻塞，是一个硬性规定。强制锁和建议锁底层都是记录锁。
 
-TODO(zhangyan04):我们这里不谈强制锁，似乎没有太大的作用。
+todo(zhangyan04):我们这里不谈强制锁，似乎没有太大的作用。
 
 记录锁(record locking)的功能是当一个进程正在读或者是修改文件的某一个部分的话，它可以阻塞其他进程修改
 同一个文件区域。对于文件区域来说，是一个范围，可以锁几个字节也可以尝试锁一个文件。记录锁有下面这些属性：
@@ -5601,7 +5601,7 @@ struct semid_ds
    - 信号集资源数目
    - 最后操作这个信号集的pid
    - 等待资源数目可用的进程数
-   - 等待资源数目==0的进程数(TODO(zhangyan04):什么应用场景)
+   - 等待资源数目==0的进程数(todo(zhangyan04):什么应用场景)
 可以看到下面提供的接口都可以获取或者是设置这个属性。
 
 创建一个信号量集的话，可以使用下面这个接口：

@@ -16,7 +16,7 @@ libev所实现的功能就是一个强大的reactor,可能notify事件主要包�
    - ev_fork // 开辟进程
    - ev_cleanup // event loop退出触发事件
    - ev_idle // 每次event loop空闲触发事件
-   - ev_embed // TODO(zhangyan04):I have no idea.
+   - ev_embed // todo(zhangyan04):I have no idea.
    - ev_prepare // 每次event loop之前事件
    - ev_check // 每次event loop之后事件
 

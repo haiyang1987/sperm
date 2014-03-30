@@ -811,7 +811,7 @@ Node 0, zone   Normal
    - wchan ???
 
 **** fd
-TODO(zhangyan04):
+todo(zhangyan04):
 
 **** io
 TODO:
@@ -873,10 +873,10 @@ ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsysca
 TODO:
 
 **** net
-TODO(zhangyan04):
+todo(zhangyan04):
 
 **** sched
-TODO(zhangyan04):
+todo(zhangyan04):
 
 **** status
 TODO:
@@ -1059,7 +1059,7 @@ dirlt@dirlt-virtual-machine:~/github/sperm/essay$ cat /proc/sys/vm/overcommit_ra
 **** /proc/sys/vm/dirty_*
 这几个参数主要是用来控制脏页刷回磁盘策略。关于脏页刷回磁盘的过程可以参看"文件IO/write"一节。
 
-*NOTE(dirlt@2013-05-25):我copy了一份内容过来*
+*note(dirlt)@2013-05-25: 我copy了一份内容过来*
 
 对于这些脏页的写回策略是：
    - 首先判断脏页比例是否超过dirty_ratio.如果没有的话那么直接退出 
@@ -1394,7 +1394,7 @@ BIOS-provided physical RAM map:
 #+END_EXAMPLE
 
 *** lsof
-TODO(zhangyan04):
+todo(zhangyan04):
 
 *** quota
 http://blog.itpub.net/post/7184/488931
@@ -2008,16 +2008,16 @@ lo        Link encap:Local Loopback
 使用ifconfig能够创建虚拟网卡绑定IP sudo ifconfig <name> <ip>, 如果需要关闭这个虚拟网卡的话可以ifconfig <name> down.即可。
 
 *** /sbin/ip
-TODO(zhangyan04):
+todo(zhangyan04):
 
 *** ping
-TODO(zhangyan04):
+todo(zhangyan04):
 
 *** route
-TODO(zhangyan04):
+todo(zhangyan04):
 
 *** tcpdump
-TODO(zhangyan04):
+todo(zhangyan04):
 
 *** httperf
 download http://www.hpl.hp.com/research/linux/httperf/
