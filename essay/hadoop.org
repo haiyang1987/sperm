@@ -1011,7 +1011,7 @@ public abstract class RecordReader<KEYIN, VALUEIN> implements Closeable {
      - map端连接
        - 必须确保多路输入文件的reduce数量相同以及键相同。
        - 使用CompositeInputFormat来运行map端连接。
-       - *NOTE（dirlt)；不过我稍微看了一下代码，实现上其实也是针对输入文件对每条记录读取，然后进行join包括inner或者是outer。感觉场景会有限，而且效率不会太高*
+       - *note(dirlt)；不过我稍微看了一下代码，实现上其实也是针对输入文件对每条记录读取，然后进行join包括inner或者是outer。感觉场景会有限，而且效率不会太高*
    - 分布式缓存
      - 使用-files以及-archives来添加缓存文件
      - 也可以使用DistributedAPI来完成之间事情

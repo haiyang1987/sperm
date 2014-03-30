@@ -132,7 +132,7 @@ def printLine(a:String) {
 }
 #+END_SRC
 
-*NOTE（dirlt)：需要注意的是传入的param实际上都是以val来定义的，所以在funciton-body里面不允许做修改*
+*note(dirlt)：需要注意的是传入的param实际上都是以val来定义的，所以在funciton-body里面不允许做修改*
 
 所有函数都是继承于Function这个类的，比如(Int,Int) => Long那么继承于Function2[Int,Int,Long]并且实现了apply方法，所以如果想创建函数的话，实际上也可以使用创建对象方式来完成
 #+BEGIN_SRC Scala
