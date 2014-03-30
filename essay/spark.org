@@ -33,7 +33,7 @@ In this paper, we focus on one such class of applications: those that reuse a wo
      - By “parallelizing” a Scala collection (e.g., an array) in the driver program, which means dividing it into a number of slices that will be sent to multiple nodes.（将driver中的collection切片）
      - By transforming an existing RDD. A dataset with ele- ments of type A can be transformed into a dataset with elements of type B using an operation called flatMap, which passes each element through a user-provided function of type A ⇒ List[B]. Other transforma- tions can be expressed using flatMap, including map (pass elements through a function of type A ⇒ B) and filter (pick elements matching a predicate).（经过transformation)
      - By changing the persistence of an existing RDD. By default, RDDs are lazy and ephemeral. That is, par- titions of a dataset are materialized on demand when they are used in a parallel operation (e.g., by passing a block of a file through a map function), and are dis- carded from memory after use. However, a user can alter the persistence of an RDD through two actions:
-       - The cache action leaves the dataset lazy, but hints that it should be kept in memory after the first time it is computed, because it will be reused. We note that our cache action is only a hint: if there is not enough memory in the cluster to cache all partitions of a dataset, Spark will recompute them when they are used. We chose this design so that Spark programs keep work- ing (at reduced performance) if nodes fail or if a dataset is too big. This idea is loosely analogous to virtual memory.(cache可以用来提示将RDD缓存在内存中，以便被后面计算重复使用。如果空间不够的话那么会丢弃而下次需要的时候重新计算，类似虚拟内存） *TODO(dirlt)：难道不应该swap到磁盘上更加合适吗？*
+       - The cache action leaves the dataset lazy, but hints that it should be kept in memory after the first time it is computed, because it will be reused. We note that our cache action is only a hint: if there is not enough memory in the cluster to cache all partitions of a dataset, Spark will recompute them when they are used. We chose this design so that Spark programs keep work- ing (at reduced performance) if nodes fail or if a dataset is too big. This idea is loosely analogous to virtual memory.(cache可以用来提示将RDD缓存在内存中，以便被后面计算重复使用。如果空间不够的话那么会丢弃而下次需要的时候重新计算，类似虚拟内存） *todo(dirlt)：难道不应该swap到磁盘上更加合适吗？*
        - The save action evaluates the dataset and writes it to a distributed filesystem such as HDFS. The saved version is used in future operations on it.（save可以用来将RDD持久化到磁盘上）
      - We also plan to extend Spark to support other levels of persistence (e.g., in-memory replication across multiple nodes). Our goal is to let users trade off between the cost of storing an RDD, the speed of accessing it, the proba- bility of losing part of it, and the cost of recomputing it.
 
@@ -68,7 +68,7 @@ These datasets will be stored as a chain of objects cap- turing the lineage of e
 
 file:./images/spark-rdd-code-examples.png
 
-*NOTE(dirlt):rdd = direct input + function as closure*
+*note(dirlt):rdd = direct input + function as closure*
 
 -----
 

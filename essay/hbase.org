@@ -42,7 +42,7 @@ https://github.com/stumbleupon/asynchbase
 
 -----
 
-*NOTE(dirlt):关于Deferred实现有点出乎自己的意料*
+*note(dirlt):关于Deferred实现有点出乎自己的意料*
 
 https://github.com/OpenTSDB/asynchbase/issues/72
 
@@ -85,14 +85,14 @@ So everything is fine :)
 *** HBase Write Path | Apache Hadoop for the Enterprise | Cloudera
 http://blog.cloudera.com/blog/2012/06/hbase-write-path/
 
-At first, it locates the address of the region server hosting the -ROOT- region from the ZooKeeper quorum.  From the root region server, the client finds out the location of the region server hosting the -META- region.（首先从Zookeeper里面找到-ROOT- region所在的region server，然后在找到对应的-META- region所在的region server，最后找到数据所在的region server。 *TODO(dirlt)：问题是-ROOT-和-META-里面是怎么组织数据的呢，怎么来帮助定位的？* ）
+At first, it locates the address of the region server hosting the -ROOT- region from the ZooKeeper quorum.  From the root region server, the client finds out the location of the region server hosting the -META- region.（首先从Zookeeper里面找到-ROOT- region所在的region server，然后在找到对应的-META- region所在的region server，最后找到数据所在的region server。 *todo(dirlt)：问题是-ROOT-和-META-里面是怎么组织数据的呢，怎么来帮助定位的？* ）
 
 写入的Write Ahead Log存放在/hbase/.logs下面，文件路径是 /hbase/.logs/<host>,<port>,<startcode>，文件名称/hbase/.logs/<host>,<port>,<startcode>/<host>%2C<port>%2C<startcode>.<timestamp>
 #+BEGIN_EXAMPLE
 /hbase/.logs/srv.example.com,60020,1254173957298
 /hbase/.logs/srv.example.com,60020,1254173957298/srv.example.com%2C60020%2C1254173957298.1254173957495
 #+END_EXAMPLE
-*NOTE(dirlt)：startcode表示这个regionserver启动的时间，log文件名后面的timestamp部分表示这个log文件产生时间。（这个是我的猜测=D）*
+*note(dirlt)：startcode表示这个regionserver启动的时间，log文件名后面的timestamp部分表示这个log文件产生时间。（这个是我的猜测=D）*
 
 By default, WAL file is rolled when its size is about 95% of the HDFS block size. You can configure the multiplier using parameter: “hbase.regionserver.logroll.multiplier”, and the block size using parameter: “hbase.regionserver.hlog.blocksize”. WAL file is also rolled periodically based on configured interval “hbase.regionserver.logroll.period”, an hour by default, even the WAL file size is smaller than the configured limit. 对于每个WAL文件roll的时机包括下面几个：
    - 大小达到HDFS block size （64MB，可以通过hbase.regionserver.hlog.blocksize配置）的95%（可以通过hbase.regionserver.logroll.multiplier配置）
@@ -118,14 +118,14 @@ MultiScanTableInputFormat  http://code.google.com/p/socorro/source/browse/trunk/
  */
 
 #+END_VERSE
-针对时间这种开头的rowkey，我们可以之前加上hashcode来将连续时间row打散，这样访问就不会集中在几个region上面了。而使用这种方式的话在扫描的时候就需要input format支持传入multi scan对象。 *NOTE(dirlt)：这种方式不利的地方就是用hbase shell访问的话不是很方便*
+针对时间这种开头的rowkey，我们可以之前加上hashcode来将连续时间row打散，这样访问就不会集中在几个region上面了。而使用这种方式的话在扫描的时候就需要input format支持传入multi scan对象。 *note(dirlt)：这种方式不利的地方就是用hbase shell访问的话不是很方便*
 
-*NOTE(dirlt):我编写了一个 [[https://github.com/dirtysalt/sperm/blob/master/code/java/mr/src/main/java/com/dirlt/java/mr/MultipleTableInputFormat.java][com.dirlt.java.mr.MultipleTableInputFormat]] 允许以多个table以及每个table上多个scan作为输入*
+*note(dirlt):我编写了一个 [[https://github.com/dirtysalt/sperm/blob/master/code/java/mr/src/main/java/com/dirlt/java/mr/MultipleTableInputFormat.java][com.dirlt.java.mr.MultipleTableInputFormat]] 允许以多个table以及每个table上多个scan作为输入*
 
 **** Supporting HBase： How to Stabilize, Diagnose, and Repair - Jeff, Jonathan, Kathleen, Cloudera
 file:./images/hbasecon2012-hbase-cross-section.png
 
-TODO(dirlt):
+todo(dirlt):
    - DOs and DON’Ts for keeping HBase Healthy
      - DOs
        - Monitor and Alert
@@ -195,8 +195,8 @@ Times to complete single threaded log splitting vary, but the process may take s
 file:./images/hbase-split-log-manager.png
    - In each region server, there is a daemon thread called split log worker. Split log worker does the actual work to split the logs. The worker watches the splitlog znode all the time.  If there are new tasks, split log worker retrieves the task paths, and then loops through them all to grab any one which is not claimed by other worker yet.  After it grabs one, it tries to claim the ownership of the task, to work on the task if successfully owned, and to update the task’s state properly based on the splitting outcome. After the split worker completes the current task, it tries to grab another task to work on if any remains.（如果得到了这个log split的权限的话，那么就修改这个task的ownership）
 
-这个功能通过参数 hbase.master.distributed.log.splitting = true 来进行设置，split log manager也启动一个monitor thread来监控zookeeper节点观察出现的问题，逻辑如下： *NOTE(dirlt)：task状态切换有点琐碎，没有仔细阅读*
-   - Checks if there are any dead split log workers queued up. If so, it will resubmit those tasks owned by the dead workers. If the resubmit fails due to some ZooKeeper exception, the dead worker is queued up again for retry. *TODO(dirlt)：what's dead split log worker？可能是worker挂掉了，那么在这种情况下面需要重新提交任务并且由其他节点进行split）*
+这个功能通过参数 hbase.master.distributed.log.splitting = true 来进行设置，split log manager也启动一个monitor thread来监控zookeeper节点观察出现的问题，逻辑如下： *note(dirlt)：task状态切换有点琐碎，没有仔细阅读*
+   - Checks if there are any dead split log workers queued up. If so, it will resubmit those tasks owned by the dead workers. If the resubmit fails due to some ZooKeeper exception, the dead worker is queued up again for retry. *todo(dirlt)：what's dead split log worker？可能是worker挂掉了，那么在这种情况下面需要重新提交任务并且由其他节点进行split）*
    - Checks if there are any unassigned tasks. If so, create an ephemeral rescan node so that each split log worker is notified to re-scan unassigned tasks via the nodeChildrenChanged ZooKeeper event.（如果存在一些unassigned task的话，那么创建一个临时节点来触发worker得到事件，这样worker就会重新扫描看是否存在没有完成的task）
    - Checks those assigned tasks if they are expired. If so, move the task to TASK_UNASSIGNED state again so that they can be retried. These tasks could be assigned to some slow workers, or could be already finished. It is fine since the split can be retried due to the idempotency of the log splitting task; that is, the same log splitting task can be processed many times without causing any problem.（如果task过期的话，可能是因为分配到slow worker或者是已经计算完毕，那么就会被重新设置TASK_UNASSIGNED.但是这个对于正确性没有影响因为是幂等的）
 
@@ -248,7 +248,7 @@ http://stackoverflow.com/questions/11327316/how-to-join-tables-in-hbase
 
 对于MR来说，个人认为sort join通常是效率最高的方式，而hash join次之（hbase的read效率不是很高）。
 
-*NOTE(dirlt):最近了解ripple join, 强调能够更快地给出部分结果.*
+*note(dirlt):最近了解ripple join, 强调能够更快地给出部分结果.*
 
 *** Using HBase with ioMemory :: Fusion-io
 http://www.fusionio.com/white-papers/using-hbase-with-iomemory/
@@ -290,7 +290,7 @@ fusion iomemory 是类似 ssd的东西， *操作速度接近DRAM，成本更低
      - hbase.client.retries.number 客户端重试的次数
      - hbase.regionserver.lease.period 客户端租期超时阀值；scan量大时可以考虑增大；否则”Lease Exception: lease -70000000000000001 does not exist”
    - ZK连接/HTable对象的使用注意
-     - Configure对象的使用. 必须是static or singleton模式 *TODO(dirlt):???*
+     - Configure对象的使用. 必须是static or singleton模式 *todo(dirlt):???*
      - 默认：每台机器与zk直接的连接数不超过30个
      - HTable的使用
        - 线程不安全
@@ -361,7 +361,7 @@ fusion iomemory 是类似 ssd的东西， *操作速度接近DRAM，成本更低
 
 *** hbase hbck
    - 默认检查hbase状态
-   - 如果出现不一致状态，可以使用参数 -fix 来修复 *NOTE(dirlt)：存在丢失数据的风险*
+   - 如果出现不一致状态，可以使用参数 -fix 来修复 *note(dirlt)：存在丢失数据的风险*
 
 *** hbase increment
 http://hbase.apache.org/apidocs/org/apache/hadoop/hbase/client/Increment.html
@@ -378,7 +378,7 @@ http://hbase.apache.org/apidocs/org/apache/hadoop/hbase/client/Increment.html
      - doc: http://happybase.readthedocs.org/en/latest/index.html
 使用起来还是比较简单的，documentation也非常详细。
 
-*NOTE(dirlt)：发现还是存在一些不兼容的thrift协议，比如使用scan似乎就存在问题*
+*note(dirlt)：发现还是存在一些不兼容的thrift协议，比如使用scan似乎就存在问题*
 #+BEGIN_EXAMPLE
 Traceback (most recent call last):
   File "./hbase.py", line 20, in <module>
@@ -403,7 +403,7 @@ thrift.Thrift.TApplicationException: Invalid method name: 'scannerOpenWithScan'
      - 将输入文件转换成为HFile格式
      - 参考代码 [[https://github.com/dirtysalt/sperm/blob/master/code/java/mr/src/main/java/com/dirlt/java/mr/HBaseLoaderMR.java][com.dirlt.java.mr.HBaseLoaderMR]]
      - region，reduce，output对应，也就是说有多少个region就有多少个reduce
-       - *NOTE(dirlt)：所以需要关注region分布。如果过于集中的话需要考虑使用做pre-split或者是将key做hash-prefix等*
+       - *note(dirlt)：所以需要关注region分布。如果过于集中的话需要考虑使用做pre-split或者是将key做hash-prefix等*
      - configureIncrementalLoad会改写reducer实现，所以这个转换过程只能够由单独任务完成。
      - In order to function efficiently, HFileOutputFormat must be configured such that each output HFile fits within a single region. In order to do this, jobs whose output will be bulk loaded into HBase use Hadoop's TotalOrderPartitioner class to partition the map output into disjoint ranges of the key space, corresponding to the key ranges of the regions in the table. HFileOutputFormat includes a convenience function, configureIncrementalLoad(), which automatically sets up a TotalOrderPartitioner based on the current region boundaries of a table.
    - Completing the data load
@@ -411,20 +411,20 @@ thrift.Thrift.TApplicationException: Invalid method name: 'scannerOpenWithScan'
      - If the region boundaries have changed during the course of bulk load preparation, or between the preparation and completion steps, the completebulkloads utility will automatically split the data files into pieces corresponding to the new boundaries. This process is not optimally efficient, so users should take care to minimize the delay between preparing a bulk load and importing it into the cluster, especially if other clients are simultaneously loading data through other means.
      - 如果在产生HFile和load之间rs出现分裂的话，bulkload工具能够自动处理，但是相对来说效率不是最佳。
      - hadoop jar hbase-VERSION.jar completebulkload [-c /path/to/hbase/config/hbase-site.xml] /user/todd/myoutput mytable
-   - *NOTE(dirlt):实际上上面命令可能会出现权限问题，如果转换程序输出是hdfs owner的话，而要将文件移动到hbase那么必须是hbase owner. 所以通常使用下面命令完成*
+   - *note(dirlt):实际上上面命令可能会出现权限问题，如果转换程序输出是hdfs owner的话，而要将文件移动到hbase那么必须是hbase owner. 所以通常使用下面命令完成*
      - sudo -u hdfs hadoop fs -chmod -R 0777 <hfile-path> # 修改权限
      - sudo -u hdfs hadoop fs -chown -R hbase <hfile-path> # 修改owner
      - sudo -u hbase hadoop jar /usr/lib/hbase/hbase-0.94.6-cdh4.3.0-security.jar completebulkload <hfile-path> <table>
 
 *** hbase merge
-   - *NOTE(dirlt):需要停表或者是停集群*
+   - *note(dirlt):需要停表或者是停集群*
    - hbase org.apache.hadoop.hbase.util.Merge <table> <region1> <region2>
    - 工作原理大致是
      1. 读取region1,region2对应hbase的目录下面数据文件
      2. 检查.regioninfo是否相连
      3. 合并文件内容输出到另外一个目录下面
      4. 修改hbase的.META文件信息
-   - *NOTE(dirlt)：这个对于修复数据非常有效*
+   - *note(dirlt)：这个对于修复数据非常有效*
 *** hbase export/import
 使用导出导入功能可以用来做数据迁移，这只是数据迁移的一种办法。这里介绍了许多办法 http://hbase.apache.org/book/ops.backup.html 包括
    - distcp
@@ -534,7 +534,7 @@ java.io.IOException: java.io.IOException: java.io.FileNotFoundException: File do
 
 当时我们处理的办法是将6ef7e4f2c72929d789f63baba2f13d4e重命名为2f1b909bb15ce5960d72a1773902085c。实际上这是一个错误的做法，因为2f1b909bb15ce5960d72a1773902085c这个regionName在META里面根本不存在。出现这样的情况是因为当时在6ef7e4f2c72929d789f63baba2f13d4e下面存在一个文件 *240086423354424bb32d647fab6f9b98.2f1b909bb15ce5960d72a1773902085c* 。这个文件大小非常小，我们当时怀疑是一个类似软链接的文件，当读取240086423354424bb32d647fab6f9b98这个文件的时候，如果存在link文件的话，那么就会转移到另外一个directory下面读取。 *所以我们直接将这个link文件删除了，结果region瞬间加载成功*
 
-*NOTE(dirlt)：如果需要强制停止assign一个节点的话，只能进入zookeeper的/hbase/unassigned目录将下面节点完全删除，hbase shell的unassign命令只是针对那些assign成功的region有效*
+*note(dirlt)：如果需要强制停止assign一个节点的话，只能进入zookeeper的/hbase/unassigned目录将下面节点完全删除，hbase shell的unassign命令只是针对那些assign成功的region有效*
 
 ** 日志分析
 *** output error
@@ -641,7 +641,7 @@ not exist. [Lease.  Holder: DFSClient_hb_rs_dp22.umeng.com,60020,1365284229083_1
 *** filesystem not available
 hbase出现如下fatal日志，并且可以看到这个日志造成region server退出。
 
-*TODO(dirlt)：个人觉得原因是namenode和datanode不能够支撑这些请求压力，可以适当调大处理线程数目。这种情况下面也会出现很多Failed to connect to datanode的情况*
+*todo(dirlt)：个人觉得原因是namenode和datanode不能够支撑这些请求压力，可以适当调大处理线程数目。这种情况下面也会出现很多Failed to connect to datanode的情况*
 
 #+BEGIN_EXAMPLE
 2013-05-13 04:10:11,256 FATAL org.apache.hadoop.hbase.regionserver.HRegionServer: ABORTING region server serverName=dp31.umeng.com,60020,1367978709152, load=(requests=55849, regions=158, usedHeap=6520, maxHeap=13962): File System not available
@@ -782,7 +782,7 @@ org.apache.hadoop.ipc.RemoteException: org.apache.hadoop.ipc.RemoteException: ja
 另外如果put是empty的话会抛出异常，因此在调用put之前最好判断put.isEmpty().
 
 -----
-*NOTE(dirlt):实际还是有大小限制的，可以看代码HBaseConfiguration.create
+*note(dirlt):实际还是有大小限制的，可以看代码HBaseConfiguration.create
 #+BEGIN_SRC Java
   public static Configuration addHbaseResources(Configuration conf) {
     conf.addResource("hbase-default.xml");
@@ -811,7 +811,7 @@ org.apache.hadoop.ipc.RemoteException: org.apache.hadoop.ipc.RemoteException: ja
   }
 #+END_SRC
 
-在flushCommits里面会在Connection上面去将这个writeBuffer写出去，如果失败的话那么会重新构造这个writeBuffer以及currentWriteBufferSize,注释里面也说了在这个操作里面会修改这些字段。 *NOTE(dirlt)：从下面的实现可以看到，writeBuffer里面剩余的都是没有成功的Put*
+在flushCommits里面会在Connection上面去将这个writeBuffer写出去，如果失败的话那么会重新构造这个writeBuffer以及currentWriteBufferSize,注释里面也说了在这个操作里面会修改这些字段。 *note(dirlt)：从下面的实现可以看到，writeBuffer里面剩余的都是没有成功的Put*
 
 #+BEGIN_SRC Java
   public void flushCommits() throws IOException {
@@ -887,7 +887,7 @@ HBaseConfiguration继承于Configuration，主要是用来创建配置数据的�
    - 检查版本
    - 检查内存配置
 
-*NOTE(dirlt)：所以一些配置选项如果在hbase-site.xml里面没有找到的话，默认值应该都可以在hbase-default.xml里面找到*
+*note(dirlt)：所以一些配置选项如果在hbase-site.xml里面没有找到的话，默认值应该都可以在hbase-default.xml里面找到*
 
 ** Apache HBase Configuration
 http://hbase.apache.org/book/book.html
@@ -908,13 +908,13 @@ http://hbase.apache.org/book/configuration.html
      - Default: false
    - hbase.tmp.dir 
      - Temporary directory on the local filesystem. 
-     - TODO(dirlt):hbase为什么需要local filesystem?
+     - todo(dirlt):hbase为什么需要local filesystem?
      - Default: ${java.io.tmpdir}/hbase-${user.name} 
    - hbase.local.dir 
      - Directory on the local filesystem to be used as a local storage. 
      - Default: ${hbase.tmp.dir}/local/
    - dfs.support.append
-     - hdfs是否支持append. TODO(dirlt)：如果支持append是否有更好的实现？
+     - hdfs是否支持append. todo(dirlt)：如果支持append是否有更好的实现？
      - Default: true
    - hbase.offheapcache.percentage
      - 使用heap cache的百分比（好像这个cache是会放在disk上的） 
@@ -971,15 +971,15 @@ http://hbase.apache.org/book/configuration.html
      - Count of RPC Listener instances spun up on RegionServers. Same property is used by the Master for count of master handlers. 
      - Default: 10
    - hbase.bulkload.retries.number
-     - TODO(dirlt)：bulk load ？？？
+     - todo(dirlt)：bulk load ？？？
      - This is maximum number of iterations to atomic bulk loads are attempted in the face of splitting operations 0 means never give up. 
      - Default: 0. 
    - *hbase.regionserver.msginterval*
-     - TODO(dirlt):heartbeat?
+     - todo(dirlt):heartbeat?
      - Interval between messages from the RegionServer to Master in milliseconds.
      - Default: 3000
    - *hbase.regionserver.optionallogflushinterval*
-     - sync hlog到hdfs时间间隔，如果在这段时间内没有足够的entry来做sync的话 TODO(dirlt):这里的entry是不是edit?
+     - sync hlog到hdfs时间间隔，如果在这段时间内没有足够的entry来做sync的话 todo(dirlt):这里的entry是不是edit?
      - Sync the HLog to the HDFS after this interval if it has not accumulated enough entries to trigger a sync. 
      - Default: 1000(ms)
    - *hbase.regionserver.regionSplitLimit*
@@ -1025,17 +1025,17 @@ http://hbase.apache.org/book/configuration.html
      - Time to sleep in between searches for work (in milliseconds). Used as sleep interval by service threads such as log roller.
      - Default: 10000
    - hbase.server.versionfile.writeattempts
-     - 写version file的尝试次数，并且每隔一段时间会尝试写 TODO(dirlt)：what‘s version file？
+     - 写version file的尝试次数，并且每隔一段时间会尝试写 todo(dirlt)：what‘s version file？
      - How many time to retry attempting to write a version file before just aborting. 
      - Each attempt is seperated by the hbase.server.thread.wakefrequency milliseconds. 
      - Default: 3
    - *hbase.regionserver.optionalcacheflushinterval*
-     - TODO(dirlt):edit不是都要写到file的吗？
+     - todo(dirlt):edit不是都要写到file的吗？
      - Maximum amount of time an edit lives in memory before being automatically flushed.
      - Set it to 0 to disable automatic flushing.
      - Default: 3600000(ms)
    - *hbase.hregion.memstore.flush.size*
-     - memstore超过多少内存会刷新到disk，并且每隔一段时间会检查. TODO(dirlt)：这个不是每次进行write memstore就可以检查的吗？，只要超过内存大小应该立刻就可以感知到的
+     - memstore超过多少内存会刷新到disk，并且每隔一段时间会检查. todo(dirlt)：这个不是每次进行write memstore就可以检查的吗？，只要超过内存大小应该立刻就可以感知到的
      - Memstore will be flushed to disk if size of the memstore exceeds this number of bytes.
      - Value is checked by a thread that runs every hbase.server.thread.wakefrequency. 
      - Default: 134217728
@@ -1045,11 +1045,11 @@ http://hbase.apache.org/book/configuration.html
      - The preflush is meant to clean out the bulk of the memstore before putting up the close flag and taking the region offline so the flush that runs under the close flag has little to do.
      - Default: 5242880
    - *hbase.hregion.memstore.block.multiplier*
-     - 超过大小的话那么会阻塞update TODO(dirlt):为什么会出现这种情况？ 
+     - 超过大小的话那么会阻塞update todo(dirlt):为什么会出现这种情况？ 
      - Block updates if memstore has hbase.hregion.block.memstore.multiplier time hbase.hregion.flush.size bytes.
      - Default: 2
    - *hbase.hregion.memstore.mslab.enabled*
-     - TODO(dirlt):what's mslab?
+     - todo(dirlt):what's mslab?
      - Enables the MemStore-Local Allocation Buffer, a feature which works to prevent heap fragmentation under heavy write loads. 
      - This can reduce the frequency of stop-the-world GC pauses on large heaps.
      - Default: true
@@ -1072,7 +1072,7 @@ http://hbase.apache.org/book/configuration.html
      - After this time has elapsed, the HRegion will stop blocking updates even if a compaction has not been completed. Default: 90 seconds.
      - Default: 90000(s)
    - *hbase.hstore.compaction.max*
-     - 一次minor compaction的文件数目 TODO(dirlt)：怎么定义minor compaction?
+     - 一次minor compaction的文件数目 todo(dirlt)：怎么定义minor compaction?
      - Max number of HStoreFiles to compact per 'minor' compaction.
      - Default: 10
    - *hbase.hregion.majorcompaction*
@@ -1278,7 +1278,7 @@ For the slave servers a single power supply (PSU) is sufficient, but for the mas
 In terms of density it is advisable to select server hardware that fits into a low number of rack units (abbreviated as "U"). Typically 1U or 2U servers are used in 19" racks or cabinets. A consideration while choosing the size is how many disks they can hold and their power consumption. Usually a 1U server is limited to a lower number of disks or force you to use 2.5" disks to get the capacity you want.（机器大小限制了单个机架上面允许放置的机器数量，磁盘数量以及功耗相关）
 
 **** Networking
-*TODO(dirlt)：？？？*
+*todo(dirlt)：？？？*
 
 In a data center servers are typically mounted into 19" racks or cabinets with 40U or more in height. You could fit up to 40 machines (although with half-depth servers some companies have up to 80 machines in a single rack, 40 machines on either side) and link them together with a top-of-rack (or ToR in short) switch. Given the Gigabit speed per server you need to ensure that the ToR switch is fast enough to handle the throughput these servers can create. Often the backplane of a switch cannot handle all ports at line rate or is oversubscribed - in other words promising you something in theory it cannot do in reality.
 
@@ -1325,7 +1325,7 @@ Finally, given the current status of built-in security into Hadoop and HBase, it
      - The biggest drawback of ext3 is that during the bootstrap process of the servers it requires the largest amount of time. Formatting a disk with ext3 can take minutes to complete and may become a nuisance when spinning up machines dynamically on a regular basis - although that is not very common practice. (ext3最大的缺点就在于启动server的时候消耗大量时间，并且做磁盘格式化的时候费时）
 
    - ext4
-     - It is officially part of the Linux kernel since then end of 2008. To that extent it has only a few years to prove its stability and reliability. Nevertheless Google has announced to upgrade its storage infrastructure from ext2 to ext4. This can be considered a strong endorsement, but also shows the advantage of the extended filesystem (the ext in ext3, ext4, etc.) lineage to be upgradable in place. Choosing an entirely different file system like XFS would have made this impossible.（从2008年开始进入Linux kernel所以还需要一段时间的考验，但是google使用证明了其稳定性。在ext文件系统上面的升级是平滑的，而不像XFS一样不兼容的） *NOTE(dirlt)：主要原因是ext4的开发者们以及leader都在google, 实际上从我们使用ext4的经验来看还是没有ext3稳定*
+     - It is officially part of the Linux kernel since then end of 2008. To that extent it has only a few years to prove its stability and reliability. Nevertheless Google has announced to upgrade its storage infrastructure from ext2 to ext4. This can be considered a strong endorsement, but also shows the advantage of the extended filesystem (the ext in ext3, ext4, etc.) lineage to be upgradable in place. Choosing an entirely different file system like XFS would have made this impossible.（从2008年开始进入Linux kernel所以还需要一段时间的考验，但是google使用证明了其稳定性。在ext文件系统上面的升级是平滑的，而不像XFS一样不兼容的） *note(dirlt)：主要原因是ext4的开发者们以及leader都在google, 实际上从我们使用ext4的经验来看还是没有ext3稳定*
      - Performance wise ext4 does beat ext3 and allegedly comes close to the high performance XFS. It also has many advanced features, that allows to store files up to 16TB in size and supports volumes up to one exabyte (that is 1018 bytes).（性能好过ext3并且接近XFS, 并且支持更大的文件）
      - A more critical feature is the so called delayed allocation and it is recommended to turn it off for Hadoop and HBase use. Delayed allocation keeps the data in memory and reserves the required number of blocks until the data is finally flushed to disk. It helps keeping blocks for files together and can at times write the entire file into a contiguous set of blocks. This reduces fragmentation and improves performance reading the file subsequently. On the other hand it increases the possibility of data loss in case of a server crash.（delay allocation能够将data缓存起来进行聚合，在应用层面上做一些merge直到flush下去，这样的好处是减少文件磁盘碎片的产生，但是也有丢失数据的风险）
 
@@ -1340,20 +1340,20 @@ Finally, given the current status of built-in security into Hadoop and HBase, it
      - ZFS is primarily supported on Solaris and has advanced features that may be useful in combination with HBase. It has built-in compression support that could be used as a replacement for the pluggable compression codecs in HBase.
 
 *** Chapter 3. Client API: The Basics
-TODO(dirlt)：
+todo(dirlt)：
 
 **** General Notes
    - All operations that mutate data are guaranteed to be atomic on a per row basis.
    - Finally, creating HTable instances is not without cost. Each instantiation involves scanning the .META. table to check if the table actually exists and if it is enabled as well as a few other operations that makes this call quite costly. Therefore it is recommended to create HTable instances only once - and one per thread - and reuse that instance for the rest of the lifetime of your client application.（创建HTable的overhead还是比较大的）
 
 *** Chapter 4. Client API: Advanced Features
-TODO(dirlt)：
+todo(dirlt)：
 
 *** Chapter 5. Client API: Administrative Features
-TODO(dirlt)：
+todo(dirlt)：
 
 *** Chapter 6. Available Clients
-TODO(dirlt)：
+todo(dirlt)：
 
 *** Chapter 7. MapReduce Integration
 **** MapReduce Locality
@@ -1431,7 +1431,7 @@ The actual storage files are implemented by the HFile class, which was specifica
  
 file:./images/hbase-hfile-structure.png
 
-可以通过命令 "./bin/hbase org.apache.hadoop.hbase.io.hfile.HFile" 来查看hfile文件 TODO(dirlt)：
+可以通过命令 "./bin/hbase org.apache.hadoop.hbase.io.hfile.HFile" 来查看hfile文件 todo(dirlt)：
 
 下面是KeyValue结构
 
@@ -1456,7 +1456,7 @@ file:./images/hbase-store-files-in-minor-compaction.png
    - It triggers a check on a regular basis, controlled by *hbase.server.thread.wakefrequency* (multiplied by *hbase.server.thread.wakefrequency.multiplier*, set to 1000, to run it less often than the other thread based tasks). （定期去检查是否需要做major compaction）
    - If you call the major_compact command, or the majorCompact() API call, then you force the major compaction to run.（手动调用的话那么就强制进行major compaction）
    - Otherwise the server checks first if the major compaction is due, based on *hbase.hregion.majorcompaction* (set to 24 hours) from the last it ran. The *hbase.hregion.majorcompaction.jitter* (set to 0.2, in other words 20%) causes this time to be spread out for the stores. Without the jitter all stores would run a major compaction at the same time, every 24 hours.（否则根据两个参数来控制，第一个是检查一下这次major compaction是否到期，另外一个是控制不要让所有的major compaction同时启动）
-   - If no major compaction is due, then a minor is assumed. Based on the above configuration properties, the server determines if enough files for a minor compaction are available and continues if that is the case.（如果检查没有不需要做major compaction的话，那么就会检查是否需要做minor compaction） *NOTE(dirlt)：所以minor compaction的触发也可能是定时完成的* 
+   - If no major compaction is due, then a minor is assumed. Based on the above configuration properties, the server determines if enough files for a minor compaction are available and continues if that is the case.（如果检查没有不需要做major compaction的话，那么就会检查是否需要做minor compaction） *note(dirlt)：所以minor compaction的触发也可能是定时完成的* 
 
 **** WAL
 file:./images/hbase-wal-structure.png
@@ -1483,7 +1483,7 @@ Currently the WAL is using a Hadoop SequenceFile, which stores records as sets o
    - The other parameters controlling the log rolling are *hbase.regionserver.hlog.blocksize* (set to the file system default block size, or fs.local.block.size, defaulting to 32MB) and *hbase.regionserver.logroll.multiplier* (set to 0.95), which will rotate logs when they are at 95% of the block size. So logs are switched out when either the they are considered full, or a certain amount of time has passed - whatever comes first. （另外一个触发roll log的事件是，当log超过一定大小） 
 
 ***** LogSyncer
-*NOTE(dirlt)：sync不是针对本地磁盘，而是将所写数据的offset写到namenode上面*
+*note(dirlt)：sync不是针对本地磁盘，而是将所写数据的offset写到namenode上面*
 
    - The table descriptor allows to set the so called deferred log flush flag, as explained in the section called “Table Properties”. The default is false and means that every time an edit is sent to the servers it will call the log writer's sync() method. It is the call that forces the update to the log to be acknowledged by the file system so that you have the durability needed.（这个功能可以防止HBase每次写HDFS都调用sync而采用延迟sync的方式。这个选项在Table Descriptor里面进行设置。默认的话是关闭的也就是说每次都会调用sync）
    - Setting the deferred log flush flag to true causes for the edits to be buffered on the region server, and the LogSyncer class, running as a thread on the server, is responsible to call the sync() method at a very short interval. The default is one second and is configured by the *hbase.regionserver.optionallogflushinterval* property.（如果采用延迟sync的话那么存在一个单独的线程来专门进行刷新，刷新的间隔时间可以配置）
@@ -1504,4 +1504,4 @@ Currently the WAL is using a Hadoop SequenceFile, which stores records as sets o
 **** Region
 
 *** Chapter 9. Advanced Usage
-TODO(dirlt)：
+todo(dirlt)：

@@ -53,7 +53,7 @@ Info.(@2012)
    - wsrep_uuid # uuid helper
    - wsrep_gtid # gtid helper
    - wsrep_listener # event dumper, helpful to get whole picture.
-     - http://www.codership.com/wiki/doku.php?id=notification_command # NOTE(dirlt)：helpful？
+     - http://www.codership.com/wiki/doku.php?id=notification_command # note(dirlt)：helpful？
 
 *** concept
    - sst(snapshot state transfer)
@@ -64,8 +64,8 @@ Info.(@2012)
      - flags
      - status
    - uuid/gtid
-     - UUID 节点状态改变及顺序的唯一标识 NOTE(dirlt)：集群建立之初的状态标记？
-     - GTID Global Transaction ID, 由UUID和偏移量组成 NOTE(dirlt)：以UUID为base，每次事务通过偏移量反应
+     - UUID 节点状态改变及顺序的唯一标识 note(dirlt)：集群建立之初的状态标记？
+     - GTID Global Transaction ID, 由UUID和偏移量组成 note(dirlt)：以UUID为base，每次事务通过偏移量反应
      - example: 45eec521-2f34-11e0-0800-2a36050b826b:94530586304
      - undefined: 00000000-0000-0000-0000-000000000000:-1
      - evolve: 00295a79-9c48-11e2-bdf0-9a916cbb9294:0 => 00295a79-9c48-11e2-bdf0-9a916cbb9294:1
@@ -89,7 +89,7 @@ Info.(@2012)
    - TO isolation for DDL queries
 
 *** wsrep_init_args
-*NOTE(dirlt)；这个应该是和上层相关的实现比如MySQL，如何apply, commit等*
+*note(dirlt)；这个应该是和上层相关的实现比如MySQL，如何apply, commit等*
 
    - (D)app_ctx 回调使用的context
    - (D)node_name 当前节点/实例名称，对应变量wsrep_node_name
@@ -109,7 +109,7 @@ Info.(@2012)
    - synced_cb 和group做同步
 
 *** wsrep_t
-*NOTE(dirlt)：这个应该是和下层相关的实现比如Galera，它定义了整个replication的逻辑*
+*note(dirlt)：这个应该是和下层相关的实现比如Galera，它定义了整个replication的逻辑*
 
    - (D)version 版本
    - init 初始化 wsrep_init_args
@@ -126,7 +126,7 @@ Info.(@2012)
    - abort_pre_commit 中断事务提交之前
    - append_key 将key添加到事务ws. 修改行对应的key，可以用来检测冲突。
    - append_data 将data添加到事务ws. 修改行对应的value。
-   - casual_read  TODO(dirlt)：
+   - casual_read  todo(dirlt)：
    - free_connection 释放链接
    - to_execute_start 开始执行total order isolation事务（上锁）
    - to_execute_end 结束执行total order isolation事务（解锁）
@@ -160,7 +160,7 @@ Info.(@2012)
    - view_handler_cb # 新节点加入会比较本地状态uuid和集群状态uuid. 初始同步，joiner动作
    - apply_cb # mysql如何执行binlog
    - commit_cb # mysql如何提交事务
-   - unordered_cb # NOTE(dirlt)：do nothing?
+   - unordered_cb # note(dirlt)：do nothing?
    - sst_donate_cb # 初始同步，donor动作
    - synced_cb # mysql启动等待状态一致之后会调用这个函数，修改变量wsrep_ready从OFF到ON
 
@@ -190,7 +190,7 @@ file:./images/galera-gcs.jpg
 
 file:./images/galera-certification.png file:./images/galera-certification-en.png
 
-在数据库事务提交时，会使用2阶段提交方式，在ha_trans_commit中，首先会针对每一个存储引擎执行一个ht->prepare函数，而对于Galera，在内部实现也是当作一个内嵌的存储引擎使用的，所以它执行的是wsrep_prepare，这个函数的功能是将在执行过程中产生的binlog通过下面会介绍到的接口append_data传到其它节点上面去（或者没有传过去，只是将这些数据对象存储在本地，等待提交操作），然后再通过下面这个接口pre_commit去与其它节点的Galera通讯检查有没有冲突，这个过程也就是在 *介绍Galera的文章中说到的certification阶段* 。 *NOTE(dirlt):是在本地先提交吗？*
+在数据库事务提交时，会使用2阶段提交方式，在ha_trans_commit中，首先会针对每一个存储引擎执行一个ht->prepare函数，而对于Galera，在内部实现也是当作一个内嵌的存储引擎使用的，所以它执行的是wsrep_prepare，这个函数的功能是将在执行过程中产生的binlog通过下面会介绍到的接口append_data传到其它节点上面去（或者没有传过去，只是将这些数据对象存储在本地，等待提交操作），然后再通过下面这个接口pre_commit去与其它节点的Galera通讯检查有没有冲突，这个过程也就是在 *介绍Galera的文章中说到的certification阶段* 。 *note(dirlt):是在本地先提交吗？*
    - Transactions process independently in each cluster node
    - Transaction write sets will be replicated at commit time
    - Cluster wide conflicts resolved by certification test
@@ -240,7 +240,7 @@ During normal operation MySQL/Galera node does not consume much more memory than
 
 Writeset caching during state transfer. When a node is receiving a state transfer it cannot process and apply incoming writesets because it has no state to apply them to yet. Depending on a state transfer mechanism (e.g. mysqldump) the node that sends state transfer may not be able to apply writesets as well. Thus they need to cache those writesets for a catch-up phase. Currently the writesets are cached in memory and, if the system runs out of memory either state transfer will fail or the cluster would block waiting for the state transfer to end.(在state transfer阶段，donor是不可以写入的，所以在这期间需要缓存所有到达的writeset)
 
-To control memory usage for writeset caching, check Galera parameters: *NOTE(dirlt)：by flow control*
+To control memory usage for writeset caching, check Galera parameters: *note(dirlt)：by flow control*
    - gcs.recv_q_hard_limit, 
    - gcs.recv_q_soft_limit, 
    - gcs.max_throttle.
@@ -274,7 +274,7 @@ To control memory usage for writeset caching, check Galera parameters: *NOTE(dir
 There are two conceptually different ways to transfer a state from one MySQL server to another:
    - Using mysqldump. This requires the receiving server to be fully initialized and ready to accept connections *before* the transfer. This method is by definition blocking, in that it blocks donor server from modifying its own state for the duration of transfer. It is also the slowest of all, and in the loaded cluster that might be an issue in a loaded cluster.（使用mysqldump。要求在transfer之前配置好。会阻塞donor操作，速度比较慢，高负载情况下会有问题）
    - Copying data files directly. This requires that the receiving server is initialized *after* the transfer. rsync, xtrabackup and other methods fall into this category. These methods a much faster than mysqldump, but they have certain limitations, like they can be used only on server startup and receiving server must be configured very similarly to the donor (e.g. innodb_file_per_table should be the same and so on). Some of these methods, e.g. xtrabackup, can be potentially made non-blocking on donor.（直接copy文件。要求transfer之后配置好？？速度比较快，但是要求配置源和目的配置相同。使用xtrabackup不会阻塞donor)
-   - *Xtrabackup and rsync SST cannot be used for a running server.* It is not possible to copy datafiles under running InnoDB. Having wsrep_address set to a list of node addresses and starting replication on a running node can lead to node crash. *TODO(dirlt)：Xtrabackup需要停机处理吗？* *NOTE(dirlt)：xtrabackup不需要停机处理*
+   - *Xtrabackup and rsync SST cannot be used for a running server.* It is not possible to copy datafiles under running InnoDB. Having wsrep_address set to a list of node addresses and starting replication on a running node can lead to node crash. *todo(dirlt)：Xtrabackup需要停机处理吗？* *note(dirlt)：xtrabackup不需要停机处理*
 
 SST Donor
    - All SST methods cause some disturbance for donor node
@@ -303,7 +303,7 @@ file:./images/galera-parallel-applying.png
    - http://www.codership.com/wiki/doku.php?id=weighted_quorum
    - http://www.codership.com/wiki/doku.php?id=galera_url
 
-TODO(dirlt):
+todo(dirlt):
 
 *** Online Schema Upgrade
 http://www.codership.com/wiki/doku.php?id=rolling_schema_upgrade
@@ -341,14 +341,14 @@ file:./images/galera-schema-upgrade-rsu4.png
 *** Introduction
 Certification based replication uses group communication and transaction ordering techniques to achieve synchronous replication. Transactions execute optimistically in a single node (or replica) and, at commit time, run a coordinated certification process to enforce global consistency. Global coordination is achieved with the help of a broadcast service, that establishes a global total order among concurrent transactions. (基于 *组通信* 以及 *事务顺序化* 技术来达到同步备份。事务首先是乐观地在本地执行，然后提交给其他节点做验证来保证全局一致性）
 
-Pre-requisites for certification based replication: *NOTE(dirlt)：that's why InnoDB is choosen？*
+Pre-requisites for certification based replication: *note(dirlt)：that's why InnoDB is choosen？*
    - database is transactional (i.e. it can rollback uncommitted changes)（数据库必须支持事务）
    - each replication event changes the database atomically（备份事件要能够原子性执行）
    - replicated events are globally ordered (i.e. applied on all instances in the same order)（必须全局有序）
 
 The main idea is that a transaction is executed conventionally until the commit point, under the assumption that there will be no conflict. This is called optimistic execution. When the client issues a COMMIT command (but before the actual commit has happened), all changes made to the database by the transaction and the primary keys of changed rows are collected into a writeset. This writeset is then replicated to the rest of the nodes. After that, the writeset undergoes a deterministic certification test (using the collected primary keys) on each node (including the writeset originator node) which determines if the writeset can be applied or not. If the certification test fails, the writeset is dropped and the original transaction is rolled back. If the test succeeds, the transaction is committed and the writeset is applied on the rest of the nodes.（在本地首先乐观执行，然后在COMMIT时候将修改的writeset通过到其他节点做certification判断是否会产生冲突. 如果失败的话那么本地事务回滚而且放弃writeset, 如果成功的话那么本地事务提交并且通知将writeset作用在其他节点上）
 
-The certification test implemented in Galera depends on the global ordering of transactions. Each transaction is assigned a global ordinal sequence number during replication. Thus, when a transaction reaches the commit point, it is known what was the sequence number of the last transaction it did not conflict with. The interval between those two numbers is an uncertainty land: transactions in this interval have not seen the effects of each other. Therefore, all transactions in this interval are checked for primary key conflicts with the transaction in question. The certification test fails if a conflict is detected. Since the procedure is deterministic and all replicas receive transactions in the same order, all nodes reach the same decision about the outcome of the transaction. The node that started the transaction can then notify the client application if the transaction has been committed or not. （每个事务提交都会分配一个全局有序id。如果这个id是当前最新id的话，那么就可以直接提交，否则需要检查id+1到最新id区间的writeset和当前id是否存在冲突，那么验证会失败） *TODO(dirlt)：xid 和 [xid+1, lastest-id]做验证，如果冲突的话，是放弃xid还是[xid+1, lastest-id]其中冲突的部分？我觉得应该是xid!*
+The certification test implemented in Galera depends on the global ordering of transactions. Each transaction is assigned a global ordinal sequence number during replication. Thus, when a transaction reaches the commit point, it is known what was the sequence number of the last transaction it did not conflict with. The interval between those two numbers is an uncertainty land: transactions in this interval have not seen the effects of each other. Therefore, all transactions in this interval are checked for primary key conflicts with the transaction in question. The certification test fails if a conflict is detected. Since the procedure is deterministic and all replicas receive transactions in the same order, all nodes reach the same decision about the outcome of the transaction. The node that started the transaction can then notify the client application if the transaction has been committed or not. （每个事务提交都会分配一个全局有序id。如果这个id是当前最新id的话，那么就可以直接提交，否则需要检查id+1到最新id区间的writeset和当前id是否存在冲突，那么验证会失败） *todo(dirlt)：xid 和 [xid+1, lastest-id]做验证，如果冲突的话，是放弃xid还是[xid+1, lastest-id]其中冲突的部分？我觉得应该是xid!*
 
 Database Hot-Spots
    - Some rows where many transactions want to write to simultaneously（行冲突）
@@ -397,11 +397,11 @@ http://www.codership.com/wiki/doku.php?id=configuration_tips
 
    - wsrep_provider # a path to Galera library.
    - wsrep_cluster_address # cluster connection URL.
-   - binlog_format=ROW # TODO(dirlt):??
+   - binlog_format=ROW # todo(dirlt):??
    - default_storage_engine=InnoDB
-   - innodb_autoinc_lock_mode=2 # TODO(dirlt):??
-   - innodb_flush_log_at_trx_commit=2 # TODO(dirlt):??
-   - innodb_doublewrite=1 #TODO(dirlt):??
+   - innodb_autoinc_lock_mode=2 # todo(dirlt):??
+   - innodb_flush_log_at_trx_commit=2 # todo(dirlt):??
+   - innodb_doublewrite=1 #todo(dirlt):??
 
 *** Monitoring
 http://www.codership.com/wiki/doku.php?id=monitoring 
@@ -458,7 +458,7 @@ http://www.codership.com/wiki/doku.php?id=limitations
    - How Hard Could That Be? Take II. | Codership : http://www.codership.com/content/how-hard-could-be-take-ii # GLB with libc overloading
    - 5 Tips for migrating your MySQL server to a Galera Cluster | Codership : http://www.codership.com/content/5-tips-migrating-your-mysql-server-galera-cluster
      - MyISAM is supported.
-     - better use primary key from day one *TODO(dirlt): is it functional necessary or because it affects performance?*
+     - better use primary key from day one *todo(dirlt): is it functional necessary or because it affects performance?*
      - stay away from what you don't know(event and trigger)
    - Order of Business | Codership : http://www.codership.com/content/order-business
    - Murphy’s Law is also valid for Galera Cluster for MySQL | FromDual : http://fromdual.com/murphys-law-is-also-valid-for-galera-cluster-for-mysql

@@ -26,7 +26,7 @@
     - Taking locks in the wrong order 错误顺序 
     - Error recovery is hard 错误恢复处理
   - You deserve better tools *高并发更好的工具和做法*
-    - Dataflow Concurrency *基于数据流的并发 TODO(dirlt)：？？？*
+    - Dataflow Concurrency *基于数据流的并发 todo(dirlt)：？？？*
       - Deterministic
       - Declarative
       - Data-driven
@@ -76,7 +76,7 @@
     - Use asynchronous message passing
     - Design reactive event-driven systems
     - Use push not pull or poll  *push可靠性如何保证是个问题*
-    - Don’t use explicit thread management *TODO(dirlt)：？？？*
+    - Don’t use explicit thread management *todo(dirlt)：？？？*
   - How fast is fast enough?
     - Measure, measure and measure 
     - Start with a baseline
@@ -89,7 +89,7 @@ Werner Vogels’ Misconceptions about Reliable Distributed Computing
    2. Automatic object replication is desirable 
    3. All replicas are equal and deterministic
 
-*Worth keeping an eye on* *NOTE(dirlt):可能值得关注一些*
+*Worth keeping an eye on* *note(dirlt):可能值得关注一些*
    - The CALM Conjecture
    - Could be the future of Distributed Computing 
    - Declarative
@@ -104,7 +104,7 @@ Werner Vogels’ Misconceptions about Reliable Distributed Computing
     - We need functional processing, transformations etc.
     - Examples:Crunch/Scrunch,Cascading,Cascalog, Scalding, Scala Parallel Collections
     - Is the assembly language of MapReduce programming
-    - Watch “Why Big Data Needs To Be Functional” by Dean Wampler *TODO(dirlt):maybe read it*
+    - Watch “Why Big Data Needs To Be Functional” by Dean Wampler *todo(dirlt):maybe read it*
     - *问题是Hadoop和OO Programming根本就没关系啊，我理解作者的意思是想强调FP*
   - Batch processing (a la Hadoop) doesn't cut it
     - We need real-time data processing

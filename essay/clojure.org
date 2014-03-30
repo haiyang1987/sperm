@@ -13,5 +13,5 @@
 package
   - http://github.com/downloads/clojure/clojure/clojure-1.2.0.zip
   - http://github.com/downloads/clojure/clojure-contrib/clojure-contrib-1.2.0.zip
-  - *NOTE(dirlt)：使用lein可以搞定这些东西*
+  - *note(dirlt)：使用lein可以搞定这些东西*
 

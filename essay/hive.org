@@ -24,7 +24,7 @@ hive0.7以后提供自动切换local-mode功能，设置 hive> SET hive.exec.mod
    - The total number of reduce tasks required is 1 or 0.
 
 *** Metadata Store
-    - https://cwiki.apache.org/confluence/display/Hive/AdminManual+MetastoreAdmin *NOTE(dirlt)：配置remote server*
+    - https://cwiki.apache.org/confluence/display/Hive/AdminManual+MetastoreAdmin *note(dirlt)：配置remote server*
 
 metadata store主要是用来存储数据库的一些元数据信息，有下面相关的配置参数：
    - javax.jdo.option.ConnectionURL.
@@ -35,7 +35,7 @@ metadata store主要是用来存储数据库的一些元数据信息，有下面
 
 *配置remote server*
 
-remote metadata store server和client之间交互是通过thrift完成的，thrift server通过jdbc连接到mysql或者是其他数据库上。 *NOTE(dirlt):之所以需要这个主要是因为impala要求metastore必须是remote的*
+remote metadata store server和client之间交互是通过thrift完成的，thrift server通过jdbc连接到mysql或者是其他数据库上。 *note(dirlt):之所以需要这个主要是因为impala要求metastore必须是remote的*
 
 Server Configuration Parameters
 | Config Param                          | Config Value                                                           | Comment                                  |
@@ -55,7 +55,7 @@ Client Configuration Parameters
 | hive.metastore.local         | false                       | this is local store                           |
 | hive.metastore.warehouse.dir | <base hdfs path>            | default location for Hive tables.             |
 
-thrift server 通过 hive --service metastore 启动，port在9083上面. 环境变量METASTORE_PORT来配置。 *NOTE(dirlt)：hive-env.sh里面可以设置*
+thrift server 通过 hive --service metastore 启动，port在9083上面. 环境变量METASTORE_PORT来配置。 *note(dirlt)：hive-env.sh里面可以设置*
 #+BEGIN_EXAMPLE
 13/03/07 18:06:34 INFO metastore.HiveMetaStore: Started the new metaserver on port [9083]...
 13/03/07 18:06:34 INFO metastore.HiveMetaStore: Options.minWorkerThreads = 200
@@ -64,7 +64,7 @@ thrift server 通过 hive --service metastore 启动，port在9083上面. 环境
 #+END_EXAMPLE
 
 *** Example
-   - 数据默认是使用ctrl-a来做分割 *NOTE(dirlt)：how wierd:(*
+   - 数据默认是使用ctrl-a来做分割 *note(dirlt)：how wierd:(*
 
 #+BEGIN_EXAMPLE
 ➜  bin  hadoop fs -copyFromLocal ../examples/files/kv1.txt /tmp/
@@ -101,7 +101,7 @@ Time taken: 5.787 seconds
    - copy to hdfs
    - create table.
    - load data.
-   - do select *NOTE(dirlt):可以看到这里运行了mr任务*
+   - do select *note(dirlt):可以看到这里运行了mr任务*
 
 
 *** TroubleShooting

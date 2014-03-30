@@ -54,7 +54,7 @@ Preparing for Failure
      - Design for security at each step
 
 ** Module 3 - Nutch
-*NOTE(dirlt)：介绍nutch工作过程*
+*note(dirlt)：介绍nutch工作过程*
 
 file:./images/nutch-workflow.png
 
@@ -72,7 +72,7 @@ file:./images/nutch-workflow.png
          - Better DNS, robots caching
          - Easy parallelism
        - Two outputs: pages, WebDB edits （输出网页内容以及对webdb的修改）
-       - *TODO(dirlt):content存储系统应该需要支持随机读，但是webdb因此都是为MR服务因此存储在HDFS也没有关系*
+       - *todo(dirlt):content存储系统应该需要支持随机读，但是webdb因此都是为MR服务因此存储在HDFS也没有关系*
    - Index generation
      - Indexing 
        - Uses Lucene text indexer
@@ -84,6 +84,6 @@ file:./images/nutch-workflow.png
    - Serving results
 
 ** Module 4 - MapReduce Theory and Algorithms
-*TODO(dirlt):介绍了许多经典算法如何映射到MapReduce上面*
+*todo(dirlt):介绍了许多经典算法如何映射到MapReduce上面*
 
 

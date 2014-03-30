@@ -17,7 +17,7 @@ Our goal was to equip all facilities with a new in-stream engine (shown in the b
    - Modularity and flexibility. It is not to say that one can simply issue a SQL-like query and the corresponding pipeline will be created and deployed automatically, but it should be relatively easy to assemble quite complex data processing chains by linking one block to another.（模块化和灵活性，这样能够组织成为更加复杂的查询）
    - Fault-tolerance. Strict fault-tolerance is a principal requirement for the engine. As it sketched in the bottom part of the figure, one possible design of the engine is to use distributed data processing pipelines that implement operations like joins and aggregations or chains of such operations, and connect these pipelines by means of fault-tolerant persistent buffers. These buffers also improve modularity of the system by enabling publish/subscribe communication style and easy addition/removal of the pipelines. The pipelines can be stateful and the engine’s middleware should provide a persistent storage to enable state checkpointing. All these topics will be discussed in the later sections of the article.（pipeline之间使用buffer来进行持久化来解决容错问题）
    - Interoperability with Hadoop. The engine should be able to ingest both streaming data and data from Hadoop i.e. serve as a custom query engine atop of HDFS.（和HDFS做交互）
-   - High performance and mobility. The system should deliver performance of tens of thousands messages per second even on clusters of minimal size. The engine should be compact and efficient, so one can deploy it in multiple datacenters on small clusters.（在小规模集群上处理到w级别的QPS，并且容易部署） *NOTE(dirlt)：部署和可维护性其实在很大程度上需要考虑*
+   - High performance and mobility. The system should deliver performance of tens of thousands messages per second even on clusters of minimal size. The engine should be compact and efficient, so one can deploy it in multiple datacenters on small clusters.（在小规模集群上处理到w级别的QPS，并且容易部署） *note(dirlt)：部署和可维护性其实在很大程度上需要考虑*
 
 ** Basics of Distributed Query Processing
 It is clear that distributed in-stream data processing has something to do with query processing in distributed relational databases. Many standard query processing techniques can be employed by in-stream processing engine, so it is extremely useful to understand classical algorithms of distributed query processing and see how it all relates to in-stream processing and other popular paradigms like MapReduce.
@@ -93,21 +93,21 @@ file:./images/in-stream-spark-lineage-tracking.png
 This simple but powerful paradigm enables centralized transaction management and inherently provides exactly-once message processing semantics. It is worth noting that this technique can be used both for batch processing and for stream processing because it treats the input data as a set of batches regardless to their streaming of static nature.
 
 *** State Checkpointing
-*TODO(dirlt):*
+*todo(dirlt):*
 
 *** Additive State and Sketches
    - Additivity of intermediate and final computational results is an important property that drastically simplifies design, implementation, maintenance, and recovery of in-stream data processing systems. Additivity means that the computational result for a larger time range or a larger data partition can be calculated as a combination of results for smaller time ranges or smaller partitions.
    - Sketches is a very efficient way to transform non-additive values into additive. Sketches are very popular in certain areas like internet advertising and can be considered as an independent pattern of in-stream processing. 
 
 *** Logical Time Tracking
-It is very common for in-stream computations to depend on time: aggregations and joins are often performed on sliding time windows; processing logic often depends on a time interval between events and so on. Obviously, the in-stream processing system should have a notion of application’s view of time, instead of CPU wall-clock. However, proper time tracking is not trivial because data streams and particular events can be replayed in case of failures. Each processor in a pipeline tracks the maximal timestamp it has seen in a stream and updates a global persistent clock by this timestamp if the global clock is behind. All other processors synchronize their time with the global clock. *TODO(dirlt):为什么需要同步这个global clock?*
+It is very common for in-stream computations to depend on time: aggregations and joins are often performed on sliding time windows; processing logic often depends on a time interval between events and so on. Obviously, the in-stream processing system should have a notion of application’s view of time, instead of CPU wall-clock. However, proper time tracking is not trivial because data streams and particular events can be replayed in case of failures. Each processor in a pipeline tracks the maximal timestamp it has seen in a stream and updates a global persistent clock by this timestamp if the global clock is behind. All other processors synchronize their time with the global clock. *todo(dirlt):为什么需要同步这个global clock?*
 
 *** Aggregation in a Persistent Store
 Instead of maintaining in-memory event buffers, one can simply save all incoming events from all data streams to Casandra using a join key as row key, as it shown in the figure below. On the other side, the second process traverses the records periodically, assembles and emits joined events, and evicts the events that fell out of the time window. Cassandra even can facilitate this activity by sorting events according to their timestamps.
 
 file:./images/in-stream-aggregation-in-a-persistent-store.png
 
-It is important to understand that such techniques can defeat the whole purpose of in-stream data processing if implemented incorrectly – writing individual events to the data store can introduce a serious performance bottleneck even for fast stores like Cassandra or Redis. On the other hand, this approach provides perfect persistence of the computational state and different performance optimizations – say, batch writes – can help to achieve acceptable performance in many use cases. *NOTE(dirlt)：不要当作通用技术*
+It is important to understand that such techniques can defeat the whole purpose of in-stream data processing if implemented incorrectly – writing individual events to the data store can introduce a serious performance bottleneck even for fast stores like Cassandra or Redis. On the other hand, this approach provides perfect persistence of the computational state and different performance optimizations – say, batch writes – can help to achieve acceptable performance in many use cases. *note(dirlt)：不要当作通用技术*
 
 *** Aggregation on a Sliding Window
 *Incremental computations* over sliding windows is a group of techniques that are widely used in digital signal processing, in both software and hardware. 
@@ -120,7 +120,7 @@ The key observation is that relational query processing, MapReduce, and in-strea
    - In-stream processing could require strict data delivery guarantees and persistence of the intermediate state. These properties are not crucial for batch processing where computations can be easily restarted.
    - In-stream processing is inseparable from pipelining. For batch processing, pipelining is not so crucial and even inapplicable in certain cases. Systems like Apache Hive are based on staged MapReduce with materialization of the intermediate state and do not take full advantage of pipelining.
 
-*NOTE(dirlt):stream和batch之间的差异主要还是在数据量上。spark被称为stream系统但是内部还是按照batch来做处理的，只不过在实时性上spark和mapreduce区分开来。实时性一方面来源于input/output性质, 一方面来源于pipelining的中间状态是否需要保存以及如何保存*
+*note(dirlt):stream和batch之间的差异主要还是在数据量上。spark被称为stream系统但是内部还是按照batch来做处理的，只不过在实时性上spark和mapreduce区分开来。实时性一方面来源于input/output性质, 一方面来源于pipelining的中间状态是否需要保存以及如何保存*
 
 The two statement above imply that tunable persistence (in-memory message passing versus on-disk materialization) and reliability are the distinctive features of the imaginary query engine that provides a set of processing primitives and interfaces to the high-level
 frameworks:

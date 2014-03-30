@@ -3,6 +3,6 @@
    - http://research.yahoo.com/files/pnuts.pdf
    - http://www.cse.iitb.ac.in/dbms/Data/Courses/CS632/Talks/pnuts-vldb08.ppt
 
-TODO(dirlt):
+todo(dirlt):
 
 

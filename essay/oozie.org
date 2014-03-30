@@ -11,7 +11,7 @@
      - coordinator http://incubator.apache.org/oozie/docs/3.2.0-incubating/docs/CoordinatorFunctionalSpec.html
      - bundle http://incubator.apache.org/oozie/docs/3.2.0-incubating/docs/BundleFunctionalSpec.html
 
-*NOTE(dirlt):我只是粗略地使用了一下，直觉上觉得这个东西很烂。推荐大家可以考虑一下azkaban* 
+*note(dirlt):我只是粗略地使用了一下，直觉上觉得这个东西很烂。推荐大家可以考虑一下azkaban* 
 
 oozie工作方式也是启动一个mapper任务（这个任务启动真正任务）放在cluster上面运行。大致上来看的话需要几个文件：
    - workflow.xml oozie读取它来知道每个任务DAG如何并且失败以及成功之后如何处理。需要提交到hdfs上面。
@@ -77,7 +77,7 @@ rmr: org.apache.hadoop.dfs.SafeModeException: Cannot delete /user/hadoop/input. 
 对于workflow来说，最主要关注下面几个部分：
    - node
      - control flow node // 控制流节点，决定这个DAG。
-     - action node // 动作节点。TODO(dirlt)：这里不是很明白streaming和pipe方式之间的差别。
+     - action node // 动作节点。todo(dirlt)：这里不是很明白streaming和pipe方式之间的差别。
    - parameterization // 参数化，可以获得很多外部状态变量并且进行计算判断。
 下面是一些具体细节：
    - action有两个状态ok/error http://localhost/utils/oozie-2.3.2-cdh3u3/docs/WorkflowFunctionalSpec.html#a3.2.1.3_Actions_Have_2_Transitions_ok_and_error 
@@ -94,7 +94,7 @@ rmr: org.apache.hadoop.dfs.SafeModeException: Cannot delete /user/hadoop/input. 
      - 用户自己标记哪些任务需要skip
      - 如果这个任务之前没有complete但是却被skip的话，那么fail
      - 这个job和原来的job使用同一个jobID
-     - TODO(dirlt)；文档似乎没有写明如何具体提交！
+     - todo(dirlt)；文档似乎没有写明如何具体提交！
    - 提供了webservice API接口来控制 http://localhost/utils/oozie-2.3.2-cdh3u3/docs/WorkflowFunctionalSpec.html#a11_Oozie_Web_Services_API_V0
    - 没有提供优先级控制的方式 http://localhost/utils/oozie-2.3.2-cdh3u3/docs/WorkflowFunctionalSpec.html#a16_Workflow_Jobs_Priority
      - Any prioritization of jobs in the remote systems is outside of the scope of Oozie.
@@ -222,7 +222,7 @@ hadoop fs -put workflow.xml /user/dirlt/examples/apps/map-reduce/
 sync dataset通常是一个hdfs uri，你可以让uri里面指定date以及time来对应到每一个具体的任务。一旦某个任务完成的话，那么这个hdfs uri就会建立，
 并且在先面会存在一个_SUCCESS的文件（当然你也可以指定其他文件名，如果没有指定的话那么就以目录是否存在作为依据），来表示任务完成。各个任务之间可以通过这种方式来做数据流之间的依赖。
 
-NOTE(dirlt)：关于coordinator的文档非常少，而且使用起来有诸多不便。比如时区设置难以设置正确，以及在webconsole下面不方便察看killed掉workflow的原因。
+note(dirlt)：关于coordinator的文档非常少，而且使用起来有诸多不便。比如时区设置难以设置正确，以及在webconsole下面不方便察看killed掉workflow的原因。
 另外如果想做一些定制化执行策略的话，还需要通过使用一些workaround的方法才可以OK。
 
 下面看一个使用coordinator的例子（这个例子在 examples/apps/aggregator/ 目录下面）。我们现在需要三个文件
@@ -314,7 +314,7 @@ oozie.coord.application.path=${nameNode}/user/${user.name}/${examplesRoot}/apps/
 运行和取消方式都和之前的workflow方式没有任何差别。至于察看webconsole内容在coordinator jobs这个tab里面。
 比较郁闷的就是，不能够察看每一个action具体的情况，这点是非常不利于调试的。
 
-NOTE(dirlt)：不过后来测试了一下之后，发现其实是可以观察coordinator jobs里面对应的workflow的。在coord job info里面对应每个action都有一个ext id
+note(dirlt)：不过后来测试了一下之后，发现其实是可以观察coordinator jobs里面对应的workflow的。在coord job info里面对应每个action都有一个ext id
 
 file:./images/oozie-coord-job-info.png
 
@@ -332,4 +332,4 @@ file:./images/oozie-coord-job-action-info.png
    - 任务之间的依赖，不能够指定部分完成（比如我们希望任务A依赖于B，但是并不是B完全执行完成A才可以启动，而是B的某个阶段完成的话就可以启动A）。
    - 从job描述上面看，系统本身并没有来做cron这见事情，可能是通过外部任务自己cron方式提交来完成cron功能。
    - azkaban对于每一个command单独fork出一个单元来监视这个command完成情况（猜想应该是判断是否返回值为0确定是否成功执行，但是对于MR这样的任务来说的话，如果forker挂掉的话任务本身也依然是在执行的，这样下次重启的话就会重复启动多个任务）。
-   - TODO(dirlt)：不确定是否可以删除任务或者修改任务？
+   - todo(dirlt)：不确定是否可以删除任务或者修改任务？

@@ -1,7 +1,7 @@
 * svn
 #+OPTIONS: H:5
 
-TODO(dirlt):
+todo(dirlt):
 
 ** svn repo
 ** svn branch

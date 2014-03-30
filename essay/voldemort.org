@@ -8,7 +8,7 @@
    - http://static.usenix.org/events/fast/tech/full_papers/Sumbaly.pdf
 
 ** Serving Large-scale Batch Computed Data with Project Voldemort
-NOTE(dirlt)：FAST2012 http://static.usenix.org/events/fast/tech/
+note(dirlt)：FAST2012 http://static.usenix.org/events/fast/tech/
 
 *** Abstract
    - Current serving systems lack the ability to bulk load massive immutable data sets without affecting serving performance. The performance degradation is largely due to index creation and modification as CPU and memory resources are shared with request serving.（导入大规模数据主要问题还是这些数据集合的索引创建以及修改会影响到在线服务性能）
@@ -43,7 +43,7 @@ Before we started building our own custom storage engine, we decided to evaluate
    - To solve this problem, MySQL provides a LOAD DATA statement that tries to bulk update the underlying index. （LOAD DATA批量导入数据）
      - Unfortunately, using this statement for the MyISAM storage engine locks the entire table.（MyISAM会锁表）
      - InnoDB instead executes this statement with row-level locking, but experiences substantial disk space overhead for every tuple. However, to achieve MyISAM-like bulk loading performance, InnoDB prefers data or-dered by primary key.（InnoDB行级别锁表但是占用额外磁盘空间过大，并且如果希望达到MyISAM性能的话，key最好是排序的）
-     - Achieving fast load times with low space overhead in Berkeley DB requires several manual and non-scalable configuration changes, such as shutting down cleaner and checkpointer threads. TODO(dirlt)：什么是non-scalable configuration changes? 我的理解是BDB为了达到快速导入并且保持磁盘小的效果，修要比较麻烦的配置修改，但是这些配置修改却不太适合大量的数据导入
+     - Achieving fast load times with low space overhead in Berkeley DB requires several manual and non-scalable configuration changes, such as shutting down cleaner and checkpointer threads. todo(dirlt)：什么是non-scalable configuration changes? 我的理解是BDB为了达到快速导入并且保持磁盘小的效果，修要比较麻烦的配置修改，但是这些配置修改却不太适合大量的数据导入
    - The next solution we explored was to bulk load into a different MySQL table on the same cluster and use views to transparently swap to the new table. （批量导入到另外一个表然后通过view方式切换）
      - We used the MyISAM storage engine, opting to skip InnoDB due to the large space requirements. This approach solves the locking problem, but still hurts serving latency during the load due to pressure on shared CPU and memory resources.（MyISAM可以解决锁表问题，但是占用资源比较多影响服务）
    - We then tried completely offloading the index construc-tion to another system as building the index on the serving system has isolation problems.（在另外一个和线上服务独立的集群创建索引）
@@ -66,7 +66,7 @@ The lack of off-the-shelf solutions, along with the in-efficiencies of the previ
 file:./images/voldemort-read-only-extensions-architecture.png
 
 **** Storage Format
-   - Many storage formats try to build data structures that keep the data memory resident in the process’s address space, ignoring the effects of the operating system’s page cache. The several orders of magnitude latency gap be-tween page cache and disk means that most of the real performance benefit by maintaining our own structure is for elements already in the page cache. In fact, this cus-tom structure may even start taking memory away from the page cache. This potential interference motivated the need for our storage engine to exploit the page cache in-stead of maintaining our own complex heap-based data structure. Because our data is immutable, Voldemort memory maps the entire index into the address space. Ad-ditionally, because Voldemort is written in Java and runs on the JVM, delegating the memory management to the operating system eases garbage collection tuning.（充分利用os page cache一方面可以简化代码而不用自己去维护比较复杂的cache结构，另外一方面因为page cache不是通过JVM来管理的所以可以缓解JVM GC的压力来提高效率） NOTE(dirlt):用JVM编写的存储系统最好不要来自己管理cache，或者由上层来管理cache，或者由JNI来间接管理cache，因为cache对JVM GC的影响会非常大
+   - Many storage formats try to build data structures that keep the data memory resident in the process’s address space, ignoring the effects of the operating system’s page cache. The several orders of magnitude latency gap be-tween page cache and disk means that most of the real performance benefit by maintaining our own structure is for elements already in the page cache. In fact, this cus-tom structure may even start taking memory away from the page cache. This potential interference motivated the need for our storage engine to exploit the page cache in-stead of maintaining our own complex heap-based data structure. Because our data is immutable, Voldemort memory maps the entire index into the address space. Ad-ditionally, because Voldemort is written in Java and runs on the JVM, delegating the memory management to the operating system eases garbage collection tuning.（充分利用os page cache一方面可以简化代码而不用自己去维护比较复杂的cache结构，另外一方面因为page cache不是通过JVM来管理的所以可以缓解JVM GC的压力来提高效率） note(dirlt):用JVM编写的存储系统最好不要来自己管理cache，或者由上层来管理cache，或者由JNI来间接管理cache，因为cache对JVM GC的影响会非常大
    - To take advantage of the parallelism in Hadoop during generation, we split the input data destined for a particular node into multiple chunk buckets, which in turn are split into multiple chunk sets. Generation of multiple chunk sets can then be done independently and in parallel.（在一个节点上的数据有若干个chunk buckets组成，而每个chunk bucket则由若干个chunk sets组成）
    - A chunk bucket is defined by the primary partition id and replica id, thereby giving it a unique identifier across all nodes. For a store with N =2, the replica id would be either 0 for the primary replica or 1 for the secondary replica. Our initial design had started with the simpler design of having one chunk bucket per-node (that is, multiple chunk sets stored on a node with no knowledge of partition/replica), but the current smaller granularity is necessary to aid in rebalancing（这种partition方式直接就是dynamo里面提到的第三种方式） 这里的chunk bucket是指一个partition上的数据，由partition-id和replica-id共同标记。
    - The number of chunk sets per bucket is decided dur-ing generation on the Hadoop side. The default value is one chunk set per bucket, but can be increased by the store owner for more parallelism. The only lim-itation is that a very large value for this parameter would result in multiple small-sized files—a scenario that HDFS does not handle efficiently.（chunk set对应hadoop里面一次reduce生成的文件，通常来说一个bucket包含一个set，但是可能为了加快构建可能包含多个set。但是也需要控制set文件的大小，不然就会存在许多小文件存储在HDFS上）
@@ -91,18 +91,18 @@ file:./images/voldemort-storage-format.png
    - The entire operation is coordinated using a read-write lock. A rollback follows the same sequence of steps, except that files are opened in an older version directory. Both of these operations are very fast as they are purely metadata operations: no data reads take place.
 
 **** Data Load
-TODO(dirlt)：原子切换是2PC实现吗？
+todo(dirlt)：原子切换是2PC实现吗？
 
 **** Retrieval
-   - The most time-consuming step is to search the index file. A binary search in an index of 1 million keys can result in around 20 key comparisons; if the index file is not cached, then 20 disk seeks are required to read one value. （检索最耗时的部分还是在查询index file上） NOTE(dirlt)：用bloom filter屏蔽key不存在这种最坏情况。
+   - The most time-consuming step is to search the index file. A binary search in an index of 1 million keys can result in around 20 key comparisons; if the index file is not cached, then 20 disk seeks are required to read one value. （检索最耗时的部分还是在查询index file上） note(dirlt)：用bloom filter屏蔽key不存在这种最坏情况。
    - As a small optimization, while fetching the files from HDFS, Voldemort fetches the index files after all data files to aid in keeping the index files in the page cache. *首先传输数据文件，然后传输index文件，来帮助index文件留在page cache里面*
    - Rather than binary search, another retrieval strategy for sorted disk files is interpolation search. This search strategy uses the key distribution to predict the approxi-mate location of the key, rather than halving the search space for every iteration. Interpolation search works well for uniformly distributed keys, dropping the search com-plexity from O(log N) to O(log log N). This helps in the uncached scenario by reducing the number of disk seeks. As MD5 (and its subsets) provides a fairly represen-tative uniform distribution, there will be minimal speedup from these techniques. （插值搜索可以在key分布不均匀的情况下提高效率）
      
 **** Schema Upgrades
 **** Rebalancing
-TODO(dirlt):membership的修改是2PC实现吗？
+todo(dirlt):membership的修改是2PC实现吗？
 
-NOTE(dirlt)：因为Voldemort定位为只读数据库，所以在membership的变化下数据可以保持强一致性。而Dynamo这类读写数据库的话，在membership的变化数据只能够保持最终一致性。
+note(dirlt)：因为Voldemort定位为只读数据库，所以在membership的变化下数据可以保持强一致性。而Dynamo这类读写数据库的话，在membership的变化数据只能够保持最终一致性。
 
    - Our smallest unit of rebalancing is a partition. In other words, the addition of a new node translates to giving the ownership of some partitions to that node. The rebalancing process is run by a tool that coordinates the full process.（Again，这种partition方式就是dynamo里面提到的第三种方式，好处就是在rebalance的时候不需要scan key range而只是需要移动对应的partition data file）
    - The following describes the rebalancing strategy during the addition of a new node. 
@@ -123,7 +123,7 @@ NOTE(dirlt)：因为Voldemort定位为只读数据库，所以在membership的�
 ** Building a terabyte-scale data cycle at LinkedIn with Hadoop and Project Voldemort
 http://data.linkedin.com/blog/2009/06/building-a-terabyte-scale-data-cycle-at-linkedin-with-hadoop-and-project-voldemort
 
-NOTE(dirlt)：这篇文章是2009年写的，所以相对上面那篇文章来说很多内容都过时了，比如index文件里面key使用128字节MD5存储。
+note(dirlt)：这篇文章是2009年写的，所以相对上面那篇文章来说很多内容都过时了，比如index文件里面key使用128字节MD5存储。
 
 file:./images/voldemort-linkedin-data-cycle.png   
 

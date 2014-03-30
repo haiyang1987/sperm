@@ -8,7 +8,7 @@ backblaze storage pod 构造大容量廉价存储服务器
    - 2.0 # 4U, 135TB, 7394$
    - 3.0 # 4U, 180TB, ？？？
 
-*TODO(dirlt)：具体硬件方面的细节没有看也看不懂*
+*todo(dirlt)：具体硬件方面的细节没有看也看不懂*
 
 ** Pod 1.0
 *** No One Sells Cheap Storage, so We Designed It

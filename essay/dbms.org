@@ -28,7 +28,7 @@
    - 再论事务管理
    - 信息集成
 
-NOTE(dirlt):虽然并发控制和事务管理很重要，但是觉得现在了解一些背景知识不是很多，
+note(dirlt):虽然并发控制和事务管理很重要，但是觉得现在了解一些背景知识不是很多，
 并且似乎真实情况下面对于这种东西很少能够用上，大部分的时候只需要简单的事务管理和简单的并发控制即可。
 对于这方面的学习打算针对先了解一些实践方面的知识。
 
@@ -141,7 +141,7 @@ SQL区分三类关系：
    - 函数依赖(functional dependency)是键的泛化，我们可以使用函数依赖来定义关系模式的规范形式，这个过程成为规范化。
    - 多值依赖(multivalued dependency)直观的表示一个条件：关系的一个或者多个属性独立于其他若干个属性。这些依赖也可以导致关系的规范构造和分解以消除冗余。
 
-TODO(dirlt):对于chase,3NF,MVD,4NF其实都不太清楚。但是我猜想应该不会妨碍后面的阅读吧，引入这些概念无非就是指导我们如何更好地设计关系。
+todo(dirlt):对于chase,3NF,MVD,4NF其实都不太清楚。但是我猜想应该不会妨碍后面的阅读吧，引入这些概念无非就是指导我们如何更好地设计关系。
 
 *** 函数依赖
 关系上的函数依赖(functional dependency,fd)是指"如果属性ABC一致的话，那么DEF属性也必然一致"。形式地极为ABC->DEF,称ABC函数决定DEF.
@@ -188,7 +188,7 @@ FD集合的最小基本集(Minimal Basis for a set of FD's):对于任何FD集合
    - 消除异常(elimination of anomalic).关于异常之前已经提到了。
    - 信息的可恢复(recoverability of information).是否能够从分解后的各个元组中恢复原始关系。通常可以通过将分解后的关系通过自然连接，准确恢复原始关系。任何一个分解都包含了原关系的所有元组，但是如果分解选择不当，则连接结果会包含不属于原来关系的元组。如果能够准确恢复原关系，那么称这个分解是无损连接分解(lossless-join decomposition).通过chase可以来判断一个分解是否具有无损连接性质。
    - 依赖的保持(preservation of dependencies).如果FD的投影在分解后的关系上成立，能否确保对分解后的关系用连接重构获取的原始关系仍然能够满足原来的FD.如果分解可以满足这点的话，那么称这个分解为依赖保持分解(dependency-preserving decomposition).
-TODO(dirlt):对于chase以及如何判断无损连接性质完全没有了解.不过我觉得了解也没有太大作用。
+todo(dirlt):对于chase以及如何判断无损连接性质完全没有了解.不过我觉得了解也没有太大作用。
 
 但是对于某些关系我们会发现，通过上面的分解方式(关系满足Boyce-Codd范式)，关系可能不会满足<依赖的保持>.所以我们这里放松条件，而这放松的条件就是"第三范式"(third normal form.3NF).
 第一范式(first normal form)只是简单地要求每个元组的各分量是原子值，第二范式(second normal form)是3NF的一个限制较少的版本。后面我们第四范式(fourth normal form).
@@ -199,10 +199,10 @@ TODO(dirlt):对于chase以及如何判断无损连接性质完全没有了解.�
 如果一个属性是某个键的成员，则常被称为"主属性"(prime).因此3NF的条件可以表述称"对于每个非平凡FD,或者其左边是超键，或者其右边仅由主属性构成".
 
 *** 多值依赖
-TODO(dirlt):
+todo(dirlt):
 
 *** 第四范式
-TODO(dirlt):
+todo(dirlt):
 
 第四范式条件本质上是BCNF条件，但是它应用于MVD而非FD.正式定义是
 #+BEGIN_EXAMPLE
@@ -223,7 +223,7 @@ TODO(dirlt):
 我们考虑一个新数据库建立过程。该过程从设计阶段开始，提出并回答存储什么信息，信息元素之间如何关联，假定之间有什么样的约束比如键或者是参考的完整性。
 通过这个过程我们建立了<高级数据库模型>.但是因为绝对多数的商业数据库系统使用关系模型，所以我们还需要考虑从<高级数据库模型>如何转换成为<关系数据库模型>.
 
-TODO(dirlt):我觉得这个部分的内容完全可以延后，对于了解数据库系统本质没有太大帮助。
+todo(dirlt):我觉得这个部分的内容完全可以延后，对于了解数据库系统本质没有太大帮助。
 
 ** 代数和逻辑查询语言
 首先我们将操作对象从<集合>扩展到<包>,然后给出基于<包>上的更多的关系代数操作。引入一种逻辑描述语言Datalog,允许用户用描述期望的结果形式地
@@ -272,7 +272,7 @@ NOTICE(dirlt):其实我觉得更关注的是Datalog->关系代数的转换。如
 关于选择部分的话，我们有必要说说NULL以及涉及NULL的操作和比较。对空值NULL有许多不同的解释，下面是一些最常见的解释：
    - 未知值(value unknown).知道它有一个值但是不知道是什么，比如一个未知的生日。
    - 不适用的值(value inapplicable).仅仅是占位符，这个值是没有意义的。
-   - 保留的值(value withheld).属于某个对象但是无权知道的值。比如未公布的电话号码phone属性为NULL.TODO(dirlt):still confused.
+   - 保留的值(value withheld).属于某个对象但是无权知道的值。比如未公布的电话号码phone属性为NULL.todo(dirlt):still confused.
 对于NULL的操作和比较：
    - NULL和任何值进行运算操作结果为NULL
    - NULL和任意值进行比较返回UNKNOWN.(TRUE | FALSE).
@@ -284,11 +284,11 @@ NOTICE(dirlt):其实我觉得更关注的是Datalog->关系代数的转换。如
    - 嵌套循环
    - 并行赋值
    - 转换为关系代数
-但是针对某些情况这几种解释模型都不能够很好地工作。TODO(dirlt):分析并且加以阐述。
+但是针对某些情况这几种解释模型都不能够很好地工作。todo(dirlt):分析并且加以阐述。
 
 *** 关系代数操作
 SQL提供了对应的包并(UNION)，交(INTERSECT)，差(EXCEPT)关系代数操作用在查询结果上面，条件是要求这些查询结果提供的关系具有相同的属性和属性类型列表。
-比如(SELECT name,address FROM MovieStar) EXCEPT (SELECT name,address FROM MovieExec). TODO(dirlt):不过好像现实中看到很少这样使用.
+比如(SELECT name,address FROM MovieStar) EXCEPT (SELECT name,address FROM MovieExec). todo(dirlt):不过好像现实中看到很少这样使用.
 
 *** 子查询
 在SQL中，一个查询可以通过不同的方式被用来计算另外一个查询。当某个查询时另外一个查询的部分时，称之为子查询(subquery).
@@ -341,7 +341,7 @@ SQL提供了对应的包并(UNION)，交(INTERSECT)，差(EXCEPT)关系代数操
    - 读未提交(read-uncommited).事务能够读取到其他未提交事务写入的数据。SET TRANSACTION ISOLATION LEVEL READ UNCOMMITED.
    - 读提交(read-commited).只有那些已经提交事务写入的元组才可以被这个事务看到。SET TRANSACTION ISOLATION LEVEL READ COMMITED.
    - 可重复读(repeatable-read).查询得到的每个元组如果在此查询再次执行时必须重现。SET TRANSACTION ISOLATION LEVEL REPEATABLE READ.
-TODO(dirlt):需要加深理解.
+todo(dirlt):需要加深理解.
 
 -----
 
@@ -358,8 +358,8 @@ Transactions can be deferred, immediate, or exclusive. The default transaction b
 
 区别还是非常简单的：
    - deferred 延迟上锁。在begin transcation之后其他的连接还可以发起begin transaction. 某个连接发起读操作就创建SHARED lock（之后只是可读，并且必须比RESERVED lock先释放）, 发起写操作就创建RESERVED lock（之后可读可写，但是必须等待其他链接全部释放）
-   - immediate 立刻上锁。相当立刻占用RESERVED lock，其他链接可以发起begin trasnaction但是只能够获得SHARED lock，并且和之前一样，必须等待shared lock释放，reversed lock才能够释放。 *NOTE(dirlt)：这点非常实际，因为对于发起SHARED lock而言，肯定希望期间读取的数据不会发生变化*
-      *NOTE(dirlt)：似乎如果直接执行SQL语句相当加上immediate transaction*
+   - immediate 立刻上锁。相当立刻占用RESERVED lock，其他链接可以发起begin trasnaction但是只能够获得SHARED lock，并且和之前一样，必须等待shared lock释放，reversed lock才能够释放。 *note(dirlt)：这点非常实际，因为对于发起SHARED lock而言，肯定希望期间读取的数据不会发生变化*
+      *note(dirlt)：似乎如果直接执行SQL语句相当加上immediate transaction*
    - exclusive 排斥上锁。排斥其他连接发起任何transaction，相当于lock table.
 
 ** 约束与触发器
@@ -459,10 +459,10 @@ NOTICE(dirlt):从书中了解到物化视图可以不用立即更新，而可以
 我们需要考虑到索引带来的性价比，因为索引本身通常也会存放在磁盘上面。因此正确地选择索引对于优化查询是非常重要的。
 
 ** 服务器环境下的SQL
-TODO(dirlt):
+todo(dirlt):
 
 ** 关系数据库的新课题
-TODO(dirlt):
+todo(dirlt):
 
 ** 半结构化数据模型
 半结构化数据(semistructured-data)模型在数据库系统中有独特的地位：
@@ -549,10 +549,10 @@ DTD(Document Type Definition).而XML模式(XML Schema)则是另外一种为XML�
 关于RAID在arstechnica上面阅读了一篇文章，写得非常详细，我也稍微总结了一下 http://dirlt.com/blog/?p=1992 也可以看[[file:raid.org][这里]]
 
 ** 数据元素表示
-TODO(dirlt):
+todo(dirlt):
 
 ** 索引结构
-TODO(dirlt):
+todo(dirlt):
 
 ** 多维索引
 在多维上面建立索引需要考虑下面需求：
@@ -568,10 +568,10 @@ TODO(dirlt):
 猜测现实系统可能基于kd tree或者是R tree来实现多维索引。
 
 ** 查询执行
-TODO(dirlt):
+todo(dirlt):
 
 ** 查询编译器
-TODO(dirlt):
+todo(dirlt):
 
 ** 系统故障对策
 关于数据库系统的故障可以分为下面几种：
@@ -601,16 +601,16 @@ commit哪些事务存在abort。另外还有一些事务没有abort的话那么�
 如果存在<T',x,v>的话，那么将数据库元素修改为v.
 
 *** redo
-TODO(dirlt):
+todo(dirlt):
 
 *** undo/redo
-TODO(dirlt):
+todo(dirlt):
 
 ** 并发控制
-TODO(dirlt):
+todo(dirlt):
 
 ** 再论事务管理
-TODO(dirlt):
+todo(dirlt):
 
 ** 信息集成
 信息集成有三种最常用的方式：

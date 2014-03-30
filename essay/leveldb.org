@@ -41,7 +41,7 @@ leveldb还是比较麻烦的.开始阅读的时候(像我)很多策略细节就�
 (dirlt):最近看到一篇文章比较leveldb和mysql存储引擎性能(可能是innodb).里面提到了连续插入性能的抖动很大.这可能
 和底层为了达到读取高效率不断地进行compaction有关的.关于compaction挑选以及触发这个策略的话以后可以好好研究一下.
 
-NOTE(dirlt):compaction策略没有仔细分析，但是这个部分是精髓。如何控制compaction策略来针对应用达到最好的读写平衡。另外对于Recovery部分没有仔细看代码，
+note(dirlt):compaction策略没有仔细分析，但是这个部分是精髓。如何控制compaction策略来针对应用达到最好的读写平衡。另外对于Recovery部分没有仔细看代码，
 但是我觉得这个部分倒不是很大的问题，可能学到的东西不多但是需要非常仔细地阅读才行。
 
 ** WriteBatch
@@ -54,7 +54,7 @@ leveldb使用WriteBatch来达到atomic write操作.WriteBatch过程非常简单�
    - LevelDB Bloom Filter实现. http://duanple.blog.163.com/blog/static/7097176720123227403134/
 
 bloom filter原理非常简单，似乎没有必要详细分析。关于代码部分的话可以看Code Analysis/Util/BloomFilter.
-至于filter在磁盘上面是如何存储的可以参看下面一节Storage/DiskTable分析。NOTE(dirlt):还是移动到这里吧.
+至于filter在磁盘上面是如何存储的可以参看下面一节Storage/DiskTable分析。note(dirlt):还是移动到这里吧.
 
 meta block存放了bloom filter信息，这样可以减少磁盘读取。关于Table内部支持bloom filter在table/filter_block.h有实现。
 分别是FilterBlockBuilder和FilterBlockReader.
@@ -231,7 +231,7 @@ not necessarily the format.
 #+END_EXAMPLE
 pros有：
    - 如果磁盘数据发生损坏的话，那么对于数据定位的话非常简单。如果这个block出现问题的话那么直接跳过这个block即可。
-   - 程序处理方面可以很容易地找到边界。NOTE(dirlt):这个也是相对的
+   - 程序处理方面可以很容易地找到边界。note(dirlt):这个也是相对的
    - 对于单条大数据处理的话我们不需要分配很大的内存来做buffer.
 cons有：
    - 没有针对小record进行优化，比如如果record足够小的话完全可以在length部分使用1个字节。
@@ -275,7 +275,7 @@ seperator可以设置成为ac.seperator的生成可以参考Comparator.使用尽
 每次进行读取都会从某个version读取，然后针对这个version做一个引用计数。然后每次需要删除一些不必要的文件时候就会遍历versionset了解哪些文件
 还需要，然后对比文件系统目录下面的文件就知道哪些文件不再需要，即可删除。
 
-NOTE(dirlt):这里稍微总结一下 http://leveldb.googlecode.com/svn/trunk/doc/impl.html 提到的compaction策略。可能阅读完了这些策略之后反过头来看看
+note(dirlt):这里稍微总结一下 http://leveldb.googlecode.com/svn/trunk/doc/impl.html 提到的compaction策略。可能阅读完了这些策略之后反过头来看看
 代码可能会更好，只是记得当时阅读compaction策略太痛苦了所以直接忽略了。
 
 每个level都有一定的大小限制，并且每个level里面的文件的key都是不会overlap的(L0除外).触发条件很多，文档上描述是某个level超过一定限制。
@@ -319,10 +319,10 @@ in the cache and we will only need to worry about the O(N) complexity in the mer
 #+END_SRC
 
 ** Recovery
-TODO(dirlt):too much details but basically rely on redo log.复杂原因主要是因为需要考虑snapshot和compaction.
+todo(dirlt):too much details but basically rely on redo log.复杂原因主要是因为需要考虑snapshot和compaction.
 I think read through http://leveldb.googlecode.com/svn/trunk/doc/impl.html will help.
 
-NOTE(dirlt):这里稍微总结一下 http://leveldb.googlecode.com/svn/trunk/doc/impl.html 提到的关于recovery的部分。幸运的是在阅读这个文档的时候
+note(dirlt):这里稍微总结一下 http://leveldb.googlecode.com/svn/trunk/doc/impl.html 提到的关于recovery的部分。幸运的是在阅读这个文档的时候
 也让我重新仔细地思考了一下这个recovery过程可能会如何进行的。
 
 我们主要关注三个数据的恢复：
@@ -353,7 +353,7 @@ Snapshot集合在leveldb里面组织成为一个链表，oldest的节点必然�
 
 我们这里最感兴趣的东西，应该就是每个cache的kv分别是什么。对于TableCahce的k是file_number,v是Table的Iterator
 (Table::NewIterator).对于leveldb来说的话文件的file_number都是自增的所以使用file_number没有任何问题。对于BlockCache
-来说的话k是(cache_id,offset),v是Block的内存。TODO(dirlt):(对于这个cache_id现在还不是非常理解，但是个人觉得
+来说的话k是(cache_id,offset),v是Block的内存。todo(dirlt):(对于这个cache_id现在还不是非常理解，但是个人觉得
 这个cache_id可以==file_number.使用cache_id就是每次Open的时候这个cache_id都会改变)
 
 和BlockCache是针对disk block来进行cache的，另外一种cache方案就是Record Cache.相对Block Cache,Record Cache无疑更能够
@@ -361,7 +361,7 @@ Snapshot集合在leveldb里面组织成为一个链表，oldest的节点必然�
 应用层可以更好地进行Cache。在应用层完成同时会引入一个问题就是Cache一致性，但是其实维持这个一致性并不是一件很复杂的事情，
 Cache主要用来解决读取问题，做写穿透并且让Cache失效即可。leveldb维护BlockCache一致性并不麻烦，因为leveldb的update并不是in-place的。
 
-NOTE(dirlt):不过后来仔细想了一下觉得Record Cache还是在应用层做比较好，可以控制缓存策略比如大小失效时间。对于底层库还是在
+note(dirlt):不过后来仔细想了一下觉得Record Cache还是在应用层做比较好，可以控制缓存策略比如大小失效时间。对于底层库还是在
 做BlockCache会比较好一些.
 
 ** Option
@@ -935,9 +935,9 @@ class WritableFile {
 
 **** filter_policy.h
 通过阅读注释还是可以很容易地了解到filter_policy提供的语义的。另外还可以看到leveldb本身提供了bloomfilter的实现。
-TODO(dirlt):这里对于bits_per_key含义不是很了解。
+todo(dirlt):这里对于bits_per_key含义不是很了解。
 
-NOTE(dirlt):所谓的bits_per_key就是希望为每个key分配多少个bits来进行检测。但是这个并不等于检测bits.在leveldb这个
+note(dirlt):所谓的bits_per_key就是希望为每个key分配多少个bits来进行检测。但是这个并不等于检测bits.在leveldb这个
 bloomfilter里面的话这个数值叫做probe.
 
 #+BEGIN_SRC C++
@@ -2247,7 +2247,7 @@ Status DBImpl::MakeRoomForWrite(bool force) {
     } else if (versions_->NumLevelFiles(0) >= config::kL0_StopWritesTrigger) {
       // There are too many level-0 files.
       // level0文件个数过多的话那么等待compaction的完成.
-      // NOTE(dirlt):这个部分非常重要，这样可以限制写入速度保证系统balance.
+      // note(dirlt):这个部分非常重要，这样可以限制写入速度保证系统balance.
       Log(options_.info_log, "waiting...\n");
       bg_cv_.Wait();
     } else {
@@ -4345,7 +4345,7 @@ void Version::GetOverlappingInputs(
     } else {
       inputs->push_back(f);
       if (level == 0) {
-        // TODO(dirlt):实现上可能存在问题吧.看上去对于level0的话似乎在不断地过大范围.
+        // todo(dirlt):实现上可能存在问题吧.看上去对于level0的话似乎在不断地过大范围.
         // Level-0 files may overlap each other.  So check if the newly
         // added file has expanded the range.  If so, restart search.
         if (begin != NULL && user_cmp->Compare(file_start, user_begin) < 0) {
@@ -4501,7 +4501,7 @@ class VersionSet {
   // Either an empty string, or a valid InternalKey.
   // 对于每层的话都会设置一个key.只有>这层设置的key才允许进行compaction.
   std::string compact_pointer_[config::kNumLevels]; // 每个level进行compaction使用的internal key
-  // TODO(dirlt):似乎每个level进行compaction都配上了一个internal key
+  // todo(dirlt):似乎每个level进行compaction都配上了一个internal key
   // DONE(dirlt):记录每层的最大key.
 };
 #+END_SRC
@@ -7840,7 +7840,7 @@ struct Table::Rep {
   Options options;
   Status status;
   RandomAccessFile* file;
-  uint64_t cache_id; // TODO(dirlt):在BlockReader里面作为cache key的一部分存在.
+  uint64_t cache_id; // todo(dirlt):在BlockReader里面作为cache key的一部分存在.
   // 问题是这个cache_id主要是用来解决什么问题的呢?
 
   BlockHandle metaindex_handle;  // Handle to metaindex_block: saved from footer
@@ -9534,7 +9534,7 @@ PutLengthPrefixedSlice对于slice的存储，首先是放入uint32长度然后�
 GetLengthPrefixedSlice从input首先取出长度，然后取出数据,并且将input跳过这些长度.
 
 **** Histogram
-TODO(dirlt):
+todo(dirlt):
 
 **** SkipList
 db/skiplist.h SkipList(跳表)之前在课本上看到过，但是当时觉得实在是没有太大的用途。现在仔细看看吧.
@@ -10066,7 +10066,7 @@ static uint32_t BloomHash(const Slice& key) {
 第一次看接口有点混淆。为什么CreateFilter需要将生成的filter追加到dst里面呢?其实我猜想这个完全取决于应用，
 可能应用在上层希望将filter的内存统一管理，然后一次释放。使用的时候可以选取某一个slice作为filter.
 
-NOTE(dirlt):之前可能对于filter有点错误理解.觉得这个filter没有必要存放在磁盘上而应该全部在内存上面。
+note(dirlt):之前可能对于filter有点错误理解.觉得这个filter没有必要存放在磁盘上而应该全部在内存上面。
 但是leveldb会针对若干个data block生成一个filter存放在磁盘上面。如果是这样接口就非常好理解了，
 将所有的filter全部聚合在连续的内存上面写入table.
 

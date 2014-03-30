@@ -37,7 +37,7 @@ http://arstechnica.com/information-technology/2012/06/inside-the-ssd-revolution-
 http://arstechnica.com/information-technology/2012/06/inside-the-ssd-revolution-how-solid-state-disks-really-work/6/
    - no other upgrade will provide the same level of subjective improvement as moving from a magnetic disk to an SSD.
    - 对于SSD来说就是一个miniature computer.
-   - SSD使用情况.对于storage array spinning disk相对于ssd需要考虑更多的问题.TODO(dirlt):ssd就不需要考虑吗?
+   - SSD使用情况.对于storage array spinning disk相对于ssd需要考虑更多的问题.todo(dirlt):ssd就不需要考虑吗?
 #+BEGIN_VERSE
     For an array full of spinning disks, keeping information flowing quickly usually means paying at least nominal attention to how the disks themselves are organized. What capacity disks do you need to use? Do you need large disks to add capacity, or do you need smaller disks because you need the performance boost from having lots of disks share in the workload? What rotational speed should the disks have? What RAID level do you use, both for performance and for redundancy? How many RAID groups do you bind up together into a volume that you can present out to hosts? Do you stripe data across multiple volumes to increase performance? If so, how many? 
 #+END_VERSE

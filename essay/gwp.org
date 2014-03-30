@@ -8,14 +8,14 @@
    - As cloud-based computing grows in pervasiveness and scale, understanding datacenter applications’ performance and utilization characteristics is critically important, because even minor performance improvements translate into huge cost savings.
    - Traditional performance analysis, which typically needs to isolate benchmarks, can be too complicated or even impossible with modern datacenter applications.（传统性能分析通常是使用benchmark，但是对于现代的分布式系统来说过于复杂）
    - It’s easier and more representative to monitor datacenter applications running on live traffic. However, application owners won’t tolerate latency degradations of more than a few percent, so these tools must be nonintrusive and have minimal overhead.
-   - As with all profiling tools, observer distortion must be minimized to enable meaningful analysis. OProfile, a DCPI-inspired tool, collects and reports data much in the same way for a plethora of architectures, though it offers less sophisticated analysis. GWP uses OProfile (http://oprofile.sourceforge.net) as a profile source.（GWP底层使用oprofile来作为profiling source） *NOTE(dirlt)：profiling工具必须尽可能减少误差*
+   - As with all profiling tools, observer distortion must be minimized to enable meaningful analysis. OProfile, a DCPI-inspired tool, collects and reports data much in the same way for a plethora of architectures, though it offers less sophisticated analysis. GWP uses OProfile (http://oprofile.sourceforge.net) as a profile source.（GWP底层使用oprofile来作为profiling source） *note(dirlt)：profiling工具必须尽可能减少误差*
    - Sampling-based tools can bring overhead and distortion to acceptable levels, so they’re uniquely qualified for performance monitoring in the data center. （基于采样的方法可以将额外开销以及失真降低到最小程度）
    - Google-Wide Profiling can be theoretically viewed as an extension of the Digital Continuous Profiling Infrastructure (DCPI) to data centers. 
      - GWP is a continuous profiling infrastructure; 
        - it samples across machines in multiple data centers and collects various events（在多机房多机器上面收集各种事件）
        - such as stack traces, hardware events, lock contention profiles, heap profiles, and kernel events（事件信息包括stack trace, 硬件事件，锁冲突，堆使用以及内核事件等）
        - allowing cross-correlation with job scheduling data, application-specific data, and other information from the data centers（并且能够将集群内所有机器上的信息进行交叉关联）
-     - GWP collects daily profiles from several thousand applications running on thousands of servers, and the compressed profile database grows by several Gbytes every day.（从上千台机器收集数据，每天产生GB级别的数据） *NOTE(dirlt)：其实不大*
+     - GWP collects daily profiles from several thousand applications running on thousands of servers, and the compressed profile database grows by several Gbytes every day.（从上千台机器收集数据，每天产生GB级别的数据） *note(dirlt)：其实不大*
      - Profiling at this scale presents significant challenges that don’t exist for a single machine.（集群profileing存在很多挑战）
        - Verifying that the profiles are correct is important and challenging because the workloads are dynamic.（profiles正确性）
        - Managing profiling overhead becomes far more important as well, as any unnecessary profiling overhead can cost millions of dollars in additional resources（管理profiling额外开销）

@@ -1,7 +1,7 @@
 * web-search-for-a-planet
 #+TITLE: Web Search for a Planet
   - link: http://research.google.com/archive/googlecluster.html
-  - date: 2003 *NOTE(dirlt):可以看得出这篇文章相当老了*
+  - date: 2003 *note(dirlt):可以看得出这篇文章相当老了*
   - google搜索架构包括软件和硬件 
     - *NOTE（dirlt):我主要对硬件上的选择比较感兴趣*
 

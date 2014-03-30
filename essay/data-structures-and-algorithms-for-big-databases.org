@@ -52,12 +52,12 @@ file:./images/disk-access-model-detail.png
   - Goal (as before): Minimize # of block transfer
   - Cache-oblivious algorithms work for all B and M
   - It’s better to optimize approximately for all B, M than to pick the best B and M.
-  - *NOTE(dirlt)：所谓的cache-oblivious就是忘记B，M这些参数，算法的优化不要依赖B，M这些参数的组合，而必须使得所有任意的B，M组合都足够好*
+  - *note(dirlt)：所谓的cache-oblivious就是忘记B，M这些参数，算法的优化不要依赖B，M这些参数的组合，而必须使得所有任意的B，M组合都足够好*
 
 ** Write-Optimized Data Structures
    - Data structures: [O'Neil,Cheng, Gawlick, O'Neil 96], [Buchsbaum, Goldwasser, Venkatasubramanian, Westbrook 00], [Argel 03], [Graefe 03], [Brodal, Fagerberg 03], [Bender, Farach,Fineman,Fogel, Kuszmaul, Nelson’07], [Brodal, Demaine, Fineman, Iacono, Langerman, Munro 10], [Spillane, Shetty, Zadok, Archak, Dixit 11].
    - Systems: BigTable, Cassandra, H-Base, LevelDB, TokuDB.
-   - *NOTE(dirlt):大部分都是LSM实现*
+   - *note(dirlt):大部分都是LSM实现*
 
 理论上最优化的query/insert/delete之间的逻辑复杂度如下：
 
@@ -107,7 +107,7 @@ Optimal read-write tradeoff: Easy Full featured: Hard 实现需要考虑如下�
        - Indexing can help get rid of this work
 
 ** Log Structured Merge Trees
-*TODO(dirlt):LSM algorithm analysis*
+*todo(dirlt):LSM algorithm analysis*
 
    - Log structured merge trees are write-optimized data structures developed in the 90s.
    - Over the past 5 years, LSM trees have become popular (for good reason).

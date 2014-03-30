@@ -1,7 +1,7 @@
 * large-scale-data-and-computation-chanllenges-and-opportunities
 #+TITLE: Large-Scale Data and Computation: Challenges and Opportunities
 
-TODO(dirlt)：Deep Learning部分没有阅读，这个部分应该就是所谓的Opportunities. 而前面的部分就是所谓的Challenges.
+todo(dirlt)：Deep Learning部分没有阅读，这个部分应该就是所谓的Opportunities. 而前面的部分就是所谓的Challenges.
 
 ** Replication
 replication对于large-scale system的意义 
@@ -57,7 +57,7 @@ file:./images/the-problem-with-shared-environments.png
      - time scale: right now, while user is waiting
    - Many such techniques
      - [The Tail at Scale, Dean & Barroso, to appear in CACM Feb. 2013]
-   - Tied Requests 这种方式非常简单，就是同时发送request到多个replica上面，如果某个replica开始执行的话，那么这个replica直接取消其他replica上的请求。 *NOTE(dirlt):实现上是否会复杂？由replica直接取消其他replica上的request感觉会复杂化设计*
+   - Tied Requests 这种方式非常简单，就是同时发送request到多个replica上面，如果某个replica开始执行的话，那么这个replica直接取消其他replica上的请求。 *note(dirlt):实现上是否会复杂？由replica直接取消其他replica上的request感觉会复杂化设计*
 
 ** Cluster-Level Services
 提供cross-cluster的服务，比如spanner系统

@@ -29,7 +29,7 @@ We present three abstractions around which we structure our server software at T
    - Filters implement application-independent functionality; they are composed with services to modify service behavior.
      - type Filter[Req, Rep] = (Req, Service[Req, Rep]) => Future[Rep]
      - Filters provide a combinator, andThen, which is used to com- bine filters with other filters—producing composite filters—or with services—producing a new service whose behavior is modified by the filter.
-     - NOTE(dirlt):为什么我觉得filter和flatMap是一个东西呢？不过filter有概念上的抽象
+     - note(dirlt):为什么我觉得filter和flatMap是一个东西呢？不过filter有概念上的抽象
 
 ** Discussion
 *** Declarative programming with futures

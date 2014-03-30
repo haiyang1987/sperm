@@ -3,4 +3,4 @@
    - Storm, distributed and fault-tolerant realtime computation : http://storm-project.net/
    - http://www.slideshare.net/nathanmarz/storm-distributed-and-faulttolerant-realtime-computation
 
-TODO(dirlt):
+todo(dirlt):

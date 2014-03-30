@@ -3,7 +3,7 @@
    - https://github.com/twitter/gizzard
 
 ** Gizzard: a library for creating distributed datastores
-*NOTE(dirlt):定位是library*
+*note(dirlt):定位是library*
 
 *** An introduction to sharding
 *** What is a sharding framework?

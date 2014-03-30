@@ -1,7 +1,7 @@
 * zookeeper
 ** ZooKeeper: Wait-free coordination for Internet-scale systems(2010)
    - http://research.yahoo.com/pub/3280
-TODO(dirlt):
+todo(dirlt):
 
 ** FAQ
 *** 部署zookeeper

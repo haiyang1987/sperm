@@ -38,7 +38,7 @@ category, AVG(good_urls.pagerank);
 
 *** FEATURES AND MOTIVATION
 **** Dataflow Language
-   - Note that although Pig Latin programs supply an explicit sequence of operations, it is not necessary that the oper-ations be executed in that order. Pig并不一定按照pig latin操作顺序执行 *NOTE(dirlt)：这也就是好处，可以带来更多的potential做优化*
+   - Note that although Pig Latin programs supply an explicit sequence of operations, it is not necessary that the oper-ations be executed in that order. Pig并不一定按照pig latin操作顺序执行 *note(dirlt)：这也就是好处，可以带来更多的potential做优化*
 
 **** Quick Start and Interoperability
    - By operating over data residing in external files, and not taking over control over the data, Pig readily interoper-ates with other applications in the ecosystem. 相对于DBMS来说，Pig不需要导入数据这样的步骤，可以直接在数据上进行操作
@@ -46,9 +46,9 @@ category, AVG(good_urls.pagerank);
      - to enable transactional consistency guarantees 系统满足ACID
      - to enable effcient point lookups 索引等加快查找
      - to curate the data on behalf of the user, and record the schema so that other users can make sense of the data. 设计schema修复数据
-   - Pig only supports read-only data analysis workloads, and those workloads tend to be scan-centric, so transactional consistency and index-based lookups are not required. Also, in our environment users often analyze a temporary data set for a day or two, and then discard it, so data curating and schema management can be overkill. *NOTE(dirlt)：感觉这点上Pig相比DBMS确实更加适合数据分析*
+   - Pig only supports read-only data analysis workloads, and those workloads tend to be scan-centric, so transactional consistency and index-based lookups are not required. Also, in our environment users often analyze a temporary data set for a day or two, and then discard it, so data curating and schema management can be overkill. *note(dirlt)：感觉这点上Pig相比DBMS确实更加适合数据分析*
      - 数据都是read-only的，并且对于数据处理都只是scan而不需要point query. 因此ACID以及索引不需要 
-     - 大部分的数据分析都只是处理有限次数，然后丢弃所以没有必要进行修复。 *NOTE(dirlt)：对于数据的修复完全可以跑一边MR处理，然后以后可以一直处理满足schema的数据*
+     - 大部分的数据分析都只是处理有限次数，然后丢弃所以没有必要进行修复。 *note(dirlt)：对于数据的修复完全可以跑一边MR处理，然后以后可以一直处理满足schema的数据*
 
 **** Nested Data Model
    - There are several reasons why a nested model is more ap-propriate for our setting than 1NF: *1NF就是出现在数据库里面记录的存储方式，flatten data model*
@@ -75,7 +75,7 @@ Pig has a rich, yet simple data model consisting of the following four types:
 
 file:./images/pig-latin-expressions.png
 
-*NOTE(dirlt)：FLATTEN操作需要在某些context下面才能执行*
+*note(dirlt)：FLATTEN操作需要在某些context下面才能执行*
 
 **** Specifying Input Data: LOAD
 #+BEGIN_EXAMPLE
@@ -132,7 +132,7 @@ query_revenues = FOREACH grouped_revenue GENERATE
 #+END_EXAMPLE
 
    - A common special case of COGROUP is when there is only one data set involved. In this case, we can use the alter-native, more intuitive keyword GROUP. COGROUP的特殊情况就是如果只有一路数据的话，那么可以使用GROUP
-   - *NOTE(dirlt)：这里的SUM可以操作bag. revenue.amount这里已经在revenue bag上面做了projection产生bag*
+   - *note(dirlt)：这里的SUM可以操作bag. revenue.amount这里已经在revenue bag上面做了projection产生bag*
 
 ***** JOIN in Pig Latin
 #+BEGIN_EXAMPLE
@@ -146,7 +146,7 @@ join_result = FOREACH temp_var GENERATE
    - JOIN可以通过COGROUP来完成，上面两个语句生成的效果是等价的
 
 -----
-*NOTE(dirlt)：需要注意的是，上面JOIN那个图输出结果是错误的，我们可以使用下面的例子做验证*
+*note(dirlt)：需要注意的是，上面JOIN那个图输出结果是错误的，我们可以使用下面的例子做验证*
 
 #+BEGIN_EXAMPLE
 ---sample1.txt---
@@ -168,7 +168,7 @@ grunt> DUMP sj;
 ***** Map-Reduce in Pig Latin
 
 **** Other Commands
-Pig Latin has a number of other commands that are very similar to their SQL counterparts. These are: *NOTE(dirlt)：这些command相对来说比较简单*
+Pig Latin has a number of other commands that are very similar to their SQL counterparts. These are: *note(dirlt)：这些command相对来说比较简单*
    1. UNION: Returns the union of two or more bags.
    2. CROSS: Returns the cross product of two or more bags.
    3. ORDER: Orders a bag by the specified field(s).
@@ -187,7 +187,7 @@ query_revenues = FOREACH grouped_revenue{
 #+END_EXAMPLE
 
    - When we have nested bags within tuples, either as a result of (co)grouping, or due to the base data being nested, we might want to harness the same power of Pig Latin to process even these nested bags 嵌套操作主要是为了嵌套bag服务的
-   - To allow such processing, Pig Latin allows some commands to be nested within a FOREACH command. At present, we only allow FILTER, ORDER, and DISTINCT to be nested within FOREACH. In the future, as need arises, we might allow other constructs to be nested as well. FOREACH 只是允许FOREACH上面做嵌套操作并且内部只能做一些比较简单的操作 *NOTE(dirlt)：似乎这些操作都是可以在foreach对应的reduce时候附带上的而不需要额外操作*
+   - To allow such processing, Pig Latin allows some commands to be nested within a FOREACH command. At present, we only allow FILTER, ORDER, and DISTINCT to be nested within FOREACH. In the future, as need arises, we might allow other constructs to be nested as well. FOREACH 只是允许FOREACH上面做嵌套操作并且内部只能做一些比较简单的操作 *note(dirlt)：似乎这些操作都是可以在foreach对应的reduce时候附带上的而不需要额外操作*
 
 **** Asking for Output: STORE
 #+BEGIN_EXAMPLE
@@ -208,13 +208,13 @@ STORE query_revenues INTO ‘myoutput’
 
 **** Building a Logical Plan
    - the Pig interpreter first parses it, and verifies that the input files and bags be-ing referred to by the command are valid. 检查输入文件以及定义bag是否合法
-   - Pig builds a logical plan for every bag that the user defines. 针对输出bags来定义logical plan *NOTE(dirlt):对于logical plan是和bag关联的，每个bag都会有一个产生这个bag的logical plan*
+   - Pig builds a logical plan for every bag that the user defines. 针对输出bags来定义logical plan *note(dirlt):对于logical plan是和bag关联的，每个bag都会有一个产生这个bag的logical plan*
    - Note that no processing is carried out when the logical plans are constructed. Processing is triggered only when the user invokes a STORE command on a bag. At that point, the logical plan for that bag is compiled into a physical plan, and is executed. logical plan不会执行一直到出发STORE这个命令，然后在这个时候才会将logical plan编译成为physical plan然后执行
    - This lazy style of execution is beneficial because it permits in-memory pipelining, and other opti-mizations such as filter reordering across multiple Pig Latin commands. 这种lazy style非常适合做in-memory pipelining来做optimization.
    - Pig is architected such that the parsing of Pig Latin and the logical plan construction is independent of the execu-tion platform. Only the compilation of the logical plan into a physical plan depends on the specific execution platform chosen. （解析pig latin以及构造logical plan都是独立平台的，只有将logical plan转换成为physical plan是和平台相关的）
 
 **** Map-Reduce Plan Compilation
-   - The map-reduce primitive essentially provides the ability to do a large-scale group by, where the map tasks assign keys for grouping, and the reduce tasks process a group at a time. Our compiler begins by converting each (CO)GROUP command in the logical plan into a distinct map-reduce job with its own map and reduce functions.（以COGROUP为分界线，COGROUP的前部分使用map来处理，COGROUP的后部分使用reduce来处理） *TODO(dirlt)：ORDER似乎没有解释*
+   - The map-reduce primitive essentially provides the ability to do a large-scale group by, where the map tasks assign keys for grouping, and the reduce tasks process a group at a time. Our compiler begins by converting each (CO)GROUP command in the logical plan into a distinct map-reduce job with its own map and reduce functions.（以COGROUP为分界线，COGROUP的前部分使用map来处理，COGROUP的后部分使用reduce来处理） *todo(dirlt)：ORDER似乎没有解释*
    - The map function for (CO)GROUP command C initially just assigns keys to tuples based on the BY clause(s) of C; the reduce function is initially a no-op.  *The map-reduce bound-ary is the cogroup command* 
      - The sequence of FILTER, and FOREACH commands from the LOAD to the first COGROUP op-eration C1, are pushed into the map function corresponding to C1 (see Figure 3). 在第一个COGROUP之前的command都放在mapper完成
      - The commands that intervene between subsequent COGROUP commands Ci and Ci+1 can be pushed into either (a) the reduce function corresponding to Ci, or (b) the map function corresponding to Ci+1. 在上一个COGROUP到下一个COGROUP之间都放在reduce里面完成。当然也可以放在下一个mapper里面完成
@@ -225,11 +225,11 @@ file:./images/pig-latin-mapreduce-compilation.png
 
    - The ORDER command is implemented by compiling into two map-reduce jobs. ORDER使用两个MR来完成
      - The first job samples the input to determine quantiles of the sort key.  第一个阶段统计key的分布
-     - The second job range-partitions the input according to the quantiles (thereby en-suring roughly equal-sized partitions), followed by local sort-ing in the reduce phase, resulting in a globally sorted file. 第二个阶段按照key分布进行均分，然后在reduce phase进行排序 *NOTE(dirlt)：按照part-r-00000，part-r-00001这样排序的*
-     - *NOTE(dirlt)：注意ORDER其实对于MR是没有影响的，只是对于最终output结果会有影响。如果ORDER没有对应的STORE的话，那么ORDER是可以不需要执行的*
+     - The second job range-partitions the input according to the quantiles (thereby en-suring roughly equal-sized partitions), followed by local sort-ing in the reduce phase, resulting in a globally sorted file. 第二个阶段按照key分布进行均分，然后在reduce phase进行排序 *note(dirlt)：按照part-r-00000，part-r-00001这样排序的*
+     - *note(dirlt)：注意ORDER其实对于MR是没有影响的，只是对于最终output结果会有影响。如果ORDER没有对应的STORE的话，那么ORDER是可以不需要执行的*
 
 **** Efficiency With Nested Bags
-   - To cope with these cases, our implementation allows for nested bags to spill to disk. Our disk-resident bag implementation comes with database-style external sort algorithms to do operations such as sorting and duplicate elimination of the nested bags *NOTE(dirlt)：注意在nested operations里面支持ORDER BY以及DISTINCT操作。对于large nested bag需要spill到磁盘上，并且Pig有专门为在磁盘存储bag的实现，这种实现允许在上面有效地做sort和distinct操作*
+   - To cope with these cases, our implementation allows for nested bags to spill to disk. Our disk-resident bag implementation comes with database-style external sort algorithms to do operations such as sorting and duplicate elimination of the nested bags *note(dirlt)：注意在nested operations里面支持ORDER BY以及DISTINCT操作。对于large nested bag需要spill到磁盘上，并且Pig有专门为在磁盘存储bag的实现，这种实现允许在上面有效地做sort和distinct操作*
 
 *** DEBUGGING ENVIRONMENT
 *** USAGE SCENARIOS

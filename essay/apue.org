@@ -1171,7 +1171,7 @@ inotify可以用于监控文件以及目录的变化，下面是inotify提供的
      - return a nonnegative watch descriptor.
    - int inotify_rm_watch(int fd, int wd);
 
-整个使用过程非常简单，首先通过init创建fd,然后将需要监控的文件添加进来/或者是移除。之后在read时候读取监控事件。 *NOTE(dirlt)：这个fd可以放在epoll里面进行监控* 。监控事件结构如下：
+整个使用过程非常简单，首先通过init创建fd,然后将需要监控的文件添加进来/或者是移除。之后在read时候读取监控事件。 *note(dirlt)：这个fd可以放在epoll里面进行监控* 。监控事件结构如下：
 #+BEGIN_SRC C++
 /* Structure describing an inotify event.  */
 struct inotify_event

@@ -25,7 +25,7 @@ Akka can be used in different ways:
    - As a stand alone application by instantiating ActorSystem in a main class or using the Microkernel (Scala) / Microkernel (Java). The Akka distribution includes the microkernel. To run the microkernel put your application jar in the deploy directory and use the scripts in the bin directory. （类似插件方式启动）
 
 -----
-*NOTE(dirlt):参考akka@github的example编写的。这里使用的方式就是手工创建ActorSystem，而不是使用Akka.main指定main class来启动*
+*note(dirlt):参考akka@github的example编写的。这里使用的方式就是手工创建ActorSystem，而不是使用Akka.main指定main class来启动*
 
 #+BEGIN_SRC Scala
 object Hello extends App {
@@ -111,7 +111,7 @@ An actor system manages the resources it is configured to use in order to run th
 file:./images/akka-actor-system.png
 
 *** Reference
-   - *NOTE(dirlt):ActorRef. 类似Actor对象指针，所有Actor对象操作都是通过引用来完成的。这样Actor如果重启，或者是部署在远程做通信的话，都可以以透明方式来完成*
+   - *note(dirlt):ActorRef. 类似Actor对象指针，所有Actor对象操作都是通过引用来完成的。这样Actor如果重启，或者是部署在远程做通信的话，都可以以透明方式来完成*
    - As detailed below, an actor object needs to be shielded from the outside in order to benefit from the actor model. Therefore, actors are represented to the outside using actor references, which are objects that can be passed around freely and without restriction.
    - This split into inner and outer object enables transparency for all the desired operations: restarting an actor without needing to update references elsewhere, placing the actual actor object on remote hosts, sending messages to actors in completely different applications.
    - But the most important aspect is that it is not possible to look inside an actor and get hold of its state from the outside, unless the actor unwisely publishes this information itself.
@@ -141,8 +141,8 @@ There are two general categories to how actor references may be obtained: by cre
      - These methods return a reference to the newly created actor. Each actor has direct access (through its ActorContext) to references for its parent, itself and its children. These references may be sent within messages to other actors, enabling those to reply directly.
    - Looking up Actors by Concrete Path
      - In addition, actor references may be looked up using the ActorSystem.actorSelection method. 
-     - The selection can be used for communicating with said actor and *the actor corresponding to the selection is looked up when delivering each message.* TODO(dirlt): cost issue?
-     - *NOTE(dirlt):support relative path and wildcard. like ../sibling or ../? *
+     - The selection can be used for communicating with said actor and *the actor corresponding to the selection is looked up when delivering each message.* todo(dirlt): cost issue?
+     - *note(dirlt):support relative path and wildcard. like ../sibling or ../? *
 
 -----
 
@@ -151,12 +151,12 @@ Equality of ActorRef match the intention that an ActorRef corresponds to the tar
 *** Path
 Since actors are created in a strictly hierarchical fashion, there exists a unique sequence of actor names given by recursively following the supervision links between child and parent down towards the root of the actor system. This sequence can be seen as enclosing folders in a file system, hence we adopted the name “path” to refer to it.（非常类似文件系统）
    - Logical Actor Paths
-     - *NOTE(dirlt):主要是强调hierarchy*
+     - *note(dirlt):主要是强调hierarchy*
      - akka.tcp://sys@A:2552/user/parent/child
      - The unique path obtained by following the parental supervision links towards the root guardian is called the logical actor path. 
      - This path matches exactly the creation ancestry of an actor, so it is completely deterministic as soon as the actor system’s remoting configuration (and with it the address component of the path) is set.
    - Physical Actor Paths
-     - *NOTE(dirlt):主要是强调location*
+     - *note(dirlt):主要是强调location*
      - akka.tcp://sys@B:2552/remote/sys@A:2552/user/parent/child # remote node on B.
      - One important aspect is that a physical actor path never spans multiple actor systems or JVMs. 
      - This means that the logical path (supervision hierarchy) and the physical path (actor deployment) of an actor may diverge if one of its ancestors is remotely supervised.
@@ -180,7 +180,7 @@ file:./images/akka-actor-on-remote-node.png
 
 -----
 
-*NOTE(dirlt):可以参照后面的Supervision and Monitoring来看这些path*
+*note(dirlt):可以参照后面的Supervision and Monitoring来看这些path*
 
 At the root of the path hierarchy resides the root guardian above which all other actors are found; its name is "/". The next level consists of the following:
    - "/user" is the guardian actor for all user-created top-level actors; actors created using ActorSystem.actorOf are found below this one.
@@ -189,7 +189,7 @@ At the root of the path hierarchy resides the root guardian above which all othe
    - "/temp" is the guardian for all short-lived system-created actors, e.g. those which are used in the imple- mentation of ActorRef.ask.
    - "/remote" is an artificial path below which all actors reside whose supervisors are remote actor references.
 
-The need to structure the name space for actors like this arises from a central and very simple design goal: everything in the hierarchy is an actor, and all actors function in the same way. Hence you can not only look up the actors you created, you can also look up the system guardian and send it a message (which it will dutifully discard in this case). This powerful principle means that there are no quirks to remember, it makes the whole system more uniform and consistent.（路径的层次化组织使得定位actor更加容易和统一） *TODO(dirlt):每个actor需要维护path,这个代价开销有多大？* 
+The need to structure the name space for actors like this arises from a central and very simple design goal: everything in the hierarchy is an actor, and all actors function in the same way. Hence you can not only look up the actors you created, you can also look up the system guardian and send it a message (which it will dutifully discard in this case). This powerful principle means that there are no quirks to remember, it makes the whole system more uniform and consistent.（路径的层次化组织使得定位actor更加容易和统一） *todo(dirlt):每个actor需要维护path,这个代价开销有多大？* 
 
 *** State
    - Behind the scenes Akka will run sets of actors on sets of real threads, where typically many actors share one thread, and subsequent invocations of one actor may end up being processed on different threads. Akka ensures that this implementation detail does not affect the single-threadedness of handling the actor’s state.（多个Actor对象可能会共享一个线程，并且Actor每次执行可能是在不同的线程上执行）
@@ -208,8 +208,8 @@ The need to structure the name space for actors like this arises from a central 
    - There are different mailbox implementations to choose from, （不同mailbox实现）
      - the default being a FIFO: the order of the messages processed by the actor matches the order in which they were enqueued. This is usually a good default, but applications may need to prioritize some messages over others. （一种是默认的FIFO）
      - In this case, a priority mailbox will enqueue not always at the end but at a position as given by the message priority, which might even be at the front. While using such a queue, the order of messages processed will naturally be defined by the queue’s algorithm and in general not be FIFO.（另外一种是有优先级别的mailbox)
-   - An important feature in which Akka differs from some other actor model implementations is that the current behavior must always handle the next dequeued message, there is no scanning the mailbox for the next matching one. Failure to handle a message will typically be treated as a failure, unless this behavior is overridden. *NOTE(dirlt)：和其他actor model实现有点不太类似是，没有办法对mailbox来做scan来处理匹配的项。也就是说对于mailbox里面所有的消息都需要显式处理*
-   - If an exception is thrown while a message is being processed, nothing happens to the mailbox. If the actor is restarted, the same mailbox will be there. So all messages on that mailbox will be there as well.(如果处理消息的时候发生异常，mailbox并不会受影响，并且如果actor重启的话，读取的依然是之前的mailbox里面的内容） *TODO(dirlt)：是否有办法清除mailbox里面的内容？* 
+   - An important feature in which Akka differs from some other actor model implementations is that the current behavior must always handle the next dequeued message, there is no scanning the mailbox for the next matching one. Failure to handle a message will typically be treated as a failure, unless this behavior is overridden. *note(dirlt)：和其他actor model实现有点不太类似是，没有办法对mailbox来做scan来处理匹配的项。也就是说对于mailbox里面所有的消息都需要显式处理*
+   - If an exception is thrown while a message is being processed, nothing happens to the mailbox. If the actor is restarted, the same mailbox will be there. So all messages on that mailbox will be there as well.(如果处理消息的时候发生异常，mailbox并不会受影响，并且如果actor重启的话，读取的依然是之前的mailbox里面的内容） *todo(dirlt)：是否有办法清除mailbox里面的内容？* 
 
 *** in Akka
 Akka实现的Actor对象内部包括了下面几个比较重要的字段和方法
@@ -233,7 +233,7 @@ Initialization
    - first communication. 第一次通信的时候触发。
 
 Termination
-   - *NOTE(dirlt)：actor终止的时候，这个actor原来内部所有的message都会流向EventStream(another special actor)作为DeadLetters，而actor消亡之后其mailbox会重定向到system mailbox, 所有发向这个system mailbox的消息也会流向EventStream作为DeadLetters*
+   - *note(dirlt)：actor终止的时候，这个actor原来内部所有的message都会流向EventStream(another special actor)作为DeadLetters，而actor消亡之后其mailbox会重定向到system mailbox, 所有发向这个system mailbox的消息也会流向EventStream作为DeadLetters*
    - Once an actor terminates, i.e. fails in a way which is not handled by a restart, stops itself or is stopped by its supervisor, it will free up its resources, draining all remaining messages from its mailbox into the system’s “dead letter mailbox” which will forward them to the EventStream as DeadLetters. 
    - The mailbox is then replaced within the actor reference with a system mailbox, redirecting all new messages to the EventStream as DeadLetters. This is done on a best effort basis, though, so do not rely on it in order to construct “guaranteed delivery”.
 
@@ -298,7 +298,7 @@ Messages are sent to an Actor through one of the following methods.（两种方�
 
 These are the rules for message sends (i.e. the tell or ! method, which also underlies the ask pattern): 
    - at-most-once delivery, i.e. no guaranteed delivery
-   - message ordering per sender–receiver pair *NOTE(dirlt):可以参考Memory Model这个部分的内容* 
+   - message ordering per sender–receiver pair *note(dirlt):可以参考Memory Model这个部分的内容* 
 The first rule is typically found also in other actor implementations while the second is specific to Akka.
 
 -----
@@ -349,7 +349,7 @@ While constructing an ac- tor system, you can either pass in a Config object or 
    - application.conf
    - application.json
    - application.properties
-   - *NOTE(dirlt):application允许通过config.*配置选项来修改指定* 
+   - *note(dirlt):application允许通过config.*配置选项来修改指定* 
 对于那些找不到的属性会查询reference.conf，这是默认属性。Akka倾向所有变量都使用配置而不是在代码提供默认值。
 
 Akka’s configuration approach relies heavily on the notion of every module/jar having its own reference.conf file, all of these will be discovered by the configuration and loaded. Unfortunately this also means that if you put/merge multiple jars into the same jar, you need to merge all the reference.confs as well. Otherwise all defaults will be lost and Akka will not function.（可是需要注意如果打包成为fatjar的话，reference.conf可能会覆盖）
@@ -438,7 +438,7 @@ A Router is an actor that receives messages and efficiently routes them to other
 
 Routers, Routees and Senders
    - Sending a message to a router is easy. "router ! MyMsg". A router actor forwards messages to its routees according to its routing policy.
-   - The router forwards messages onto its routees without changing the original sender. When a routee replies to a routed message, the reply will be sent to the original sender, not to the router.(直接返回给sender而不会经过router） *NOTE(dirlt)：也有办法回复给router*
+   - The router forwards messages onto its routees without changing the original sender. When a routee replies to a routed message, the reply will be sent to the original sender, not to the router.(直接返回给sender而不会经过router） *note(dirlt)：也有办法回复给router*
    - When a router creates routees, they are created as the routers children. This gives each routee its own identity in the actor system.
 
 Handling for Special Messages
@@ -469,4 +469,4 @@ Memory Model
 *** STM
 *** Agents
 ** TroubleShooting
-TODO(dirlt):
+todo(dirlt):

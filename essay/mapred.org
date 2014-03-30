@@ -117,7 +117,7 @@ file:./images/yarn-resourcemanager-arch.png
      - ApplicationsManager 维护当所有提交的Application
      - ApplicationACLsManager
      - ApplicationMasterLauncher 负责AM的启动
-     - YarnScheduler *NOTE(dirlt)：似乎这个调度行为是在一开始就决定的*
+     - YarnScheduler *note(dirlt)：似乎这个调度行为是在一开始就决定的*
        - The Scheduler is responsible for allocating resources to the various running applications subject to constraints of capacities, queues etc. It performs its scheduling function based on the resource requirements of the applications such as memory, CPU, disk, network etc. Currently, only memory is supported and support for CPU is close to completion.
      - ContainerAllocationExpirer application可能占用container但是却不使用。可以用来检测哪些container没有使用。
    - TokenSecretManagers
@@ -181,7 +181,7 @@ file:./images/facebook-corona.jpg
      - This scheduler is able to provide better fairness guarantees because it has access to the full snapshot of the cluster and jobs when making scheduling decisions. 
      - It also provides better support for multi-tenant usage by providing the ability to group the scheduler pools into pool groups. 通过pool group机制来为多用户服务。
      - A pool group can be assigned to a team that can then in turn manage the pools within its pool group. The pool group concept gives every team fine-grained control over their assigned resource allocation.
-     - *NOTE(dirlt):refers to Borg and Mesos*
+     - *note(dirlt):refers to Borg and Mesos*
 
 Corona在fb部署过程是这样的
    0. Rollout to 500 nodes. Our first step was to deploy Corona on 500 of the machines in the cluster. This let us get feedback from early adopters. 部署500节点集群做反馈。
@@ -357,7 +357,7 @@ boolean canFitInMemory(long requestedSize) {
 主要工作还是在LzoSplitInputFormat上面。记住这个input format给出的key是Path，value是offset. 主要工作也是LzoSplitRecordReader完成的。从代码上来看，主要的两个函数分别是
    - initialize. 这个函数会初始化lzo decompressor input stream用来准备读数据，并且首先读取一些元信息。
    - nextKeyValue. 这个函数则用input stream来读数据。但是注意实际上它只是在寻找split point，也就是block boundary. 这个算法和lzo压缩格式本身相关。
-*NOTE(dirlt):注意这个input format是unsplitable的！*
+*note(dirlt):注意这个input format是unsplitable的！*
 #+BEGIN_SRC Java
   @Override
   protected boolean isSplitable(JobContext context, Path filename) {
@@ -740,7 +740,7 @@ java.lang.IllegalStateException: Committed
         at org.mortbay.thread.QueuedThreadPool$PoolThread.run(QueuedThreadPool.java:582)
 #+END_EXAMPLE
 
-*NOTE(dirlt)：开始我以为会存在什么问题，所以仔细分析了两个task的情况*
+*note(dirlt)：开始我以为会存在什么问题，所以仔细分析了两个task的情况*
 
 然后察看这个job两个task情况，性能数据如下：
 
@@ -819,7 +819,7 @@ dp31出现如下日志，这个过程是非常诡异的。从stacktrace上面可
 /dev/sdh1       1.8T  1.7T  1.1G 100% /data/data7
 /dev/sde1       1.8T  346G  1.4T  20% /data/data4
 #+END_EXAMPLE
-所以我怀疑是因为磁盘过满出现的一些诡异问题。 *NOTE(dirlt)：容易造成node被cross job的blacklist*
+所以我怀疑是因为磁盘过满出现的一些诡异问题。 *note(dirlt)：容易造成node被cross job的blacklist*
 
 #+BEGIN_EXAMPLE
 2013-05-14 00:20:56,266 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201301231102_34166_m_000000_0 task's state:UNASSIGNED
@@ -999,7 +999,7 @@ public class MessageLzoProtobufWritable extends ProtobufWritable<MessageProtos1.
 
 **** MultipleTableInputFormat
    - 参考代码 [[https://github.com/dirtysalt/sperm/blob/master/code/java/mr/src/main/java/com/dirlt/java/mr/RunMultipleInputs2.java][com.dirlt.java.mr.RunMultipleInputs2]]
-   - *NOTE(dirlt):在cdh4.3.0下面运行的代码略有变动，存放在 [[https://github.com/dirtysalt/sperm/blob/master/code/java/mr2/src/main/java/com/dirlt/java/mr2/RunMultipleInputs2.java][com.dirlt.java.mr2.RunMultipleInputs2]]*
+   - *note(dirlt):在cdh4.3.0下面运行的代码略有变动，存放在 [[https://github.com/dirtysalt/sperm/blob/master/code/java/mr2/src/main/java/com/dirlt/java/mr2/RunMultipleInputs2.java][com.dirlt.java.mr2.RunMultipleInputs2]]*
      - 需要配合MultipleInputs使用
      - 使用这个InputFormat可以同时支持多文件输入和多表输入
      - 多表输入还支持在一个table上面使用多个scan.
@@ -1007,7 +1007,7 @@ public class MessageLzoProtobufWritable extends ProtobufWritable<MessageProtos1.
      - MultipleInputs底层使用Delegate模式，将inputFormat以及mapper和Path关联，然后将InputFormat实例化来对path进行切片得到InputSplit以及RecordReader.      
      - 为了能够和MultipleInputs兼容使用，代码实现上将TableInput转换成为String然后表示成为Path（TableInput包括tableName以及多个scan对象）
        - string格式为 <tableName> ! hexString(scan) ! hexString(scan) 
-       - 从path中将TableInput字符串分离的代码是 path.toString().substring(path.getParent().toString().length() + 1); *TODO(dirlt)：对于大部分的情况是可以正常handle的*
+       - 从path中将TableInput字符串分离的代码是 path.toString().substring(path.getParent().toString().length() + 1); *todo(dirlt)：对于大部分的情况是可以正常handle的*
      - MultipleTableInputFormat进行切片的时候将path取出内容进行解析，分离出TableInput出来，然后调用TableInputFormatBase的分片策略进行分片
        - setConf空实现是因为在ReflectionUtils.newInstance创建实例的时候会调用，而MultipleTableInputFormat本身没有使用到。
      - MultipleTableSplit的引入主要是因为TableSplit没有包含scan对象，而这个对象需要在TableRecordReader里面使用到。
@@ -1062,12 +1062,12 @@ public interface DNSToSwitchMapping {
 
 但是存在另外一种更好的办法就是ScriptBasedMapping，这个是DNSToSwichMapping的一个实现，可以通过配置脚本来做映射。
 将属性topology.script.filename设置成为脚本，脚本输入names，然后返回结果是按照空格或者是回车分隔的列表即可。
-*NOTE(dirlt):内部使用StringTokenizer来拆分结果*
+*note(dirlt):内部使用StringTokenizer来拆分结果*
 
 *** streaming
    - Hadoop Streaming http://hadoop.apache.org/docs/r1.1.2/streaming.html
 
-streaming允许用户使用脚本来编写mapper/reducer，使用stdin/stdout作为通信接口。tasktracker spwan一个特殊的task, 这个task将mapper/reducer数据通过pipe传递给脚本。 *NOTE(dirlt):hadoop pipes则是使用unix socket和C++处理程序通信，基本思想是相同的*
+streaming允许用户使用脚本来编写mapper/reducer，使用stdin/stdout作为通信接口。tasktracker spwan一个特殊的task, 这个task将mapper/reducer数据通过pipe传递给脚本。 *note(dirlt):hadoop pipes则是使用unix socket和C++处理程序通信，基本思想是相同的*
 
 调用方式：hadoop $HADOOP_HOME/contrib/streaming/hadoop-streaming-*.jar <OPTIONS> 其中OPTIONS如下：
    - -input 
@@ -1306,7 +1306,7 @@ Heap
 
 *** blacklist
    - http://www.mapr.com/doc/display/MapR/TaskTracker+Blacklisting
-   - *NOTE(dirlt):blacklist是一个策略问题，会经常变动*
+   - *note(dirlt):blacklist是一个策略问题，会经常变动*
 
    - Per-Job Blacklisting
      - The configuration value mapred.max.tracker.failures in mapred-site.xml specifies a number of task failures in a specific job after which the TaskTracker is blacklisted for that job. The TaskTracker can still accept tasks from other jobs, as long as it is not blacklisted cluster-wide (see below).

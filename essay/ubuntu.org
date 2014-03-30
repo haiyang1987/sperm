@@ -137,7 +137,7 @@ Codename:       precise
 *** 重启unity
 unity restart &
 
-*NOTE(dirlt)：这种方式可以work但是似乎问题比较多，如果unity出现问题还是重启比较方便*
+*note(dirlt)：这种方式可以work但是似乎问题比较多，如果unity出现问题还是重启比较方便*
 
 *** 设置字符界面启动
   - 编辑文件/etc/default/grub
@@ -172,17 +172,17 @@ networks:       files
 #+BEGIN_EXAMPLE
 sudo /etc/init.d/networking restart
 #+END_EXAMPLE
-*NOTE(dirlt):可能需要重启多次*
+*note(dirlt):可能需要重启多次*
 
 *** 修改主机名称
 sudo hostname <name>
 
-*NOTE(dirlt):mac works too=D*
+*note(dirlt):mac works too=D*
 
 *** root密码
 初次启动的时候需要使用sudo passwd root来修改root密码
 
-*NOTE(dirlt)：it works for mac too=D*
+*note(dirlt)：it works for mac too=D*
 
 *** deb使用
 安装deb使用命令 sudo dpkg -i test.deb
@@ -213,7 +213,7 @@ doc存放位置通常在/usr/share/doc/<package>/下面。
      - Release+Shift_L 左边的Shift键
      - Constrol+space control和空格键
      - 这些都和windows输入法的默认配置很像。
-TODO(dirlt)：在Emacs里面需要安装ibus.el以及ibus-agent。但是现在不知道为什么左边的Shift键在Emacs里面一直不能使用。
+todo(dirlt)：在Emacs里面需要安装ibus.el以及ibus-agent。但是现在不知道为什么左边的Shift键在Emacs里面一直不能使用。
 
 *** 自动启动输入法
 另外系统默认是不会自动启动ibus的，可以在System Settings里面的Language Support里面设置Input method为ibus, 这样ibus就可以自动启动了。如果emacs需要使用ibus的话，那么ibus-daemon必须先于emacs启动。可能这样agent才能够工作。
@@ -231,7 +231,7 @@ System Settings =》 Details 里面可以设置默认浏览器。至于emacs里�
 *** thunderbird配置gmail
    - pop3 pop.gmail.com SSL/TLS 995 normal password
    - smtp smtp.gmail.com SSL/TLS 465 normal password
-   - *NOTE(dirlt):需要确认gmail允许pop3来访问*
+   - *note(dirlt):需要确认gmail允许pop3来访问*
    - 不过似乎现在thunderbird已经非常智能了，只要输入username以及email的话就可以自动进行配置了。nice！！！（现在看起来选择iamp模式也没有什么问题）
    - server settings =>
      - 1) leave mesages on server until I delete them. （对于imap模式来说的话，就使用默认移动到Trash下面即可）
@@ -254,7 +254,7 @@ System Settings =》 Details 里面可以设置默认浏览器。至于emacs里�
    2. 另外就是使用大文件来追加写，然后针对每封邮件进行索引。索引可以保存在内存里面并且定期dump出去，启动时候检查索引是否和文件对应，不对应的话那么可能需要增量做一部分索引。但是这样删除会成为问题，标记删除可能就是最好的办法了。所以需要用户手动或者是通过程序判断磁盘文件大小来触发压缩。
    3. 使用数据库本质上和2是一样的，只不过可以在一定程度上简化代码。在删除方便可能还是使用压缩删除。如果是我自己做的话那么可能考虑使用sqlite来做。单机可以embed,并且通过SQL来进行检索或者是其他操作。
 
-NOTE(dirlt)：其实thunderbird超过一定大小就会自动提醒是否需要压缩
+note(dirlt)：其实thunderbird超过一定大小就会自动提醒是否需要压缩
 
 *** 窗口常用快捷键
   - Ctrl+Alt+T // 打开一个terminal。
@@ -289,14 +289,14 @@ System Settings => Appearance => Launcher icon size.
     GSSAPIDelegateCredentials no
 #+END_EXAMPLE
 
-*TODO(dirlt):具体为什么? sorry I have no idea!!!*
+*todo(dirlt):具体为什么? sorry I have no idea!!!*
 
 *** 建立ssh信任关系
 关于sshd机器之间的信任关系，很多文章都有介绍。大致方法就是：
    1. 在自己机器上面ssh-keygen生成~/.ssh/id_rsa{.pub}.其中.pub文件是公钥
    2. 然后将id_rsa.pub内容copy到另外机器下面的~/.ssh/authorized_keys里面(注意chmod 600)
    3. 接着本地的.pub文件就可以删除
-*NOTE(dirlt)：这个密钥是可以在不同机器上面使用的，也就是说你只需要生成一次即可*
+*note(dirlt)：这个密钥是可以在不同机器上面使用的，也就是说你只需要生成一次即可*
 
 我猜想大致工作过程应该是这样的：
    1. 在ssh建立连接的时候，本地ssh-client会读取~/.ssh/id_rsa内容
@@ -326,7 +326,7 @@ ssh-add   ~/.ssh/id_rsa
 #+END_EXAMPLE
 这样之后通过ssh git的话就相当于ssh -l dirtysalt -p 16021 git.fm.非常方便。
 
-*NOTE(dirlt)：实际上第二点这个对于scp也是很必要的，因为scp没有办法指定工作端口只能使用默认的22*
+*note(dirlt)：实际上第二点这个对于scp也是很必要的，因为scp没有办法指定工作端口只能使用默认的22*
 
 *** 修改默认shell
 sudo chsh -s /bin/zsh dirlt
@@ -350,7 +350,7 @@ sudo chsh -s /bin/zsh dirlt
 #+BEGIN_EXAMPLE
 /dev/sdb1 $HOME ext4 defaults 0 0
 #+END_EXAMPLE
-NOTE(dirlt):这里对于0 0不太清楚是什么意思，只是知道分别是dumps以及fsck check order. :(
+note(dirlt):这里对于0 0不太清楚是什么意思，只是知道分别是dumps以及fsck check order. :(
 
 *** virtualbox安装windows虚拟机
 安装windows虚拟机主要是为了方便一些需要在windows下面完成的操作，比如U盾。
@@ -360,7 +360,7 @@ NOTE(dirlt):这里对于0 0不太清楚是什么意思，只是知道分别是du
 使用virtualbox，通过加载windows xp的镜像安装，这个非常简单。
 或者是直接使用别人生成好的.vdi文件。vdi全称应该是virtual disk image。
 
-*NOTE(dirlt)：升级内核或者是重装系统的话，可能会造成内核版本与默认源的virtualbox不匹配，可以从官网下载最新版本。* 参考链接 https://www.virtualbox.org/wiki/Linux_Downloads
+*note(dirlt)：升级内核或者是重装系统的话，可能会造成内核版本与默认源的virtualbox不匹配，可以从官网下载最新版本。* 参考链接 https://www.virtualbox.org/wiki/Linux_Downloads
 
 *** virtualbox设置共享文件夹
 设置共享文件夹主要是为了数据可以进行同步。通过windows虚拟机，安装同步软件比如GDrive。

@@ -1,7 +1,7 @@
 * venture-captial
 #+TITLE: 风险投资
 
-*NOTE(dirlt):摘自《浪潮之巅》*
+*note(dirlt):摘自《浪潮之巅》*
 
 -----
 

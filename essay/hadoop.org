@@ -14,7 +14,7 @@
 *** Hadoop可以用来做什么
 Why Hadoop? http://www.cloudera.com/why-hadoop/
 
-TODO(dirlt):translate it!!!
+todo(dirlt):translate it!!!
 
 Simply put, Hadoop can transform the way you store and process data throughout your enterprise. According to analysts, about 80% of the data in the world is unstructured, and until Hadoop, it was essentially unusable in any systematic way. With Hadoop, for the first time you can combine all your data and look at it as one.
    - Make All Your Data Profitable. Hadoop enables you to gain insight from all the data you already have; to ingest the data flowing into your systems 24/7 and leverage it to make optimizations that were impossible before; to make decisions based on hard data, not hunches; to look at complete data, not samples; to look at years of transactions, not days or weeks. In short, Hadoop will change the way you run your organization.
@@ -22,7 +22,7 @@ Simply put, Hadoop can transform the way you store and process data throughout y
    - Scale Beyond Anything You Have Today. The largest social network in the world is built on the same open-source technology as Hadoop, and now exceeds 100 petabytes. It’s unlikely your organization has that much data. As you need more capacity, you just add more commodity servers and Hadoop automatically incorporates the new storage and compute capacity.
      
 *** Hadoop包括哪些组件
-TODO(dirlt):translate it!!!
+todo(dirlt):translate it!!!
 
 Apache Hadoop包括了下面这些组件：
    - [[http://hadoop.apache.org/common/][Hadoop Common]] The common utilities that support the other Hadoop subprojects.
@@ -41,7 +41,7 @@ Apache Hadoop包括了下面这些组件：
 *** CDH和Apache Hadoop的关系
 CDH Hadoop FAQ https://ccp.cloudera.com/display/SUPPORT/Hadoop+FAQ
 
-TODO(dirlt):translate it!!!
+todo(dirlt):translate it!!!
 
    - What exactly is included in CDH? / Cloudera's Distribution Including Apache Hadoop (CDH) is a certified release of Apache Hadoop. We include some stable patches scheduled to be included in future releases, as well as some patches we have developed for our supported customers, and are in the process of contributing back to Apache.
    - What license is Cloudera's Distribution Including Apache Hadoop released under? / Just like Hadoop, Cloudera's Distribution Including Apache Hadoop is released under the Apache Public License version 2.
@@ -189,7 +189,7 @@ http://web.archive.org/web/20110510125644/http://tech.backtype.com/the-dark-side
    - Critical configuration poorly documented 一些关键的参数和配置并没有很好地说明清楚。
    - Terrible with memory usage 内存使用上面存在问题。hadoop里面有一些非常sloppy的实现，比如chmod以及ln -s等操作，并没有调用fs API而是直接创建一个shell进程来完成。因为fork出一个shell进程需要申请同样大小的内存（虽然实现上是COW），但是这样造成jvm出现oom。解决的办法是开辟一定空间的swap The solution to these memory problems is to allocate a healthy amount of swap space for each machine to protect you from these memory glitches. We couldn't believe how much more stable everything became when we added swap space to our worker machines.
      - Thomas Jungblut's Blog: Dealing with "OutOfMemoryError" in Hadoop http://codingwiththomas.blogspot.jp/2011/07/dealing-with-outofmemoryerror-in-hadoop.html 作者给出的解决办法就是修改hadoop的代码，通过调用Java API而不是使用ProcessBuilder来解决。
-     - *NOTE(dirlt):出现OOM的话必须区分JVM还是Linux System本身的OOM。JVM出现OOM是抛出异常，而Linux出现OOM是会触发OOM killer* 
+     - *note(dirlt):出现OOM的话必须区分JVM还是Linux System本身的OOM。JVM出现OOM是抛出异常，而Linux出现OOM是会触发OOM killer* 
    - Zombies hadoop集群出现一些zombie进程，而这些进程会一直持有内存直到大量zombie进程存在最后需要重启。造成这些zombie进程的原因通常是因为jvm oom（增加了swap之后就没有出现这个问题了），但是奇怪的是tasktracker作为这些process的parent，并不负责cleanup这些zombie进程而是依赖这些zombie进程的自己退出，这就是hadoop设计方面的问题。
 
 Making Hadoop easy to deploy, use, and operate should be the #1 priority for the developers of Hadoop.
@@ -241,11 +241,11 @@ Making Hadoop easy to deploy, use, and operate should be the #1 priority for the
 基本流程和CDH3u3是相同的，但是有一些差异我记录下来。
    - 配置文件
      - 配置文件在etc/hadoop，包括环境配置脚本比如hadoop-env.sh 
-     - bin/sbin目录下面有hadoop集群启动停止工具 *NOTE(dirlt)：不要使用它们*
+     - bin/sbin目录下面有hadoop集群启动停止工具 *note(dirlt)：不要使用它们*
      - libexec目录下面是公用的配置脚本
-     - mapred-site.xml中jobtracker地址配置key修改为 mapred.jobtracker.address *NOTE(dirlt):this for yarn.如果是mr1那么不用修改,依然是mapred.job.tracker*
+     - mapred-site.xml中jobtracker地址配置key修改为 mapred.jobtracker.address *note(dirlt):this for yarn.如果是mr1那么不用修改,依然是mapred.job.tracker*
      - +hadoop-daemons.sh会使用/sbin/slaves.sh来在各个节点启动，但是 *不知道什么原因，很多环境变量没有设置* ，所以在slaves.sh执行ssh命令部分最开始增加了 source ~/.shrc; 来强制设置我的环境变量+
-     - *NOTE(dirlt):不要使用shell脚本来启动，而是直接使用类似hadoop namenode这种方式来启动单个机器上的实例*
+     - *note(dirlt):不要使用shell脚本来启动，而是直接使用类似hadoop namenode这种方式来启动单个机器上的实例*
    - 公共组件
      - CDH4.2.0 native-library都放在了目录lib/native下面，而不是CDH3u3的lib/native/Linux-amd64-64下面，这点需要注意。
      - CDH4.2.0 没有自带libhadoop.so, 所以启动的时候都会出现 ”Unable to load native-hadoop library for your platform... using builtin-java classes where applicable“ 这个警告。需要自己编译放到lib/native目录下面。
@@ -263,12 +263,12 @@ Making Hadoop easy to deploy, use, and operate should be the #1 priority for the
    - mr1和mr2分开存放主要有
      - etc目录，hadoop and hadoop-mapreduce1
      - bin目录，bin and bin-mapreduce1
-     - lib目录。如果需要使用mr1的话，那么cp -r share/hadoop/mapreduce1/ . *NOTE(dirlt):不要更改软链接*
-       - *NOTE(dirlt)：似乎只需要最顶层的一些jar文件即可*
-       - *NOTE(dirlt): 似乎只需要hadoop-core-.jar文件即可*
-     - webapps目录。如果需要使用mr1的话，那么cp -r share/hadoop/mapreduce1/webapps . *NOTE(dirlt):不然不能够访问JobTracker WebUI*
+     - lib目录。如果需要使用mr1的话，那么cp -r share/hadoop/mapreduce1/ . *note(dirlt):不要更改软链接*
+       - *note(dirlt)：似乎只需要最顶层的一些jar文件即可*
+       - *note(dirlt): 似乎只需要hadoop-core-.jar文件即可*
+     - webapps目录。如果需要使用mr1的话，那么cp -r share/hadoop/mapreduce1/webapps . *note(dirlt):不然不能够访问JobTracker WebUI*
    - +在bin/hadoop-config.sh添加source ~/.shrc 来强制设置环境变量。+
-   - *NOTE(dirlt)：不要使用start-dfs.sh这些脚本启动，似乎这些脚本会去读取master,slaves这些文件然后逐个上去ssh启动。直接使用hadoop namenode这种方式可以只启动单个机器上的实例*
+   - *note(dirlt)：不要使用start-dfs.sh这些脚本启动，似乎这些脚本会去读取master,slaves这些文件然后逐个上去ssh启动。直接使用hadoop namenode这种方式可以只启动单个机器上的实例*
 
 *** Configuration
 **** .bash_profile
@@ -573,14 +573,14 @@ export HBASE_OPTS="-ea -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+UseCMSCompa
    - 设置HADOOP_CLASSPATH就可以直接使用hadoop CLASSNAME来在本地运行mapreduce程序。
    - hadoop jar $HADOOP_HOME/contrib/streaming/hadoop-streaming-0.20.2-cdh3u3.jar 可以用来启动streaming任务
      - 使用stdin/stdout来作为输入和输出
-     - *NOTE(dirlt)：倒是可以探索一下如何使用，但是觉得能力有限*
+     - *note(dirlt)：倒是可以探索一下如何使用，但是觉得能力有限*
        - Input/Output Format
        - 外围环境的访问比如访问hdfs以及hbase
        - 程序打包。比如使用很多第三方库的话在其他机器上面没有部署。 
    - hadoop pipes 可以用来启动pipes任务
      - Hadoop的Pipes是Hadoop MapReduce的C++接口代称
      - 使用Unix Domain Socket来作为输入和输出
-     - *NOTE(dirlt)：可能使用上面还是没有native mr或者是streaming方式方便*
+     - *note(dirlt)：可能使用上面还是没有native mr或者是streaming方式方便*
 
 *** Hadoop分布式文件系统
   - 使用hadoop archive能够将大量小文档打包，存档文件之能够只读访问
@@ -603,7 +603,7 @@ export HBASE_OPTS="-ea -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+UseCMSCompa
        - 计算crc的单位大小通过io.bytes.per.checksum来进行控制
        - 读取文件如果出现错误的话，那么会抛出ChecksumException
        - 考虑到存在多副本的情况，如果读取某个副本出错的话，期间那么会调用reportChecksumFailure方法
-	 - *NOTE(dirlt)：这个部分的代码不太好读，非常绕*    
+	 - *note(dirlt)：这个部分的代码不太好读，非常绕*    
      - RawLocalFileSystem
        - 本地文件系统
      - LocalFileSystem
@@ -635,8 +635,8 @@ export HBASE_OPTS="-ea -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+UseCMSCompa
        - mapred.output.compress = true 将mapreduce结果做压缩
        - mapred.output.compression.codec mapreduce压缩格式
        - mapred.output.compress.type = BLOCK/RECORD 如果输出格式为SequenceFile的话，那么这个参数可以控制是块压缩还是记录压缩
-       - *NOTE(dirlt)：我现在强烈感觉MR的中间结果存储格式为SequenceFile* 
-       - *NOTE(dirlt)：应该是IFile，但是是否共享了这个配置呢？*
+       - *note(dirlt)：我现在强烈感觉MR的中间结果存储格式为SequenceFile* 
+       - *note(dirlt)：应该是IFile，但是是否共享了这个配置呢？*
        - mapred.compress.map.output = true 将map结果做压缩
        - mapred.map.output.compression.codec map压缩格式
 
@@ -656,7 +656,7 @@ export HBASE_OPTS="-ea -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+UseCMSCompa
            - 如果使用记录压缩的话，那么格式为 recordLnegth(4byte) + keyLength(4byte) + key + compressedValue
            - 如果使用块压缩的话，那么格式为 numberRecord(1-5byte) + keyLength(4byte) + compressedKeys + valueLength(4byte) + compressedValues.每个block之间会插入sync标记
 	   - 块压缩大小可以使用io.seqfile.compress.blocksize来控制，默认1MB
-       - MapFile 也是用来存储KV数据结构，但是可以认为已经按照了Key进行排序 *NOTE(dirlt)：要求添加顺序就按照Key排序*
+       - MapFile 也是用来存储KV数据结构，但是可以认为已经按照了Key进行排序 *note(dirlt)：要求添加顺序就按照Key排序*
 	 - 存储格式实际上也是SequenceFile，data，index都是。
 	 - 底层会建立index，index在搜索的时候会加载到内存里面，这样可以减少data上的随机查询次数。
          - 使用io.map.index.interval可以控制多少个item在index里面创建一个条目
@@ -676,7 +676,7 @@ export HBASE_OPTS="-ea -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+UseCMSCompa
 -----
    - Hadoop集群有三种工作方式，分别为
      - standalone 使用单个JVM进程来模拟
-       - 如果不进行任何配置的话默认使用这个模式 *NOTE(dirlt)：这个模式确实不错*
+       - 如果不进行任何配置的话默认使用这个模式 *note(dirlt)：这个模式确实不错*
        - fs.default.name = file 本地文件系统
        - mapred.job.tracker = local
      - pseudo-distributed 本地启动单节点集群
@@ -703,10 +703,10 @@ export HBASE_OPTS="-ea -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+UseCMSCompa
    - MiniMRCluster
    - MiniHBaseCluster 
    - MiniZooKeeperClutser
-   - *NOTE(dirlt):都称为Mini???Cluster？*
+   - *note(dirlt):都称为Mini???Cluster？*
 另外还有自带的ClusterMapReduceTestCase以及HBaseTestingUtility来帮助进行mapreduce的testcase. 这些类散步在hadoop,hbase,hadoop-test以及hbase-test里面。 
 
-*NOTE(dirlt)：但是个人觉得可能还是没有本地测试方便，不过倒是可以试试* 
+*note(dirlt)：但是个人觉得可能还是没有本地测试方便，不过倒是可以试试* 
 
 -----
 job，task and attempt
@@ -739,13 +739,13 @@ job，task and attempt
      - MapReduce作业历史日志 _logs/history
      - MapReduce任务日志 写入HADOOP_LOG_DIR/userlogs里面，可以用来监控每个job的运行情况
    - 分析任务
-     - JobConf允许设置profile参数 *NOTE(dirlt)：新的接口里面JobConf->JobContext->Job，Job没有这些接口，但是可以通过Configuration来设置*
+     - JobConf允许设置profile参数 *note(dirlt)：新的接口里面JobConf->JobContext->Job，Job没有这些接口，但是可以通过Configuration来设置*
        - setProfileEnabled 打开profile功能，默认false，属性 mapred.task.profile
        - setProfileParams 设置profile参数
 	 - 属性 mapred.task.profile.params
          - 默认使用hprof -agentlib:hprof=cpu=samples,heap=sites,force=n,thread=y,verbose=n,file=%s"
 	 - 其中%s会替换成为profile输出文件
-         - *NOTE(dirlt)：其实这里似乎也可以设置成为jmxremote来通过jvisualvm来调试*
+         - *note(dirlt)：其实这里似乎也可以设置成为jmxremote来通过jvisualvm来调试*
        - setProfileTaskRange(boolean,String)
 	 - 参数1表示针对map还是reduce task做profile, true表示map, false表示reduce
 	 - 参数2表示针对哪些tasks做优化，"0-2"表示针对0，1，2三个任务，默认也是"0-2"
@@ -827,20 +827,20 @@ file:./images/mapreduce-shuffle-sort.jpg
 
 file:./images/mapreduce-shuffle-sort-2.png
 
- 有下面这些参数控制shuffle和sort的过程 *NOTE(dirlt)：书上倒是有很多参数，但是好多还是不太理解*
+ 有下面这些参数控制shuffle和sort的过程 *note(dirlt)：书上倒是有很多参数，但是好多还是不太理解*
     - io.sort.mb map输出缓存空间大小，默认是100MB. 建议设置10* io.sort.factor.
     - io.sort.spill.percent 如果map输出超过了缓存空间大小的这个阈值的话，那么就会spill,默认是0.8
       - 每次spill之前先会对这个文件进行排序，如果有combiner的话那么会在上面调用combiner
       - 写磁盘是按照轮询的方式写到mapred.local.dir属性指定的目录下面
       - 如果spill速度太慢的话，那么往缓存空间写入进程就会阻塞，直到spill腾出空间。
     - io.sort.factor 多路归并的数量，默认是10. 建议设置在25-32.
-      - 在map阶段，因为最终会存在多个spill文件，所以需要做多路归并。 *TODO(dirlt)：如果归并数量少的话是否可能会多次merge？*
+      - 在map阶段，因为最终会存在多个spill文件，所以需要做多路归并。 *todo(dirlt)：如果归并数量少的话是否可能会多次merge？*
       - 在reduce阶段的话，因为可能存在多路map输出的结果，所以需要做多路归并。
     - min.num.spill.for.combine 如果指定combiner并且spill次数超过这个值的话就会调用combine,默认为3
     - tasktracker.http.threads reduce通过HTTP接口来发起数据请求，这个就是HTTP接口相应线程数目，默认为40。 *mapper as server*
     - mapred.reduce.parallel.copies reduce启动多少个线程去请求map输出，默认为5。 *reducer as client*
-      - *NOTE(dirlt):如果reduce和每个map都使用一个线程去请求输出结果的话，只要shuffle阶段没有出现network congestion，那么提高线程数量是有效果的*
-      - *NOTE(dirlt)：可以设置到15-50*
+      - *note(dirlt):如果reduce和每个map都使用一个线程去请求输出结果的话，只要shuffle阶段没有出现network congestion，那么提高线程数量是有效果的*
+      - *note(dirlt)：可以设置到15-50*
     - mapred.reduce.copy.backoff = 300(s) reduce下载线程最大等待时间    
     - mapred.job.shuffle.input.buffer.percent = 0.7 用来缓存shuffle数据的reduce task heap百分比
     - mapred.job.shuffle.merge.percent = 0.66 缓存的内存中多少百分比后开始做merge操作
@@ -866,7 +866,7 @@ file:./images/mapreduce-shuffle-sort-2.png
      - mapred.task.partition int 作业中任务编号
      - mapred.task.is.map boolean 是否为map
      - mapred.work.output.dir / FileOutputFormat.getWorkOutputPath 当前工作目录
-   - 杂项 *NOTE(dirlt)：from misc articles*
+   - 杂项 *note(dirlt)：from misc articles*
      - mapred.job.map.capacity  # 最大同时运行map数量
      - mapred.job.reduce.capacity # 最大同时运行reduce数量
      - mapred.job.queue.name # 选择执行queue
@@ -892,7 +892,7 @@ MapReduce的类型
     cleanup(context);
   }
 #+END_SRC
-*NOTE(dirlt)：觉得这个特性不是特别有用*
+*note(dirlt)：觉得这个特性不是特别有用*
    - mapred.input.format.class setInputFormat
    - mapred.mapoutput.key.class setMapOutputKeyClass
    - mapred.mapoutput.value.class setMapOutputValueClass
@@ -979,11 +979,11 @@ public abstract class RecordReader<KEYIN, VALUEIN> implements Closeable {
      - InputFormat使用StreamInputFormat,       
      - 设置RecordReader使用stream.recordreader.class来设置
      - RecordReader使用org.apache.hadoop.streaming.StreamXmlRecordReader
-     - *NOTE(dirlt)：也有现成的XmlInputFormat的实现*
+     - *note(dirlt)：也有现成的XmlInputFormat的实现*
    - SequenceFileInputFormat
    - SequenceFileAsTextInputFormat
      - 将输入的kv转换成为text对象适合streaming处理方式
-   - SequenceFileAsBinaryInputFormat *NOTE(dirlt)：似乎没有什么用！*
+   - SequenceFileAsBinaryInputFormat *note(dirlt)：似乎没有什么用！*
    - MultipleInputs
    - DBInputFormat/DBOutputFormat JDBC数据库输入输出
    - TableInputFormat/TableOutputFormat HBase输入输出
@@ -995,7 +995,7 @@ public abstract class RecordReader<KEYIN, VALUEIN> implements Closeable {
      - 对应的输入格式为KeyValueTextInputFormat
      - 可以使用NullWritable来忽略输出的k或者是v
    - SequenceFileOutputFormat
-   - SequenceFileAsBinaryOutpuFormat *NOTE(dirlt)：似乎没有什么用！*
+   - SequenceFileAsBinaryOutpuFormat *note(dirlt)：似乎没有什么用！*
    - MapFileOutputFormat
    - MultipleOutputFormat 
    - MultipleOutputs
@@ -1029,7 +1029,7 @@ public abstract class RecordReader<KEYIN, VALUEIN> implements Closeable {
        - ChainMapper 允许在Map阶段，多个mapper组成一个chain,然后连续进行调用
        - ChainReducer 允许在Reuduce阶段，reducer完成之后执行一个mapper chain.
        - 最终达到的效果就是 M+ -> R -> M* （1个或者是多个mapper, 一个reducer，然后0个或者是多个mapper)
-       - *TODO(dirlt):这样做倒是可以将各个mapper组合起来用作adapter.*
+       - *todo(dirlt):这样做倒是可以将各个mapper组合起来用作adapter.*
 
 *** 构建Hadoop集群
    - 很多教程说hadoop集群需要配置ssh,但是配置这个前提是你希望使用start-all.sh这个脚本来启动集群
@@ -1047,7 +1047,7 @@ public abstract class RecordReader<KEYIN, VALUEIN> implements Closeable {
        - hadoop-metrics.properties 对hadoop做监控的配置文件
        - log4j.properties 日志配置文件
        - 这些文件在conf目录下面有，如果想使用不同的文件也可以使用-config来另行指定
-       - *NOTE(dirlt):所以从上面这个脚本来看，还是具有一定的局限性的*
+       - *note(dirlt):所以从上面这个脚本来看，还是具有一定的局限性的*
      - hadoop-env.sh
        - HADOOP_HEAPSIZE = 1000MB 守护进程大小
        - HADOOP_NAMENODE_OPTS
@@ -1076,11 +1076,11 @@ public abstract class RecordReader<KEYIN, VALUEIN> implements Closeable {
        - dfs.block.size = 64MB
        - dfs.datanode.du.reserved 默认datanode会使用目录所在磁盘所有空间，这个值可以保证有多少空间被reserved的
        - fs.trash.interval 单位分钟，如果不为0的话，那么删除文件会移动到回收站，超过这个单位时间的文件才会完全删除。
-	 - 回收站位置/home/${user]/.Trash *NOTE(dirlt):回收站这个功能只是对fs shell有效。fs shell remove时候会构造Trash这个类来处理删除文件的请求。如果调用Java API的话那么会直接删除文件*
+	 - 回收站位置/home/${user]/.Trash *note(dirlt):回收站这个功能只是对fs shell有效。fs shell remove时候会构造Trash这个类来处理删除文件的请求。如果调用Java API的话那么会直接删除文件*
          - haddop fs -expunge 强制删除
-         - *NOTE(dirlt)：grep代码发现只有NameNode在TrashEmptier里面构造了Trash这个类，因此这个配置之需要在nn上配置即可，决定多久定期删除垃圾文件*
+         - *note(dirlt)：grep代码发现只有NameNode在TrashEmptier里面构造了Trash这个类，因此这个配置之需要在nn上配置即可，决定多久定期删除垃圾文件*
        - fs.trash.checkpoint.interval 单位分钟，namenode多久检查一次文件是否需要删除。
-         - *NOTE(dirlt)：似乎没有这个参数。如果没有这个参数的话，那么两次检查时长应该是由参数fs.trasn.interval来决定*
+         - *note(dirlt)：似乎没有这个参数。如果没有这个参数的话，那么两次检查时长应该是由参数fs.trasn.interval来决定*
      - mapred-site.xml
        - mapred.job.tracker
        - mapred.local.dir MR中间数据存储，一系列目录，分散写到各个目录下面，默认为${hadoop.tmp.dir}/mapred/local
@@ -1089,10 +1089,10 @@ public abstract class RecordReader<KEYIN, VALUEIN> implements Closeable {
        - mapred.tasktracker.reduce.tasks.maximum = 2 单个tasktracker最多多少个reduce任务
        - mapred.tasktracker.dns.interface default 绑定的NIC，默认是绑定默认的NIC比如eth0
        - mapred.child.ulimit 单个tasktracker允许子进程占用的最大内存空间。通常为2-3* mapred.child.java.opts.
-       - mapred.child.java.opts = -Xmx200m 每个子JVM进程200M. *NOTE(dirlt)：这个是在提交机器上面设置的，而不是每个tasktracker上面设置的，每个job可以不同*
+       - mapred.child.java.opts = -Xmx200m 每个子JVM进程200M. *note(dirlt)：这个是在提交机器上面设置的，而不是每个tasktracker上面设置的，每个job可以不同*
 	 - 不一定支持将map/reduce的jvm参数分开设置 http://hadoop-common.472056.n3.nabble.com/separate-JVM-flags-for-map-and-reduce-tasks-td743351.html
-         - *NOTE(dirlt)：个人折中思路是限制内存大小为1G，然后大内存机器允许同时执行map/reduce数量上限提高，通过增加job的map/reduce数量来提高并发增加性能*
-         - *NOTE(dirlt)：我grep了一下cdh3u3的代码，应该是将map/reduce的jvm参数分开进行了设置*
+         - *note(dirlt)：个人折中思路是限制内存大小为1G，然后大内存机器允许同时执行map/reduce数量上限提高，通过增加job的map/reduce数量来提高并发增加性能*
+         - *note(dirlt)：我grep了一下cdh3u3的代码，应该是将map/reduce的jvm参数分开进行了设置*
 	   - mapred.map.child.java.opts
            - mapred.reduce.child.java.opts
        - mapred.task.tracker.report.address 127.0.0.1:0 tasktracker启动子进程通信的端口，0表示使用任意端口
@@ -1101,7 +1101,7 @@ public abstract class RecordReader<KEYIN, VALUEIN> implements Closeable {
        - mapred.job.tracker.http.address 0.0.0.0:50030 jobtracker的HTTP接口
        - mapred.task.tracker.http.address 0.0.0.0:50060 tasktrackder的HTTP接口
        - mapred.hosts / mapred.hosts.exclude 加入的tasktracker以及排除的tasktracker.
-   - Hadoop Benchmark *NOTE(dirlt)：try it out*
+   - Hadoop Benchmark *note(dirlt)：try it out*
      - 在hadoop安装目录下面有jar可以来做基准测试
      - TestDFSIO测试HDFS的IO性能
      - Sort测试MapReduce性能
@@ -1147,7 +1147,7 @@ public abstract class RecordReader<KEYIN, VALUEIN> implements Closeable {
        - DataBlockScanner每隔一段时间会扫描本地的data block检查是否出现校验和问题
        - 时间间隔是dfs.datanode.scan.period.hours = 504默认三周
        - 可以通过页面访问每个datanode的block情况 http://localhost:50075/blockScannerReport
-       - 加上listblocks参数可以看每个block情况 http://localhost:50075/blockScannerReport?listblocks *NOTE(dirlt)：可能会很大*
+       - 加上listblocks参数可以看每个block情况 http://localhost:50075/blockScannerReport?listblocks *note(dirlt)：可能会很大*
      - balancer
        - 通过start-balancer.sh来启动,集群中只允许存在一个均衡器
        - 均衡的标准是datanode的利用率和集群平均利用率的插值，如果超过某个阈值就会进行block movement
@@ -1404,7 +1404,7 @@ Examples:
    - scan<num> 每次scan num个row，start随机
    - seqRead 顺序地读取每个key
    - seqWrite 顺序地写入每个key
-   - *NOTE(dirlt):这里的key都非常简单，10个字符的数字，printf("%010d",row)*
+   - *note(dirlt):这里的key都非常简单，10个字符的数字，printf("%010d",row)*
 
 #+BEGIN_EXAMPLE
 hdfs@hadoop1:~$ time hbase org.apache.hadoop.hbase.PerformanceEvaluation --rows=1000 sequentialWrite 2

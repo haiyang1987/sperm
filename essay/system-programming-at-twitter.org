@@ -12,7 +12,7 @@ http://monkey.org/~marius/talks/twittersystems/
      - profile数据同样可以通过http接口访问到，使用pprof来做分析。
      - Tracing, cancellation, thread-biasing pools, etc. with zero user code change 并且这些功能不需要用户修改代码
 
-*TODO(dirlt)：其实我很想知道scala语言本身对于他们的系统架构的影响有多大？不过从作者花这么长的篇幅来讨论scala语言，我觉得今后可以在实践中好好体会*
+*todo(dirlt)：其实我很想知道scala语言本身对于他们的系统架构的影响有多大？不过从作者花这么长的篇幅来讨论scala语言，我觉得今后可以在实践中好好体会*
 
 
 

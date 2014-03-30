@@ -29,7 +29,7 @@ file:./images/mapreduce-execution-overview.png
 
 
 整个工作逻辑是：
-   - The MapReduce library in the user program first splits the input files into M pieces of typically 16 megabytes to 64 megabytes (MB) per piece (con-trollable by the user via an optional parameter). It then starts up many copies of the program on a clus-ter of machines.（根据输入文件大小，按照每个block 16-64M这个数值用户可以指定，来进行切分。这个数目就是mapper实例个数） *NOTE(dirlt)：这个是在启动之前预先执行的动作？*
+   - The MapReduce library in the user program first splits the input files into M pieces of typically 16 megabytes to 64 megabytes (MB) per piece (con-trollable by the user via an optional parameter). It then starts up many copies of the program on a clus-ter of machines.（根据输入文件大小，按照每个block 16-64M这个数值用户可以指定，来进行切分。这个数目就是mapper实例个数） *note(dirlt)：这个是在启动之前预先执行的动作？*
    - One of the copies of the program is special – the master. The rest are workers that are assigned work by the master. There are M map tasks and R reduce tasks to assign. The master picks idle workers and assigns each one a map task or a reduce task.（所有的都是worker，其中一个worker比较特殊成为master，工作是将mapper/reducer指派到worker上面去，并且监控mapper/reducer的运行情况）
    - A worker who is assigned a map task reads the contents of the corresponding input split. It parses key/value pairs out of the input data and passes each pair to the user-defined Map function. The interme-diate key/value pairs produced by the Map function are buffered in memory.（分配到mapper工作的worker读取对应的数据并且进行解析，将解析的结果丢给map函数处理。输出结果会缓存起来而不是立刻输出）
    - Periodically, the buffered pairs are written to local disk, partitioned into R regions by the partitioning function. The locations of these buffered pairs on the local disk are passed back to the master, who is responsible for forwarding these locations to the reduce workers.（mapper缓存的结果周期性地写到本地磁盘，并且是根据partition函数写成R份。mapper将磁盘地址通知给master，一方面是通知完成，另外一方面master可以通知reducer拉数据）
@@ -88,11 +88,11 @@ combiner可以使得在mapper本地就进行一些reducer操作。通常这些�
    - Typically the same code is used to implement both the combiner and the reduce func-tions. （combiner和reducer使用相同的reduce代码）
    - The only difference between a reduce function and a combiner function is how the MapReduce library han-dles the output of the function. The output of a reduce function is written to the final output file. The output of a combiner function is written to an intermediate file that will be sent to a reduce task.（唯一差别在于combiner写入本地文件，而reducer写入gfs）
 
-*NOTE(dirlt)：如果是这样的话，那么可以认为mapper阶段是要做排序的，不然combiner和reducer就不能够使用相同代码了。排序要是有好处的，这样在reducer排序直接使用归并排序即可。*
+*note(dirlt)：如果是这样的话，那么可以认为mapper阶段是要做排序的，不然combiner和reducer就不能够使用相同代码了。排序要是有好处的，这样在reducer排序直接使用归并排序即可。*
 
 -----
 
-*NOTE(dirlt)：关于reduce语义问题*
+*note(dirlt)：关于reduce语义问题*
 
 这个多谢邓业强同学的提醒。我们假设reduce API是这样的
 #+BEGIN_SRC C++

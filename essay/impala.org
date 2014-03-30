@@ -33,12 +33,12 @@ Queries executed using Impala are handled as follows:
 
 ** Installation
 *** Hardware Requirements
-   - During join operations all data from both data sets is loaded into memory. Data sets can be very large, so ensure your hardware has sufficient memory to accommodate the joins you anticipate completing. *NOTE(dirlt):这有点汗，join操作都是在全内存完成的*
+   - During join operations all data from both data sets is loaded into memory. Data sets can be very large, so ensure your hardware has sufficient memory to accommodate the joins you anticipate completing. *note(dirlt):这有点汗，join操作都是在全内存完成的*
    - CPU - Impala uses the SSE4.2 instruction set, which is included in newer processors. Impala can use older processors, but for best performance use:
      - Intel - Nehalem (released 2008) or later processors.
      - AMD - Bulldozer (released 2011) or later processors.
    - Memory - 32GB or more. Impala cannot run queries that have a working set greater than the total available ram. Note that the working set is not the size of the input.
-   - Storage - DataNodes with 10 or more disks each. I/O speeds are often the limiting factor for disk performance with Impala. Ensure you have sufficient disk space to store the data Impala will be querying. *NOTE(dirlt)：感叹未来的趋势就是拿内存当磁盘用*
+   - Storage - DataNodes with 10 or more disks each. I/O speeds are often the limiting factor for disk performance with Impala. Ensure you have sufficient disk space to store the data Impala will be querying. *note(dirlt)：感叹未来的趋势就是拿内存当磁盘用*
 
 *** Prerequsite
    - Install CDH4 as described in CDH4 Installation. https://ccp.cloudera.com/display/CDH4DOC/CDH4+Installation
@@ -48,7 +48,7 @@ Queries executed using Impala are handled as follows:
      - sudo apt-get install hadoop-0.20-mapreduce-tasktracker 
      - sudo apt-get install hadoop-hdfs-datanode
      - sudo apt-get install hadoop-client
-   - Install Hive as described in Hive Installation. As part of this process, you must configure Hive to use an external database as a metastore. 必须使用外部数据库来作为metastore *NOTE(dirlt):hive允许使用内嵌数据库做metastore*
+   - Install Hive as described in Hive Installation. As part of this process, you must configure Hive to use an external database as a metastore. 必须使用外部数据库来作为metastore *note(dirlt):hive允许使用内嵌数据库做metastore*
      - sudo apt-get install hive
 #+BEGIN_EXAMPLE
 deb [arch=amd64] http://archive.cloudera.com/cdh4/ubuntu/precise/amd64/cdh precise-cdh4 contrib
@@ -64,7 +64,7 @@ tarball:
    - zookeeper http://archive.cloudera.com/cdh4/cdh/4/zookeeper-3.4.5-cdh4.2.0.tar.gz
    - hive http://archive.cloudera.com/cdh4/cdh/4/hive-0.10.0-cdh4.2.0.tar.gz
 
-*NOTE(dirlt):最好不要用tarball安装* impala需要使用hdfs的short-circuit read的特性，这个特性需要有libhadoop.so.但是tarball没有自带native实现
+*note(dirlt):最好不要用tarball安装* impala需要使用hdfs的short-circuit read的特性，这个特性需要有libhadoop.so.但是tarball没有自带native实现
 #+BEGIN_EXAMPLE
 Enabling short-circuit reads allows Impala to read local data directly from the file system. This removes
 the need to communicate through the DataNodes, improving performance. This setting also minimizes
@@ -75,14 +75,14 @@ local reads.
 #+END_EXAMPLE
 
 *** Ubuntu
-source compile: *NOTE(dirlt)：比较麻烦*
+source compile: *note(dirlt)：比较麻烦*
    - sudo apt-get install libboost-all-dev libevent1-dev automake libtool flex bison g++ libssl-dev make cmake doxygen libglib2.0-dev python-dev libzip2 subversion libsasl2-dev wget git unzip
    - llvm maven3 # github README上面有描述
    - git clone https://github.com/cloudera/impala.git
-   - cd impala && . bin/impala-config.sh # *NOTE(dirlt):我使用oh-my-zsh似乎有问题，切换成为bash就成功*
-   - cd thirdparty && ./download_thirdparty.sh # *NOTE(dirlt):如果自己手动下载了hadoop和hive的话，可以修改一下脚本，因为这两个包还是比较大的*
+   - cd impala && . bin/impala-config.sh # *note(dirlt):我使用oh-my-zsh似乎有问题，切换成为bash就成功*
+   - cd thirdparty && ./download_thirdparty.sh # *note(dirlt):如果自己手动下载了hadoop和hive的话，可以修改一下脚本，因为这两个包还是比较大的*
    - cd ${IMPALA_HOME} && ./build_public.sh -build_thirdparty
-   - *NOTE(dirlt)：编译麻烦，我没有成功，放弃*
+   - *note(dirlt)：编译麻烦，我没有成功，放弃*
 
 binary install:
    - sudo apt-get install impala

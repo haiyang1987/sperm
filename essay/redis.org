@@ -1,6 +1,6 @@
 * redis
 #+OPTIONS: H:4
-   - alphazero/jredis · GitHub https://github.com/alphazero/jredis Java Client 支持异步操作 *NOTE(dirlt)：实际不支持*     
+   - alphazero/jredis · GitHub https://github.com/alphazero/jredis Java Client 支持异步操作 *note(dirlt)：实际不支持*     
 
 ** 简介
 主页是http://redis.io/. redis(REmote DIctionary Server)是kv数据库，对于k来说的话允许是binary,而对于v来说的话可以支持很多数据结构。
@@ -17,7 +17,7 @@ redis的代码在2w左右，但是包含的内容非常多包括精巧的数据�
 这里有个website可以尝试在线使用http://try.redis-db.com/. 界面和交互效果非常漂亮。另外这里有一些参考资源的汇总http://blog.nosqlfan.com/html/3537.html.
 不过我觉得redis本身就不是非常复杂，所以阅读文档足够了解其功能以及大致的内部实现。
 
-NOTE(dirlt):redis可能是单CPU线程程序。之所以猜测这点主要是从事务以及scripting(完成事务)的实现考虑的。如果scripting需要完成事务的话，
+note(dirlt):redis可能是单CPU线程程序。之所以猜测这点主要是从事务以及scripting(完成事务)的实现考虑的。如果scripting需要完成事务的话，
 外围是没有办法来进行log的。但是又需要保证scripting是原子操作完成的话，那么只能够是单CPU线程来实现。不过好像之前也记得同学提到过这个问题，
 对于并发的话redis是通过进程来完成的。不过其实这非常现实，多线程来操作对象让每个对象上面都带上一把mutex的话，无疑会让代码更加混乱。bravo,antirez.
 
@@ -127,7 +127,7 @@ script可以在redis server进行缓存，用户也可以强制server将script�
    - INFO. information about server.
    - SLAVEOF host port. 这台redis-server作为host/port的slave.SLAVEOF NO ONE可以让这台机器变成master.
    - BGSAVE. background进行dump保存为dump.rdb.
-   - DEBUG OBJECT key. TODO(dirlt):
+   - DEBUG OBJECT key. todo(dirlt):
    - LASTSAVE. 最后完成SAVE的unix timestamp.
    - SLOWLOG subcommand [argument]. 关于慢日志的控制和查询。
    - CONFIG GET parameter. 获取redis参数配置。
@@ -246,7 +246,7 @@ sentinel功能是为了解决redis在分布式使用场景中主从automatic fai
 TODO（dirlt)：考虑到redis的代码质量比较高，对于redis的automatic failover实现机制可以好好分析并且阅读代码。
 
 ** 代码分析
-TODO(dirlt):
+todo(dirlt):
    - aof.c
    - db.c
    - config.c
@@ -622,7 +622,7 @@ struct redisServer {
 #+END_SRC
 
 ***** redisClient
-redisClient应该是针对每个client请求保存的状态。TODO(dirlt):解释关于各个字段的含义.
+redisClient应该是针对每个client请求保存的状态。todo(dirlt):解释关于各个字段的含义.
 #+BEGIN_SRC C++
 /* With multiplexing we need to take per-clinet state.
  * Clients are taken in a liked list. */
@@ -662,7 +662,7 @@ typedef struct redisClient {
 } redisClient;
 #+END_SRC
 ***** redisObject
-TODO(dirlt):
+todo(dirlt):
 #+BEGIN_SRC C++
 /* A redis object, that is a type able to hold a string / list / set */
 
@@ -684,7 +684,7 @@ typedef struct redisObject {
 #+END_SRC
 
 **** Interface
-TODO(dirlt):
+todo(dirlt):
 
 **** redisLog
 注意这里打本地日志的话都每次都会用fopen打开并且fclose关闭。然后可以可选地通过syslog进行打印。
@@ -784,7 +784,7 @@ void _redisPanic(char *msg, char *file, int line) {
 #+END_SRC
 
 *** Networking
-在redis.h内部定义了networking部分的接口，然后在networking.c内部定义了实现。TODO(dirlt):what for use?.
+在redis.h内部定义了networking部分的接口，然后在networking.c内部定义了实现。todo(dirlt):what for use?.
 
 **** Interface
 #+BEGIN_SRC C++
@@ -1336,7 +1336,7 @@ static int processTimeEvents(aeEventLoop *eventLoop) {
         long now_sec, now_ms;
         long long id;
 
-        if (te->id > maxId) { // TODO(dirlt):不合法timer event?.
+        if (te->id > maxId) { // todo(dirlt):不合法timer event?.
             te = te->next;
             continue;
         }
@@ -1479,10 +1479,10 @@ int fwriteBulkObject(FILE *fp, robj *obj);
 #+END_SRC
 
 **** syncWrite
-TODO(dirlt):
+todo(dirlt):
 
 **** syncRead
-TODO(dirlt):
+todo(dirlt):
 
 **** syncReadLine
 似乎这个sync read line实现太费了，每次只是读取一个字节(如果应用可能会发送多个连续行的话，
@@ -1511,13 +1511,13 @@ int syncReadLine(int fd, char *ptr, ssize_t size, int timeout) {
 #+END_SRC
 
 **** fwriteBulkString
-TODO(dirlt):
+todo(dirlt):
 
 **** fwriteBulkDouble
-TODO(dirlt):
+todo(dirlt):
 
 **** fwriteBulkLongLong
-TODO(dirlt):
+todo(dirlt):
 
 **** fwriteBulkObject
 向fp写入一个redis object对象.感觉文件io部分的话更多像是redis debug部分。将redis object
@@ -1811,7 +1811,7 @@ int startAppendOnly(void) {
 #+END_SRC
 
 **** rewriteAppendOnlyFileBackground
-TODO(dirlt):
+todo(dirlt):
 
 *** Memory Management
 redis对malloc进行了包装，在zmalloc.h下面。redis自带了jemalloc.代码内部的话允许使用jemalloc,tcmalloc以及glibc malloc.
@@ -2057,7 +2057,7 @@ size_t zmalloc_size(void *ptr) {
 }
 #endif
 #+END_SRC
-但是似乎不管是两者意图的话，上面代码都是不正确的。TODO(dirlt):搞清楚zmalloc_size返回的具体是什么数值。
+但是似乎不管是两者意图的话，上面代码都是不正确的。todo(dirlt):搞清楚zmalloc_size返回的具体是什么数值。
 
 **** zfree
 #+BEGIN_SRC C++
@@ -2397,25 +2397,25 @@ static void intsetMoveTail(intset *is, uint32_t from, uint32_t to) {
 #+END_SRC
 
 ***** intsetAdd
-TODO(dirlt):
+todo(dirlt):
 
 ***** intsetRemove
-TODO(dirlt):
+todo(dirlt):
 
 ***** intsetFind
-TODO(dirlt):
+todo(dirlt):
 
 ***** intsetRandom
-TODO(dirlt):
+todo(dirlt):
 
 ***** intsetGet
-TODO(dirlt):
+todo(dirlt):
 
 ***** intsetLen
-TODO(dirlt):
+todo(dirlt):
 
 ***** intsetBlobLen
-TODO(dirlt):
+todo(dirlt):
 
 **** dict
 dict本质实现上是hashtable.dict实现得非常通用。个人感觉非常精巧所以非常想读一读。
@@ -2748,7 +2748,7 @@ static unsigned long _dictNextPower(unsigned long size)
 #+END_SRC
 
 ***** dictExpand
-TODO(dirlt):这个地方似乎没有看懂ht(0)和ht(1)是如何交替使用的.
+todo(dirlt):这个地方似乎没有看懂ht(0)和ht(1)是如何交替使用的.
 
 NOTICE(dirlt):应该是ht(0)和ht(1)个存在一部分数据.然后每次都是从ht(0)->ht(1)移动.
 一旦移动完成的话，那么将ht(1)->ht(0)同时清空ht(1).
@@ -3835,7 +3835,7 @@ static unsigned char *__ziplistDelete(unsigned char *zl, unsigned char *p, unsig
 #+END_SRC
 
 ***** __ziplistInsert
-在某个点之前插入.实现起来也是比较繁琐的没有细看.TODO(dirlt):仔细看看实现.应该是比较繁琐的.想必作者也花了不少时间.
+在某个点之前插入.实现起来也是比较繁琐的没有细看.todo(dirlt):仔细看看实现.应该是比较繁琐的.想必作者也花了不少时间.
 #+BEGIN_SRC C++
 /* Insert item at "p". */
 static unsigned char *__ziplistInsert(unsigned char *zl, unsigned char *p, unsigned char *s, unsigned int slen) {
@@ -3927,46 +3927,46 @@ static unsigned char *__ziplistInsert(unsigned char *zl, unsigned char *p, unsig
 #+END_SRC
 
 ***** zipListNew
-TODO(dirlt):
+todo(dirlt):
 
 ***** zipListResize
-TODO(dirlt):
+todo(dirlt):
 
 ***** ziplistPush
-TODO(dirlt):
+todo(dirlt):
 
 ***** ziplistIndex
-TODO(dirlt):
+todo(dirlt):
 
 ***** ziplistNext
-TODO(dirlt):
+todo(dirlt):
 
 ***** ziplistPrev
-TODO(dirlt):
+todo(dirlt):
 
 ***** ziplistGet
-TODO(dirlt):
+todo(dirlt):
 
 ***** ziplistInsert
-TODO(dirlt):
+todo(dirlt):
 
 ***** ziplistDelete
-TODO(dirlt):
+todo(dirlt):
 
 ***** ziplistDeleteRange
-TODO(dirlt):
+todo(dirlt):
 
 ***** ziplistCompare
-TODO(dirlt):
+todo(dirlt):
 
 ***** ziplistLen
-TODO(dirlt):
+todo(dirlt):
 
 ***** ziplistBlobLen
-TODO(dirlt):
+todo(dirlt):
 
 ***** ziplistRepr
-TODO(dirlt):
+todo(dirlt):
 
 **** zipmap
 zipmap是一种内存非常紧凑分配的string->string的map.操作上都是字符串类型.
@@ -4059,7 +4059,7 @@ void zipmapRepr(unsigned char *p);
 #+END_SRC
 
 ***** zipmapNew
-TODO(dirlt):
+todo(dirlt):
 
 ***** zipmapDecodeLength
 从k/v开头得到分配的字节数目.
@@ -4303,25 +4303,25 @@ unsigned char *zipmapDel(unsigned char *zm, unsigned char *key, unsigned int kle
 #+END_SRC
 
 ***** zipmapRewind
-TODO(dirlt):
+todo(dirlt):
 
 ***** zipmapNext
-TODO(dirlt):
+todo(dirlt):
 
 ***** zipmapGet
-TODO(dirlt):
+todo(dirlt):
 
 ***** zipmapExists
-TODO(dirlt):
+todo(dirlt):
 
 ***** zipmapLen
-TODO(dirlt):
+todo(dirlt):
 
 ***** zipmapBlobLen
-TODO(dirlt):
+todo(dirlt):
 
 ***** zipmapRepr
-TODO(dirlt):
+todo(dirlt):
 
 *** Utility
 **** version.h
@@ -4451,7 +4451,7 @@ int d2string(char *buf, size_t len, double value);
 // unix time in microseconds.
 long long ustime(void);
 #+END_SRC
-大概看了里面的实现考虑的情况比较多.不过考虑到接口本身语义很简单所以实现暂时不分析.TODO(dirlt):分析实现.
+大概看了里面的实现考虑的情况比较多.不过考虑到接口本身语义很简单所以实现暂时不分析.todo(dirlt):分析实现.
 
 **** pqsort.h
 partial quick sort.功能是针对连续内存里面某段内存[lrange,rrange]进行排序.
@@ -4466,10 +4466,10 @@ pqsort(void *a, size_t n, size_t es,
    - cmp 比较函数
    - lrange 左边的index
    - rrange 右边的index
-TODO(dirlt):可以好好看看实现.
+todo(dirlt):可以好好看看实现.
 
 **** config.c
-TODO(dirlt):
+todo(dirlt):
 
 **** lzf.h
 lzf是一个高效的压缩解压算法,后面会单独进行分析.我们这里主要看看文件组织和接口
@@ -4556,7 +4556,7 @@ sds *sdssplitargs(char *line, int *argc); // 拆分line称为多个sds对象
 #+END_SRC
 
 ***** Implementation
-TODO(dirlt):
+todo(dirlt):
 
 *** Virtual Memory
 redis实现了自己的虚拟内存.但是我不确定这些虚拟内存具体实现了哪些功能.

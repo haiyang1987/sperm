@@ -29,6 +29,6 @@ In this context a critical bug is a bug that corrupts data, that crashes the ser
 #+END_VERSE
 
 在作者看来，一个稳定的版本意味着：
-   - 不会有影响到现有功能的修改 *NOTE(dirlt)：一般来说也不会增加feature*
+   - 不会有影响到现有功能的修改 *note(dirlt)：一般来说也不会增加feature*
    - 在过去8周内没有严重的bug（比如宕机或者是数据损坏等），但是不考虑一些非常极端的case
 

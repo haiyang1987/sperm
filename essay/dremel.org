@@ -76,7 +76,7 @@ file:./images/dremel-sample-column.png
 
 作者认为对于一个value来说，完全可以根据这个value对应的field name，以及r，d，完全构造出nested data。并且作者针对种种特性做了encoding的优化，使得column在存储上面尽可能地紧凑。
 
-*TODO(dirlt):dive into algorithm*
+*todo(dirlt):dive into algorithm*
 
 ** Query Language
 ** Query Execution

@@ -193,7 +193,7 @@ master主要完成全局性质的工作，其余工作交给worker完成。通�
      - can also co-locate parents on same rack as leaves
 
 *** Pattern: Backup Requests to Minimize Latency
-通过backup request来降低延迟，因为部分请求可能会成为straggler，这点在mapreduce里面的speculative非常经典。 *NOTE(dirlt):但是jeff dean在另外一篇文章里面也说了这样也可能存在some bad case*
+通过backup request来降低延迟，因为部分请求可能会成为straggler，这点在mapreduce里面的speculative非常经典。 *note(dirlt):但是jeff dean在另外一篇文章里面也说了这样也可能存在some bad case*
 
    - Problem: variance high when requests go to 1000s of machines
      - last few machines to respond stretch out latency tail substantially
@@ -224,7 +224,7 @@ master主要完成全局性质的工作，其余工作交给worker完成。通�
      - map and reduce tasks, GFS chunks, Bigtable tablets, query serving system index shards
 
 *** Pattern: Elastic Systems
-可伸缩的系统，自动调节整个集群资源利用率。这个东西可以打个比方，如果整个集群资源空闲的话，那么可以减少线程数目，释放一些内存让其他程序可以有效运行。而当压力比较大的时候，可以保持在一个水平不至于崩溃。 *TODO(dirlt):感觉不是很理解* 
+可伸缩的系统，自动调节整个集群资源利用率。这个东西可以打个比方，如果整个集群资源空闲的话，那么可以减少线程数目，释放一些内存让其他程序可以有效运行。而当压力比较大的时候，可以保持在一个水平不至于崩溃。 *todo(dirlt):感觉不是很理解* 
 
    - Problem: Planning for exact peak load is hard
      - overcapacity: wasted resources 
@@ -255,9 +255,9 @@ master主要完成全局性质的工作，其余工作交给worker完成。通�
   - Today: exciting collection of trends: *未来趋势的一些思考*
     - large-scale datacenters + 大规模数据中心建设 
     - increasing scale and diversity of available data sets +  大量数据需要分析和挖掘 
-    - proliferation of more powerful client devices 各种设备接入 *NOTE(dirlt)：是否可以理解为移动客户端* 
+    - proliferation of more powerful client devices 各种设备接入 *note(dirlt)：是否可以理解为移动客户端* 
       
   - Many interesting opportunities: *值得去做的事情*
    - planetary scale distributed systems 宇宙级别分布式系统
-   - development of new CPU and data intensive services 新的CPU和数据密集服务 *TODO(dirlt):???*
+   - development of new CPU and data intensive services 新的CPU和数据密集服务 *todo(dirlt):???*
    - new tools and techniques for constructing such systems 以及构建这些服务的工具

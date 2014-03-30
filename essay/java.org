@@ -29,7 +29,7 @@ final关键字应该是有下面几个用途：
    3. 如果放在field之前的话，那么这个field则不允许被修改。(但是因为java出了基本类型之外，其他类型都是对象类似于C++指针。这里不允许被修改，是指指针本身不允许修改，而对于指针所指对象是允许被修改的)
 
 *** assert
-java关键字assert可以用来进行断言，和C++一样。但是天煞的java虚拟机必须指定标记才会开启assert特性。java -ea断言才会生效。java -ea:package_name…可以指定名字空间下所有类断言打开，java -ea:classname可以指定某个类断言打开。如果不带任何参数的话那么是将所有断言打开。同样使用-da可以禁用某个特定类或者是包的断言。 *NOTE(dirlt):其实想想觉得这个还是很不错的，在运行时控制而不是在编译时控制，会让更多的人喜欢使用assertion.但是我觉得默认的话，应该是开启的除非显示关闭。*
+java关键字assert可以用来进行断言，和C++一样。但是天煞的java虚拟机必须指定标记才会开启assert特性。java -ea断言才会生效。java -ea:package_name…可以指定名字空间下所有类断言打开，java -ea:classname可以指定某个类断言打开。如果不带任何参数的话那么是将所有断言打开。同样使用-da可以禁用某个特定类或者是包的断言。 *note(dirlt):其实想想觉得这个还是很不错的，在运行时控制而不是在编译时控制，会让更多的人喜欢使用assertion.但是我觉得默认的话，应该是开启的除非显示关闭。*
 
 java断言可以指定检查表达式以及出错表达式，asser 条件：表达式
 #+BEGIN_SRC Java
@@ -249,7 +249,7 @@ location: class com.dirlt.X
 1 error
 #+END_EXAMPLE
 
-这个import顺序intellj认为是正确的，而且只需要反转两个import的顺序就可以正常编译。 *NOTE(dirlt)：因此我花了比较多的时间纠结在这个问题上面，因为intellij不太可能错误把，而且问题也比较诡异*
+这个import顺序intellj认为是正确的，而且只需要反转两个import的顺序就可以正常编译。 *note(dirlt)：因此我花了比较多的时间纠结在这个问题上面，因为intellij不太可能错误把，而且问题也比较诡异*
 我不太理解java的导入顺序，但是猜想和C++的include非常类似，出现上面的问题可能就是循环依赖导致的问题
    - 当我们引入com.dirlt.X.B.A的时候，javac会去分析这个文件X.java(or X.class)
    - 因为引入的是B下面的子类，因此肯定需要分析B这个类
@@ -258,7 +258,7 @@ location: class com.dirlt.X
 解决这个问题最好的办法，我觉得应该就是： *对于文件内部本身的类，不要使用import来导入，直接使用全称即可。*
 
 ** 面向泛型 
-TODO(dirlt)：
+todo(dirlt)：
 
 ** JDK
 *** 浮点运算
@@ -344,7 +344,7 @@ Class类本身表示这个类的一些元信息。通常拿到这个类的元信
    1. fields
    2. methods
    3. constructors
-这样就可以开始做一些反射工作了。 *NOTE(dirlt)：more about reflection*
+这样就可以开始做一些反射工作了。 *note(dirlt)：more about reflection*
 
 *** Reflection
 *** Runnable & Thread
@@ -375,12 +375,12 @@ synchronized关键字其实有两个场景
    - notifyAll
 这些方法了。其实都是相当于这个lock对应的condition本身提供的方法。
 
-volatile关键字为 *实例字段* 的同步访问提供了一种免锁机制。如果声明一个字段为volatile的话，那么编译器和虚拟机就可以知道这个字段很可能会被另外一个线程并发更新。 *NOTE(dirlt)：在我看来使用volatile最好是作用在基本类型上面，这里将对象指针本身也作为基本类型来看待=D*
+volatile关键字为 *实例字段* 的同步访问提供了一种免锁机制。如果声明一个字段为volatile的话，那么编译器和虚拟机就可以知道这个字段很可能会被另外一个线程并发更新。 *note(dirlt)：在我看来使用volatile最好是作用在基本类型上面，这里将对象指针本身也作为基本类型来看待=D*
 
 *為什麼抛弃stop和suspend方法？* 其实这点非常好理解，因为这些方法都尝试破坏线程本身正常的行为。比如A，B两个线程同时acquire一个lock，如果A成功之后，B在等待，这个之后A被stop或者是suspend的话，那么情况就变成了死锁。
      
 *** Collection
-TODO(dirlt)：
+todo(dirlt)：
     
 *** JMX
    - jmxtrans/jmxtrans · GitHub https://github.com/jmxtrans/jmxtrans
@@ -392,7 +392,7 @@ jmx似乎是一个标准，在JDK里面有默认的实现。通过jmx可以暴�
 
 我大致阅读了一下代码，在server有两个比较重要的概念:agent(mbean server)和mxbean. agent(mbean server)类似server启动，mxbean则是各个data source. 但是从jdk默认的实现（ManagementFactory::getPlatformMBeanServer)里面可以看到，mxbean不是一个静态基类，而是通过反射的方式将mxbean类转换成为DynamicMBean（猜测数据传输格式应该是JPO，Java Persistent Object,也就是java对象自带序列化方式，这种方式的好处就是没有限制data source format，但是却复杂了实现）。 
 
-   - com.dirlt.java.playboard.SimpleJMX 例子比较简单，显示和修改数据 *NOTE(dirlt)：只有基本类型可以显示和修改。如果数据类型为object的话，那么不能显示和修改* 
+   - com.dirlt.java.playboard.SimpleJMX 例子比较简单，显示和修改数据 *note(dirlt)：只有基本类型可以显示和修改。如果数据类型为object的话，那么不能显示和修改* 
    - MXBean允许做RMI
    - Notifcation允许RMI之后做通知
    - *so advanced, so powerful, yet so complex*
@@ -413,8 +413,8 @@ jmx似乎是一个标准，在JDK里面有默认的实现。通过jmx可以暴�
      - -Dcom.sun.management.jmxremote.ssl=false 不走ssl
      - -Dcom.sun.management.jmxremote.authenticate=false 不做验证  
      - -Dcom.sun.management.jmxremote.port=12345 -Dcom.sun.management.jmxremote.ssl=false  -Dcom.sun.management.jmxremote.authenticate=false
-   - *NOTE(dirlt):我始终没有搞懂profiler和sampler两者的区别* ，不过从官方指南来看 Profiling Applications with VisualVM — Java.net http://visualvm.java.net/profiler.html 应该是使用profiler.
-     - *NOTE(dirlt)：可能对于profiler是通过在function前后加上instructment来完成的，而sampler就是纯粹的采样。*
+   - *note(dirlt):我始终没有搞懂profiler和sampler两者的区别* ，不过从官方指南来看 Profiling Applications with VisualVM — Java.net http://visualvm.java.net/profiler.html 应该是使用profiler.
+     - *note(dirlt)：可能对于profiler是通过在function前后加上instructment来完成的，而sampler就是纯粹的采样。*
 
 插件 *Tools->Plugins*
    -  https://visualvm.java.net/pluginscenters.html 
@@ -425,12 +425,12 @@ jmx似乎是一个标准，在JDK里面有默认的实现。通过jmx可以暴�
 HPROF: A Heap/CPU Profiling Tool
    - http://docs.oracle.com/javase/7/docs/technotes/samples/hprof.html
 
-   - HPROF is actually a JVM native agent library which is dynamically loaded through a command line option, at JVM startup, and becomes part of the JVM process. *TODO(dirlt):什么叫做agent library?.属于JVM进程的一个部分*
+   - HPROF is actually a JVM native agent library which is dynamically loaded through a command line option, at JVM startup, and becomes part of the JVM process. *todo(dirlt):什么叫做agent library?.属于JVM进程的一个部分*
    - The binary format file from HPROF can be used with tools such as [[https://hat.dev.java.net/][HAT]] to browse the allocated objects in the heap. 二进制输出可以使用HAT这个工具来察看
    - HPROF is capable of presenting 
      - CPU usage, 
      - heap allocation statistics, 
-     - and monitor contention profiles. *TODO(dirlt)：什么是monitor?*
+     - and monitor contention profiles. *todo(dirlt)：什么是monitor?*
      - complete heap dumps and 
      - states of all the monitors and threads
 
@@ -488,13 +488,13 @@ Warnings
     in a future release.
 #+END_EXAMPLE
    - force=y 会删除原来的文件，如果是多个VM来同时使用hprof的话那么需要使用force=n
-   - heap= sites能够看到所有的分配以及热点，而dump能够看到所有引用的对象，而all则能看到两个 *NOTE(dirlt)：dump，all能够消耗大量内存，最好别使用，而且没有太大意义* 
+   - heap= sites能够看到所有的分配以及热点，而dump能够看到所有引用的对象，而all则能看到两个 *note(dirlt)：dump，all能够消耗大量内存，最好别使用，而且没有太大意义* 
      - 如果不希望对heap做分析的话，那么不要指定这个选项。
-   - cpu=samples采用采样方式来做分析,interval则是设置采样间隔。 *NOTE(dirlt)：可能比较使用于长期运行的程序profiling*
+   - cpu=samples采用采样方式来做分析,interval则是设置采样间隔。 *note(dirlt)：可能比较使用于长期运行的程序profiling*
    - cpu=times采用代码注入的方式在函数entry和return部分加上代码来做profile.
-   - thread=y 可以针对将不同线程区分开，每个线程单独进行profile. *NOTE(dirlt)：似乎没有太大的用途*
+   - thread=y 可以针对将不同线程区分开，每个线程单独进行profile. *note(dirlt)：似乎没有太大的用途*
    - depth=n 控制stacktrace的深度，加大深度可以看到更详细的调用栈。
-   - doe=n 在exit的时候不dump任何数据 *TODO(dirlt)：？这个有什么用呢*
+   - doe=n 在exit的时候不dump任何数据 *todo(dirlt)：？这个有什么用呢*
 
 代码处理选项部分还是比较诡异的，可以看看代码是如何处理的 https://cluster.earlham.edu/trac/bccd-ng/browser/branches/skylar-install_jdk/trees/software/bccd/software/jdk1.6.0_14/demo/jvmti/hprof/src/hprof_init.c?rev=1854
 
@@ -504,14 +504,14 @@ How Does HPROF Work?
      - [[http://docs.oracle.com/javase/7/docs/technotes/guides/jvmti/index.html][JVM TI]] Java Virtual Machine Tool Interface
      - calls to JVM TI
      - event callbacks from JVM TI, 
-     - and through Byte Code Insertion (BCI) *NOTE(dirlt):修改bytecode,这个用来修改class文件*
+     - and through Byte Code Insertion (BCI) *note(dirlt):修改bytecode,这个用来修改class文件*
    - The cpu=samples option doesn't use BCI, HPROF just spawns a separate thread that sleeps for a fixed number of micro seconds, and wakes up and samples all the running thread stacks using JVM TI. 通过另外线程通过JVM TI来监控其他线程栈
    - The cpu=times option attempts to track the running stack of all threads, and keep accurate CPU time usage on all methods. This option probably places the greatest strain on the VM, where every method entry and method exit is tracked. Applications that make many method calls will be impacted more than others. 
    - The heap=sites and heap=dump options are the ones that need to track object allocations. These options can be memory intensive (less so with hprof=sites) and applications that allocate many objects or allocate and free many objects will be impacted more with these options. On each object allocation, the stack must be sampled so we know where the object was allocated, and that stack information must be saved. HPROF has a series of tables allocated in the C or malloc() heap that track all it's information. HPROF currently does not allocate any Java objects. 
 
 *** jmap
-TODO(dirlt):
+todo(dirlt):
 
 *** BTrace
-TODO(dirlt):
+todo(dirlt):
 

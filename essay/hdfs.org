@@ -18,9 +18,9 @@
 **** DataNode
    - Each block replica on a DataNode is represented by two files in the local host’s native file system. The first file contains the data itself and the second file is block’s metadata including checksums for the block data and the block’s generation stamp.（block存储上包含两个文件，一个是数据文件，另外一个就是checksum文件，并且包含block generation stamp。这个stamp可能就是用来标记old chunk的，类似于gfs里面的chunk version number）
    - During startup each DataNode connects to the NameNode and performs a handshake. The purpose of the handshake is to verify the namespace ID and the software version of the DataNode. If either does not match that of the NameNode the DataNode automatically shuts down.（datanode启动的时候会和namenode交互，交换namespace id和software version id,如果两者不匹配的话，那么datanode就会shutdown。这个是为了处理兼容性问题，这个在从cdh3升级到cdh4时候需要考虑。兼容性问题猜想会涉及到RPC以及存储格式处理上）
-   - The namespace ID is assigned to the file system instance when it is formatted. The namespace ID is persistently stored on all nodes of the cluster（格式化的时候就会分配namespace id） NOTE(dirlt)：新增的chunkserver应该也会分配到这个namespace id。这个namespace id可以首先分配在namenode以及已知的datanode上面  A DataNode that is newly initialized and without any namespace ID is permitted to join the cluster and receive the cluster’s namespace ID.
+   - The namespace ID is assigned to the file system instance when it is formatted. The namespace ID is persistently stored on all nodes of the cluster（格式化的时候就会分配namespace id） note(dirlt)：新增的chunkserver应该也会分配到这个namespace id。这个namespace id可以首先分配在namenode以及已知的datanode上面  A DataNode that is newly initialized and without any namespace ID is permitted to join the cluster and receive the cluster’s namespace ID.
    - After the handshake the DataNode registers with the NameNode. DataNodes persistently store their unique storage IDs. The storage ID is an internal identifier of the DataNode, which makes it recognizable even if it is restarted with a differ-ent IP address or port. The storage ID is assigned to the DataNode when it registers with the NameNode for the first time and never changes after that.（对于每个新注册的datanode都会被namenode分配一个唯一的id，这个id和ip以及port都对应上了，并且以后不会改变。
-   - A DataNode identifies block replicas in its possession to the NameNode by sending a block report. A block report contains the block id, the generation stamp and the length for each block replica the server hosts. The first block report is sent immedi-ately after the DataNode registration. Subsequent block reports are sent every hour and provide the NameNode with an up-to-date view of where block replicas are located on the cluster.（datanode会进行block report给namenode，包括所有block的id，generation stamp，以及长度信息。第一次的block report是在启动时候，后面小时级别进行report） TODO(dirlt)：这里不太理解为啥需要汇报length，是不是每个文件长度不同？难道利用二分查找offset对应的文件？ NOTE(dirlt)；每个文件还是需要知道长度的，这样就可以知道往这个chunk上还能写多少个字节达到一个max chuk size，然后再写下一个块
+   - A DataNode identifies block replicas in its possession to the NameNode by sending a block report. A block report contains the block id, the generation stamp and the length for each block replica the server hosts. The first block report is sent immedi-ately after the DataNode registration. Subsequent block reports are sent every hour and provide the NameNode with an up-to-date view of where block replicas are located on the cluster.（datanode会进行block report给namenode，包括所有block的id，generation stamp，以及长度信息。第一次的block report是在启动时候，后面小时级别进行report） todo(dirlt)：这里不太理解为啥需要汇报length，是不是每个文件长度不同？难道利用二分查找offset对应的文件？ note(dirlt)；每个文件还是需要知道长度的，这样就可以知道往这个chunk上还能写多少个字节达到一个max chuk size，然后再写下一个块
    - During normal operation DataNodes send heartbeats to the NameNode to confirm that the DataNode is operating and the block replicas it hosts are available. The default heartbeat in-terval is three seconds. If the NameNode does not receive a heartbeat from a DataNode in ten minutes the NameNode con-siders the DataNode to be out of service and the block replicas hosted by that DataNode to be unavailable. The NameNode then schedules creation of new replicas of those blocks on other DataNodes.（namenode和datanode之间每隔3s会有一次heartheat检测datanode是否存活，如果10min没有任何回复的话，那么认为datanode挂掉。namenode可能需要重新扫描所有在这个datandoe上面block然后做re-replication
    - Heartbeats from a DataNode also carry information about total storage capacity, fraction of storage in use, and the num-ber of data transfers currently in progress. These statistics are used for the NameNode’s space allocation and load balancing decisions.（heartbeat信息包含这个datanode上面存储容量，以及磁盘使用百分比，以及这个datanode上面和client有多少数据量交互，这些指标都会用来当作namenode进行空间分配以及负载均衡的选择）
    - The NameNode does not directly call DataNodes. It uses replies to heartbeats to send instructions to the DataNodes. The instructions include commands to:（namenode并不会直接datanode信息的，而是在heartbeat后面直接piggyback回去的，包括下面这些信息。对于这些信息没有考虑返回，但是并不是很大的问题）
@@ -31,7 +31,7 @@
 
 **** HDFS Client
    - When an application reads a file, the HDFS client first asks the NameNode for the list of DataNodes that host replicas of the blocks of the file. It then contacts a DataNode directly and requests the transfer of the desired block. （选择任意一个datanode进行交互）
-   - When a client writes, it first asks the NameNode to choose DataNodes to host repli-cas of the first block of the file. The client organizes a pipeline from node-to-node and sends the data. When the first block is filled, the client requests new DataNodes to be chosen to host replicas of the next block. *TODO(dirlt)：按照pipeline的方式写入到各个机器上面，不过从交互图上面来看的话，似乎是datanode直接告诉namenode over，而不是由client发起的。另外client似乎也没有得到ACK的消息*
+   - When a client writes, it first asks the NameNode to choose DataNodes to host repli-cas of the first block of the file. The client organizes a pipeline from node-to-node and sends the data. When the first block is filled, the client requests new DataNodes to be chosen to host replicas of the next block. *todo(dirlt)：按照pipeline的方式写入到各个机器上面，不过从交互图上面来看的话，似乎是datanode直接告诉namenode over，而不是由client发起的。另外client似乎也没有得到ACK的消息*
 
 file:./images/hdfs-data-flow.png
 
@@ -64,13 +64,13 @@ file:./images/hdfs-data-flow.png
 
 *** FILE I/O OPERATIONS AND REPLICA MANGEMENT
 **** File Read and Write
-   - HDFS im-plements a single-writer, multiple-reader model. The HDFS client that opens a file for writing is granted a lease for the file; no other client can write to the file. The writ-ing client periodically renews the lease by sending a heartbeat to the NameNode. When the file is closed, the lease is revoked. The lease duration is bound by a soft limit and a hard limit. Until the soft limit expires, the writer is certain of exclusive access to the file. If the soft limit expires and the client fails to close the file or renew the lease, another client can preempt the lease. If after the hard limit expires (one hour) and the client has failed to renew the lease, HDFS assumes that the client has quit and will automatically close the file on behalf of the writer, and recover the lease. The writer's lease does not prevent other clients from reading the file; a file may have many concurrent readers.（HDFS提供的的是single-writer/multi-reader的实现，和gfs一样提供了lease机制，但是这个lease机制仅仅针对writer来说的。从功能上看，hdfs相对于gfs来说确实简单） *TODO(dirlt)：这里似乎并没有提到是是否提供overwrite方式，还是只是允许append*
+   - HDFS im-plements a single-writer, multiple-reader model. The HDFS client that opens a file for writing is granted a lease for the file; no other client can write to the file. The writ-ing client periodically renews the lease by sending a heartbeat to the NameNode. When the file is closed, the lease is revoked. The lease duration is bound by a soft limit and a hard limit. Until the soft limit expires, the writer is certain of exclusive access to the file. If the soft limit expires and the client fails to close the file or renew the lease, another client can preempt the lease. If after the hard limit expires (one hour) and the client has failed to renew the lease, HDFS assumes that the client has quit and will automatically close the file on behalf of the writer, and recover the lease. The writer's lease does not prevent other clients from reading the file; a file may have many concurrent readers.（HDFS提供的的是single-writer/multi-reader的实现，和gfs一样提供了lease机制，但是这个lease机制仅仅针对writer来说的。从功能上看，hdfs相对于gfs来说确实简单） *todo(dirlt)：这里似乎并没有提到是是否提供overwrite方式，还是只是允许append*
    - An HDFS file consists of blocks. When there is a need for a new block, the NameNode allocates a block with a unique block ID and determines a list of DataNodes to host replicas of the block.（每个chunk都是通过master分配id的，并且决定那些datanodes来host这些chunk）
    - The DataNodes form a pipeline, the order of which minimizes the total network distance from the client to the last DataNode. Bytes are pushed to the pipeline as a sequence of packets. The bytes that an application writes first buffer at the client side. After a packet buffer is filled (typically 64 KB), the data are pushed to the pipeline. The next packet can be pushed to the pipeline before receiving the acknowledgement for the previous packets. The number of outstanding packets is limited by the outstanding packets window size of the client.（pipeline实现方式是client首先写到D0，D0一旦接收完成之后就会向D1发送，同时ACK给client。这样client继续发送下一个packet。每个packet占据64KB.当然这里有一个窗口概念（前面说的窗口大小=1），这个窗口的大小也是可以配置的。）
    - After data are written to an HDFS file, HDFS does not pro-vide any guarantee that data are visible to a new reader until the file is closed. If a user application needs the visibility guaran-tee, it can explicitly call the hflush operation. Then the current packet is immediately pushed to the pipeline, and the hflush operation will wait until all DataNodes in the pipeline ac-knowledge the successful transmission of the packet. (写入的数据并不一定保证就可以被看到，除非这个文件关闭了。如果希望可以立刻可见的话，那么可以使用hflush调用。hflush调用的话会等待到所有的datanodes都确认所有的消息才会返回）
 file:./images/hdfs-data-pipeline.png
 
-   - When a client opens a file to read, it fetches the list of blocks and the locations of each block replica from the NameNode. The locations of each block are ordered by their distance from the reader. When reading the content of a block, the client tries the closest replica first. If the read attempt fails, the client tries the next replica in sequence. A read may fail if the target DataNode is unavailable, the node no longer hosts a replica of the block, or the replica is found to be corrupt when checksums are tested.（client读取文件的时候会获得这个文件所有chunk的位置，从离client最近的chunkserver开始尝试） *NOTE(dirlt)：为什么需要获得所有chunk的位置呢？*
+   - When a client opens a file to read, it fetches the list of blocks and the locations of each block replica from the NameNode. The locations of each block are ordered by their distance from the reader. When reading the content of a block, the client tries the closest replica first. If the read attempt fails, the client tries the next replica in sequence. A read may fail if the target DataNode is unavailable, the node no longer hosts a replica of the block, or the replica is found to be corrupt when checksums are tested.（client读取文件的时候会获得这个文件所有chunk的位置，从离client最近的chunkserver开始尝试） *note(dirlt)：为什么需要获得所有chunk的位置呢？*
    - HDFS permits a client to read a file that is open for writing. When reading a file open for writing, the length of the last block still being written is unknown to the NameNode. In this case, the client asks one of the replicas for the latest length be-fore starting to read its content.（如果这个文件在写的时候同时在读的话，那么client读取到最后一个chunkEOF之后，需要重新询问一个replics当前chunk的长度，这样才能够继续往前读。如果跨越chunk的话，那么可能还需要和NameNode之间进行通信。
 
 **** Block Placement
@@ -131,7 +131,7 @@ Large HDFS clusters at Yahoo! include about 3500 nodes. A typical cluster node h
    - 1-gigabit Ethernet
 
 集群配置如下：
-   - Forty nodes in a single rack share an IP switch. The rack switches are connected to each of eight core switches. The core switches provide connectivity between racks and to out-of-cluster re-sources. *TODO(dirlt)：这个网络拓扑是怎么配置的？*
+   - Forty nodes in a single rack share an IP switch. The rack switches are connected to each of eight core switches. The core switches provide connectivity between racks and to out-of-cluster re-sources. *todo(dirlt)：这个网络拓扑是怎么配置的？*
    - For each cluster, the NameNode and the BackupNode hosts are specially provisioned with up to 64GB RAM; applica-tion tasks are never assigned to those hosts. （nn和bn有64GB内存考虑比较吃内存，并且在这个机器上面也不分配其他程序）
    - 3500节点总共占据9.8PB数据，有效数据占据3.3GB使用3副本方式。
 
@@ -142,7 +142,7 @@ Large HDFS clusters at Yahoo! include about 3500 nodes. A typical cluster node h
    - 每天user app产生2million文件
      
 **** Durability of Data
-   - for a large cluster, the prob-ability of losing a block during one year is less than .005 *TODO(dirlt)：这个是怎么计算出来的呢？*
+   - for a large cluster, the prob-ability of losing a block during one year is less than .005 *todo(dirlt)：这个是怎么计算出来的呢？*
    - 分析数据丢失
      - The key understanding is that about 0.8 percent of nodes fail each month. （每个月大约有0.8%的机器挂掉）
      - 这就意味着在3500nodes集群来说，每天会有1-2台机器挂掉。
@@ -181,7 +181,7 @@ The rack placement policy1 is managed by the name node, and replicas are placed 
    4. Fourth and subsequent replicas are placed on random nodes, although racks with many replicas are biased against, so replicas are spread out across the cluster.
 Currently the policy is fixed, however there is a proposal to make it pluggable. See https://issues.apache.org/jira/browse/HADOOP-3799
 
-If a data node fails while the block is being written, it is removed from the pipeline. When the current block has been written, the name node will re-replicate it to make up for the missing replica due to the failed data node. Subsequent blocks will be written using a new pipeline with the required number of data nodes.（如果在pipeline上面有一个dn没有写成功的话是否直接返回， *TODO(dirlt):然后通过re-replicate的机制来善后???* 。剩余的blocks还是按照新的逻辑走，和上一个block的pipeline没有关系）
+If a data node fails while the block is being written, it is removed from the pipeline. When the current block has been written, the name node will re-replicate it to make up for the missing replica due to the failed data node. Subsequent blocks will be written using a new pipeline with the required number of data nodes.（如果在pipeline上面有一个dn没有写成功的话是否直接返回， *todo(dirlt):然后通过re-replicate的机制来善后???* 。剩余的blocks还是按照新的逻辑走，和上一个block的pipeline没有关系）
  
 **** Clients
 **** Secondary Name Node
@@ -287,14 +287,14 @@ The question is now whether the goals are feasible with the current system archi
      - The block reports and heartbeats form the internal load of the cluster. This load mostly depends on the number of data-nodes. If the internal load is too high, the cluster becomes dysfunctional, able to process only a few, if any, external client operations such as 1s, read, or write.(internal load和dn的数量相关，主要是block report和heartbeat造成的。如果internal load非常高的话，那么会导致响应外部请求非常慢，比如ls, create, read, write）
      - This section analyzes what percentage of the total processing power of the name-node is dedicated to the internal load. 这节主要是想了解，internal load使用的百分比。
        - 200M blocks / 10K nodes = 20K blocks/node. 需要考虑blocks replication factor是3，那么每个节点上有60k个blocks。This is the size of an average block report sent by a data-node to the name-node.
-       - The sending of block reports is randomized so that they do not come to the name-node together or in large waves. Thus, the average number of block reports the name-node receives is 10,000/hour, which is about three reports per second. *NOTE(dirlt)：这里假设dn发送report都是均匀地发送。那么nn每个小时接收到10k block reports，每个block report里面有60K个blocks.相当于3/s*
-       - The heartbeats are not explicitly randomized by the current implementa- tion and, in theory, can hit the name-node together, although the likelihood of this is very low. Nevertheless, let’s assume that the name-node should be able to handle 10,000 heartbeats per second on a 10,000 node cluster. *NOTE(dirlt): 如果均匀发送心跳而心跳间隔是3s的话，那么应该是3k/s.但是考虑到均匀发送概率比较低，所以假设NN每秒需要处理10k heartbeats*
+       - The sending of block reports is randomized so that they do not come to the name-node together or in large waves. Thus, the average number of block reports the name-node receives is 10,000/hour, which is about three reports per second. *note(dirlt)：这里假设dn发送report都是均匀地发送。那么nn每个小时接收到10k block reports，每个block report里面有60K个blocks.相当于3/s*
+       - The heartbeats are not explicitly randomized by the current implementa- tion and, in theory, can hit the name-node together, although the likelihood of this is very low. Nevertheless, let’s assume that the name-node should be able to handle 10,000 heartbeats per second on a 10,000 node cluster. *note(dirlt): 如果均匀发送心跳而心跳间隔是3s的话，那么应该是3k/s.但是考虑到均匀发送概率比较低，所以假设NN每秒需要处理10k heartbeats*
      - In order to measure the name-node performance, I implemented a bench- mark called *NNThroughputBenchmark*, which now is a standard part of the HDFS code base. 
        - NNThroughputBenchmark is a single-node benchmark, which starts a name-node and runs a series of client threads on the same node. Each client repetitively performs the same name-node operation by directly calling the name-node method implementing this operation. Then the benchmark mea- sures the number of operations performed by the name-node per second.
        - The reason for running clients locally rather than remotely from different nodes is to avoid any communication overhead caused by RPC connections and serialization, and thus reveal the upper bound of pure name-node per- formance.（没有远端发起的原因是因为有RPC代价开销，另外我感觉结果统计也不太好完成）
        - Number of blocks processed in block reports per second == 639713 / 60K blocks per block report = 10/s. 而NN接收为3/s, 所以占据30%。
        - Number of heartbeats per second == 300000. 而NN接收是10k/s, 所以占据3%。
-       - *NOTE(dirlt)：所以heartbeat带来的影响相对于block report的影响基本上可以忽略不计*
+       - *note(dirlt)：所以heartbeat带来的影响相对于block report的影响基本上可以忽略不计*
 
    - Resonable Load Expections
      - DFSIO was one of the first standard benchmarks for HDFS. The bench- mark is a map-reduce job with multiple mappers and a single reducer. Each mapper writes (reads) bytes to (from) a distinct file. Mappers within the job either all write or all read, and each mapper transfers the same amount of data. The mappers collect the I/O stats and pass them to the reducer. The reducer averages them and summarizes the I/O throughput for the job. The key measurement here is the byte transfer rate of an average mapper.(使用DFSIO来测算吞吐，mapper进行读取然后将统计数据交给reducer)
@@ -318,7 +318,7 @@ fb数据仓库故障有41%是源于HDFS，而如果有reliable namenode解决方
 
 file:./images/hdfs-ha-namenode-avatarnode.png
 
-如果primary NN挂掉的话那么就切换到standby NN. datanode会将自己的status report到两个NN这样standby NN可以得到最新的状态可以使得切换时间更短。切换是通过zk来完成的，两个NN都在zk上面注册节点，client会从zk上了解primary NN对primary NN进行操作。之间的数据同步是通过共享存储来完成的，比如NFS，对于standby NN只需要增量读取操作内容即可。 *TODO(dirlt)：大家似乎对NFS的稳定性存在问题，不过我是觉得NFS上面主要是一些namenode上面一些操作的log，吞吐量不会太大而且也不会打开非常多的文件，在这个场景下面还是比较合适的*
+如果primary NN挂掉的话那么就切换到standby NN. datanode会将自己的status report到两个NN这样standby NN可以得到最新的状态可以使得切换时间更短。切换是通过zk来完成的，两个NN都在zk上面注册节点，client会从zk上了解primary NN对primary NN进行操作。之间的数据同步是通过共享存储来完成的，比如NFS，对于standby NN只需要增量读取操作内容即可。 *todo(dirlt)：大家似乎对NFS的稳定性存在问题，不过我是觉得NFS上面主要是一些namenode上面一些操作的log，吞吐量不会太大而且也不会打开非常多的文件，在这个场景下面还是比较合适的*
 
 file:./images/hdfs-avatarnode-view.png
 
@@ -374,7 +374,7 @@ Hadoop SequenceFile is the base data structure for the other types of files, lik
 
 file:./images/hdfs-mapfile-index-data-bloom.png
 
-MapFile是由两个SequenceFile组成，一个是index文件，一个是data文件。data文件里面的key是顺序存储的，index文件是data中key的部分索引. index的key和data的key相同，而value是这个record在data文件中的偏移，至于这个索引间隔可以通过setIndexInterval来设置。操作的时候会将index全部都读取到内存，然后在index里面所二分查找，然后在data文件里面做顺序查找。 *NOTE(dirlt):如果data文件要压缩的话，那么这个边界必须和index对应*
+MapFile是由两个SequenceFile组成，一个是index文件，一个是data文件。data文件里面的key是顺序存储的，index文件是data中key的部分索引. index的key和data的key相同，而value是这个record在data文件中的偏移，至于这个索引间隔可以通过setIndexInterval来设置。操作的时候会将index全部都读取到内存，然后在index里面所二分查找，然后在data文件里面做顺序查找。 *note(dirlt):如果data文件要压缩的话，那么这个边界必须和index对应*
 
 SetFile是基于MapFile完成的，只不过value = NullWritable
 
@@ -384,7 +384,7 @@ BloomMapFile扩展了MapFile添加了一个bloom文件，存储的是DynamicBloo
 
 ** 日志分析
 *** All datanodes are bad. Aborting
-*NOTE(dirlt):当时的情况是增加了datanode的处理线程数目但是没有重启regionserver.怀疑原因可能是文件句柄数量不够，重启regionserver之后恢复正常。*
+*note(dirlt):当时的情况是增加了datanode的处理线程数目但是没有重启regionserver.怀疑原因可能是文件句柄数量不够，重启regionserver之后恢复正常。*
 
 #+BEGIN_EXAMPLE
 2013-06-05 03:45:16,866 FATAL org.apache.hadoop.hbase.regionserver.wal.HLog: Could not append. Requesting close of hlog
@@ -398,7 +398,7 @@ java.io.IOException: All datanodes 10.11.0.41:50010 are bad. Aborting...
 *** hdfs shell
    - balancer
      - start-balancer.sh / stop-balancer.sh
-     - *NOTE(dirlt):可以限制比例阈值和传输带宽*
+     - *note(dirlt):可以限制比例阈值和传输带宽*
    - fsck
 
 *** Filesystem Corruption and Missing Blocks
@@ -468,9 +468,9 @@ The filesystem under path '/hbase/.corrupt/dp18.umeng.com%3A60020.1349065853563'
 默认情况下面如果hdfs发现某个block under replicated的话，会自动对这个block做replication的，直到replicaion factor达到需求。但是有时候hdfs也会stuck住。除了重启的话，也可以试试上面链接提到的方法。
    - 首先将这个文件的rep factor设置为1，hadoop fs -setrep 1 <file>
    - 然后将这个文件的rep factor修改回3，hadoop fs -setrep 3 <file>
-*NOTE(dirlt)：不过很悲剧的是，即使我按照这个方法，这个block似乎也没有回复到指定的factor上面。等着重启看看效果吧*
+*note(dirlt)：不过很悲剧的是，即使我按照这个方法，这个block似乎也没有回复到指定的factor上面。等着重启看看效果吧*
 
-*NOTE(dirlt):不是所有的hdfs file都是使用replication=3的方案的，对于mapreduce提交的jar以及libjars（在/user/<user>/.staging/<jobid>/下面）的，考虑到需要被多个tasktracker同时取到，replication的数目会偏高，通常是10*
+*note(dirlt):不是所有的hdfs file都是使用replication=3的方案的，对于mapreduce提交的jar以及libjars（在/user/<user>/.staging/<jobid>/下面）的，考虑到需要被多个tasktracker同时取到，replication的数目会偏高，通常是10*
 
 *** 文件系统API
 HDFS文件系统的操作步骤主要如下：
@@ -510,7 +510,7 @@ uri = file:///
      - sync是FSDataOutputStream特有的，老版本相当是将datanode数据同步到namenode，这样reader就可以读取到当前的block，但是在高版本deprecated
      - hflush则是高版本推荐的sync用法
      - hsync不仅仅有hflush功能，还能够调用对应的datanode将数据刷到local fs上面。
-     - *NOTE(dirlt)：但是似乎不太work.参考代码 [[https://github.com/dirtysalt/sperm/blob/master/code/java/hdfs/src/main/java/com/dirlt/java/hdfs/TestConsistency.java][com.dirlt.java.hdfs.TestConsistency]]*
+     - *note(dirlt)：但是似乎不太work.参考代码 [[https://github.com/dirtysalt/sperm/blob/master/code/java/hdfs/src/main/java/com/dirlt/java/hdfs/TestConsistency.java][com.dirlt.java.hdfs.TestConsistency]]*
 
 *** 读写进度
    - hdfs每次将64KB数据写入datanode pipeline的时候都会调用progress.     
@@ -525,9 +525,9 @@ uri = file:///
 
 ** 代码分析
 *** Balancer
-*NOTE(dirlt):hadoop-2.0.0-cdh4.3.0*
+*note(dirlt):hadoop-2.0.0-cdh4.3.0*
 
-*NOTE(dirlt):名词是自己定义的方便理解*
+*note(dirlt):名词是自己定义的方便理解*
    - NNs balance # 对于hdfs federation来说可能存在多个NN. 并且对于这些NN需要发起多轮balance迭代，每轮迭代称为NNs balance.
    - NN balance # NNs balance iteration内部针对每个NN集群发起alance称为NN balance iteration. 内部会拆解成为多个source发起balance.
    - Source balance # 每个source发起balance, 内部也会多次挑选block来做move. 其中Source balance内部会有多轮迭代。
@@ -709,7 +709,7 @@ public class Balancer {
   private Collection<BalancerDatanode> targets
                                = new HashSet<BalancerDatanode>();
   
-  // 保存所有调度出现过的Block. NOTE(dirlt)：似乎是遗留代码，没有实际用途
+  // 保存所有调度出现过的Block. note(dirlt)：似乎是遗留代码，没有实际用途
   private Map<Block, BalancerBlock> globalBlockList
                  = new HashMap<Block, BalancerBlock>();
   // 在最近一段时间内移动过的Block.
@@ -1178,7 +1178,7 @@ private void chooseTargets(
 *restriction*
    - timeout = 20min
    - source sent block size = 2 * scheduledSize # scheduledSize在NN balance iteration的chooseNodes阶段设置，上限10GB
-     - *NOTE(dirlt)：factor == 2 是为何？*
+     - *note(dirlt)：factor == 2 是为何？*
    - target receive block size = scheduledSize 
 
 ***** BalancerDatanode
@@ -1378,7 +1378,7 @@ source如何发起block move.
         bytesReceived += blk.getBlock().getNumBytes();
         BalancerBlock block;
         synchronized(globalBlockList) {
-          block = globalBlockList.get(blk.getBlock()); // TODO(dirlt)：???
+          block = globalBlockList.get(blk.getBlock()); // todo(dirlt)：???
           if (block==null) {
             block = new BalancerBlock(blk.getBlock());
             globalBlockList.put(blk.getBlock(), block);
@@ -1529,9 +1529,9 @@ source如何发起block move.
           pendingBlock.target = target;
           if ( pendingBlock.chooseBlockAndProxy() ) {
             long blockSize = pendingBlock.block.getNumBytes(); 
-            scheduledSize -= blockSize; // NOTE(dirlt):其实这个操作没有用，因为scheduledSize是在chooseNodes静态计算之后，在实际操作阶段并不影响逻辑
+            scheduledSize -= blockSize; // note(dirlt):其实这个操作没有用，因为scheduledSize是在chooseNodes静态计算之后，在实际操作阶段并不影响逻辑
             task.size -= blockSize; // 这个task上向target最多传输size.
-            if (task.size == 0) { // NOTE(dirlt):==0是否会正常？
+            if (task.size == 0) { // note(dirlt):==0是否会正常？
               tasks.remove();
             }
             return pendingBlock;
@@ -1653,7 +1653,7 @@ private class PendingBlockMove {
 #+END_SRC
 
 *** BlockPlacementPolicy
-*NOTE(dirlt):hadoop-2.0.0-cdh4.3.0*
+*note(dirlt):hadoop-2.0.0-cdh4.3.0*
 
 就像之前论文里面提到的，block placement策略上没有考虑磁盘利用率问题，可能造成disk util上各个节点出现imbalance情况，需要靠balancer来做均衡。 
 
@@ -1792,9 +1792,9 @@ BlockPlacementPolicyDefault实现上将srcPath忽略了，并没有对某个文�
     }
       
     int maxNodesPerRack = 
-      (totalNumOfReplicas-1)/clusterMap.getNumOfRacks()+2; // NOTE(dirlt)：如果rack要分布均匀replica的话，那么每个rack需要的节点
-    // NOTE(dirlt)：但是这个名字似乎有点混淆
-    // NOTE(dirlt):这个作用是如果防止在这个rack上的replicas过多的话，那么可能不被认为是good target. 参见isGoodTarget
+      (totalNumOfReplicas-1)/clusterMap.getNumOfRacks()+2; // note(dirlt)：如果rack要分布均匀replica的话，那么每个rack需要的节点
+    // note(dirlt)：但是这个名字似乎有点混淆
+    // note(dirlt):这个作用是如果防止在这个rack上的replicas过多的话，那么可能不被认为是good target. 参见isGoodTarget
       
     List<DatanodeDescriptor> results = 
       new ArrayList<DatanodeDescriptor>(chosenNodes);
@@ -1826,7 +1826,7 @@ BlockPlacementPolicyDefault实现上将srcPath忽略了，并没有对某个文�
 -----
 选出一系列节点出来存放在results里面，同时返回一个发起节点
 
-*NOTE(dirlt)：返回发起节点是有意义的，这样我们才能根据计算其他节点到这个发起节点的距离来做排序*
+*note(dirlt)：返回发起节点是有意义的，这样我们才能根据计算其他节点到这个发起节点的距离来做排序*
 
 #+BEGIN_SRC Java
   private DatanodeDescriptor chooseTarget(int numOfReplicas,
@@ -2145,7 +2145,7 @@ BlockPlacementPolicyDefault实现上将srcPath忽略了，并没有对某个文�
 有两个函数实现
    a. 从某个rack里面选择1个
    b. 从某个rack里面选择n个，其实a = b(1) 所以这里我们只看b实现
-*NOTE(dirlt)：注意这里rack可以是~排除语法，如果为ROOT的话那么就是所有rack都OK. 随机选择逻辑交给NetworkTopology来处理*
+*note(dirlt)：注意这里rack可以是~排除语法，如果为ROOT的话那么就是所有rack都OK. 随机选择逻辑交给NetworkTopology来处理*
 
 #+BEGIN_SRC Java
   protected void chooseRandom(int numOfReplicas,
@@ -2268,7 +2268,7 @@ so trivial!
    - bc是block所属的文件block collection 
    - block是要删除replica的block
    - replicationFactor是副本数目
-   - first *NOTE(dirlt)：我的理解是“block所在的节点，这些节点所在的rack上至少有两个副本”，但是comment似乎不是这么说的*
+   - first *note(dirlt)：我的理解是“block所在的节点，这些节点所在的rack上至少有两个副本”，但是comment似乎不是这么说的*
    - second #
 
 逻辑上可以看出

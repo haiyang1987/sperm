@@ -14,8 +14,8 @@
    - Bigtable does not support a full relational data model; instead, it provides clients with a simple data model that supports dynamic control over data layout and format, and al-lows clients to reason about the locality properties of the data represented in the underlying storage.（不支持完全的数据库关系模型。提供的是半结构化数据模型，支持动态控制数据布局和格式，允许用户通知数据用于底层存储的locality信息）
      - Data is in-dexed using row and column names that can be arbitrary strings.（通过行列来进行索引）
      - Bigtable also treats data as uninterpreted strings, although clients often serialize various forms of struc-tured and semi-structured data into these strings. （数据可以是半结构化也可以是结构化的）
-     - Clients can control the locality of their data through careful choices in their schemas. （通过设计schema来控制locality信息） *NOTE(dirlt)：只是使用schema？*
-     - Bigtable schema pa-rameters let clients dynamically control whether to serve data out of memory or from disk.（schema参数可以让用户动态控制是否使用超过内存大小数据） *TODO(dirlt)：for what*
+     - Clients can control the locality of their data through careful choices in their schemas. （通过设计schema来控制locality信息） *note(dirlt)：只是使用schema？*
+     - Bigtable schema pa-rameters let clients dynamically control whether to serve data out of memory or from disk.（schema参数可以让用户动态控制是否使用超过内存大小数据） *todo(dirlt)：for what*
 
 ** Data Model
    - A Bigtable is a sparse, distributed, persistent multi-dimensional sorted map. The map is indexed by a row key, column key, and a timestamp; each value in the map is an uninterpreted array of bytes.（本质上是稀疏的，分布式，可持久化的多维sorted-map。通过row-key和column-key找到对应的cell，在这个cell上面通过timestamp来从多维数据中取出一维） (row:string, column:string, time:int64) =》 string
@@ -63,7 +63,7 @@ file:./images/bigtable-data-model.png
    - tablet server负责下面这些事情：
      - Each tablet server manages a set of tablets (typically we have somewhere between ten to a thousand tablets per tablet server). （每个tablet server分配到10-1k左右的tablet）
      - The tablet server handles read and write requests to the tablets that it has loaded, （每个tablet server负责其管理的tablet操作）
-     - and also splits tablets that have grown too large.（如果tablet过大的话那么主动进行分裂，默认每个tablet在100-200MB左右） *NOTE(dirlt)：现在HBase的一个region在2G）*
+     - and also splits tablets that have grown too large.（如果tablet过大的话那么主动进行分裂，默认每个tablet在100-200MB左右） *note(dirlt)：现在HBase的一个region在2G）*
    - client直接和tablet server进行交互。因为client并不依赖于master来进行location定位，所以大部分时候不需要和master交互，因此master负载非常轻。
 
 *** Tablet Location
@@ -74,10 +74,10 @@ file:./images/bigtable-tablet-location-hierarchy.png
      - 查找的时候首先在root tablet上面做二分查找，找到对应的METADATA tablet。
      - 然后在METADATA tablet上面做二分找着，找到对应的user tablet。
      - 然后在user tablet上面找到对应的值。
-   - *NOTE(dirlt)：不过之前业强提的方法似乎更加可行，就是root仅仅存放table name，而在下面一级存放end row key*
+   - *note(dirlt)：不过之前业强提的方法似乎更加可行，就是root仅仅存放table name，而在下面一级存放end row key*
    - meta tablet server每行存储大概1KB数据，一个大约使用128MB内存，这样对于三级结构来说允许存储大约我2^34个tablets。
    - client会cache tablet位置，但是如果位置信息错误的话，那么需要逐层向上查询。因为对于cache empty情况需要3个roundtrip，而对于stale情况需要6个roundtrip
-   - Although tablet locations are stored in memory, so no GFS accesses are required, we further reduce this cost in the common case by having the client library prefetch tablet locations: it reads the metadata for more than one tablet whenever it reads the METADATA table. *TODO(dirlt)：预取可以减少什么开销呢？*
+   - Although tablet locations are stored in memory, so no GFS accesses are required, we further reduce this cost in the common case by having the client library prefetch tablet locations: it reads the metadata for more than one tablet whenever it reads the METADATA table. *todo(dirlt)：预取可以减少什么开销呢？*
 
 *** Tablet Assignment
 assignment这个信息应该是维护在master上面的，且没有必要进行持久化。
@@ -85,7 +85,7 @@ assignment这个信息应该是维护在master上面的，且没有必要进行�
 如何处理tablet server挂掉：
    - 所有的tablet server都在chubby上面注册节点并且加锁。如果和chubby节点断开的话，那么重新连接并且获取锁。如果文件已经删除的话，那么就自动退出。
    - master会定时询问tablet server是否存活。如果没有查询到存活的话，那么会尝试lock tablet server创建的节点。如果lock成功的话，那么删除这个文件。这样确保tablet server之后不会继续服务。
-   - 如果master认为某个ts挂掉的话，那么会重新assign原来分配所有的tablet出去。 *TODO(dirlt)：如何确保负载均衡*
+   - 如果master认为某个ts挂掉的话，那么会重新assign原来分配所有的tablet出去。 *todo(dirlt)：如何确保负载均衡*
    - 如果master和chubby断开的话，那么也会自己直接退出。
 
 master启动时候需要重新获得assignment信息：
@@ -101,7 +101,7 @@ master启动时候需要重新获得assignment信息：
    - tablet split（这个单个tablet server就能够感知到自己的tablet过大从而需要split）
 对于前面两个行为的话是master发起的话能够追踪所有的变化。
 
-对于tablet server发起操作导致tablet变化的话，完成之后写入METADATA tablet，通知master。 *TODO(dirlt)：但是如果通知不到的话，master是否会去定时扫描呢？*
+对于tablet server发起操作导致tablet变化的话，完成之后写入METADATA tablet，通知master。 *todo(dirlt)：但是如果通知不到的话，master是否会去定时扫描呢？*
 
 In case the split notification is lost (either because the tablet server or the master died), the master detects the new tablet when it asks a tablet server to load the tablet that has now split. The tablet server will notify the master of the split, because the tablet entry it finds in the METADATA table will specify only a portion of the tablet that the master asked it to load.
 
@@ -138,7 +138,7 @@ compaction分为三种：
 这个问题的解决是通过将这个log进行排序。如果有一个tablet server需要读取这个log的话，那么会通知master，master发起排序操作。按照 （table, row name, log sequence number ）
 这个复合键进行排序。排序之后每个tablet server只需要找到相应的偏移就可以开始顺序读取了。
 
-另外写gfs的时候也可能因为很多原因造成perfor-mance hiccups(e.g., a GFS server machine involved in the write crashes, or the network paths traversed to reach the particular set of three GFS servers is suffering network congestion, or is heavily loaded).，为了减少latency spike，对于tablet server写commit log是采用两个线程完成的 *TODO(dirlt)：这个为什么会有帮助呢？两个线程是两个不同的连接，但是同一机器上面的话pipeline应该是相同的。* ，但是只有一个线程在执行。如果一个线程写入比较慢的话，那么就会切换到另外一个线程写入。因为log里面都带了sequence number，所以在读取的时候可以进行判重避免读取重复数据。
+另外写gfs的时候也可能因为很多原因造成perfor-mance hiccups(e.g., a GFS server machine involved in the write crashes, or the network paths traversed to reach the particular set of three GFS servers is suffering network congestion, or is heavily loaded).，为了减少latency spike，对于tablet server写commit log是采用两个线程完成的 *todo(dirlt)：这个为什么会有帮助呢？两个线程是两个不同的连接，但是同一机器上面的话pipeline应该是相同的。* ，但是只有一个线程在执行。如果一个线程写入比较慢的话，那么就会切换到另外一个线程写入。因为log里面都带了sequence number，所以在读取的时候可以进行判重避免读取重复数据。
 
 *** Speeding up tablet recovery
 这个主要发生在tablet主动迁移的时候。因为迁移的时候memtable内容没有存放到gfs上面，因此如果直接unload的话，那么在另外一台机器上面就需要重新从gfs读取log并且进行recovery。

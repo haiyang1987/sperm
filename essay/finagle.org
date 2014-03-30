@@ -49,11 +49,11 @@ Client implementations are encouraged to provide sensible defaults and leave roo
        - Each endpoint the client connects to has an independent pool with high and low watermarks. 
        - The WatermarkPool keeps persistent services up to the lower bound. *It will keep making new services up to upper bound if you checkout more than lower bound services, but when you release those services above the lower bound, it immediately tries to close them.*
        - This, however, *creates a lot of connection churn if your application consistantly requires more than lower bound connections.* 
-       - *NOTE(dirlt):按照上面的连接池管理逻辑，那么链接会被频繁创建和销毁*
-     - As a result, there is a separate facility for caching, with some TTL, services above the lower bound. The CachingPool caches regardless of whether there are more than lower-bound open services; it’s always caching up to (upper-bound - lower-bound) services. The cache reaches its peak value when you reach your peak concurrency (i.e. “load”), and then slowly decays, based on the TTL. *NOTE(dirlt):针对上面机制的补充，将这部分链接缓存起来，然后使用TTL信息来缓慢销毁* 
-     - The DefaultClient layers both pools which amounts to maintaining the low watermark (as long as request concurrency exists), queueing requests above the high watermark, and applying a TTL for services that are between [low, high]. *TODO(dirlt):只是针对那些请求不频繁的service释放链接？queueing requests应该是说在这个service上有狠毒请求发生了堆积* 
+       - *note(dirlt):按照上面的连接池管理逻辑，那么链接会被频繁创建和销毁*
+     - As a result, there is a separate facility for caching, with some TTL, services above the lower bound. The CachingPool caches regardless of whether there are more than lower-bound open services; it’s always caching up to (upper-bound - lower-bound) services. The cache reaches its peak value when you reach your peak concurrency (i.e. “load”), and then slowly decays, based on the TTL. *note(dirlt):针对上面机制的补充，将这部分链接缓存起来，然后使用TTL信息来缓慢销毁* 
+     - The DefaultClient layers both pools which amounts to maintaining the low watermark (as long as request concurrency exists), queueing requests above the high watermark, and applying a TTL for services that are between [low, high]. *todo(dirlt):只是针对那些请求不频繁的service释放链接？queueing requests应该是说在这个service上有狠毒请求发生了堆积* 
    - Fail Fast
-     - The FailFastFactory attempts to reduce the amount of requests dispatched to endpoints that are likely to fail. *NOTE(dirlt):后台检查链接健康状况* 
+     - The FailFastFactory attempts to reduce the amount of requests dispatched to endpoints that are likely to fail. *note(dirlt):后台检查链接健康状况* 
      - It works by marking downed hosts when a connection fails, and launching a background process that repeatedly attempts to reconnect with a given backoff schedule. 
        - During the time that a host is marked down, the factory is marked unavailable (and thus the load balancer above it will avoid its use).
        - The factory becomes available again on success or when the backoff schedule runs out.

@@ -18,7 +18,7 @@ As far as a comparison of systems is concerned, Druid sits in between PowerDrill
 
 The node types that currently exist are:（有下面几种节点类型存在）
    - Compute nodes are the workhorses that handle storage and querying on “historical” data (non-realtime) 处理历史数据
-   - Realtime nodes ingest data in real-time, they are in charge of listening to a stream of incoming data and making it available immediately inside the Druid system. As data they have ingested ages, they hand it off to the compute nodes. 处理实时数据，并且能够将实时数据导入到druid系统里面供compute节点使用 *NOTE(dirlt)：我对realtime这个部分的数据处理还是比较好奇的，因为这个部分的数据似乎不像是使用druid描述那些方法来进行query的*
+   - Realtime nodes ingest data in real-time, they are in charge of listening to a stream of incoming data and making it available immediately inside the Druid system. As data they have ingested ages, they hand it off to the compute nodes. 处理实时数据，并且能够将实时数据导入到druid系统里面供compute节点使用 *note(dirlt)：我对realtime这个部分的数据处理还是比较好奇的，因为这个部分的数据似乎不像是使用druid描述那些方法来进行query的*
    - Master nodes act as coordinators. They look over the grouping of computes and make sure that data is available, replicated and in a generally “optimal” configuration. 作为协调者存在，判断节点是否挂掉，确保数据能够available以及replicated.
    - Broker nodes understand the topology of data across all of the other nodes in the cluster and re-write and route queries accordingly 相当于router的角色存在，知道每个节点上面存在哪些数据，接收query请求并且将query请求改写让realtime和compute节点计算，然后做汇总。
    - Indexer nodes form a cluster of workers to load batch and real-time data into the system as well as allow for alterations to the data stored in the system (as of 11/2012, these nodes are still a work in progress) 对历史数据和realtime数据进行索引。
@@ -26,7 +26,7 @@ The node types that currently exist are:（有下面几种节点类型存在）
    - 请求发送到broker上面
    - broker会改写这个query statement，并且根据route信息将这些sub query发送到compute/realtime节点进行计算
    - compute/realtime返回结果，breoker将结果进行聚合返回。
-*NOTE(dirlt)：似乎是单层的结构，但是不是非常确定*
+*note(dirlt)：似乎是单层的结构，但是不是非常确定*
 
 另外整个系统还需要依赖外部三个组组件：
    - A running ZooKeeper cluster for cluster service discovery and maintenance of current data topology（zookeeper记录topology）
@@ -44,13 +44,13 @@ Getting data into the Druid system requires an indexing process. This gives the 
        - RLE (on the roadmap, but not yet implemented)
 The output of the indexing process is stored in a “deep storage” LOB store/file system (S3 is the currently implemented solution, HDFS is planned). Data is then loaded by compute nodes by first downloading the data to their local disk and then memory mapping it before serving queries.(输出结果保存在LOB里面，现在是使用S3存储接口今后会支持HDFS。数据的话首先会被download到本地然后进行serve）
 
-In order for a segment to exist inside of the cluster, an entry has to be added to a table in a MySQL instance. This entry is a self-describing bit of metadata about the segment, it includes things like the schema of the segment, the size, and the location on deep storage. These entries are what the Master uses to know what data should be available on the cluster. （segment的metadata会保存在MySQL里面。master会用这些信息来判断哪些信息是没有被serve的） *NOTE(dirlt)：个人觉得实现方式应该类似与，indexer运行不是很频繁，每次indexer对数据进行index的时候会将segment的metadata写入MySQL，完成之后通知Master来读取*
+In order for a segment to exist inside of the cluster, an entry has to be added to a table in a MySQL instance. This entry is a self-describing bit of metadata about the segment, it includes things like the schema of the segment, the size, and the location on deep storage. These entries are what the Master uses to know what data should be available on the cluster. （segment的metadata会保存在MySQL里面。master会用这些信息来判断哪些信息是没有被serve的） *note(dirlt)：个人觉得实现方式应该类似与，indexer运行不是很频繁，每次indexer对数据进行index的时候会将segment的metadata写入MySQL，完成之后通知Master来读取*
 
 *** Fault Tolerance
    - Compute As discussed above, if a compute node dies, another compute node can take its place and there is no fear of data loss 
-   - Master Can be run in a hot fail-over configuration. If no masters are running, then changes to the data topology will stop happening (no new data and no data balancing decisions), but the system will continue to run.（如果master挂掉的话那么不允许进行topology的变化，不允许新增数据以及数据的balance) *NOTE(dirlt):S3的存储难道没有解决balance以及replication的问题？*
+   - Master Can be run in a hot fail-over configuration. If no masters are running, then changes to the data topology will stop happening (no new data and no data balancing decisions), but the system will continue to run.（如果master挂掉的话那么不允许进行topology的变化，不允许新增数据以及数据的balance) *note(dirlt):S3的存储难道没有解决balance以及replication的问题？*
    - Broker Can be run in parallel or in hot fail-over.
-   - Realtime Depending on the semantics of the delivery stream, multiple of these can be run in parallel processing the exact same stream. They periodically checkpoint to disk and eventually push out to the Computes. Steps are taken to be able to recover from process death, but loss of access to the local disk can result in data loss if this is the only method of adding data to the system. *TODO(dirlt)；realtime介绍不是很多*
+   - Realtime Depending on the semantics of the delivery stream, multiple of these can be run in parallel processing the exact same stream. They periodically checkpoint to disk and eventually push out to the Computes. Steps are taken to be able to recover from process death, but loss of access to the local disk can result in data loss if this is the only method of adding data to the system. *todo(dirlt)；realtime介绍不是很多*
    - “deep storage” file system If this is not available, new data will not be able to enter the cluster, but the cluster will continue operating as is.
    - MySQL If this is not available, the master will be unable to find out about new segments in the system, but it will continue with its current view of the segments that should exist in the cluster.（不能够知道新的segment加入）
    - ZooKeeper If this is not available, data topology changes will not be able to be made, but the Brokers will maintain their most recent view of the data topology and continue serving requests accordingly.（如果compute节点挂掉的话那么检测不到。对于路由信息broker本身会保存一份副本）
@@ -109,11 +109,11 @@ So about a year ago, we fired up a RDBMS instance (actually, the Greenplum Commu
      - 所谓的fact table里面存放的是具体值，而dimensional table是指属性或者说是维度。
      - dimensional table引用的都是fact table里的值。
      - 一个fact table（多个fact table也行）可能会被多个dimensional table所引用，这样就形成了一个星型schema。 
-   - Whenever we needed to do a full table scan, for things like global counts, the queries ran slow. For example, naive benchmarks showed scanning 33 million rows took 3 seconds. （对于一些全表扫描的操作非常地慢 *NOTE(dirlt)：这个主要是因为没有使用并行查询的方式把？* ）
+   - Whenever we needed to do a full table scan, for things like global counts, the queries ran slow. For example, naive benchmarks showed scanning 33 million rows took 3 seconds. （对于一些全表扫描的操作非常地慢 *note(dirlt)：这个主要是因为没有使用并行查询的方式把？* ）
      - We started materializing all dimensional roll-ups of a certain depth, and began routing queries to these pre-aggregated tables. We also implemented a caching layer in front of our queries. （开始通过pre roll up到一定的深度然后在这些table上面进行查询，并且在query之前假设一个cache layer）
      - This approach generally worked and is, I believe, a fairly common strategy in the space. Except, when things weren’t in the cache and a query couldn’t be mapped to a pre-aggregated table, we were back to full scans and slow performance.（上面工作方式在大部分时候工作还是很好的，但是如果没有出现在cache或者是pre-compute的table里面性能就非常差）
      - We tried indexing our way out of it, but given that we are allowing arbitrary combinations of dimensions, we couldn’t really take advantage of composite indexes. （尝试建立二级联合索引，但是因为允许在所有的dimenson上面进行查询，所以还是不行）
-     - Additionally, index merge strategies are not always implemented, or only implemented for bitmap indexes, depending on the flavor of RDBMS.（另外一些RDBMS的index merge策略可能没有实现，或者只是实现了bitmap index merge策略 *TODO(dirlt)：不太明白什么意思？* ）
+     - Additionally, index merge strategies are not always implemented, or only implemented for bitmap indexes, depending on the flavor of RDBMS.（另外一些RDBMS的index merge策略可能没有实现，或者只是实现了bitmap index merge策略 *todo(dirlt)：不太明白什么意思？* ）
 We also benchmarked plain Postgres, MySQL, and InfoBright, but did not observe dramatically better performance.
 
 *** Failed Solution II: Pre-compute the World in NoSQL
@@ -152,10 +152,10 @@ http://metamarkets.com/2011/druid-part-deux-three-principles-for-fast-distribute
 *** Distributed Data + Parallelizable Queries => Horizontal Scalability
    - Druid’s performance depends on having memory — lots of it. We achieve the requisite memory scale by dynamically distributing data across a cluster of nodes. As the data set grows, we can horizontally expand by adding more machines.(通过动态地在节点中分布数据来达到比较方便的水平扩展）
    - To facilitate rebalancing, we take chunks of beta data and index them into segments based on time ranges.（为了能够完成rebalance，将beta dataset分片并且进行索引，根据时间范围）
-   - For high cardinality dimensions, distributing by time isn’t enough (we generally try to keep segments no larger than 20M rows), so we have introduced partitioning. We store metadata about segments within the query layer and partitioning logic within the segment generation code.（而对于维度比较多的内容，仅仅按照时间分布还是不够的，我们尽量让我一个segment不要超过20M rows所以需要引入partition。 *NOTE(dirlt)：这个partition应该是用户自己定义的* 然后druid将segment的metadata保存在qeury layer上面，而用户在查询的时候需要自己提供partition的code）
+   - For high cardinality dimensions, distributing by time isn’t enough (we generally try to keep segments no larger than 20M rows), so we have introduced partitioning. We store metadata about segments within the query layer and partitioning logic within the segment generation code.（而对于维度比较多的内容，仅仅按照时间分布还是不够的，我们尽量让我一个segment不要超过20M rows所以需要引入partition。 *note(dirlt)：这个partition应该是用户自己定义的* 然后druid将segment的metadata保存在qeury layer上面，而用户在查询的时候需要自己提供partition的code）
    - We persist these segments in a storage system (currently S3) that is accessible from all nodes. If a node goes down, Zookeeper coordinates the remaining live nodes to reconstitute the missing beta set.（segment数据也会在S3文件系统上面进行持久化。这样如果一个server node挂掉的，可以选举另外一个节点从S3文件系统中读取beta dataset。检测node挂掉通过zookeeper协调）
    - Downstream clients of the API are insulated from this rebalancing: Druid’s query API seamlessly handles changes in cluster topology.（下游的client则不需要考虑rebalance的情况）
-   - Queries against the Druid cluster are perfectly horizontal. We limited the aggregation operations we support – count, mean, variance and other parametric statistics – that are inherently parallelizable. While less parallelizable operations, such as median, are not supported, this limitation is offset by rich support of histogram and higher-order moment stores. The co-location of processing with in-memory data on each node reduces network load and dramatically improves performance.（限制进行聚合的操作，确保这些操作确实可以并行完成。 如果没有并行完成的话，可以通过  *histogram and higher-order moment stores（高阶矩）* 的支持来补偿 *TODO(dirlt)：WTF is that?* 
+   - Queries against the Druid cluster are perfectly horizontal. We limited the aggregation operations we support – count, mean, variance and other parametric statistics – that are inherently parallelizable. While less parallelizable operations, such as median, are not supported, this limitation is offset by rich support of histogram and higher-order moment stores. The co-location of processing with in-memory data on each node reduces network load and dramatically improves performance.（限制进行聚合的操作，确保这些操作确实可以并行完成。 如果没有并行完成的话，可以通过  *histogram and higher-order moment stores（高阶矩）* 的支持来补偿 *todo(dirlt)：WTF is that?* 
 
 *** Real-Time Analytics: Immutable Past, Append-Only Future
    - For real-time analytics, we have an event stream that flows into a set of real-time indexers. These are servers that advertise responsibility for the most recent 60 minutes of data and nothing more. (对于实时分析有专门都的real-time indexer server，处理最近60分钟的数据）

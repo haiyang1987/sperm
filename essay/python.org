@@ -42,7 +42,7 @@ def toLocal(s):
 gb2312可以正常解释，使用utf8也可以正常解释。
 
 -----
-NOTE(dirlt)：最近修改饭团系统的时候，使用sqlitedb还出现了字符编码问题。系统似乎默认使用ascii来进行编码解码，可以修改系统默认的编码解码方式为utf8。
+note(dirlt)：最近修改饭团系统的时候，使用sqlitedb还出现了字符编码问题。系统似乎默认使用ascii来进行编码解码，可以修改系统默认的编码解码方式为utf8。
 #+BEGIN_SRC Python
 import sys
 if(sys.getdefaultencoding() !='utf8'):

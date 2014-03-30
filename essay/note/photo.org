@@ -18,4 +18,4 @@
    - 镜头的好会直接影响成像质量，比如细节是否清晰，色彩是否突出，以及是否会出现失真等。
 
 ** Gallery
-TODO(dirlt):coming soon
+todo(dirlt):coming soon

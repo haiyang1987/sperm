@@ -21,7 +21,7 @@ An execution engine that runs on multi-thousand node clusters really is an impor
       - I’ve seen MapReduce clusters of 3,000 nodes and I strongly suspect that clusters of 5,000+ servers can be found if you look in the right places.  I’ve been around parallel database management systems for many years but have never seen multi-thousand node clusters of Oracle RAC or IBM DB2 Parallel Edition. 曾经见过3000节点运行MapReduce,但是很少见到PDBMS能够支持上千节点。
 	
    4. MapReduce is missing features
-      - All of the missing features (bulk loader, indexing, updates, transactions, RI, views) are features that could be implemented in a store used by MapReduce. 这些特性都可以在MapReduce所用的存储系统完成 *TODO(dirlt)：RI???*
+      - All of the missing features (bulk loader, indexing, updates, transactions, RI, views) are features that could be implemented in a store used by MapReduce. 这些特性都可以在MapReduce所用的存储系统完成 *todo(dirlt)：RI???*
 	
    5. MapReduce is incompatible with the DBMS tools
       - I 100% agree. Tools are useful and today many of these tools target RDBMS. 大部分的工具确实是针对RDBMS

@@ -39,7 +39,7 @@ Give pressures and challenges to the employees. Rotate the jobs, let the “expe
 Hold hackathon periodically. This will help to build a culture that embrace innovation and creation. People will be motivated by their peers — “gee, that bustard can write such a beautiful framework for 24 hours, I gotta work hard”.
 #+END_VERSE
 
-对于个人来说，需要经常自己独立完成项目培养自己的编码能力，不要呆在一个团队超过2年以上（ *NOTE(dirlt)：这点我觉得有点道理，3年以内相当于是公司在培养个人，个人收获相对更对，而3年之后相当个人为公司做贡献，个人付出相对更多* ），不断接触更多的新技术。每18个月做一个面试，看看自己的能力是否有弱化。
+对于个人来说，需要经常自己独立完成项目培养自己的编码能力，不要呆在一个团队超过2年以上（ *note(dirlt)：这点我觉得有点道理，3年以内相当于是公司在培养个人，个人收获相对更对，而3年之后相当个人为公司做贡献，个人付出相对更多* ），不断接触更多的新技术。每18个月做一个面试，看看自己的能力是否有弱化。
 
 对于公司来说，可以让员工做不同的事情来扩展能力，同时培养员工的创造性和积极性
 

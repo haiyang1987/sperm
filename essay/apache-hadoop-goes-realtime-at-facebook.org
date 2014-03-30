@@ -41,7 +41,7 @@ The requirements for the storage  system  from  the  workloads presented above c
 It is also worth pointing out non-requirements: 
    1. Tolerance of network partitions within a single data center:  Different system components are often inherently centralized. For example, MySQL servers may all be located within a few racks, and network  partitions within a data center would cause major loss in serving capabilities therein. Hence every effort is made to eliminate the possibility of such events at the hardware level by having a highly redundant network design.（网络分割性的话通过在硬件层面解决比如使用高冗余的网络设计）
    2. Zero Downtime in case of individual data center failure: In our experience such failures are very rare, though not impossible. In a less than ideal world where the choice of system design boils down to the choice of compromises that are acceptable, this is one compromise that we are willing to make given the low occurrence rate of such events
-   3. Active-active serving capability across different data centers: As mentioned before, we were comfortable making the assumption that user data could be federated across different data centers (based ideally on user locality). Latency (when user and data locality did not match up) could be masked by using an application cache close to the user. *NOTE(dirlt)：？？？*
+   3. Active-active serving capability across different data centers: As mentioned before, we were comfortable making the assumption that user data could be federated across different data centers (based ideally on user locality). Latency (when user and data locality did not match up) could be masked by using an application cache close to the user. *note(dirlt)：？？？*
 
 ** REALTIME HDFS 
 *** High Availability - AvatarNode
@@ -86,12 +86,12 @@ HDFS is originally designed for high-throughput systems like MapReduce. *Many of
 
 *** New Features
 **** HDFS sync
-   - Hflush/sync is an important operation for both HBase and Scribe. It pushes the written data buffered at the client side to the write pipeline, making the data visible to any new reader and increasing the data durability when either the client or any DataNode on the pipeline fails.（调用hflush/sync之后，之前所写的内容应该是全部都到了dn disk上面，能够被所有的reader读取到） *TODO(dirlt)：对hflush/sync这个语义至今比较模糊，一个比较主要的原因就是这个API历史上是调整过语义的*
+   - Hflush/sync is an important operation for both HBase and Scribe. It pushes the written data buffered at the client side to the write pipeline, making the data visible to any new reader and increasing the data durability when either the client or any DataNode on the pipeline fails.（调用hflush/sync之后，之前所写的内容应该是全部都到了dn disk上面，能够被所有的reader读取到） *todo(dirlt)：对hflush/sync这个语义至今比较模糊，一个比较主要的原因就是这个API历史上是调整过语义的*
    - Hflush/sync is  a synchronous operation, meaning that it does not return until an acknowledgement from the write pipeline is received. Since the operation is frequently invoked, increasing its efficiency is important.（但是这个过程是同步的）
    - One optimization we have is to allow following writes to proceed while an Hflush/sync operation is waiting for a reply. This greatly increases the write throughput in both HBase and Scribe where a designated thread invokes Hflush/sync periodically.（一个优化就是在write的同时调用hflush/sync并且等待返回，这样可以增加写入的吞吐）
 
 **** Concurrent Readers
-   - We have an application that requires the ability to read a file while it is being written to. The reader first talks to the NameNode to get the meta information of the file. Since the NameNode does not have the most updated information of its last block‘s length, the client fetches the information from one of the DataNodes where one of its replicas resides. It then starts to read the file. *TODO(dirlt)：？？？*
+   - We have an application that requires the ability to read a file while it is being written to. The reader first talks to the NameNode to get the meta information of the file. Since the NameNode does not have the most updated information of its last block‘s length, the client fetches the information from one of the DataNodes where one of its replicas resides. It then starts to read the file. *todo(dirlt)：？？？*
    - The challenge of concurrent readers and writer is how to provision the last chunk of data when its data content and checksum are dynamically changing. We solve the problem by recomputing the checksum of the last chunk of data on demand. 
 
 ** PRODUCTION HBASE
@@ -131,7 +131,7 @@ HDFS is originally designed for high-throughput systems like MapReduce. *Many of
     - A critical component for cluster monitoring is operational metrics. In particular, RegionServer metrics are far more useful for evaluating the health of the cluster than HMaster or ZooKeeper metrcs. HBase already had a number of metrics exported through JMX. However, all the metrics were for short-running operations such as log writes and RPC requests. We needed to add metrics to monitor long-running events such as compactions, flushes, and log splits. A slightly innocuous metric that ended up being critical for monitoring was version information. We have multiple clusters that often have divergent versions.（版本是比较重要的监控信息，因为每个版本功能是不同的，而整个集群里面可能会存在很多不同的版本）
 
 *** Manual versus Automatic Splitting
-*NOTE(dirlt):manual splitting over automatic splitting是有一定前提的，不过确实带来了许多可控方面的好处*
+*note(dirlt):manual splitting over automatic splitting是有一定前提的，不过确实带来了许多可控方面的好处*
 
    - Since our data grows roughly uniform across all regions, it's easy for automatic splitting to cause split and compaction storms as the regions all roughly hit the same data size at the same time. With manual splits, we can stagger splits across time and thereby spread out the network IO load typically generated by the splitting process. This minimizes impact to production workload.
    - Since the number of regions is known at any given point in time, long-term debugging and profiling is much easier. It is hard to trace the logs to understand region level problems if regions keep splitting and getting renamed. 

@@ -46,7 +46,7 @@ row表示格式为： *每个数字对应1 byte*
    - [0, 1, 11] "foo" index
    - [0, 0, 2] "host" index
    - [0, -7, 42] "web42" index
-*NOTE(dirlt)：可以看到，对于metric + tags相同的数据都会连续存放，且metic相同的数据也会连续存放，这样对于scan以及做aggregation都非常有帮助*
+*note(dirlt)：可以看到，对于metric + tags相同的数据都会连续存放，且metic相同的数据也会连续存放，这样对于scan以及做aggregation都非常有帮助*
 
 column qualifier占用2 bytes，表示格式为：
    - 12 bits delta in seconds.(相对row表示的小时的delta, 最多2^ 12 = 4096 > 3600因此没有问题）

@@ -1049,7 +1049,7 @@ Swap:          509          0        509
 dirlt@dirlt-virtual-machine:~/github/sperm/essay$ cat /proc/sys/vm/overcommit_ratio
 50
 #+END_EXAMPLE
-所以对于我这个系统来说，可用的虚拟内存在(491*50/100)+509=754M. NOTE(dirlt):这个仅仅是在overcommit_memory=2的时候估算的<可用内存>大小，
+所以对于我这个系统来说，可用的虚拟内存在(491*50/100)+509=754M. note(dirlt):这个仅仅是在overcommit_memory=2的时候估算的<可用内存>大小，
 实际上对于其他情况来说可用内存大小还是(Physical-RAM-Size) + (Swap-Size).
 
 **** /proc/sys/vm/swappiness
@@ -1088,9 +1088,9 @@ dirty_expire_centisecs时间的，如果超过的话那么就会在后台刷新�
      - /dev/mem_notify 这个设备文件上面包含内存事件，task可以poll这个文件来获取通知
    - Linux 的 Out-of-Memory (OOM) Killer - DBA Notes http://www.dbanotes.net/database/linux_outofmemory_oom_killer.html 
    - OOM killer "Out of Memory: Killed process" SOLUTIONS / SUMMARY http://www.redaht.com/archives/redhat-list/2007-August/msg00060.html   
-     - 情况主要是在32位机器下面LowMem不够使用出现OOM的情况。 *TODO(dirlt)：不太清楚这个LowMem是物理还是虚拟内存*
+     - 情况主要是在32位机器下面LowMem不够使用出现OOM的情况。 *todo(dirlt)：不太清楚这个LowMem是物理还是虚拟内存*
    - LinuxDevCenter.com: When Linux Runs Out of Memory http://linuxdevcenter.com/lpt/a/6808
-   - Respite from the OOM killer [LWN.net] http://lwn.net/Articles/104179/  *NOTE(dirlt)：似乎overcommit_memory设置成为2也不能够完全避免OOM*
+   - Respite from the OOM killer [LWN.net] http://lwn.net/Articles/104179/  *note(dirlt)：似乎overcommit_memory设置成为2也不能够完全避免OOM*
      
 This enables or disables panic on out-of-memory feature.
 
@@ -1102,7 +1102,7 @@ If this is set to 2, the kernel panics compulsorily even on the above-mentioned.
 
 The default value is 0. 1 and 2 are for failover of clustering. Please select either according to your policy of failover.
 
-*NOTE(dirlt):对于1，2不是很理解，可能是用于分布式集群Linux系统上面的策略*
+*note(dirlt):对于1，2不是很理解，可能是用于分布式集群Linux系统上面的策略*
 
 *** /proc/sys/net
 **** /proc/sys/net/ipv4/ip_local_port_range
@@ -1129,13 +1129,13 @@ Enable fast recycling of TIME_WAIT sockets.
 
 *** /proc/sys/fs
 **** /proc/sys/fs/file-max
-所有进程允许打开文件的最大数量 *NOTE(dirlt)：这个应该是和文件描述符有区别的*
+所有进程允许打开文件的最大数量 *note(dirlt)：这个应该是和文件描述符有区别的*
 
 **** /proc/sys/fs/epoll/max_user_instances
-单个用户使用epoll的文件描述符上限。如果超过上限会返回EMFILE错误。 *NOTE(dirlt)：不过在我的文件系统下面似乎没有这个选项*
+单个用户使用epoll的文件描述符上限。如果超过上限会返回EMFILE错误。 *note(dirlt)：不过在我的文件系统下面似乎没有这个选项*
 
 **** /proc/sys/fs/epoll/max_user_watches
-单个用户使用epoll进行watch的文件描述符上限。 *NOTE(dirlt)：对于服务器应该特别有用，可以限制内存使用量*
+单个用户使用epoll进行watch的文件描述符上限。 *note(dirlt)：对于服务器应该特别有用，可以限制内存使用量*
 
 #+BEGIN_VERSE
 This specifies a limit on the total number of file descriptors that a user can register across all epoll  instances
@@ -1200,7 +1200,7 @@ The JBD is the [[http://kerneltrap.org/node/6741][journaling block device]] that
    - [PATCH] tcp: Fix slowness in read /proc/net/tcp — Linux Network Development : http://www.spinics.net/lists/netdev/msg132186.html
    - Linux-Kernel Archive: Awfully slow /proc/net/tcp, netstat, in.i : http://lkml.indiana.edu/hypermail/linux/kernel/0110.2/0475.html
 
-*TODO(dirlt):*
+*todo(dirlt):*
 
 ** system utility
 file:./images/linux-analysis-and-tools.jpg
@@ -1479,26 +1479,26 @@ sunrpc on /var/lib/nfs/rpc_pipefs type rpc_pipefs (rw)
 #+END_EXAMPLE
 我们关注自己读写目录，比如通常在/home下面，这里就是使用的device就是/dev/mapper/VolGroup00-LogVol00
 
-TODO(dirlt):好多选项都不太清楚是什么意思.
+todo(dirlt):好多选项都不太清楚是什么意思.
 *** nmon
 http://nmon.sourceforge.net/pmwiki.php Nigel's performance Monitor for Linux
 
-TODO(dirlt):
+todo(dirlt):
 
 *** pmap
-TODO(dirlt):
+todo(dirlt):
 
 *** strace
-TODO(dirlt):
+todo(dirlt):
 
 *** uptime
-TODO(dirlt):
+todo(dirlt):
 
 *** top
-TODO(dirlt):
+todo(dirlt):
 
 *** pmap
-TODO(dirlt)
+todo(dirlt)
 
 *** iostat
 iostat主要用来观察io设备的负载情况的。首先我们看看iostat的样例输出
@@ -1519,7 +1519,7 @@ sda              31.09       203.67      9862.91     260487   12614468
    - %nice 用户态使用nice priority比率
    - %system 系统态比率
    - %iowait CPU在等待IO操作时候idle比率
-   - %steal TODO(dirlt)
+   - %steal todo(dirlt)
    - %idle idle比率但是不包括在等待IO操作idle比率
 
 然后在来看看iostat的命令行参数
@@ -1533,7 +1533,7 @@ device [,...] | ALL ] ] [ interval [ count ] ]
    - -h 和-d一样只不过human readable一些(不过其实差不多)
    - -k 统计数据按照kilobytes为单位
    - -m 统计数据按照megabytes为单位
-   - -N TODO(dirlt)
+   - -N todo(dirlt)
    - -p 选择block device以及其partitions.如果使用ALL的话那么选择所有block devices.
    - -t 每次输出都是打印当前时间
    - -V version
@@ -1576,39 +1576,39 @@ sda               0.00     0.00    0.00    0.00     0.00     0.00     0.00     0
    - await 提交到这个device上面请求处理的平均时间(ms)
    - r_await 提交到这个device上面读请求处理的平均时间
    - w_await 提交到这个device上面写请求处理的平均时间
-   - svctm TODO(dirlt):don't use it.
+   - svctm todo(dirlt):don't use it.
    - %util CPU在处理IO请求时的百分比.可以认为是IO设备使用率.
 
 *** blockdev
-TODO(dirlt):
+todo(dirlt):
 
 *** systemtap
-TODO(dirlt): http://sourceware.org/systemtap/
+todo(dirlt): http://sourceware.org/systemtap/
 
 *** latencytop
-TODO(dirlt): https://latencytop.org/
+todo(dirlt): https://latencytop.org/
 
 *** iotop
 可以用来观察单独进程的IO使用状况
 
-TODO(dirlt)：
+todo(dirlt)：
 
 *** htop
 可以认为是top的升级版本，个人感觉比top好用很多
 
-TODO(dirlt)：
+todo(dirlt)：
 
 *** cssh
-TODO(dirlt):
+todo(dirlt):
 
 *** dstat
-TODO(dirlt): https://github.com/dagwieers/dstat
+todo(dirlt): https://github.com/dagwieers/dstat
 
 http://weibo.com/1840408525/AdGkO3uEL dstat -lamps
 
 *** slurm
 Simple Linux Utility for Resource Management 
-TODO(dirlt): https://computing.llnl.gov/linux/slurm/
+todo(dirlt): https://computing.llnl.gov/linux/slurm/
 
 *** sar
 sar - Collect, report, or save system activity information.
@@ -2037,7 +2037,7 @@ httperf是用来测试HTTP server性能的工具，支持HTTP1.0和1.1.下面是
 httperf有几种不同的workload方式：
    - request-oriented(RO)
    - session-oriented(SO)
-NOTE(dirlt):关于session-oriented这个概念，是后来看了论文里面才清楚的。主要解决的就是实际中browse的场景。
+note(dirlt):关于session-oriented这个概念，是后来看了论文里面才清楚的。主要解决的就是实际中browse的场景。
 通常我们请求一个页面里面都会嵌入很多objects包括js或者是css等。我们一次浏览称为session,而session里面会有很多请求。
 这些请求通常是，首先等待第一个请求处理完成(浏览器解析页面)，然后同时发起其他请求。
 
@@ -2074,8 +2074,8 @@ port=12347 --uri="/tell?reqid=3&account=dirlt&timeout=1000&reqtype=geographic&im
    - --server=name=S 设置header的Host字段，默认是httperf
    - --session-cookie SO模式下有效。请求服务器如果返回cookie的话，那么这个session上面后续连接都会带上相同的cookie. 如果server下次返回不同的cookie的话，那么原来的cookie会覆盖并且打印debug信息。也就是说后续请求带上的第二个cookie而不是第一个cookie.
    - --ssl 使用SSL进行通信
-   - --ssl-ciphers=L SSL相关 TODO(dirlt):
-   - --ssl-no-reuse SSL相关 TODO(dirlt):
+   - --ssl-ciphers=L SSL相关 todo(dirlt):
+   - --ssl-no-reuse SSL相关 todo(dirlt):
    - --think-timeout=X 这个超时时间会叠加到--timeout选项指定的超时时间上。选项主要是为了解决动态页面。如果是静态页面可以直接=0.
    - --timeout=X 超时时间，单位是second，可以为浮点数。超时时间包括连接建立和读写时间。如果超时的话那么关闭连接或者是session，client-timeo+=1
    - --uri=S 请求URI.比如--uri=/foreground/all_stars 可以通过--wset来以这个参数内容为前缀拼接出uri.
@@ -2084,7 +2084,7 @@ port=12347 --uri="/tell?reqid=3&account=dirlt&timeout=1000&reqtype=geographic&im
    - --wsess=N1,N2,X 是用session模式测试。发起N1个session，一个session内部会调用N2次calls.calls被聚合称为burst.各个burst之间等待X秒(这里称为user-think time.还是很贴切的。这个就好比用户浏览一次页面之后，看一段时间，然后访问下一个页面).通过burst-length来控制一次burst中间存在多少个calls.工作场景是首先发起一个calls,然后将其余calls发送。定义session成功或者是失败，是要求任意一个calls不能超过超时时间。
    - --wsesslog=N,X,F 类似于--wess选项，但是关于请求以及各种参数可以从文件读取。N表示发起多少个session,X表示user-think time.F就是提供其他内容的文件。这个选项和--wlog非常类似。
    - --wset=N,X 生成URI用来访问。其中X表示多少概率会访问新的URI，比如X=0.25的话表示每次生成的URI平均都会访问4次。N表示生成多少个页面。假设N=100的话，那么从[0,100]，对于每个数字补齐到N-1的数字位，比如9就是09.然后根据每个数字分隔形成0/9.如果URI为x作为前缀，那么就是x/0/9.html.
-NOTE(dirlt):不过httperf采用select模型，导致最大连接数存在上限。
+note(dirlt):不过httperf采用select模型，导致最大连接数存在上限。
 
 结果分析
 #+BEGIN_EXAMPLE
@@ -2149,7 +2149,7 @@ ab(apache benchmarking)是apache httpd自带的一个HTTP Server个的工具。�
 #+END_EXAMPLE
 功能上没有httperf多但是觉得应该大部分时候足够使用的。
 
-NOTE(dirlt):ab和httperf工作模型不同。httperf是指定建立多少个链接，每个链接上发起多少个calls。而ab指定一共发送多少个请求，
+note(dirlt):ab和httperf工作模型不同。httperf是指定建立多少个链接，每个链接上发起多少个calls。而ab指定一共发送多少个请求，
 每批发送多少个请求，然后计算每批时间统计。ab必须等待这批请求全部返回或者是失败或者是超时。可以作为对方的互补。nice!!!
 
 下面看看每个参数的含义：
@@ -2263,13 +2263,13 @@ echo set style data linespoints >> gnuplot.cmd
 #+END_EXAMPLE
 使用bench2graph bench.tsv bench.png,然后会提示输入title即可生成比较图。
 
-TODO(dirlt):后续可能需要学习如何使用autobench分布式测试，因为httperf该死的select模型。
+todo(dirlt):后续可能需要学习如何使用autobench分布式测试，因为httperf该死的select模型。
 
 *** iftop
-TODO(dirlt): http://www.ex-parrot.com/~pdw/iftop/
+todo(dirlt): http://www.ex-parrot.com/~pdw/iftop/
 
 *** iftraf
-TODO(dirlt): http://iptraf.seul.org/
+todo(dirlt): http://iptraf.seul.org/
 
 *** rsync
 常用选项：
@@ -2279,7 +2279,7 @@ TODO(dirlt): http://iptraf.seul.org/
    - -z --compress
 
 常用命令：
-   - 同步目录 rsync -avrz /dir/ user@host:/dir/ *NOTE(dirlt):注意目录后面需要加上/*
+   - 同步目录 rsync -avrz /dir/ user@host:/dir/ *note(dirlt):注意目录后面需要加上/*
    - 同步文件 rysnc -vz /dir/file1 user@host:/dir/file
 
 *** ttyload
@@ -2326,7 +2326,7 @@ dp       30586  0.0  0.0   7628  1020 pts/2    S+   08:59   0:00 grep --color=au
 *** ulimit
     TODO(
 *** ntp
-   - ntp.org: Home of the Network Time Protocol http://www.ntp.org/ *NOTE(dirlt):这个项目应该是非常复杂的*
+   - ntp.org: Home of the Network Time Protocol http://www.ntp.org/ *note(dirlt):这个项目应该是非常复杂的*
 
 ntp(network time protocol)是用来做机器时间同步的，包含下面几个组件：
    - ntpd(ntp daemon) 后台进程可以用来从其他机器上面同步时间，也可以为其他机器提供时间同步。配置文件是/etc/ntpd.conf.
@@ -2361,7 +2361,7 @@ ntp是可以在minpoll和maxpoll指定的时间间隔内来选择同步间隔的
 其实如果不考虑为其他机器提供服务的话，完全可以在cron里面使用ntpdate来进行同步。
 
 *** nethogs
-TODO(dirlt):
+todo(dirlt):
 
 *** slabtop
 slabtop - display kernel slab cache information in real time
@@ -2370,13 +2370,13 @@ slabtop - display kernel slab cache information in real time
 nmon - systems administrator, tuner, benchmark tool.
 
 *** watch
-watch - execute a program periodically, showing output fullscreen TODO(dirlt):
+watch - execute a program periodically, showing output fullscreen todo(dirlt):
 
 *** collectl
-collectl http://collectl.sourceforge.net/ *TODO(dirlt):似乎相当不错，将很多关键信息都做了收集和整合*
+collectl http://collectl.sourceforge.net/ *todo(dirlt):似乎相当不错，将很多关键信息都做了收集和整合*
 
 *** vmtouch
-https://github.com/hoytech/vmtouch *NOTE(dirlt)：可以用来warmup数据，使用参数似乎也比较简单*
+https://github.com/hoytech/vmtouch *note(dirlt)：可以用来warmup数据，使用参数似乎也比较简单*
 
 里面有一些系统调用比较值得注意和学习：
    - mlock/munlock 能够将一部分的内存lock住而不会切换到swap分区上面。
@@ -2384,15 +2384,15 @@ https://github.com/hoytech/vmtouch *NOTE(dirlt)：可以用来warmup数据，使
    - posix_fadvise 针对fd做一些访问模式的预测
 
 *** numactl
-TODO(dirlt):
+todo(dirlt):
 
 *** jnettop
-TODO(dirlt):
+todo(dirlt):
 
 *** glances
 http://nicolargo.github.io/glances/
 
-TODO(dirlt):
+todo(dirlt):
 
 ** kernel
 *** vmlinuz
@@ -2405,7 +2405,7 @@ zImage(vmlinuz)和bzImage(vmlinuz)都是用gzip压缩的。它们不仅是一个
 *** tcp IO
 http://www.ece.virginia.edu/cheetah/documents/papers/TCPlinux.pdf
 
-*NOTE(dirlt)：后面影响拥塞部分没有看*
+*note(dirlt)：后面影响拥塞部分没有看*
 
 -----
 packet reception
@@ -2414,11 +2414,11 @@ file:./images/tcp-packet-reception.png
 
 整个流程大致如下：
    - linux里面使用sk_buff数据结构来描述packet.
-   - NIC检测到packet到达，从Kernel Memory(sk_buffs)分配sk_buff数据结构，调用DMA Engine将packet放到sk_buff数据结构里面 *NOTE(dirlt)：NIC检测有packet到达和有packet发送，都不是触发而是主动poll的方式来完成的*
+   - NIC检测到packet到达，从Kernel Memory(sk_buffs)分配sk_buff数据结构，调用DMA Engine将packet放到sk_buff数据结构里面 *note(dirlt)：NIC检测有packet到达和有packet发送，都不是触发而是主动poll的方式来完成的*
    - 将sk_buff并且加入rx_ring这个ring_buffer里面。如果rx_ring满了的话那么将packet丢弃。
    - 当DMA Engine完成处理之后， *NIC通过向CPU发起中断* 通知kernel进行处理。
    - kernel将这个packet传递给IP层进行处理。IP层需要将信息组装成为ip packet。如果ip packet是tcp的话那么放到socket backlog里面。如果socket backlog满了的话那么将ip packet丢弃。 *copy packet data to ip buffer to form ip packet*
-   - *NOTE(dirlt):这个步骤完成之后IP layer就可以释放sk_buffer结构*
+   - *note(dirlt):这个步骤完成之后IP layer就可以释放sk_buffer结构*
    - tcp layer从socket backlog里面取出tcp packet， *copy ip packet tcp recv buffer to form tcp packet*
    - tcp recv buffer交给application layer处理， *copy tcp recv buffer to app buffer to form app packet*
 其中内核参数有
@@ -2434,13 +2434,13 @@ file:./images/tcp-packet-transmission.png
    - application layer将数据copy到tcp send buffer里面，如果空间不够的话那么就会出现阻塞。 *copy app buffer to tcp send buffer as app packet*
    - tcp layer等待tcp send buffer存在数据或者是需要做ack的时候，组装ip packet推送到IP layer *copy tcp send buffer to ip send buffer as tcp packet*
    - IP layer从kernel memory申请sk_buffer，将ip data包装成为packet data，然后塞到qdisc(txqueuelen控制队列长度）里面。如果队列满的话那么就会出现阻塞，反馈到tcp layer阻塞。 *copy ip send buffer to packet data as ip packet*
-   - NIC driver如果检测到qdisc有数据的话，那么会将packet data从qdisc放置到ring buffer里面，然后调用NIC DMA Engine将packet发送出去 *TODO(dirlt)：可能理解有误*
+   - NIC driver如果检测到qdisc有数据的话，那么会将packet data从qdisc放置到ring buffer里面，然后调用NIC DMA Engine将packet发送出去 *todo(dirlt)：可能理解有误*
    - 发送完成之后NIC向CPU发起中断释放packet data内存到Kernel Memory
 其中内核参数有：
    - /proc/sys/net/ipv4/tcp_wmem 这个和rmem非常类似
-   - *NOTE(dirlt)：qdisc文章里面说是txqueuelen控制的，但是似乎找不到这个参数！*
+   - *note(dirlt)：qdisc文章里面说是txqueuelen控制的，但是似乎找不到这个参数！*
 
-*NOTE(dirlt):在wangyx的帮助下这个配置在ifconfig下面找到了*
+*note(dirlt):在wangyx的帮助下这个配置在ifconfig下面找到了*
 #+BEGIN_EXAMPLE
 ➜  ~  ifconfig
 eth0      Link encap:Ethernet  HWaddr 12:31:40:00:49:d1  
@@ -2464,7 +2464,7 @@ file:./images/tcp-congestion-control.png
    - MSS(maximum segment size) 最大分节大小，和传输网络的MTU相关。
 
 *** kernel panic
-TODO(dirlt):
+todo(dirlt):
 
 file:./images/kernel-panic-not-syncing-attempted-to-kill-init.png
 
@@ -2595,7 +2595,7 @@ May  2 18:24:21 umeng-ubuntu-pc kernel: [ 1188.717622] CPU3: Package temperature
 	libpthread.so.0 => /lib/x86_64-linux-gnu/libpthread.so.0 (0x00007f5efaa0d000)
 #+END_EXAMPLE
 
-TODO(dirlt): what is the correct way to do it(change glibc)
+todo(dirlt): what is the correct way to do it(change glibc)
 
 -----
 @2013-08-03 

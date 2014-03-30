@@ -7,10 +7,10 @@
    - Dynamic Instrumentation of Production Systems http://static.usenix.org/event/usenix04/tech/general/full_papers/cantrill/cantrill_html/
    - sudo apt-get install systemtap # 直接使用apt安装
      - sudo apt-get install elfutils # 可能需要安装
-   - *NOTE(dirlt)：linux还自带perf工具也能够观察kernel行为*
+   - *note(dirlt)：linux还自带perf工具也能够观察kernel行为*
 
 ** Introduction
-systemtap的工作原理是使用linux提供的kprobe接口 *TODO(dirlt):more about kprobe* ，将用户需要观测linux系统的行为转换成为c（使用kprobe)并且编译成为kernel object然后运行。 
+systemtap的工作原理是使用linux提供的kprobe接口 *todo(dirlt):more about kprobe* ，将用户需要观测linux系统的行为转换成为c（使用kprobe)并且编译成为kernel object然后运行。 
 systemtap使用一种触发式的工作方式，通过安装探针（probe）来监控系统的行为，一旦探针事件出现的话就会触发对应的代码。代码使用自己定义的语言，和C语言非常类似。
 
 file:./images/systemtap-prepare-workflow.gif
@@ -76,9 +76,9 @@ file:./images/systemtap-processing-steps.png
    - Translation
      - Once an entire set of probe functions is processed through the elaboration stage, they are translated to a quantity of C code.（生成C代码）
        - Each systemtap construct is expanded to a block of C that includes whatever locking and safety checks are necessary.
-       - Control-flow constructs translate to include runaway-prevention logic. *TODO(dirlt)：？？？*
+       - Control-flow constructs translate to include runaway-prevention logic. *todo(dirlt)：？？？*
        - Each variable shared amongst probes is mapped to an appropriate static declaration, and accesses are protected by locks.（全局变量生成static并且通过lock来保护）
-       - Each group of local variables is placed into a synthetic call frame structure that keeps them off the tiny real kernel stacks. *TODO(dirlt):？压缩局部变量的存储方式*
+       - Each group of local variables is placed into a synthetic call frame structure that keeps them off the tiny real kernel stacks. *todo(dirlt):？压缩局部变量的存储方式*
      - Probe handlers are wrapped by an interface function which uses whatever probe point registration API is appropriate. （所有的probe handler都被包装成为function然后注册到probe point回调，但是方式有所不同）
        - For location type probe points targeting the kernel, this generally uses kprobes.（如果是内核探测点的话，那么使用kprobe)
        - Where the target software is user-level, probe points would need to be inserted into specific processes’ executable segments, using a mechanism yet to be specified.（如果是用户程序探测点的话，那么需要修改进程内存）
@@ -102,7 +102,7 @@ file:./images/systemtap-processing-steps.png
    - Fatal errors that occur during script execution cause a winddown of activity associated with the systemtap script, and an early abort. Running out of memory, dividing by zero, exceeding an operation count limit, calling too many nested functions, are just a few types of fatal errors（运行中如果出现问题的话会使得script提前中止）
 
 **** Probe points
-*NOTE(dirlt)：这个部分是比较重要的，说明了probe point的定义规则*
+*note(dirlt)：这个部分是比较重要的，说明了probe point的定义规则*
    - A probe definition gives probe points in a comma-separated list, and an associated action in the form of a statement block.（使用，分割多个probe points）
    - Each probe point specification has a “dotted-functor” syntax such as kernel.function("foo").return（probe point通过.来表示层级）
      1. kernel or module("foo") kernel或者是foo.ko模块
@@ -114,7 +114,7 @@ file:./images/systemtap-processing-steps.png
 	- function(0x1f) PC address located.
         - .callees 可以指定这个fn所有调用的函数
 	- .return fn返回时候触发，默认是.entry
-     3. statements *NOTE(dirlt)：分析执行过程*
+     3. statements *note(dirlt)：分析执行过程*
 	- statement("fn") 函数fn入口
         - statement("fn@filename")
 	- statement("fn@filename:lineno")
@@ -216,7 +216,7 @@ trace ("OOM for pid " . string (victim_pid))
      - The data is sent in per-cpu beffers which a userspace program can save or display. 每个CPU都对应的数据buffer
      - Drawbacks are that the data arrives in blocks and is separated into per-cpu blocks, possibly requiring a post-processing step that stitches the data into an integrated steam. 提供stream的时候需要将每个CPU的数据stitch起来
      - Relayfs is included in some recent -mm kernels. It can be built as a loadable module and is currently checked into CVS under src/runtime/relayfs.
-   - The other candidate is netlink. *NOTE(dirlt)：感觉相比relayfs，这个东西似乎更加适合小需要实时展现的数据*
+   - The other candidate is netlink. *note(dirlt)：感觉相比relayfs，这个东西似乎更加适合小需要实时展现的数据*
      - Netlink is included in the kernel. It allows a simple stream of data to be sent using the familiar socket APIs. It is unlikely to be as fast as relayfs.
    - Relayfs typically makes use of netlink as a control channel. With some simple extensions, the runtime can use netlink as the main transport too. So we can currently select in the runtime between relayfs and netlink, allowing us to support streams of data or blocks. And allowing us to perform direct comparisons of efficiency（relayfs底层使用netlink来做控制channel. 做成可扩展的方式可以在两个实现下面做切换对比性能）
 
@@ -224,8 +224,8 @@ trace ("OOM for pid " . string (victim_pid))
    - Depending on the primitives used in the systemtap script, output may flow gradually via logging streams (printk, netlink, etc.), or in large batches (relayfs files).
 
 ** probe
-TODO(dirlt):
+todo(dirlt):
 
 ** language
-TODO(dirlt):
+todo(dirlt):
 

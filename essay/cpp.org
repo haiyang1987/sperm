@@ -140,7 +140,7 @@ main.cc:5: error: size of array `STATIC_ASSERT_FAILED_int_MUST_BE_8_BYTES’ is 
 
 当然错误信息并不是非常的优美，但是已经提供了足够多的信息了。不过这种编译断言可能只是比较适合用于简单断言比如sizeof等，对于复杂断言话可能还是需要依赖于configure这种工具比如系统是否有libunwind库。
 
-*NOTE(dirlt)：c++0x开始在语言层面上支持static_assert. --std=c++0x*
+*note(dirlt)：c++0x开始在语言层面上支持static_assert. --std=c++0x*
 
 *** renew static_cast
 学习C的时候总是认为强转不过就是二进制层面的强转。开始学习C++之后就认为C语言的强转对应的就是reinterpret_cast.而static_cast和reinterpret_cast的差别不过就是static_cast可以做一些类型上面的检查，所以在大多数的时候都习惯使用reinterpret_cast而非static_cast.直到在编写itachi（一个异步网络编程框架）的时候，才发现并不是这么回事。下面的例子是我遇到问题的一个抽象。
@@ -440,7 +440,7 @@ class B{
 具体代码可以参考 [[https://github.com/dirtysalt/sperm/blob/master/code/cc/playboard/test_bind.cc][code/cc/playboard/test_bind.cc]]
 
 *** boost::spirit
-今天被Dr. Yang推荐使用boost::spirit，模板编程实现的语法解析器。Dr. Yang推荐我看看hypertable里面实现的hql，里面就是使用spirit实现的hql(hypertable query language)，在src/cc/Hypertable/Lib/HqlParser.h里面。粗看一下功能还是非常强大的，对于很多使用flex/bison完成的工作都可以通过spirit来完成。看上去是LALR解析器，现在不太清楚就是如果出现shift/reduce或者是reduce/reduce冲突的话spirit是怎么解决的。NOTE(dirlt):事实上是LL解析器，而且如果没有猜错应该是LL(1)解析器。
+今天被Dr. Yang推荐使用boost::spirit，模板编程实现的语法解析器。Dr. Yang推荐我看看hypertable里面实现的hql，里面就是使用spirit实现的hql(hypertable query language)，在src/cc/Hypertable/Lib/HqlParser.h里面。粗看一下功能还是非常强大的，对于很多使用flex/bison完成的工作都可以通过spirit来完成。看上去是LALR解析器，现在不太清楚就是如果出现shift/reduce或者是reduce/reduce冲突的话spirit是怎么解决的。note(dirlt):事实上是LL解析器，而且如果没有猜错应该是LL(1)解析器。
 
 对于action的话需要单独编写function object来完成，operator()是这个grammar对应的字符串。定义ParserState来构建语法树是一个好主意。对于里面更多的细节现在还是不太了解，关于入门使用可以查看代码中的链接或者documentation.
 
@@ -466,7 +466,7 @@ class B{
 
 ** misc
 *** 诡异的性能问题
-*NOTE(dirlt)：现在我觉得可能是glibc的问题，而非编译器的问题*
+*note(dirlt)：现在我觉得可能是glibc的问题，而非编译器的问题*
 
 程序代码如下。程序非常简单，action是为了测试一下以string为key的map性能，action2是为了测试一下以int为key的map性能。然后我们分两组测试运行：
    0. 运行action，然后运行action2
@@ -563,7 +563,7 @@ playboard git:(master) ✗ g++ map_perf_test.cc -O2
 4214.48
 #+END_EXAMPLE
 
-*NOTE(dirlt):另外我让同事在其他机器上使用g++3.4.5编译运行，时间差别也非常大*
+*note(dirlt):另外我让同事在其他机器上使用g++3.4.5编译运行，时间差别也非常大*
 
 -----
 
