@@ -13,7 +13,7 @@
      - Every operation under a single row key is atomic per replica no matter how many columns are being read or written into.
    - Columns are grouped together into sets called column fam-ilies very much similar to what happens in the Bigtable system. 
      - Cassandra exposes two kinds of columns families, Simple and Super column families. 
-     - Super column families can be visualized as a column family within a column family. *NOTE（dirlt）：已经废弃了。现在data model应该是和big table完全一致了*
+     - Super column families can be visualized as a column family within a column family. *NOTE(dirlt)：已经废弃了。现在data model应该是和big table完全一致了*
    - Furthermore, applications can specify the sort order of columns within a Super Column or Simple Column family. The system allows columns to be sorted either by time or by name. Time sorting of columns is exploited by applica- tion like Inbox Search where the results are always displayed in time sorted order. （可以对column排序，按照时间或者是名称。这个是怎么实现的？？）
    - Any column within a column family is accessed using the convention *column family : column* and any column within a column family that is of type super is accessed using the convention *column family : super column : column*.
 
@@ -33,7 +33,7 @@ columnName can refer to a specific column within a col-umn, a column family, a s
    - Typically there exist two ways to address this issue: 
      - One is for nodes to get assigned to multi-ple positions in the circle (like in Dynamo), 
      - and the second is to analyze load information on the ring and have lightly loaded nodes move on the ring to alleviate heavily loaded nodes as described in. 
-     - Cassandra opts for the latter as it makes the design and implementation very tractable and helps to make very deterministic choices about load balanc-ing. NOTE（dirlt）：似乎第二种办法更加不靠谱）
+     - Cassandra opts for the latter as it makes the design and implementation very tractable and helps to make very deterministic choices about load balanc-ing. NOTE(dirlt)：似乎第二种办法更加不靠谱）
 
 **** Replication
    - Cassandra provides the client with various options for how data needs to be replicated. Cassandra provides various replication poli- cies such as “Rack Unaware”, “Rack Aware” (within a data- center) and “Datacenter Aware”. Replicas are chosen based on the replication policy chosen by the application. If cer-tain application chooses “Rack Unaware” replication strat-egy then the non-coordinator replicas are chosen by picking N-1 successors of the coordinator on the ring. For “Rack Aware” and “Datacenter Aware” strategies the algorithm is slightly more involved.（可以很好地为跨数据中心服务）
@@ -49,14 +49,14 @@ columnName can refer to a specific column within a col-umn, a column family, a s
 
 **** Bootstrapping
    - When a node starts for the first time, it chooses a random token for its position in the ring. For fault tolerance, the mapping is persisted to disk locally and also in Zookeeper. The token information is then gossiped around the cluster. This is how we know about all nodes and their respective po-sitions in the ring. This enables any node to route a request for a key to the correct node in the cluster. 
-   - In the bootstrap case, when a node needs to join a cluster, it reads its configu-ration file which contains a list of a few contact points within the cluster. We call these initial contact points, seeds of the cluster. Seeds can also come from a configuration service like Zookeeper. TODO（dirlt）：难道这个过程不是和新加节点相同吗？为什么这里还需要有额外的seed nodes?
+   - In the bootstrap case, when a node needs to join a cluster, it reads its configu-ration file which contains a list of a few contact points within the cluster. We call these initial contact points, seeds of the cluster. Seeds can also come from a configuration service like Zookeeper. TODO(dirlt)：难道这个过程不是和新加节点相同吗？为什么这里还需要有额外的seed nodes?
 
 **** Scaling the Cluster
    - The node giving up the data streams the data over to the new node using kernel-kernel copy techniques. Operational experience has shown that data can be transferred at the rate of 40 MB/sec from a single node. We are working on improving this by having multiple replicas take part in the bootstrap transfer thereby parallelizing the effort, similar to Bittorrent.（数据转移底层使用kernel-to-kernel的拷贝技术，后续考虑类似bt方式来加快这个过程）
 
 **** Local Persistence
    - We have a dedicated disk on each machine for the commit log since all writes into the commit log are sequential and so we can maximize disk throughput.（有专门的硬盘来写入commit log）
-   - In order to prevent scanning of every column on disk we maintain column indices which allow us to jump to the right chunk on disk for column retrieval. As the columns for a given key are being serialized and written out to disk we generate indices at every 256K chunk boundary. This boundary is configurable, but we have found 256K to work well for us in our production workloads. TODO（dirlt）：不是特别理解这个实现？可能实现上和leveldb还不太一样，所以需要为column做索引
+   - In order to prevent scanning of every column on disk we maintain column indices which allow us to jump to the right chunk on disk for column retrieval. As the columns for a given key are being serialized and written out to disk we generate indices at every 256K chunk boundary. This boundary is configurable, but we have found 256K to work well for us in our production workloads. TODO(dirlt)：不是特别理解这个实现？可能实现上和leveldb还不太一样，所以需要为column做索引
 
 **** Implementation Details
    - All sys-tem control messages rely on UDP based messaging while the application related messages for replication and request routing relies on TCP.（系统控制走UDP）
@@ -72,4 +72,4 @@ In the process of designing, implementing and maintaining Cassandra we gained a 
 *** CONCLUSION
 
 ** Facebook’s Cassandra paper, annotated and compared to Apache Cassandra 2.0
-TODO（dirlt）：
+TODO(dirlt)：

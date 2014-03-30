@@ -1,7 +1,7 @@
 * large-scale-data-and-computation-chanllenges-and-opportunities
 #+TITLE: Large-Scale Data and Computation: Challenges and Opportunities
 
-TODO（dirlt）：Deep Learning部分没有阅读，这个部分应该就是所谓的Opportunities. 而前面的部分就是所谓的Challenges.
+TODO(dirlt)：Deep Learning部分没有阅读，这个部分应该就是所谓的Opportunities. 而前面的部分就是所谓的Challenges.
 
 ** Replication
 replication对于large-scale system的意义 

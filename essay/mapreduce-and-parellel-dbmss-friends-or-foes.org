@@ -10,7 +10,7 @@
    - Complex analytics.
    - Semi-structured data. 
    - Quick-and-dirty analyses. 
-   - Limited-budget operations. *NOTE（dirlt）：这是最关键的点，这也是为什么并行计算在MR出来之前迟迟地停留在PDBMS领域*
+   - Limited-budget operations. *NOTE(dirlt)：这是最关键的点，这也是为什么并行计算在MR出来之前迟迟地停留在PDBMS领域*
      - Another strength of MR systems is that most are open source projects available for free. DBMSs, and in particular parallel DBMSs, are expensive
      - though there are good single-node open source solutions, to the best of our knowledge, there are no robust, community-supported parallel DBMSs. 
    - Powerful tools. 当做工具来使用

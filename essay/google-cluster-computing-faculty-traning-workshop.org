@@ -54,7 +54,7 @@ Preparing for Failure
      - Design for security at each step
 
 ** Module 3 - Nutch
-*NOTE（dirlt）：介绍nutch工作过程*
+*NOTE(dirlt)：介绍nutch工作过程*
 
 file:./images/nutch-workflow.png
 

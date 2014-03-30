@@ -81,7 +81,7 @@ Distributed hash joins are frequently the most effective join method in Tenzing 
    - Neither table has an efficient index on the join key.
 These conditions are often satisfied by OLAP queries with star joins to large dimensions, a type of query often used with Tenzing.
 
-*NOTE（dirlt）：对应在Hadoop里面就是mapper-join.在Mapper阶段就将两个需要join的数据按照hash进行划分，然后每个mapper都只是取相应hash的部分*
+*NOTE(dirlt)：对应在Hadoop里面就是mapper-join.在Mapper阶段就将两个需要join的数据按照hash进行划分，然后每个mapper都只是取相应hash的部分*
 
 *** Analytic Functions
 *** OLAP Extensions
@@ -114,11 +114,11 @@ Tenzing is tightly integrated with the Google MapReduce implementation, and we m
      - Using this approach, we were able to bring down the la-tency of the execution of a Tenzing query itself to around 7 seconds. （使用上面的方式可以将查询延迟降到7s）
      - There are other bottlenecks in the system however, such as computation of map splits, updating the metadata service, committing / rolling back results (which involves file renames), etc. which means the typical latency varies between 10 and 20 seconds currently. （但是还有一些其他瓶颈比如计算map split，更新metadata信息，重命名文件等，这些时间加在一起在10-20s左右变化）
      - We are working on various other enhancements and believe we can cut this time down to less than 5 seconds end-to-end, which is fairly ac-ceptable to the analyst community.
-   - Streaming & In-memory Chaining. *NOTE（dirlt）：非常类似 [[file:mapreduce-online.org][MapReduce-Online]] 的思想*
+   - Streaming & In-memory Chaining. *NOTE(dirlt)：非常类似 [[file:mapreduce-online.org][MapReduce-Online]] 的思想*
      - The original im-plementation of Tenzing serialized all intermediate data to GFS. This led to poor performance for multi-MapReduce queries, such as hash joins and nested sub-selects.（中间物化代价非常高）
      - We im-proved the performance of such queries significantly by im-plementing streaming between MapReduces, i.e. the up-stream and downstream MRs communicate using the net-work and only use GFS for backup.（通过网络传输但是在GFS上进行备份）
      - We subsequently im-proved performance further by using memory chaining, where the reducer of the upstream MR and the mapper of the downstream MR are co-located in the same process.（上下游pipelining）
-     - *NOTE（dirlt）：这个思想相比之下，感觉可能还是spark/shark的思路会更加靠谱。很明显MapReduce方式不太适合DAG计算，与其在上面做修改不如建立一个新的framework。事实上spark/shark的扩展性也是非常好的*
+     - *NOTE(dirlt)：这个思想相比之下，感觉可能还是spark/shark的思路会更加靠谱。很明显MapReduce方式不太适合DAG计算，与其在上面做修改不如建立一个新的framework。事实上spark/shark的扩展性也是非常好的*
    - Sort Avoidance. 一些操作不需要做sort可以关闭，这样mapper输出直接就feed给reducer.
      - Certain operators such as hash join and hash aggregation require shuffling, but not sorting. The MapReduce API was enhanced to automatically turn off sorting for these operations. 
      - When sorting is turned off, the mapper feeds data to the reducer which directly passes the data to the Reduce() function bypassing the intermediate sorting step. This makes many SQL operators significantly more efficient.

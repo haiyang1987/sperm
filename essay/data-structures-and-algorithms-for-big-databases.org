@@ -52,7 +52,7 @@ file:./images/disk-access-model-detail.png
   - Goal (as before): Minimize # of block transfer
   - Cache-oblivious algorithms work for all B and M
   - It’s better to optimize approximately for all B, M than to pick the best B and M.
-  - *NOTE（dirlt）：所谓的cache-oblivious就是忘记B，M这些参数，算法的优化不要依赖B，M这些参数的组合，而必须使得所有任意的B，M组合都足够好*
+  - *NOTE(dirlt)：所谓的cache-oblivious就是忘记B，M这些参数，算法的优化不要依赖B，M这些参数的组合，而必须使得所有任意的B，M组合都足够好*
 
 ** Write-Optimized Data Structures
    - Data structures: [O'Neil,Cheng, Gawlick, O'Neil 96], [Buchsbaum, Goldwasser, Venkatasubramanian, Westbrook 00], [Argel 03], [Graefe 03], [Brodal, Fagerberg 03], [Bender, Farach,Fineman,Fogel, Kuszmaul, Nelson’07], [Brodal, Demaine, Fineman, Iacono, Langerman, Munro 10], [Spillane, Shetty, Zadok, Archak, Dixit 11].

@@ -24,7 +24,7 @@ hive0.7以后提供自动切换local-mode功能，设置 hive> SET hive.exec.mod
    - The total number of reduce tasks required is 1 or 0.
 
 *** Metadata Store
-    - https://cwiki.apache.org/confluence/display/Hive/AdminManual+MetastoreAdmin *NOTE（dirlt）：配置remote server*
+    - https://cwiki.apache.org/confluence/display/Hive/AdminManual+MetastoreAdmin *NOTE(dirlt)：配置remote server*
 
 metadata store主要是用来存储数据库的一些元数据信息，有下面相关的配置参数：
    - javax.jdo.option.ConnectionURL.
@@ -55,7 +55,7 @@ Client Configuration Parameters
 | hive.metastore.local         | false                       | this is local store                           |
 | hive.metastore.warehouse.dir | <base hdfs path>            | default location for Hive tables.             |
 
-thrift server 通过 hive --service metastore 启动，port在9083上面. 环境变量METASTORE_PORT来配置。 *NOTE（dirlt）：hive-env.sh里面可以设置*
+thrift server 通过 hive --service metastore 启动，port在9083上面. 环境变量METASTORE_PORT来配置。 *NOTE(dirlt)：hive-env.sh里面可以设置*
 #+BEGIN_EXAMPLE
 13/03/07 18:06:34 INFO metastore.HiveMetaStore: Started the new metaserver on port [9083]...
 13/03/07 18:06:34 INFO metastore.HiveMetaStore: Options.minWorkerThreads = 200
@@ -64,7 +64,7 @@ thrift server 通过 hive --service metastore 启动，port在9083上面. 环境
 #+END_EXAMPLE
 
 *** Example
-   - 数据默认是使用ctrl-a来做分割 *NOTE（dirlt）：how wierd:(*
+   - 数据默认是使用ctrl-a来做分割 *NOTE(dirlt)：how wierd:(*
 
 #+BEGIN_EXAMPLE
 ➜  bin  hadoop fs -copyFromLocal ../examples/files/kv1.txt /tmp/

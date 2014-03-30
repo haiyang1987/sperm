@@ -5,7 +5,7 @@
    - http://duanple.blog.163.com/blog/static/70971767201329113141336/
 
 ** Abstract
-Modern Internet services are often implemented as com- plex, large-scale distributed systems. These applications are constructed from collections of software modules that may be developed by different teams, perhaps in different programming languages, and could span many thousands of machines across multiple physical facili- ties. Tools that aid in understanding system behavior and reasoning about performance issues are invaluable in such an environment.（现代互联网服务底层都是复杂的，大规模的分布式系统， 由很多组件模块组成。而这些组件模块都是由不同的开发团队开发的，甚至使用不同语言完成的，并且有可能分布式很多机器上。在这样的环境下面，有工具能够帮助理解系统行为并且对性能问题进行解释分析是非常有帮助的）。 *NOTE（dirlt）：Dapper就是这样一个追踪系统，能够追踪到各个模块之间相互调用关系，这些调用关系可能是跨越服务，跨越机器的。通过这种追踪系统就能够在比较高的层面上分析问题和理解系统*
+Modern Internet services are often implemented as com- plex, large-scale distributed systems. These applications are constructed from collections of software modules that may be developed by different teams, perhaps in different programming languages, and could span many thousands of machines across multiple physical facili- ties. Tools that aid in understanding system behavior and reasoning about performance issues are invaluable in such an environment.（现代互联网服务底层都是复杂的，大规模的分布式系统， 由很多组件模块组成。而这些组件模块都是由不同的开发团队开发的，甚至使用不同语言完成的，并且有可能分布式很多机器上。在这样的环境下面，有工具能够帮助理解系统行为并且对性能问题进行解释分析是非常有帮助的）。 *NOTE(dirlt)：Dapper就是这样一个追踪系统，能够追踪到各个模块之间相互调用关系，这些调用关系可能是跨越服务，跨越机器的。通过这种追踪系统就能够在比较高的层面上分析问题和理解系统*
 
 ** Introduction
    - An engineer looking only at the overall latency may know there is a problem, but may not be able to guess which service is at fault, nor why it is behaving poorly. （系统复杂的时候比较难以分析性能开销和瓶颈在什么地方）
@@ -41,7 +41,7 @@ Two classes of solutions have been proposed to ag- gregate this information so t
      - The edges indicate a casual relationship between a span and its parent span. 
      - Independent of its place in a larger trace tree, though, a span is also a simple log of timestamped records which encode the span’s start and end time, any RPC timing data, and zero or more application-specific annotations(span里面记录了起始和终止时间，并且附带了其他一些来自应用程序的注解信息）
      - Dapper records a human-readable span name for each span, as well as a span id and parent id in order to reconstruct the causal relationships between the individual spans in a single distributed trace. （每个span上面还能够附带一个span name方便阅读，并且带上span id以及parent id这样可以方便建立起关系）Spans created without a parent id are known as root spans.
-     - All spans associated with a specific trace also share a com- mon trace id (not shown in the figure). All of these ids are probabilistically unique 64-bit integers.(每次trace都会带上一个概率上唯一的trace id） *TODO(dirlt):问题是这个trace id如何分配？*  *NOTE（dirlt）：这个直接使用类似UUID方式应该就OK，每个机器上，每个进程，每个线程，每个时间点应该是一个独立的id*
+     - All spans associated with a specific trace also share a com- mon trace id (not shown in the figure). All of these ids are probabilistically unique 64-bit integers.(每次trace都会带上一个概率上唯一的trace id） *TODO(dirlt):问题是这个trace id如何分配？*  *NOTE(dirlt)：这个直接使用类似UUID方式应该就OK，每个机器上，每个进程，每个线程，每个时间点应该是一个独立的id*
 
 file:./images/dapper-trace-tree.png
 

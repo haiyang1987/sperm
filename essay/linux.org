@@ -1088,9 +1088,9 @@ dirty_expire_centisecs时间的，如果超过的话那么就会在后台刷新�
      - /dev/mem_notify 这个设备文件上面包含内存事件，task可以poll这个文件来获取通知
    - Linux 的 Out-of-Memory (OOM) Killer - DBA Notes http://www.dbanotes.net/database/linux_outofmemory_oom_killer.html 
    - OOM killer "Out of Memory: Killed process" SOLUTIONS / SUMMARY http://www.redaht.com/archives/redhat-list/2007-August/msg00060.html   
-     - 情况主要是在32位机器下面LowMem不够使用出现OOM的情况。 *TODO（dirlt）：不太清楚这个LowMem是物理还是虚拟内存*
+     - 情况主要是在32位机器下面LowMem不够使用出现OOM的情况。 *TODO(dirlt)：不太清楚这个LowMem是物理还是虚拟内存*
    - LinuxDevCenter.com: When Linux Runs Out of Memory http://linuxdevcenter.com/lpt/a/6808
-   - Respite from the OOM killer [LWN.net] http://lwn.net/Articles/104179/  *NOTE（dirlt）：似乎overcommit_memory设置成为2也不能够完全避免OOM*
+   - Respite from the OOM killer [LWN.net] http://lwn.net/Articles/104179/  *NOTE(dirlt)：似乎overcommit_memory设置成为2也不能够完全避免OOM*
      
 This enables or disables panic on out-of-memory feature.
 
@@ -1129,13 +1129,13 @@ Enable fast recycling of TIME_WAIT sockets.
 
 *** /proc/sys/fs
 **** /proc/sys/fs/file-max
-所有进程允许打开文件的最大数量 *NOTE（dirlt）：这个应该是和文件描述符有区别的*
+所有进程允许打开文件的最大数量 *NOTE(dirlt)：这个应该是和文件描述符有区别的*
 
 **** /proc/sys/fs/epoll/max_user_instances
-单个用户使用epoll的文件描述符上限。如果超过上限会返回EMFILE错误。 *NOTE（dirlt）：不过在我的文件系统下面似乎没有这个选项*
+单个用户使用epoll的文件描述符上限。如果超过上限会返回EMFILE错误。 *NOTE(dirlt)：不过在我的文件系统下面似乎没有这个选项*
 
 **** /proc/sys/fs/epoll/max_user_watches
-单个用户使用epoll进行watch的文件描述符上限。 *NOTE（dirlt）：对于服务器应该特别有用，可以限制内存使用量*
+单个用户使用epoll进行watch的文件描述符上限。 *NOTE(dirlt)：对于服务器应该特别有用，可以限制内存使用量*
 
 #+BEGIN_VERSE
 This specifies a limit on the total number of file descriptors that a user can register across all epoll  instances
@@ -1591,12 +1591,12 @@ TODO(dirlt): https://latencytop.org/
 *** iotop
 可以用来观察单独进程的IO使用状况
 
-TODO（dirlt）：
+TODO(dirlt)：
 
 *** htop
 可以认为是top的升级版本，个人感觉比top好用很多
 
-TODO（dirlt）：
+TODO(dirlt)：
 
 *** cssh
 TODO(dirlt):
@@ -2376,7 +2376,7 @@ watch - execute a program periodically, showing output fullscreen TODO(dirlt):
 collectl http://collectl.sourceforge.net/ *TODO(dirlt):似乎相当不错，将很多关键信息都做了收集和整合*
 
 *** vmtouch
-https://github.com/hoytech/vmtouch *NOTE（dirlt）：可以用来warmup数据，使用参数似乎也比较简单*
+https://github.com/hoytech/vmtouch *NOTE(dirlt)：可以用来warmup数据，使用参数似乎也比较简单*
 
 里面有一些系统调用比较值得注意和学习：
    - mlock/munlock 能够将一部分的内存lock住而不会切换到swap分区上面。
@@ -2405,7 +2405,7 @@ zImage(vmlinuz)和bzImage(vmlinuz)都是用gzip压缩的。它们不仅是一个
 *** tcp IO
 http://www.ece.virginia.edu/cheetah/documents/papers/TCPlinux.pdf
 
-*NOTE（dirlt）：后面影响拥塞部分没有看*
+*NOTE(dirlt)：后面影响拥塞部分没有看*
 
 -----
 packet reception
@@ -2414,7 +2414,7 @@ file:./images/tcp-packet-reception.png
 
 整个流程大致如下：
    - linux里面使用sk_buff数据结构来描述packet.
-   - NIC检测到packet到达，从Kernel Memory(sk_buffs)分配sk_buff数据结构，调用DMA Engine将packet放到sk_buff数据结构里面 *NOTE（dirlt）：NIC检测有packet到达和有packet发送，都不是触发而是主动poll的方式来完成的*
+   - NIC检测到packet到达，从Kernel Memory(sk_buffs)分配sk_buff数据结构，调用DMA Engine将packet放到sk_buff数据结构里面 *NOTE(dirlt)：NIC检测有packet到达和有packet发送，都不是触发而是主动poll的方式来完成的*
    - 将sk_buff并且加入rx_ring这个ring_buffer里面。如果rx_ring满了的话那么将packet丢弃。
    - 当DMA Engine完成处理之后， *NIC通过向CPU发起中断* 通知kernel进行处理。
    - kernel将这个packet传递给IP层进行处理。IP层需要将信息组装成为ip packet。如果ip packet是tcp的话那么放到socket backlog里面。如果socket backlog满了的话那么将ip packet丢弃。 *copy packet data to ip buffer to form ip packet*
@@ -2434,11 +2434,11 @@ file:./images/tcp-packet-transmission.png
    - application layer将数据copy到tcp send buffer里面，如果空间不够的话那么就会出现阻塞。 *copy app buffer to tcp send buffer as app packet*
    - tcp layer等待tcp send buffer存在数据或者是需要做ack的时候，组装ip packet推送到IP layer *copy tcp send buffer to ip send buffer as tcp packet*
    - IP layer从kernel memory申请sk_buffer，将ip data包装成为packet data，然后塞到qdisc(txqueuelen控制队列长度）里面。如果队列满的话那么就会出现阻塞，反馈到tcp layer阻塞。 *copy ip send buffer to packet data as ip packet*
-   - NIC driver如果检测到qdisc有数据的话，那么会将packet data从qdisc放置到ring buffer里面，然后调用NIC DMA Engine将packet发送出去 *TODO（dirlt）：可能理解有误*
+   - NIC driver如果检测到qdisc有数据的话，那么会将packet data从qdisc放置到ring buffer里面，然后调用NIC DMA Engine将packet发送出去 *TODO(dirlt)：可能理解有误*
    - 发送完成之后NIC向CPU发起中断释放packet data内存到Kernel Memory
 其中内核参数有：
    - /proc/sys/net/ipv4/tcp_wmem 这个和rmem非常类似
-   - *NOTE（dirlt）：qdisc文章里面说是txqueuelen控制的，但是似乎找不到这个参数！*
+   - *NOTE(dirlt)：qdisc文章里面说是txqueuelen控制的，但是似乎找不到这个参数！*
 
 *NOTE(dirlt):在wangyx的帮助下这个配置在ifconfig下面找到了*
 #+BEGIN_EXAMPLE

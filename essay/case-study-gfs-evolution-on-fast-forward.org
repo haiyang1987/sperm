@@ -37,7 +37,7 @@ QUINLAN That’s the idea.
 
 #+END_VERSE
 
-*NOTE（dirlt）：没有太看懂* 解决文件数量限制问题可以通过分布式master来解决。 *NOTE（dirlt）：但是个人觉得降低chunkszie似乎没有什么意义？*
+*NOTE(dirlt)：没有太看懂* 解决文件数量限制问题可以通过分布式master来解决。 *NOTE(dirlt)：但是个人觉得降低chunkszie似乎没有什么意义？*
 
 -----
 With the recent emergence within Google of BigTable, a distributed storage system for managing structured data, one potential remedy for the file-count problem—albeit perhaps not the very best one—is now available.

@@ -34,9 +34,9 @@ file:./images/architectural-view-of-the-storage-hierarchy.png
 ** Add Sufficient Monitoring/Status/Debugging Hooks
    - All our servers:
      - Export HTML-based status pages for easy diagnosis（输出HTML状态页面便于简单地分析） 
-     - Export a collection of key-value pairs via a standard interface – monitoring systems periodically collect this from running servers（通过标准接口输出kv便于收集数据） *NOTE（dirlt）：这点和JMX类似，但是JMX过于重量* 
+     - Export a collection of key-value pairs via a standard interface – monitoring systems periodically collect this from running servers（通过标准接口输出kv便于收集数据） *NOTE(dirlt)：这点和JMX类似，但是JMX过于重量* 
      - RPC subsystem collects sample of all requests, all error requests, all requests >0.0s, >0.05s, >0.1s, >0.5s, >1s, etc.（RPC收集请求采样并且统计时间分布）
-   - Support low-overhead online profiling *NOTE（dirlt）：这点JMX也完成得非常好* 
+   - Support low-overhead online profiling *NOTE(dirlt)：这点JMX也完成得非常好* 
      - cpu profiling
      - memory profiling
      - lock contention profiling

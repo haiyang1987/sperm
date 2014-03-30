@@ -6,7 +6,7 @@
    - MySQL :: MySQL 5.6 Reference Manual : http://dev.mysql.com/doc/refman/5.6/en/index.html
 
 ** 数据类型
-TODO（dirlt）：
+TODO(dirlt)：
 ** Index索引
 *** 索引类型
    - 唯一索引 PRIMARY KEY & UNIQUE
@@ -62,7 +62,7 @@ TODO（dirlt）：
 | MyISAM 默认的存储引擎(indexed sequential access method)    | .MYD 数据文件, .MYI 索引文件                |
 | NDB MySQL Cluster的专用存储引擎                            |                                             |
 
-*NOTE（dirlt）：better focus on MyISAM and InnoDB only*
+*NOTE(dirlt)：better focus on MyISAM and InnoDB only*
 
 CREATE TABLE table(...) ENGINE = InnoDB/MyISAM optionA = ... optionB = ...; # 创建表格时指定存储引擎
 
@@ -87,7 +87,7 @@ CREATE TABLE table(...) ENGINE = InnoDB/MyISAM optionA = ... optionB = ...; # �
      - 默认情况下InnoDB会把所有数据表存储在一个共享表空间里面，而不是像MyISAM引擎每个数据表创建单独文件
      - 表空间用类似一个虚拟文件系统方式来管理所有InnoDB数据表内容，可以由多个文件构成还可以包括原始分区，数据表的大小可以不受系统对文件最大长度的限制 *NOTE(dirlt):InnoDB支持原始分区！*
      - 允许每个数据表对应一个.ibd数据文件，但是使用这种方式数据表大小会受到文件最大长度的限制
-     - *NOTE（dirlt）：即使分开存放，共享表空间还是会存放一些共享数据。因为最好不要通过操作文件系统方式来操作InnoDB数据表*
+     - *NOTE(dirlt)：即使分开存放，共享表空间还是会存放一些共享数据。因为最好不要通过操作文件系统方式来操作InnoDB数据表*
      - 但是无论使用上面两种方式的哪一种，InnoDB都是将数据和索引内容一起组织和存放的
    - 并发控制
      - 使用了数据行级别的锁定机制，为客户对数据表的访问提供了更加细致的控制
@@ -122,7 +122,7 @@ InnoDB存储引擎实现的事务隔离级别机制能够让客户控制他们�
      - a lock-based concurrency control DBMS implementation keeps read and write locks (acquired on selected data) until the end of the transaction. However, range-locks are not managed, so the phantom reads phenomenon can occur (see below). *NOTE(dirlt): 没有range-locks!，只出现在SELECT...WHERE...BETWEEN...这样的语句上面，可能还是和锁模型相关*
      - As the text above describes, phantom reads is the only problem that SERIALIZABLE is helping you avoid, otherwise SERIALIZABLE is pretty much same as REPEATABLE-READ. InnoDB has a special locking feature called gap-locking which helps you avoid the phantom reads problem. In the case of gap locking, a lock is set on the gap between index records, or on the gap before the first or after the last index record. Now all you have to do avoid phantom reads is to convert such reads to locking reads using SELECT with FOR UPDATE or LOCK IN SHARE MODE.（可以通过gap-locking来避免phantom read，这样避免使用SERIALIZABLE隔离性）
    - SERIALIZABLE 这个隔离级别与REPEATABLE READ很相似，但对事务的隔离更加彻底，某个事务正在查看的数据行不允许其他事务修改，直到该事务完成为止。
-     - With a lock-based concurrency control DBMS implementation, serializability requires read and write locks (acquired on selected data) to be released at the end of the transaction. Also range-locks must be acquired when a SELECT query uses a ranged WHERE clause, especially to avoid the *phantom reads* phenomenon (see below). *TODO（dirlt）；so there are read and write locks, also there are range-locks*
+     - With a lock-based concurrency control DBMS implementation, serializability requires read and write locks (acquired on selected data) to be released at the end of the transaction. Also range-locks must be acquired when a SELECT query uses a ranged WHERE clause, especially to avoid the *phantom reads* phenomenon (see below). *TODO(dirlt)；so there are read and write locks, also there are range-locks*
      - When using non-lock based concurrency control, no locks are acquired; however, if the system detects a write collision among several concurrent transactions, only one of them is allowed to commit. See *snapshot isolation* for more details on this topic.
 
 *Isolation Levels vs Read Phenomena*
@@ -159,7 +159,7 @@ In lock-based concurrency control, isolation level determines the duration that 
 
 As I have mentioned in the "Locking and the isolation levels" section, SERIALIZABLE and REPEATABLE-READ employ lots of locking and hence creating more deadlock situations, which in turn decreases performance. In fact SERIALIZABLE is the least performant of the isolation levels, as it converts even plain reads into locking reads. REPEATABLE-READ is better in terms of locking and deadlocks but READ-COMMITTED is even better because there are fewer gap-locks. But locking and deadlocks is not the only thing when considering performance, there is another issue of mutex contention that needs consideration. There is a post by Mark Callaghan comparing both REPEATABLE-READ and READ-COMMITTED in the context of mutex contention. This post can be found [[http://www.facebook.com/note.php?note_id%3D244956410932][here]]. （随着隔离级别升高使用锁更加激进，那么死锁和带来的性能下降更加明显）
 
-The default replication type in MySQL is statement-based replication, and this replication type replicates the data changes by re-executing SQL statements on slaves that were executed on the master. This requires the isolation level to be stricter (involving more locking) so that the data changes are consistent in such a way that the same SQL when executed on the slave produces the same data changes. As mentioned above, READ-COMMITTED creates a situation of non-repeatable read, hence its not safe for statement-based replication. Hence, when using statement-based replication either use SERIALIZABLE or REPEATABLE-READ isolation level. If you have MySQL version >= 5.1 then you can use READ-COMMITTED with the row-based replication, because with row-based replication you have exact information about each data row changes.（不同事务级别对于备份模型的要求） *NOTE（dirlt）：可以看得ROW相对STMT来说受到事务隔离性影响更小也会更加安全*
+The default replication type in MySQL is statement-based replication, and this replication type replicates the data changes by re-executing SQL statements on slaves that were executed on the master. This requires the isolation level to be stricter (involving more locking) so that the data changes are consistent in such a way that the same SQL when executed on the slave produces the same data changes. As mentioned above, READ-COMMITTED creates a situation of non-repeatable read, hence its not safe for statement-based replication. Hence, when using statement-based replication either use SERIALIZABLE or REPEATABLE-READ isolation level. If you have MySQL version >= 5.1 then you can use READ-COMMITTED with the row-based replication, because with row-based replication you have exact information about each data row changes.（不同事务级别对于备份模型的要求） *NOTE(dirlt)：可以看得ROW相对STMT来说受到事务隔离性影响更小也会更加安全*
 
 ** 外键和引用完整性
 ** 存储过程
@@ -227,7 +227,7 @@ mysql> show tables in information_schema;
 #+END_EXAMPLE
 
 *** mysql
-TODO（dirlt）：
+TODO(dirlt)：
 
 #+BEGIN_EXAMPLE
 mysql> show tables in mysql;
@@ -298,10 +298,10 @@ mysql> show tables in mysql;
 
 ** 查询优化
 *** 层级估算
-   - *NOTE（dirlt）：thanks caole* 
-   - *TODO（dirlt）：如何估算disk IOPS?*
+   - *NOTE(dirlt)：thanks caole* 
+   - *TODO(dirlt)：如何估算disk IOPS?*
 
-以innodb为例，每个page(注意这里是innodb的page,不是linux page)是16K. B+Tree的话那么每层都会存放key. 假设key为16个字节的话，包括overhead 16个字节，那么一个page里面就能够存放512个节点。如果记录界级别在billion级别的话，那么深度在3-4层左右。估算出层级数目是非常有好处的，可以对query做envelope calculation. 假设不考虑page cache的话，那么查询一条记录通常需要读取3-4次。假设存在cache命中50%的话，那么读取次数在1.5-2次。如果使用MySQL没有缓存层并且都是简单查询的话，要求查询性能在2w/s. 那么要求disk IOPS必须在3w-4w/s上。所以如果性能达不到这个要求的话，那么就需要考虑分表。 *NOTE（dirlt）：所以分表可能会是因为性能原因，也可能会是因为存储空间原因*
+以innodb为例，每个page(注意这里是innodb的page,不是linux page)是16K. B+Tree的话那么每层都会存放key. 假设key为16个字节的话，包括overhead 16个字节，那么一个page里面就能够存放512个节点。如果记录界级别在billion级别的话，那么深度在3-4层左右。估算出层级数目是非常有好处的，可以对query做envelope calculation. 假设不考虑page cache的话，那么查询一条记录通常需要读取3-4次。假设存在cache命中50%的话，那么读取次数在1.5-2次。如果使用MySQL没有缓存层并且都是简单查询的话，要求查询性能在2w/s. 那么要求disk IOPS必须在3w-4w/s上。所以如果性能达不到这个要求的话，那么就需要考虑分表。 *NOTE(dirlt)：所以分表可能会是因为性能原因，也可能会是因为存储空间原因*
 
 *** 优化索引
    - 对数据表进行分析
@@ -318,7 +318,7 @@ mysql> show tables in mysql;
      - f(x) < 4, 这样就需要遍历所有x并且作用f然后比较。所以最好是可以x < f^-1(4) *NOTE(dirlt):逆函数*
    - 不要在LIKE模式的开始位置使用通配符
    - 试验各种查询的变化格式，并且需要多次运行它们
-   - 避免过多使用MySQL的自动类型转换功能 *NOTE（dirlt）：隐式类型转换会可能会阻碍索引的使用*
+   - 避免过多使用MySQL的自动类型转换功能 *NOTE(dirlt)：隐式类型转换会可能会阻碍索引的使用*
 
 *** EXPLAIN
 EXPLAIN语句提供的信息可以帮助我们了解优化器为处理各种语句而生成的执行计划。这里以两个例子做说明。假设我们有t1,t2两个数据表，列分别为k(int)，v(int)，然后分别执行下面语句
@@ -353,14 +353,14 @@ mysql> explain SELECT * from t1 WHERE k < 20 AND k > 10;
 |  1 | SIMPLE      | t1    | ALL  | NULL          | NULL | NULL    | NULL |   50 | Using where |
 +----+-------------+-------+------+---------------+------+---------+------+------+-------------+
 #+END_EXAMPLE
-   - select_type 简单选择 TODO（dirlt）：？？？
+   - select_type 简单选择 TODO(dirlt)：？？？
    - table 数据表
    - type 优化器可以用来搜索的区间（ALL表示只能全部扫描）
    - possible_keys 可以用来做搜索的keys
    - key/key_len 最终选择用来做搜索的key和其长度
    - ref 是否参考其他数据表字段
    - row 处理多少行数据
-   - Extra TODO（dirlt）：？？？
+   - Extra TODO(dirlt)：？？？
 可以看到这个检索只能够使用全表扫描，下面来看看加上索引的效果
 
 #+BEGIN_EXAMPLE
@@ -391,7 +391,7 @@ mysql> explain SELECT * from t1 INNER JOIN t2 WHERE t1.k = t2.k;
 +----+-------------+-------+------+---------------+------+---------+-----------+------+-------+
 
 #+END_EXAMPLE
-可以看到MySQL非常智能，并没有扫描t1然后在t2中查找，而是扫描t2在t1中查找。 *NOTE（dirlt）：这里这里type=ref以及ref字段内容*
+可以看到MySQL非常智能，并没有扫描t1然后在t2中查找，而是扫描t2在t1中查找。 *NOTE(dirlt)：这里这里type=ref以及ref字段内容*
 
 *** 查询缓存
 如果数据很少更新的话，那么开启查询缓存是有利的。如果数据表被更新的话，所有与之相关的查询缓存都会失效并且被删除。
@@ -553,7 +553,7 @@ binlog & relaylog
 
 innodb_data_file_path的格式这里需要详细解释，每个文件之间通过;分隔，每个文件规格说明如下
    - path:size # 文件初始大小size字节，并且不可扩展
-   - path:size:autoextend # 文件初始大小size字节，但是允许自动扩展 *NOTE（dirlt）：通常应该是留在最后的*
+   - path:size:autoextend # 文件初始大小size字节，但是允许自动扩展 *NOTE(dirlt)：通常应该是留在最后的*
 比如innodata1:50M;innodata2:100M;innodata3:200M:autoextend
 
 InnoDB可以使用未经过格式化的硬盘分区，有几个理由值得考虑这么做：
@@ -678,7 +678,7 @@ MySQL（5.6） Installation Layout for Generic Unix/Linux Binary Package
    - mysqld # 服务端
    - mysql # 客户端
    - mysqld_safe # 启动脚本
-     - --skip-grant-tables # 忽略权限表 *NOTE（dirlt）：可以用来重置密码*
+     - --skip-grant-tables # 忽略权限表 *NOTE(dirlt)：可以用来重置密码*
      - --skip-networking # 不启动网络接口
      - --defaults-file 配置文件
    - mysql.server # 启停脚本

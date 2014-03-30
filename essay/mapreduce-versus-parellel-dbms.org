@@ -4,7 +4,7 @@
 
 在 2010年1月的ACM上，有两篇文章非常吸引人注意。一篇文章是Google的Jeffrey Dean、Sanjay Ghemawat发表的标题为《MapReduce:一个灵活的数据库处理工具》，另一篇文章是Michael Stonebraker、Daniel  Abadi、 David J. DeWitt、Sam Madden、Erik Paulson、Andrew Pavlo、Alexander、Rasin等人发表的《MapReduce和并行数据库：是朋友还是敌人？》。这两篇文章让我想起去年初Michael Stonebraker等人就MapReduce发表的一些评论而导致了一次MapReduce和数据库系统的大辩论。那篇文章的标题是《MapReduce：一个巨大的倒退》。这次辩论双方则准备了丰富的实践和实验案例。看上去更加有趣也更加有说服力。以下“正方”代表坚持并行数据库解决方案的Andrew Pavlo、 Michael Stonebraker等，而反方则是Google的MapReduce（下文简称MR）的拥趸Jeffrey Dean、Sanjay Ghemawat等。
    
-*NOTE（dirlt）：时间顺序如下：*
+*NOTE(dirlt)：时间顺序如下：*
    - [[file:./mapreduce-a-major-step-backwards.org][MapReduce: A major step backwards]]
    - [[file:./mapreduce-a-major-step-backwards-ii.org][MapReduce: A major step backwards-ii]]
    - [[file:./a-comparison-of-approaches-to-large-scale-data-analysis.org][A Comparison of Approaches to Large-Scale Data Analysis]]

@@ -60,9 +60,9 @@ http://dbanotes.net/arch/google_app_engine_arch_guess.html
 在整体架构这部分，首先会举出Google的三种主要工作负载，接着会试着对数据中心进行分类，最后会做一下总结。
 
    - 三种工作负载
-     - 本地交互：用于在用户本地为其提供基本的Google服务，比如网页搜索等，但会将内容的生成和管理工作移交给下面的内容交付系统，比如：生成搜索所需的Index等。通过本地交互，能让用户减少延迟，从而提高用户体验，而且其对SLA要求很高，因为是直接面对客户的。 *NOTE（dirlt）：有点类似CDN意思*
-     - 内容交付：用于为Google大多数服务提供内容的存储，生成和管理工作，比如创建搜索所需的Index，存储YouTube的视频和GMail的数据等，而且内容交互系统主要基于Google自己开发那套分布式软件栈。还有，这套系统非常重视吞吐量和成本，而不是SLA。 *NOTE（dirlt）：计算和存储中心*
-     - 关键业务：主要包括Google一些企业级事务，比如用于企业日常运行的客户管理和人力资源等系统和赚取利润的广告系统（AdWords和AdSense），同时关键业务对SLA的要求非常高。 *NOTE（dirlt）：比较偏向本地化的业务*
+     - 本地交互：用于在用户本地为其提供基本的Google服务，比如网页搜索等，但会将内容的生成和管理工作移交给下面的内容交付系统，比如：生成搜索所需的Index等。通过本地交互，能让用户减少延迟，从而提高用户体验，而且其对SLA要求很高，因为是直接面对客户的。 *NOTE(dirlt)：有点类似CDN意思*
+     - 内容交付：用于为Google大多数服务提供内容的存储，生成和管理工作，比如创建搜索所需的Index，存储YouTube的视频和GMail的数据等，而且内容交互系统主要基于Google自己开发那套分布式软件栈。还有，这套系统非常重视吞吐量和成本，而不是SLA。 *NOTE(dirlt)：计算和存储中心*
+     - 关键业务：主要包括Google一些企业级事务，比如用于企业日常运行的客户管理和人力资源等系统和赚取利润的广告系统（AdWords和AdSense），同时关键业务对SLA的要求非常高。 *NOTE(dirlt)：比较偏向本地化的业务*
 
    - 两类数据中心
      - 按照2008年数据，Google在全球有37个数据中心，其中19个在美国，12个在欧洲，3个在亚洲(北京、香港、东京)，另外3个分布于俄罗斯和南美。
@@ -101,7 +101,7 @@ Google App Engine 提供一整套开发组件来让用户轻松地在本地构�
    - 应用服务器：主要是用于接收来自于外部的Web请求。
      - Python WSGI. 虽然Python版应用服务器是基于标准的Python Runtime，但是为了安全并更好地适应App Engine的整体架构，对运行在应用服务器内的代码设置了很多方面的限制，比如不能加载用C编写Python模块和无法创建Socket等。
      - Java Jetty. 大多数常用的Java API（App Engine有一个The JRE Class White List来定义那些Java API能在App Engine的环境中被使用） 
-   - Datastore：主要用于对信息进行持久化，并基于Google著名的BigTable技术。 *NOTE（dirlt）：底层应该是MegaStore*
+   - Datastore：主要用于对信息进行持久化，并基于Google著名的BigTable技术。 *NOTE(dirlt)：底层应该是MegaStore*
      - 在接口方面，Python版提供了非常丰富的接口，而且还包括名为GQL的查询语言，而Java版则提供了标准的JDO和JPA这两套API。
      - 在未来的App Engine for Business套件中包含标准的SQL数据库服务，但现在还不确定这个SQL数据库的实现方式。
    - 服务：除了必备的应用服务器和Datastore之外，GAE还自带很多服务来帮助开发者，比如：Memcache，邮件，网页抓取，任务队列，XMPP等。
@@ -158,7 +158,7 @@ file:./images/gae-arch.jpg
 ** Datastore的设计
 http://dbanotes.net/arch/google_app_engine-datastore.html
 
-*TODO（dirlt）：说的不是很清楚，而且entity,hierarchy,以及entity group等概念在bigtable里面是没有的，只有在megastore里面才有*
+*TODO(dirlt)：说的不是很清楚，而且entity,hierarchy,以及entity group等概念在bigtable里面是没有的，只有在megastore里面才有*
 
 ** 总结
 http://dbanotes.net/arch/google_app_engine-summary.html

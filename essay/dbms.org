@@ -358,8 +358,8 @@ Transactions can be deferred, immediate, or exclusive. The default transaction b
 
 区别还是非常简单的：
    - deferred 延迟上锁。在begin transcation之后其他的连接还可以发起begin transaction. 某个连接发起读操作就创建SHARED lock（之后只是可读，并且必须比RESERVED lock先释放）, 发起写操作就创建RESERVED lock（之后可读可写，但是必须等待其他链接全部释放）
-   - immediate 立刻上锁。相当立刻占用RESERVED lock，其他链接可以发起begin trasnaction但是只能够获得SHARED lock，并且和之前一样，必须等待shared lock释放，reversed lock才能够释放。 *NOTE（dirlt）：这点非常实际，因为对于发起SHARED lock而言，肯定希望期间读取的数据不会发生变化*
-      *NOTE（dirlt）：似乎如果直接执行SQL语句相当加上immediate transaction*
+   - immediate 立刻上锁。相当立刻占用RESERVED lock，其他链接可以发起begin trasnaction但是只能够获得SHARED lock，并且和之前一样，必须等待shared lock释放，reversed lock才能够释放。 *NOTE(dirlt)：这点非常实际，因为对于发起SHARED lock而言，肯定希望期间读取的数据不会发生变化*
+      *NOTE(dirlt)：似乎如果直接执行SQL语句相当加上immediate transaction*
    - exclusive 排斥上锁。排斥其他连接发起任何transaction，相当于lock table.
 
 ** 约束与触发器

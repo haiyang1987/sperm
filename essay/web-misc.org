@@ -371,6 +371,6 @@ vacuum = True
 max-requests = 128
 #+END_EXAMPLE
 
-*TODO（dirlt）：里面的字段的意思还不是清楚* 最重要的就是两个参数
+*TODO(dirlt)：里面的字段的意思还不是清楚* 最重要的就是两个参数
    - module x:y 说明x.py里面的y对象是WSGI function对象
    - socket 必须指定是127.0.0.1:8001

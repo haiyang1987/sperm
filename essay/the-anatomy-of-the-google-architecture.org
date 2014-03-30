@@ -49,7 +49,7 @@ file:./images/google-architecture-exterior-network.png
 *** Rack
 file:./images/google-architecture-rack.png
 
-*NOTE（dirlt）：在空间以及冷却系统上面减少成本*
+*NOTE(dirlt)：在空间以及冷却系统上面减少成本*
    - Mini Server Size
      - Old Servers are Custom 1U
      - New Servers are 2U
@@ -63,7 +63,7 @@ file:./images/google-architecture-rack.png
      - assist with heat dispersal issues *NOTE(dirlt):???*
 
 *** Hardware
-*NOTE（dirlt）：配置都非常普通*
+*NOTE(dirlt)：配置都非常普通*
    - 2U Low-Cost (but not slow) Commodity Servers 
      - 2009 Currently 2-Way, Dual Core/16GB/1-2TB +- Standard 
      - Both Intel/AMD Chipsets - 1 NIC - 2 USB
@@ -91,11 +91,11 @@ file:./images/google-architecture-rack.png
     - Custom NFS
     - Custom CUPS
     - Custom gPXE bootloader 
-      - *NOTE（dirlt）：open-source network booting software*
+      - *NOTE(dirlt)：open-source network booting software*
     - Custom EVERYTHING.....
   - Kernel/Subsystem Modifications
     - tcmalloc - replaces glibc 2.3 malloc - much faster! works very well with threads...
-    - rpc - the rpc layer extensively modified to provide > perf increase < latency (52%/40%) *TODO（dirlt）：？？？*
+    - rpc - the rpc layer extensively modified to provide > perf increase < latency (52%/40%) *TODO(dirlt)：？？？*
     - Significantly modified Kernel and Subsystems - all IPv6 enabled
     - Developed and maintained systems to automate installation, updates, and upgrades of Linux systems.
     - Served as technical lead of team responsible for customizing and deploying Linux to internal systems and workstations.
@@ -132,7 +132,7 @@ file:./images/the-anatomy-of-google-architecture-major-glue.png
 
 *** GOOGLE DATABASE
   - Increased Scalability (across Namespace/Datacenters) 
-    - Tablets spread over DC s for a table but expensive (both computationally and financially!) *NOTE（dirlt）：对于tablet跨数据中心的话代价非常大*
+    - Tablets spread over DC s for a table but expensive (both computationally and financially!) *NOTE(dirlt)：对于tablet跨数据中心的话代价非常大*
   - Multiple Bigtable Clusters replicated throughout DC 数据中心之间的bigtable集群相互同步。
   - Current Status
     - Many Hundreds may be thousands of Bigtable Cells. Late 2009 stated 500 Bigtable clusters（2009年500个多个bigtable cluster)
@@ -147,7 +147,7 @@ file:./images/the-anatomy-of-google-architecture-major-glue.png
 *** GOOGLE WORKQUEUE
    - Batch Submission/Scheduler System 批量提交和调度系统
    - Arbitrates (process priorities) Schedules, Allocates Resources, process failover, Reports status, collects results 优先级分配资源，处理failover，汇报状态
-     - *NOTE（dirlt）：这个非常类似hadoop后期要做的yarn*
+     - *NOTE(dirlt)：这个非常类似hadoop后期要做的yarn*
    - Workqueue can manage many tens of thousands of machines *管理上万机器*
    - Launched via API or command line (sawzall example shown)
 #+BEGIN_EXAMPLE
@@ -162,4 +162,4 @@ file:./images/the-open-source-google-stack.png
    - Google PROFITS US $16M A DAY 
    - “Libraries are the predominant way of building programs”
    - Agile Methodologies Used (development iterations, teamwork, collaboration, and process adaptability throughout the life-cycle of the project) 敏捷开发？
-   - An infrastructure handles versioning of applications so they can be release without a fear of breaking things = roll out with minimal QA *NOTE（dirlt）：有专门的程序来处理程序版本之间兼容关系，持续集成？！*
+   - An infrastructure handles versioning of applications so they can be release without a fear of breaking things = roll out with minimal QA *NOTE(dirlt)：有专门的程序来处理程序版本之间兼容关系，持续集成？！*

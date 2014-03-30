@@ -38,7 +38,7 @@ Queries executed using Impala are handled as follows:
      - Intel - Nehalem (released 2008) or later processors.
      - AMD - Bulldozer (released 2011) or later processors.
    - Memory - 32GB or more. Impala cannot run queries that have a working set greater than the total available ram. Note that the working set is not the size of the input.
-   - Storage - DataNodes with 10 or more disks each. I/O speeds are often the limiting factor for disk performance with Impala. Ensure you have sufficient disk space to store the data Impala will be querying. *NOTE（dirlt）：感叹未来的趋势就是拿内存当磁盘用*
+   - Storage - DataNodes with 10 or more disks each. I/O speeds are often the limiting factor for disk performance with Impala. Ensure you have sufficient disk space to store the data Impala will be querying. *NOTE(dirlt)：感叹未来的趋势就是拿内存当磁盘用*
 
 *** Prerequsite
    - Install CDH4 as described in CDH4 Installation. https://ccp.cloudera.com/display/CDH4DOC/CDH4+Installation
@@ -75,14 +75,14 @@ local reads.
 #+END_EXAMPLE
 
 *** Ubuntu
-source compile: *NOTE（dirlt）：比较麻烦*
+source compile: *NOTE(dirlt)：比较麻烦*
    - sudo apt-get install libboost-all-dev libevent1-dev automake libtool flex bison g++ libssl-dev make cmake doxygen libglib2.0-dev python-dev libzip2 subversion libsasl2-dev wget git unzip
    - llvm maven3 # github README上面有描述
    - git clone https://github.com/cloudera/impala.git
    - cd impala && . bin/impala-config.sh # *NOTE(dirlt):我使用oh-my-zsh似乎有问题，切换成为bash就成功*
    - cd thirdparty && ./download_thirdparty.sh # *NOTE(dirlt):如果自己手动下载了hadoop和hive的话，可以修改一下脚本，因为这两个包还是比较大的*
    - cd ${IMPALA_HOME} && ./build_public.sh -build_thirdparty
-   - *NOTE（dirlt）：编译麻烦，我没有成功，放弃*
+   - *NOTE(dirlt)：编译麻烦，我没有成功，放弃*
 
 binary install:
    - sudo apt-get install impala

@@ -146,7 +146,7 @@ opreport包含两类参数，一类是过滤参数用于通知应用打印出关
 ** OProfile脚本
 *NOTE(dirlt):依然没有成功profile过kenerl！*
 
-*NOTE（dirlt）：另外觉得这个东西似乎长久没有整理，以后可能似乎不太会使用这个东西了*
+*NOTE(dirlt)：另外觉得这个东西似乎长久没有整理，以后可能似乎不太会使用这个东西了*
 
    - 具体代码可以参见 utils/oprof
    - 只是对用户态应用程序做profile.

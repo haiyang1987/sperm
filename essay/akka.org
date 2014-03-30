@@ -208,8 +208,8 @@ The need to structure the name space for actors like this arises from a central 
    - There are different mailbox implementations to choose from, （不同mailbox实现）
      - the default being a FIFO: the order of the messages processed by the actor matches the order in which they were enqueued. This is usually a good default, but applications may need to prioritize some messages over others. （一种是默认的FIFO）
      - In this case, a priority mailbox will enqueue not always at the end but at a position as given by the message priority, which might even be at the front. While using such a queue, the order of messages processed will naturally be defined by the queue’s algorithm and in general not be FIFO.（另外一种是有优先级别的mailbox)
-   - An important feature in which Akka differs from some other actor model implementations is that the current behavior must always handle the next dequeued message, there is no scanning the mailbox for the next matching one. Failure to handle a message will typically be treated as a failure, unless this behavior is overridden. *NOTE（dirlt）：和其他actor model实现有点不太类似是，没有办法对mailbox来做scan来处理匹配的项。也就是说对于mailbox里面所有的消息都需要显式处理*
-   - If an exception is thrown while a message is being processed, nothing happens to the mailbox. If the actor is restarted, the same mailbox will be there. So all messages on that mailbox will be there as well.(如果处理消息的时候发生异常，mailbox并不会受影响，并且如果actor重启的话，读取的依然是之前的mailbox里面的内容） *TODO（dirlt）：是否有办法清除mailbox里面的内容？* 
+   - An important feature in which Akka differs from some other actor model implementations is that the current behavior must always handle the next dequeued message, there is no scanning the mailbox for the next matching one. Failure to handle a message will typically be treated as a failure, unless this behavior is overridden. *NOTE(dirlt)：和其他actor model实现有点不太类似是，没有办法对mailbox来做scan来处理匹配的项。也就是说对于mailbox里面所有的消息都需要显式处理*
+   - If an exception is thrown while a message is being processed, nothing happens to the mailbox. If the actor is restarted, the same mailbox will be there. So all messages on that mailbox will be there as well.(如果处理消息的时候发生异常，mailbox并不会受影响，并且如果actor重启的话，读取的依然是之前的mailbox里面的内容） *TODO(dirlt)：是否有办法清除mailbox里面的内容？* 
 
 *** in Akka
 Akka实现的Actor对象内部包括了下面几个比较重要的字段和方法
@@ -233,7 +233,7 @@ Initialization
    - first communication. 第一次通信的时候触发。
 
 Termination
-   - *NOTE（dirlt）：actor终止的时候，这个actor原来内部所有的message都会流向EventStream(another special actor)作为DeadLetters，而actor消亡之后其mailbox会重定向到system mailbox, 所有发向这个system mailbox的消息也会流向EventStream作为DeadLetters*
+   - *NOTE(dirlt)：actor终止的时候，这个actor原来内部所有的message都会流向EventStream(another special actor)作为DeadLetters，而actor消亡之后其mailbox会重定向到system mailbox, 所有发向这个system mailbox的消息也会流向EventStream作为DeadLetters*
    - Once an actor terminates, i.e. fails in a way which is not handled by a restart, stops itself or is stopped by its supervisor, it will free up its resources, draining all remaining messages from its mailbox into the system’s “dead letter mailbox” which will forward them to the EventStream as DeadLetters. 
    - The mailbox is then replaced within the actor reference with a system mailbox, redirecting all new messages to the EventStream as DeadLetters. This is done on a best effort basis, though, so do not rely on it in order to construct “guaranteed delivery”.
 
@@ -438,7 +438,7 @@ A Router is an actor that receives messages and efficiently routes them to other
 
 Routers, Routees and Senders
    - Sending a message to a router is easy. "router ! MyMsg". A router actor forwards messages to its routees according to its routing policy.
-   - The router forwards messages onto its routees without changing the original sender. When a routee replies to a routed message, the reply will be sent to the original sender, not to the router.(直接返回给sender而不会经过router） *NOTE（dirlt）：也有办法回复给router*
+   - The router forwards messages onto its routees without changing the original sender. When a routee replies to a routed message, the reply will be sent to the original sender, not to the router.(直接返回给sender而不会经过router） *NOTE(dirlt)：也有办法回复给router*
    - When a router creates routees, they are created as the routers children. This gives each routee its own identity in the actor system.
 
 Handling for Special Messages

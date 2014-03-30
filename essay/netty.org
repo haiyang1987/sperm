@@ -59,8 +59,8 @@ NioServerSocketChannelFactory构造函数需要指定boss/worker两个executor�
 
 首先了解一下netty的网络模型
    - boss创建accept fd之后阻塞调用accept. 一旦accept一个connection之后，将这个connection fd交给worker.
-     - *NOTE（dirlt）：猜测分摊到哪个worker上的算法应该是round robin*
-     - *NOTE（dirlt）：早期netty版本只是支持一个boss线程做accept，但是一个现成做accept限制了性能，所以在后续版本支持多个现成做accept*
+     - *NOTE(dirlt)：猜测分摊到哪个worker上的算法应该是round robin*
+     - *NOTE(dirlt)：早期netty版本只是支持一个boss线程做accept，但是一个现成做accept限制了性能，所以在后续版本支持多个现成做accept*
      - 允许绑定到多个端口，因为在boss线程里面也是使用epoll来做IO复用的。 
    - worker将这个connection fd加入到自己的epoll/selector里面，检测可读可写事件的发生
    - boss/worker都是runnable对象，需要外部提供线程池来执行
@@ -133,7 +133,7 @@ Got this error - Syahreza Pahlevi Ginting
    - http://gleamynode.net/articles/1557/
 这个同学的建议还是说和file-max/file limits有关。
 
-*NOTE（dirlt）：之后我调整了file limits之后便没有遇到这个问题了，所以可能确实和文件句柄数目限制有关*
+*NOTE(dirlt)：之后我调整了file limits之后便没有遇到这个问题了，所以可能确实和文件句柄数目限制有关*
 
 *** control timeout
 网络上并没有太多如何关于netty读写超时信息的控制。下面是一篇相对来说比较有启发性的回答：
@@ -181,9 +181,9 @@ private void fireReadTimedOut(final ChannelHandlerContext ctx) throws Exception 
    - ctx.getChannel.write()
    - 如果在10s内没有写完的话，那么就会触发一个WriteTimeoutException
    - 如果在10s内写完的话，那么就会触发writeComplete回调，在回调里面我们可以删除这个handler ctx.getPipeline().remove("wto");
-   - *NOTE（dirlt）：writeComplete只要部分数据写成功的时候就会触发，所以一次write可能会触发多次writeComplete事件，所以这里remove需要注意只能够remove一次*
+   - *NOTE(dirlt)：writeComplete只要部分数据写成功的时候就会触发，所以一次write可能会触发多次writeComplete事件，所以这里remove需要注意只能够remove一次*
 
-*NOTE（dirlt）：有时候我在考虑，其实writeTimeout这个事件其实大部分时候是不需要的，对于server而言write之后就不care了，而对于client而言write之后直接使用read来触发readTimeout更加合适*
+*NOTE(dirlt)：有时候我在考虑，其实writeTimeout这个事件其实大部分时候是不需要的，对于server而言write之后就不care了，而对于client而言write之后直接使用read来触发readTimeout更加合适*
 
 ** 代码分析
 *** HashedWheelTimer
@@ -349,7 +349,7 @@ public class HashedWheelTimer implements Timer {
 #+END_SRC
 
 -----
-后台线程 *NOTE（dirlt）：注意里面的deadline并不是每次调用currentTimeMillis, 而是在startTime上面不断叠加的，然后在sleep过程中进行修正*
+后台线程 *NOTE(dirlt)：注意里面的deadline并不是每次调用currentTimeMillis, 而是在startTime上面不断叠加的，然后在sleep过程中进行修正*
 
 @org.jboss.netty.util.HashedWheelTimer.Worker
 #+BEGIN_SRC Java

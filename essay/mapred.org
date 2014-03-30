@@ -117,7 +117,7 @@ file:./images/yarn-resourcemanager-arch.png
      - ApplicationsManager 维护当所有提交的Application
      - ApplicationACLsManager
      - ApplicationMasterLauncher 负责AM的启动
-     - YarnScheduler *NOTE（dirlt）：似乎这个调度行为是在一开始就决定的*
+     - YarnScheduler *NOTE(dirlt)：似乎这个调度行为是在一开始就决定的*
        - The Scheduler is responsible for allocating resources to the various running applications subject to constraints of capacities, queues etc. It performs its scheduling function based on the resource requirements of the applications such as memory, CPU, disk, network etc. Currently, only memory is supported and support for CPU is close to completion.
      - ContainerAllocationExpirer application可能占用container但是却不使用。可以用来检测哪些container没有使用。
    - TokenSecretManagers
@@ -740,7 +740,7 @@ java.lang.IllegalStateException: Committed
         at org.mortbay.thread.QueuedThreadPool$PoolThread.run(QueuedThreadPool.java:582)
 #+END_EXAMPLE
 
-*NOTE（dirlt）：开始我以为会存在什么问题，所以仔细分析了两个task的情况*
+*NOTE(dirlt)：开始我以为会存在什么问题，所以仔细分析了两个task的情况*
 
 然后察看这个job两个task情况，性能数据如下：
 
@@ -819,7 +819,7 @@ dp31出现如下日志，这个过程是非常诡异的。从stacktrace上面可
 /dev/sdh1       1.8T  1.7T  1.1G 100% /data/data7
 /dev/sde1       1.8T  346G  1.4T  20% /data/data4
 #+END_EXAMPLE
-所以我怀疑是因为磁盘过满出现的一些诡异问题。 *NOTE（dirlt）：容易造成node被cross job的blacklist*
+所以我怀疑是因为磁盘过满出现的一些诡异问题。 *NOTE(dirlt)：容易造成node被cross job的blacklist*
 
 #+BEGIN_EXAMPLE
 2013-05-14 00:20:56,266 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201301231102_34166_m_000000_0 task's state:UNASSIGNED
@@ -1007,7 +1007,7 @@ public class MessageLzoProtobufWritable extends ProtobufWritable<MessageProtos1.
      - MultipleInputs底层使用Delegate模式，将inputFormat以及mapper和Path关联，然后将InputFormat实例化来对path进行切片得到InputSplit以及RecordReader.      
      - 为了能够和MultipleInputs兼容使用，代码实现上将TableInput转换成为String然后表示成为Path（TableInput包括tableName以及多个scan对象）
        - string格式为 <tableName> ! hexString(scan) ! hexString(scan) 
-       - 从path中将TableInput字符串分离的代码是 path.toString().substring(path.getParent().toString().length() + 1); *TODO（dirlt）：对于大部分的情况是可以正常handle的*
+       - 从path中将TableInput字符串分离的代码是 path.toString().substring(path.getParent().toString().length() + 1); *TODO(dirlt)：对于大部分的情况是可以正常handle的*
      - MultipleTableInputFormat进行切片的时候将path取出内容进行解析，分离出TableInput出来，然后调用TableInputFormatBase的分片策略进行分片
        - setConf空实现是因为在ReflectionUtils.newInstance创建实例的时候会调用，而MultipleTableInputFormat本身没有使用到。
      - MultipleTableSplit的引入主要是因为TableSplit没有包含scan对象，而这个对象需要在TableRecordReader里面使用到。
