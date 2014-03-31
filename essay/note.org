@@ -41,6 +41,7 @@
    - [[file:./note/apply-visa-for-usa.org][申请美国签证]]
    - [[file:./note/mobile-foreign-business.org][手机国际业务]]
    - [[file:./note/helsinki-travel.org][赫尔辛基印象]]
+   - [[file:./note/sfo-travel.org][旧金山印象]]
  
 ** 印记
    - [[file:note/fun.org][挺搞笑的]]
