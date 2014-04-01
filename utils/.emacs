@@ -193,7 +193,7 @@
 (desktop-save-mode t)
 
 ;;; better-defaults.
-(require 'better-defaults)
+;; (require 'better-defaults)
 
 ;;; ####################
 ;;; prog mode
