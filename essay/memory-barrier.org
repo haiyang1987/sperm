@@ -4,6 +4,7 @@
    - [[http://www.linuxjournal.com/article/8211][Memory Ordering in Modern Microprocessors, Part I（推荐阅读）]]
    - [[http://www.linuxjournal.com/article/8212][Memory Ordering in Modern Microprocessors, Part II（推荐阅读）]]
    - http://highscalability.com/blog/2013/6/6/paper-memory-barriers-a-hardware-view-for-software-hackers.html Memory Barriers: A Hardware View For Software Hackers
+   - http://mechanical-sympathy.blogspot.com/2011/07/memory-barriersfences.html
 
 很早之前一直不理解内存屏障到底要解决什么问题，直到第一次编写lockfree queue的时候才稍微意识到，内存屏障这个问题在编写多线程和编写设备驱动时候需要考虑的。内存屏障有两种，一种是关于和编译器相关的内存屏障，一种是和CPU相关的内存屏障。
 

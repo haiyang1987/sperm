@@ -19,8 +19,9 @@
    - Building Scalable Systems | Swami's Blog on Building Systems That Scale : http://scalingsystems.com/
    - Systems We Make | Curating Complex Distributed Systems : http://www.systemswemake.com/
    - 37Signals. Signal vs. Noise by Basecamp — Business, Design, Programming and the Web : http://signalvnoise.com/
-   - Nathan Maez. thoughts from the red planet - thoughts from the red planet : http://nathanmarz.com/
+   - Nathan Marz. thoughts from the red planet - thoughts from the red planet : http://nathanmarz.com/
    - Percona. MySQL Performance Optimization & Support, InnoDB, XtraDB and XtraBackup : http://www.mysqlperformanceblog.com/
+   - DBMS 2 : Database management and analytic technologies in a changing world : http://www.dbms2.com/
 
 ** Article
    - The Best of 2012 | Dr Dobb's : http://www.drdobbs.com/architecture-and-design/the-best-of-2012/240145121
