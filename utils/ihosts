@@ -9,7 +9,7 @@ import string
 import re
 import os
 
-HOSTS_URL='https://smarthosts.googlecode.com/svn/trunk/hosts_us'
+HOSTS_URL='https://smarthosts.googlecode.com/svn/trunk/hosts'
 
 HOSTS = os.path.join(os.environ['HOME'],'.private/files/hosts')
 
