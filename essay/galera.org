@@ -12,7 +12,7 @@ Official
    - HowTo http://www.codership.com/wiki/doku.php?id=howto
    - Blog http://www.codership.com/en/blog
 
-Misc(in Chinses)
+Misc(in Chinese)
    - http://blog.chinaunix.net/uid-25206403-id-3912291.htm
    - http://www.cnblogs.com/bamboos/p/3543309.html
    - http://blog.gslin.org/archives/tag/galera/
@@ -39,130 +39,9 @@ Info.(@2012)
      - Percona
      - SkySQL
      - FromDual
-     - Monty Program
+     - MontyProgram
      - Capside
      - Severalnines
-
-** wsrep API Annotation
-*** file layout
-   - wsrep_api.h # header
-   - wsrep_loader # load/unload wsrep_t
-     - symbol=wsrep_loader
-     - type=int wsrep_loader_fun(wsrep_t*)
-   - wsrep_dummy # example or stub
-   - wsrep_uuid # uuid helper
-   - wsrep_gtid # gtid helper
-   - wsrep_listener # event dumper, helpful to get whole picture.
-     - http://www.codership.com/wiki/doku.php?id=notification_command # note(dirlt)：helpful？
-
-*** concept
-   - sst(snapshot state transfer)
-   - ist(incremental state transfer)
-   - logger
-   - provider
-     - CAP(certain provider capabilities)
-     - flags
-     - status
-   - uuid/gtid
-     - UUID 节点状态改变及顺序的唯一标识 note(dirlt)：集群建立之初的状态标记？
-     - GTID Global Transaction ID, 由UUID和偏移量组成 note(dirlt)：以UUID为base，每次事务通过偏移量反应
-     - example: 45eec521-2f34-11e0-0800-2a36050b826b:94530586304
-     - undefined: 00000000-0000-0000-0000-000000000000:-1
-     - evolve: 00295a79-9c48-11e2-bdf0-9a916cbb9294:0 => 00295a79-9c48-11e2-bdf0-9a916cbb9294:1
-   - group member（节点成员信息）
-   - group view(视图信息，比如整个集群有多少个节点，每个节点同步进度如何？） 
-   - wsrep_init_args(arguments)
-   - wsrep_t(interface)
-
------
-
-   - Replication provider library
-     - load/unload
-     - configuration
-     - status
-   - Write set 
-     - population calls
-     - replication calls (at commit)
-   - Prioritized transactions
-     - Lock queue modified
-     - Aborting local victims
-   - TO isolation for DDL queries
-
-*** wsrep_init_args
-*note(dirlt)；这个应该是和上层相关的实现比如MySQL，如何apply, commit等*
-
-   - (D)app_ctx 回调使用的context
-   - (D)node_name 当前节点/实例名称，对应变量wsrep_node_name
-   - (D)node_address 当前节点/实例地址，对应变量wsrep_node_address
-   - (D)node_incoming 对应变量wsrep_incoming_addresses *可以接受连接请求的节点*
-   - (D)data_dir 当前数据库的目录，对应变量wsrep_data_home_dir
-   - (D)options 选项
-   - (D)proto_ver 协议版本
-   - (D)state_id 应用初始状态id
-   - (D)state 应用初始状态数据
-   - logger_cb 打印日志回调（mysql来如何打印记录）
-   - view_handler_cb group vier变化回调
-   - apply_cb 
-   - commit_cb 
-   - unordered_cb 顺序无关操作
-   - sst_donate_cb 开始贡献
-   - synced_cb 和group做同步
-
-*** wsrep_t
-*note(dirlt)：这个应该是和下层相关的实现比如Galera，它定义了整个replication的逻辑*
-
-   - (D)version 版本
-   - init 初始化 wsrep_init_args
-   - capabilities 支持功能
-   - options_set 设置选项
-   - options_get 获取选项
-   - connect 建立和集群的连接
-   - disconnect 断开和集群的连接
-   - recv 开始接收replication event. 正常情况下这个函数一直运行，期间执行其他操作，如果返回的话那么表明出错或者是退出。
-   - pre_commit 事务提交之前
-   - post_commit 事务提交之后
-   - post_rollback 事务回滚之后
-   - replay_trx 回放事务（自身回放事务）
-   - abort_pre_commit 中断事务提交之前
-   - append_key 将key添加到事务ws. 修改行对应的key，可以用来检测冲突。
-   - append_data 将data添加到事务ws. 修改行对应的value。
-   - casual_read  todo(dirlt)：
-   - free_connection 释放链接
-   - to_execute_start 开始执行total order isolation事务（上锁）
-   - to_execute_end 结束执行total order isolation事务（解锁）
-   - preordered_collect 将预先排序的event收集到ws
-   - preordered_commit 将收集的ws commit到集群中
-   - sst_sent sst sst已经发送完毕
-   - sst_received sst已经接收完毕
-   - snapshot 请求产生snapshot
-   - stats_get 获取统计数据
-   - stats_free 释放统计数据
-   - stats_reset 重置统计数据
-   - pause 停止提交
-   - resume 恢复提交
-   - desync 断开集群同步
-   - resync 建立集群同步
-   - lock 获取全局锁
-   - unlock 释放全局锁
-   - is_locked 检测全局锁
-   - (D)provider_name 名称
-   - (D)provider_version 版本
-   - (D)provider_vendor 厂商
-   - free 释放句柄
-   - (D)dlh dlopen句柄
-   - (D)ctx 私有句柄，内部使用
-
-** Patched MySQL(mysql-wsrep) 5.6
-   - options http://www.codership.com/wiki/doku.php?id=mysql_options
-
-*** wsrep callbacks
-   - logger_cb # mysql如何打印galera日志
-   - view_handler_cb # 新节点加入会比较本地状态uuid和集群状态uuid. 初始同步，joiner动作
-   - apply_cb # mysql如何执行binlog
-   - commit_cb # mysql如何提交事务
-   - unordered_cb # note(dirlt)：do nothing?
-   - sst_donate_cb # 初始同步，donor动作
-   - synced_cb # mysql启动等待状态一致之后会调用这个函数，修改变量wsrep_ready从OFF到ON
 
 ** Replicator Architecture
 file:./images/galera-overview.png file:./images/galera-library.png
@@ -180,9 +59,9 @@ file:./images/galera-gcs2.png
 file:./images/galera-gcs.jpg
 
    - Group Communication层实现统一全局数据同步策略和集群内所有事务的排序，便于生成GTID。
-     - Galera cluster is built on top of *a proprietary group communication system* layer which implements virtual synchrony QoS. 
-     - Virtual synchrony unifies data delivery and cluster membership service which gives clear formalism regarding message delivery semantics. 
-     - It also provides total ordering of messages from multiple sources which is very handy in building global transaction IDs in multi-master cluster. 
+     - Galera cluster is built on top of *a proprietary group communication system* layer which implements virtual synchrony QoS.
+     - Virtual synchrony unifies data delivery and cluster membership service which gives clear formalism regarding message delivery semantics.
+     - It also provides total ordering of messages from multiple sources which is very handy in building global transaction IDs in multi-master cluster.
    - 节点接收请求后在commit之前，由wsrep API调用galera库进行集群内广播，所有其他节点验证（certification）成功后事务在集群所有节点进行提交，反之roll back。
    - Replication层完成数据同步，由slave queue和applier组成，在事务的同步过程中，事务在队列中以及应用线程中时于节点本地产生锁冲突处理方式。效率直接影响整个集群的写入性能。
 
@@ -234,15 +113,15 @@ http://www.codership.com/wiki/doku.php?id=flow_control
 *** Writeset Cache
 http://www.codership.com/wiki/doku.php?id=gcache
 
-*Swap Size Requirements* 
+*Swap Size Requirements*
 
 During normal operation MySQL/Galera node does not consume much more memory than a regular MySQL server. Additional memory is consumed for certification index and uncommitted writesets, but normally this should not be noticeable in a typical application. There is one exception though: （维护certification index以及没有提交的writeset)
 
 Writeset caching during state transfer. When a node is receiving a state transfer it cannot process and apply incoming writesets because it has no state to apply them to yet. Depending on a state transfer mechanism (e.g. mysqldump) the node that sends state transfer may not be able to apply writesets as well. Thus they need to cache those writesets for a catch-up phase. Currently the writesets are cached in memory and, if the system runs out of memory either state transfer will fail or the cluster would block waiting for the state transfer to end.(在state transfer阶段，donor是不可以写入的，所以在这期间需要缓存所有到达的writeset)
 
 To control memory usage for writeset caching, check Galera parameters: *note(dirlt)：by flow control*
-   - gcs.recv_q_hard_limit, 
-   - gcs.recv_q_soft_limit, 
+   - gcs.recv_q_hard_limit,
+   - gcs.recv_q_soft_limit,
    - gcs.max_throttle.
 
 *** Snapshot Transfer
@@ -290,9 +169,9 @@ IST(Very effective)
 *** Parallel Applying
 file:./images/galera-parallel-applying.png
 
-   - Galera assigns non-conflicting WS tasks to parallel appliers 
+   - Galera assigns non-conflicting WS tasks to parallel appliers
    - Works not on database, not on table, but on row level
-   - Applier threads launched at MySQL startup. 
+   - Applier threads launched at MySQL startup.
    - wsrep_slave_threads=n
    - Optimal applier count depends on work load
      - Monitor wsrep_cert_deps_distance
@@ -318,22 +197,22 @@ Use wsrep_osu_method to choose either option. *ALTER TABLE to create new autoinc
    - Each node will get the DDL statement and must process the DDL at same slot in transaction stream
    - Galera will isolate the affected table/database for the duration of DDL processing
 
-file:./images/galera-schema-upgrade-toi.png 
+file:./images/galera-schema-upgrade-toi.png
 
 file:./images/galera-schema-upgrade-toi2.png
 
-*Rolling Schema Upgrade* （节点首先desync，DDL作用在节点上之后，然后resync） 
+*Rolling Schema Upgrade* （节点首先desync，DDL作用在节点上之后，然后resync）
    - DDL is not replicated
    - Galera will take the node out of replication for the duration of DDL processing
    - When DDL is done with, node will catch up with missed transactions (like IST)
    - DBA should roll RSU operation over allnodes
    - Requires backwards compatible schema changes
 
-file:./images/galera-schema-upgrade-rsu.png 
+file:./images/galera-schema-upgrade-rsu.png
 
-file:./images/galera-schema-upgrade-rsu2.png 
+file:./images/galera-schema-upgrade-rsu2.png
 
-file:./images/galera-schema-upgrade-rsu3.png 
+file:./images/galera-schema-upgrade-rsu3.png
 
 file:./images/galera-schema-upgrade-rsu4.png
 
@@ -383,43 +262,12 @@ Retry Autocommit:
    - wsrep_retry_autocommit=n will retry the transaction n times before giving up and returning deadlock error
    - Retrying applies only to autocommit transactions, as retrying is not safe for multi-statement transactions
 
-** Miscellaneous 
-*** Parameters
-   - http://www.codership.com/wiki/doku.php?id=galera_parameters
-   - http://www.codership.com/wiki/doku.php?id=mysql_galera_configuration
-
-*** Status Variables
-http://www.codership.com/wiki/doku.php?id=galera_status_0.8 
-   - mysql> SHOW STATUS LIKE 'wsrep_%';
-
-*** Configuration
-http://www.codership.com/wiki/doku.php?id=configuration_tips
-
-   - wsrep_provider # a path to Galera library.
-   - wsrep_cluster_address # cluster connection URL.
-   - binlog_format=ROW # todo(dirlt):??
-   - default_storage_engine=InnoDB
-   - innodb_autoinc_lock_mode=2 # todo(dirlt):??
-   - innodb_flush_log_at_trx_commit=2 # todo(dirlt):??
-   - innodb_doublewrite=1 #todo(dirlt):??
-
-*** Monitoring
-http://www.codership.com/wiki/doku.php?id=monitoring 
-
-*** Notification
-Cluster can trigger notifications. Use for: 
-   - load balancer configuration 
-   - monitoring
-wsrep_notify_cmd defines the script to handle notifications.
-
-*** Backup
+** Best Backup Practices
 Best practices:
    - Dedicate a reference node for backups
-   - Assign global trx ID with the backup
+   - Assign global trx ID with the backup # 备份GTID可以在节点加入的时候使用IST来补进度
      - Global transaction ID (GTID) marks a position in the cluster transaction stream
      - Backup with known GTID make it possible to utilize IST when joining new nodes
-     - 备份GTID可以在节点加入的时候使用IST来补进度
-
 Possible methods:
    1. Disconnecting a node for backup
    2. Using SST script interface
@@ -427,7 +275,7 @@ Possible methods:
 
 *Disconnecting a node for backup*
 
-file:./images/galera-backup-disconnect-node.png  
+file:./images/galera-backup-disconnect-node.png
 
 file:./images/galera-backup-backup.png
 
@@ -440,17 +288,45 @@ file:./images/galera-backup-by-sst-api.png
    - Simple, efficient
    - Use *--galera-info* option to get global transaction ID logged into separate galera info file
 
+** Miscellaneous
+*** Parameters
+   - http://www.codership.com/wiki/doku.php?id=galera_parameters
+   - http://www.codership.com/wiki/doku.php?id=mysql_galera_configuration
+   - http://www.codership.com/wiki/doku.php?id=mysql_options
+   - http://www.codership.com/wiki/doku.php?id=configuration_tips
+
+-----
+
+   - wsrep_provider # a path to Galera library.
+   - wsrep_cluster_address # cluster connection URL.
+   - binlog_format=ROW #
+   - default_storage_engine=InnoDB
+   - innodb_autoinc_lock_mode=2 # todo(dirlt):??
+   - innodb_flush_log_at_trx_commit=2 # todo(dirlt):??
+   - innodb_doublewrite=1 #todo(dirlt):??
+
+*** Status Variables
+   - http://www.codership.com/wiki/doku.php?id=galera_status_0.8
+   - http://www.codership.com/wiki/doku.php?id=monitoring
+   - mysql> SHOW STATUS LIKE 'wsrep_%';
+
+*** Notification
+Cluster can trigger notifications. Use for:
+   - load balancer configuration
+   - monitoring
+wsrep_notify_cmd defines the script to handle notifications.
+
 *** Limitations
 http://www.codership.com/wiki/doku.php?id=limitations
 
 ** Related Articles
-*** Commercial
+*** Commercial Story
    - User Stories | Codership : http://www.codership.com/user-stories
    - Who is using Galera Cluster? | Codership : http://www.codership.com/content/who-using-galera-cluster
    - MySQLPlus Reader's Choice: Galera is the hottest technology of 2013 | Codership : http://www.codership.com/content/mysqlplus-readers-choice-galera-hottest-technology-2013
 
 *** Tech Issue
-   - Dealing with Locking Sessions | Codership : http://www.codership.com/content/dealing-locking-sessions 
+   - Dealing with Locking Sessions | Codership : http://www.codership.com/content/dealing-locking-sessions
    - Controlling Auto Increments | Codership : http://www.codership.com/content/controlling-auto-increments
    - Multi-Master Arithmetics | Codership : http://www.codership.com/content/multi-master-arithmetics
    - Wating For The Miracle | Codership : http://www.codership.com/content/wating-miracle
@@ -463,7 +339,7 @@ http://www.codership.com/wiki/doku.php?id=limitations
    - Order of Business | Codership : http://www.codership.com/content/order-business
    - Murphy’s Law is also valid for Galera Cluster for MySQL | FromDual : http://fromdual.com/murphys-law-is-also-valid-for-galera-cluster-for-mysql
 
-*** Bechmark
+*** Bechmark & Performance
    - How Much Can Galera Sysbench? | Codership : http://www.codership.com/content/galera-sysbench
    - SysBench on EC2: Size Matters | Codership : http://www.codership.com/content/sysbench-ec2-size-matters
    - Scaling-out OLTP load on Amazon EC2 revisited. | Codership : http://www.codership.com/content/scaling-out-oltp-load-amazon-ec2-revisited
