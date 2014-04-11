@@ -18,8 +18,7 @@ CDH3=0
 CDH4_2_0=0
 CDH4_3_0=1
 
-if [ $MAC = 1 ]
-then
+if [ $MAC = 1 ]; then
     export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.7.0_17.jdk/Contents/Home/
     export HADOOP_LZO=/Users/dirlt/repo/hadoop-lzo/
     export HADOOP_CLASSPATH=.:$HADOOP_LZO/build/hadoop-lzo-0.4.17-SNAPSHOT.jar
@@ -27,8 +26,7 @@ then
 else
     export JAVA_HOME=/usr/lib/jvm/java-6-openjdk-amd64/
 
-    if [ $CDH3 = 1 ]
-    then
+    if [ $CDH3 = 1 ]; then
 	export HADOOP_HOME=$HOME/utils/hadoop-0.20.2-cdh3u3/
 	export HADOOP_CONF_DIR=$HADOOP_HOME/conf
 	export HBASE_HOME=$HOME/utils/hbase-0.90.4-cdh3u3/
@@ -38,8 +36,7 @@ else
 	export HIVE_HOME=$HOME/utils/hive-0.7.1-cdh3u3/
     fi
 
-    if [ $CDH4_2_0 = 1 ]
-    then
+    if [ $CDH4_2_0 = 1 ]; then
 	export HADOOP_HOME=$HOME/utils/hadoop-2.0.0-cdh4.2.0
 	export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop/
 	export HBASE_HOME=$HOME/utils/hbase-0.94.2-cdh4.2.0/
@@ -47,8 +44,7 @@ else
 	export HIVE_HOME=$HOME/utils/hive-0.10.0-cdh4.2.0/
     fi
 
-    if [ $CDH4_3_0 = 1 ]
-    then
+    if [ $CDH4_3_0 = 1 ]; then
 	export HADOOP_HOME=$HOME/utils/hadoop-2.0.0-cdh4.3.0
 	export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop/
 	export HBASE_HOME=$HOME/utils/hbase-0.94.6-cdh4.3.0/
@@ -317,3 +313,8 @@ install_hosts() {
     echo "installing hosts..."
     sudo cp ~/.private/files/hosts /etc/hosts
 }
+
+shadowsocks() {
+    cd ~/.private/shadowsocks && ./local.py
+}
+
