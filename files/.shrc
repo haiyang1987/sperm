@@ -143,20 +143,44 @@ start_node0() {
 start_node1() {
     MYSQL_PORT=3304 /dev/shm/galera1/mysql-galera -g 'gcomm://127.0.0.1:4566?pc.wait_prim=false&gmcast.listen_addr=tcp://0.0.0.0:4564' start 
 }
-stop_node0() {
-    /dev/shm/galera0/mysql-galera stop
+start_node2() {
+    MYSQL_PORT=3303 /dev/shm/galera2/mysql-galera -g 'gcomm://127.0.0.1:4566?pc.wait_prim=false&gmcast.listen_addr=tcp://0.0.0.0:4562' start 
 }
-stop_node1() {
-    /dev/shm/galera1/mysql-galera stop
+stop_node() {
+    local idx=$1
+    /dev/shm/galera$idx/mysql-galera stop
 }
-stopd() {
+conn_node() {
+    local idx=$1
+    mysql --sock=/dev/shm/galera$idx/mysql/var/mysqld.sock -u root -prootpass
+}
+log_node() {
+    local idx=$1
+    less /dev/shm/galera$idx/mysql/var/mysqld.err
+}
+start_nodes() {
+    cd ~/repo/galera-yan && ./tests/scripts/command.sh start && cd -
+}
+stop_nodes() {
+    cd ~/repo/galera-yan && ./tests/scripts/command.sh stop && cd -
+}
+remove_nodes() {
+    cd ~/repo/galera-yan && ./tests/scripts/command.sh remove && cd -
+}
+mysql_stopd() {
     sudo /etc/init.d/mysql stop
 }
-build5.5() {
-    MYSQL_SRC=$HOME/repo/wsrep-5.5 ./scripts/mysql/build.sh -i -b -d --no-strip
+build5.5d() {
+    cd ~/repo/galera-yan && MYSQL_SRC=$HOME/repo/wsrep-5.5 ./scripts/mysql/build.sh -i -b -d --no-strip && cd -
 }
-build5.6() {
-    MYSQL_SRC=$HOME/repo/wsrep-5.6 ./scripts/mysql/build.sh -i -b -d --no-strip
+build5.6d() {
+    cd ~/repo/galera-yan && MYSQL_SRC=$HOME/repo/wsrep-5.6 ./scripts/mysql/build.sh -i -b -d --no-strip && cd -
+}
+build5.5r() {
+    cd ~/repo/galera-yan && MYSQL_SRC=$HOME/repo/wsrep-5.5 ./scripts/mysql/build.sh -i -b --no-strip && cd -
+}
+build5.6r() {
+    cd ~/repo/galera-yan && MYSQL_SRC=$HOME/repo/wsrep-5.6 ./scripts/mysql/build.sh -i -b --no-strip && cd -
 }
 cs5.5() {
     echo "http://bazaar.launchpad.net/~codership/codership-mysql/wsrep-5.5/revision/$1"
@@ -201,7 +225,7 @@ apt_update() {
 }
 
 home_http_server() {
-    cd ~ && sudo python -m SimpleHTTPServer 80
+    cd ~ && sudo python -m SimpleHTTPServer 80 && cd -
 }
 
 cxx_indent() {
@@ -235,7 +259,7 @@ cxx_indent() {
 }
 
 vpn_umeng_dp() {
-    cd ~/.private/vpn-umeng-dp && sudo openvpn --config client.conf
+    cd ~/.private/vpn-umeng-dp && sudo openvpn --config client.conf && cd -
 }
 
 install_files() {
@@ -315,6 +339,6 @@ install_hosts() {
 }
 
 shadowsocks() {
-    cd ~/.private/shadowsocks && ./local.py
+    cd ~/.private/shadowsocks && ./local.py && cd -
 }
 
