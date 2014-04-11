@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-#Copyright (C) dirlt
-
-ssh -L :5502:dp0:16021 -o ServerAliveInterval=60 dp@dp0 -v

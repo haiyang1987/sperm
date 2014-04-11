@@ -1,2 +1,0 @@
-#!/bin/bash
-cd $HOME/.private/vpn-umeng-dp && sudo openvpn --config client.conf

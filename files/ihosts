@@ -9,16 +9,13 @@ import string
 import re
 import os
 
-HOSTS_URL='https://smarthosts.googlecode.com/svn/trunk/hosts'
-HOSTS_URL_US='https://smarthosts.googlecode.com/svn/trunk/hosts_us'
-
+HOSTS_URL = 'https://smarthosts.googlecode.com/svn/trunk/hosts'
+HOSTS_URL_US = 'https://smarthosts.googlecode.com/svn/trunk/hosts_us'
 HOSTS = os.path.join(os.environ['HOME'],'.private/files/hosts')
 
-def update(argv):
+if __name__ == '__main__':
     print 'updating hosts...'
     url = HOSTS_URL
-    if (argv == 'us'):
-        url = HOSTS_URL_US
     print 'url = %s'%(url)
     nls = map(lambda x:string.strip(x),urllib.urlopen(url).readlines())
     ols = map(lambda x:string.strip(x),open(HOSTS).readlines())
@@ -35,17 +32,4 @@ def update(argv):
     open('/tmp/hosts','w').write('\n'.join(bls))
     shutil.move('/tmp/hosts',HOSTS)
     print "update '%s' success"%(HOSTS)
-    install()
 
-def install():
-    print 'installing hosts...'
-    os.system('sudo cp %s /etc/hosts'%(HOSTS))
- 
-def main():   
-    if len(sys.argv)>1 and sys.argv[1].lower().startswith('u'):
-        update(sys.argv[1].lower())
-    else:
-        install()
-
-if __name__ == '__main__':
-    main()
