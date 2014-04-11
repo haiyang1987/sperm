@@ -5,7 +5,7 @@ rm -rf ~/index.html
 ln -s $BINDIR/index.html ~/index.html
 
 TARGETS="cxxindent vpn-umeng-dp rhs uinstall time-machine \
-apt-update dp0-ssh-proxy ihosts uproxy"
+apt-update dp0-ssh-proxy ihosts"
 
 INSTALLDIR=$HOME/utils/bin
 if [ ! -d $INSTALLDIR ]
@@ -19,7 +19,7 @@ do
   ln -s $BINDIR/$target $INSTALLDIR/$target
 done
 
-TARGETS=".emacs .shrc .zshrc .bashrc .screenrc .tmux.conf .proxy.list"
+TARGETS=".emacs .shrc .zshrc .bashrc .screenrc .tmux.conf"
 for target in $TARGETS
 do
   echo "installing $target..."

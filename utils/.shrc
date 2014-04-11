@@ -124,14 +124,29 @@ git config --global alias.last 'log -1 HEAD'
 
 # alias and function.
 alias dstat='dstat -cdlmnpsy'
-if [ $MAC = 1 ]
-then
-    alias chrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --proxy-pac-url="file://$HOME/.proxy.pac"'
-else
-    alias chrome='google-chrome --proxy-pac-url="file://$HOME/.proxy.pac"'
-fi
-function pgrep() {
+pgrep() {
   ps aux | grep $@
+}
+start_node0() {
+    MYSQL_PORT=3305 /dev/shm/galera0/mysql-galera -g 'gcomm://127.0.0.1:4564?pc.wait_prim=false&gmcast.listen_addr=tcp://0.0.0.0:4566' --mysql-opt --wsrep-new-cluster start
+}
+start_node1() {
+    MYSQL_PORT=3304 /dev/shm/galera1/mysql-galera -g 'gcomm://127.0.0.1:4566?pc.wait_prim=false&gmcast.listen_addr=tcp://0.0.0.0:4564' start 
+}
+stop_node0() {
+    /dev/shm/galera0/mysql-galera stop
+}
+stop_node1() {
+    /dev/shm/galera1/mysql-galera stop
+}
+stopd() {
+    sudo /etc/init.d/mysql stop
+}
+build5.5() {
+    MYSQL_SRC=$HOME/repo/wsrep-5.5 ./scripts/mysql/build.sh -i -b -d --no-strip
+}
+build5.6() {
+    MYSQL_SRC=$HOME/repo/wsrep-5.6 ./scripts/mysql/build.sh -i -b -d --no-strip
 }
 
 # private key.
