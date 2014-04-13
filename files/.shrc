@@ -137,14 +137,20 @@ export LC_ALL="en_US.UTF-8"
 export MYSQL_SRC=$HOME/repo/wsrep-5.5
 export MYSQL_DIR=$MYSQL_SRC/build_release
 
-start_node0() {
-    MYSQL_PORT=3305 /dev/shm/galera0/mysql-galera -g 'gcomm://127.0.0.1:4564?pc.wait_prim=false&gmcast.listen_addr=tcp://0.0.0.0:4566' --mysql-opt --wsrep-new-cluster start
-}
-start_node1() {
-    MYSQL_PORT=3304 /dev/shm/galera1/mysql-galera -g 'gcomm://127.0.0.1:4566?pc.wait_prim=false&gmcast.listen_addr=tcp://0.0.0.0:4564' start 
-}
-start_node2() {
-    MYSQL_PORT=3303 /dev/shm/galera2/mysql-galera -g 'gcomm://127.0.0.1:4566?pc.wait_prim=false&gmcast.listen_addr=tcp://0.0.0.0:4562' start 
+start_node() {
+    local idx=$1
+    local mysql_port=$((3305-idx))
+    local node_port=$((4566-2*idx))
+    local cluster_port=4566
+    local option=''
+    if [ $idx -eq 0 ]; then
+        cluster_port=4564
+        option="--mysql-opt --wsrep-new-cluster"
+    fi
+    local clutser_address="gcomm://127.0.0.1:$cluster_port?pc.wait_prim=false&gmcast.listen_addr=tcp://0.0.0.0:$node_port"
+    local cmd="MYSQL_PORT=$mysql_port /dev/shm/galera$idx/mysql-galera -g '$clutser_address' $option start"
+    echo $cmd
+    eval $cmd
 }
 stop_node() {
     local idx=$1
@@ -159,7 +165,16 @@ log_node() {
     less /dev/shm/galera$idx/mysql/var/mysqld.err
 }
 start_nodes() {
-    cd ~/repo/galera-yan && ./tests/scripts/command.sh start && cd -
+    if [ $# -gt 0 ]; then
+        while [ $# -gt 0 ]; do
+            local idx=$1
+            shift
+            # start seqentially.
+            start_node $idx
+        done
+    else
+        cd ~/repo/galera-yan && ./tests/scripts/command.sh start && cd -
+    fi
 }
 stop_nodes() {
     cd ~/repo/galera-yan && ./tests/scripts/command.sh stop && cd -
@@ -187,6 +202,12 @@ cs5.5() {
 }
 cs5.6() {
     echo "http://bazaar.launchpad.net/~codership/codership-mysql/5.6/revision/$1"
+}
+test_seesaw() {
+    ~/repo/galera-yan/tests/test_seesaw/run.sh 4
+}
+test_stopcont() {
+    ~/repo/galera-yan/tests/test_stopcont/run.sh 4
 }
 
 # others
@@ -231,7 +252,7 @@ home_http_server() {
 cxx_indent() {
     dos2unix $@
     # http://astyle.sourceforge.net/astyle.html
-    
+
     # 一些不要使用的选项(看上去我们会很想使用)
     # 1.--indent-cases //case后面内容多一次缩进,但是会让case部分{}存在问题.
     # 2.--indent-namespaces //会让namespace下面内容多一个层缩进.
@@ -270,7 +291,7 @@ install_files() {
         rm -rf ~/utils/bin/$target
         ln -s ~/repo/sperm/files/$target ~/utils/bin/$target
     done
-    
+
     for target in .emacs .shrc .zshrc .bashrc .screenrc .tmux.conf
     do
         echo "installing $target..."
@@ -282,7 +303,7 @@ install_files() {
     echo "installing index.html..."
     rm -rf ~/index.html
     ln -s ~/.private/files/index.html ~/index.html
-    
+
     echo "installing id_rsa.pub..."
     rm -rf ~/.ssh/id_rsa.pub
     ln -s ~/.private/keys/id_rsa.pub ~/.ssh/id_rsa.pub
@@ -341,4 +362,3 @@ install_hosts() {
 shadowsocks() {
     cd ~/.private/shadowsocks && ./local.py && cd -
 }
-
