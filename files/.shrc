@@ -303,7 +303,7 @@ vpn_umeng_dp() {
 
 install_files() {
     mkdir -p ~/utils/bin
-    for target in uinstall ihosts time-machine
+    for target in uinstall uhosts time-machine
     do
         echo "installing $target..."
         rm -rf ~/utils/bin/$target
