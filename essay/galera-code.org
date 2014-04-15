@@ -1,4 +1,18 @@
 * galera-code
+** overview
+   - asio # asynchronous io.
+   - chromium # compiler related code.
+   - common # common definitions.
+   - galera # replicator.
+   - galerautils # common utilities.
+   - garb # arbitrator
+   - gcache # cache.
+   - gcomm # group communication.
+   - gcs # group control system.
+   - scripts
+   - tests
+   - www.evanjones.ca # crc32 implementation.
+
 ** wsrep-api
 *** overview
 files
