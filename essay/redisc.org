@@ -1,4 +1,4 @@
-* redis-code.org
+* redisc.org
 todo(dirlt):
    - aof.c
    - db.c

@@ -1,4 +1,4 @@
-* galera-code
+* galerac
 ** overview
    - asio # asynchronous io.
    - chromium # compiler related code.

@@ -100,9 +100,9 @@
    - [[file:dbms.org][DBMS]] DBMS(database management system)现在正在研究。打算首先阅读一下数据库系统基础教程(A First Course in Database Systems by Jeffrey D. Ullman),然后看看另外一本也是Jeffrey D. Ullman写的数据库系统实现(Database System Implementation).主要是了解DBMS方面的理论和大致实现，之后会稍微结合现有数据库实现阅读代码(MySQL/PostgreSQL).
    - [[file:leveldb.org][LevelDB]] Google的开源kv存储系统。支持billion级别的数据量，适合于写少读多的情况。当时阅读的时候是从github上面clone下来的，可能还存相当多的bug.
    - [[file:mongodb.org][MongoDB]] 面向文档的分布式存储系统，但是却可以针对文档字段索引来加快查询。功能上比通常我们认为的NoSQL强但是弱于RDBMS.
-   - [[file:redis.org][Redis]] 内存存储系统，支持丰富的数据类型以及相应的计算(支持持久化)。外围包装网络访问接口(并且提供了丰富的客户端),可以比较方便地在分布式系统内或者是环境下面使用. [[file:./redis-code.org][代码分析]]
+   - [[file:redis.org][Redis]] 内存存储系统，支持丰富的数据类型以及相应的计算(支持持久化)。外围包装网络访问接口(并且提供了丰富的客户端),可以比较方便地在分布式系统内或者是环境下面使用. [[file:redisc.org][代码分析]]
    - [[file:mysql.org][MySQL]] 开源关系型数据库。The world's most popular open source database.
-   - [[file:./galera.org][Galera]] 基于MySQL的同步多主备份集群(synchronous multi-master replication cluster). [[file:galera-code.org][代码分析]]
+   - [[file:./galera.org][Galera]] 基于MySQL的同步多主备份集群(synchronous multi-master replication cluster). [[file:galerac.org][代码分析]]
    - [[file:ssd.org][SSD]] solid state disk.固态硬盘
      - [[file:./solid-state-revolution-in-depth-on-how-ssd-really-work.org][Solid-state revolution: in-depth on how SSDs really work]] ssd发展演变，内部构造和工作方式
      - [[file:./ssd-gc-and-trim.org][固态硬盘技术解析之垃圾回收和TRIM指令]]
