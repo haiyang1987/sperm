@@ -292,7 +292,7 @@ cxx_indent() {
     # 13.--align-pointer=type *和&都偏向类型.
     # 14.--pad-oper 在运算符附近加上空格
 
-    astyle --suffix=none --style=java --indent=spaces=2 --brackets=attach \
+    astyle --suffix=none --style=java --indent=spaces=4 --brackets=attach \
         --indent-switches --indent-labels --indent-preprocessor --indent-col1-comments \
         --convert-tabs --verbose --lineend=linux --align-pointer=type --pad-oper $@
 }
