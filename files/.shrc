@@ -197,17 +197,35 @@ build5.5r() {
 build5.6r() {
     cd ~/repo/galera-yan && MYSQL_SRC=$HOME/repo/wsrep-5.6 ./scripts/mysql/build.sh -i -b --no-strip && cd -
 }
-cs5.5() {
+w_url5.5() {
     echo "http://bazaar.launchpad.net/~codership/codership-mysql/wsrep-5.5/revision/$1"
 }
-cs5.6() {
+w_url5.6() {
     echo "http://bazaar.launchpad.net/~codership/codership-mysql/5.6/revision/$1"
 }
 test_seesaw() {
-    ~/repo/galera-yan/tests/test_seesaw/run.sh 4
+    round=${1:-4}
+    ~/repo/galera-yan/tests/test_seesaw/run.sh $round
+}
+test_seesaw_sst() {
+    KILL_RATE=1 SST_RATE=1 test_seesaw $@
 }
 test_stopcont() {
+    round=${1:-4}
     ~/repo/galera-yan/tests/test_stopcont/run.sh 4
+}
+w_ci() {
+    local bugid=$1
+    local message=$2
+    bzr commit --fixes lp:$bugid -m "References lp:$bugid $message"
+}
+g_ci() {
+    local ticketid=$1
+    local message=$2
+    svn commit -m "Refs #$ticketid:$message"
+}
+g_debug_build() {
+    cd ~/repo/galera-yan && scons debug=0 -j8 && cd -
 }
 
 # others

@@ -3,19 +3,19 @@
 #+OPTIONS: H:3
 
 ** Ads
-   - [[file:jobs.org][Jobs]] at [[http://www.umeng.com/][友盟(Umeng)]] 可以找我推荐 
+   - [[file:jobs.org][Jobs]] at [[http://www.umeng.com/][友盟(Umeng)]] 可以找我推荐
    - *关注微信号* [[file:images/bigdatavalue-qrcode.jpg][bigdatavalue]] , *探索大数据商业化*
    - recomended tech [[file:link.org][Link]] and personal non-tech [[file:./note.org][Note]]
 
 ** Operating System
    - [[file:computer-system-reading.org][Computer System Reading]] 关于单机系统方面的一些文章以及阅读心得。
-     - [[file:./the-secret-to-10-million-concurrent-connections.org][The Secret To 10 Million Concurrent Connections -The Kernel Is The Problem, Not The Solution]] 
+     - [[file:./the-secret-to-10-million-concurrent-connections.org][The Secret To 10 Million Concurrent Connections -The Kernel Is The Problem, Not The Solution]]
      - [[file:./a-tour-inside-cloudflare-latest-generation-servers.org][A Tour Inside CloudFlare's Latest Generation Servers]]
      - [[file:./busting-4-modern-hardware-myths-are-memory-hdds-and-ssds-really-random-access.org][Busting 4 Modern Hardware Myths - Are Memory, HDDs, And SSDs Really Random Access?]]
    - [[file:apue.org][APUE]] Unix环境高级编程(Advanced Programming Unix Environment),W. Richard Stevens的神作。笔记里面没有包含书最后的几个部分，比如终端，打印机等，因为我觉得可能大家都不太需要这个东西了。我还尝试将一些跨章节的概念整合到一起，这样比较容易从总体把握Unix编程环境。
    - [[file:linux.org][Linux]] 主要是介绍Linux下面一些工具使用以及和内核相关的知识。（将原来[[file:./APUE.org][APUE]] 和 [[file:./UNP.org][UNP]] 中的一部分内容放在这里面来了，这样可以保持这两篇内容比较稳定）
    - [[file:pic.org][PIC]] 分析了一下PIC位置无关代码内部的原理以及和动态库之间的关系。通过阅读<深入理解计算机系统>并且结合实际的例子总结出来的。
-   - [[file:gcc-asm.org][GCC-Assembly]] 如何编写GCC内嵌汇编，以及一些关于GCC内嵌汇编的文章，主要是参考了<GCC Manual>. 但是自己对这个依然不是很了解。 
+   - [[file:gcc-asm.org][GCC-Assembly]] 如何编写GCC内嵌汇编，以及一些关于GCC内嵌汇编的文章，主要是参考了<GCC Manual>. 但是自己对这个依然不是很了解。
    - [[file:encoding.org][Encoding]] 介绍了GB2312/GBK/GB18030/Unicode/UTF16/UTF32/UTF8这几种字符编码格式。还是觉得UTF8在设计以及实现上都相对更加合理。
    - [[file:cpu.org][CPU]] CPU相关
      - [[file:simd.org][SIMD]] SIMD(Single Instruction Muitple Data)单指令多数据。这个笔记其实是Intel Reference Manual中关于SIMD指令的总结。里面包含了一些理解SIMD指令需要的知识，以及对SIMD指令进行了分类。遗憾的是里面没有什么过多的例子，毕竟这个是结合场景来使用的。
@@ -39,7 +39,7 @@
    - [[file:snappy.org][Snappy]] Google的开源压缩解压库。在满足一定压缩比率的条件下着重提升压缩和解压速度。
    - [[file:lzf.org][Lzf]] [[file:redis.org][Redis]] 使用的开源压缩解压库。轻量(两个文件), 可以很容易地独立纳入项目。
    - [[file:lzma.org][Lzma]] Lempel-Ziv-Markov chain algorithm ，压缩速度相对较慢但是压缩比超高。
-   
+
 ** Tool and Desktop
    - Tool
      - [[file:license.org][License]] 一些常见的开源协议。不知道自己以后是否可以用得上：）
@@ -58,7 +58,7 @@
      - [[file:build-system.org][BuildSystem]] 在实现Baidu in-house的构建工具Comake2之前，做过构建系统的调研总结出来的。在语法表达上面(非常重要)借鉴了SCons,考虑了其他构建系统提供的功能。
        - [[file:maven.org][Maven]] 主要针对Java开发的基于工程对象模型(POM, Project Object Model)构建系统，主要记录了一些使用方面的问题和解决办法。
        - [[file:./sbt.org][SBT]] Simple(or Scala?) Build Tool
-   - Desktop 
+   - Desktop
      - [[file:ubuntu.org][Ubuntu]] 如何更好地使用Ubuntu. [[file:note/struggle-with-ubuntu.org][之前有过痛苦的经历]] 。主要记录自己使用出现的问题。
      - [[file:fvwm.org][FVWM]] F* Virtual Windows Manager.Linux下面高度可定制化的窗口管理器。
      - [[file:mac.org][Macintosh]] 如何更好地使用Mac。以前使用Windows，后来转向Ubuntu，再后来买了个MBA. 熟悉它又需要一段时间了。
@@ -72,7 +72,7 @@
    - [[file:algorithm.org][Algorithm]] 算法还是非常重要的。记录的都是现实中使用到的算法或者是比较有趣的数学问题吧。
      - [[file:./probabilistic-data-structures-for-web-analytics-and-data-mining.org][Probabilistic Data Structures for Web Analytics and Data Mining]]
      - [[file:./cracking-the-coding-interview.org][Cracking The Coding Interview]] 据说算法分为三种：面试算法，ACM算法，算法=D
-     - [[file:./interview-problem.org][Interview Problem]] 面试问题 
+     - [[file:./interview-problem.org][Interview Problem]] 面试问题
    - [[file:data-mining.org][Data Mining]] 了解一些数据挖掘方面的知识还是比较有帮助的。其实我们每天都在不知不觉地进行数据挖掘。
    - [[file:recommender-system.org][Recommender System]] 推荐系统
      - [[file:./deconstructing-recommender-systems.org][Deconstructing Recommender Systems]]
@@ -81,12 +81,12 @@
 
 ** Network Programming
    - [[file:unp.org][UNP]] Unix网络编程(Unix Network Programming),W. Richard Stevens的又一神作。笔记里面只是对于TCP原理有比较详细讨论，这部分笔记也包含了TCP Illustrated v1里面和TCP相关的章节内容。对于编程方面也着重TCP socket使用，毕竟在大部分应用场景下面我们选用TCP模型更多，并且TCP里面有很多非常琐碎的知识。
-   - [[https://github.com/dirtysalt/sperm/tree/master/code/cc/itachi][itachi]] 自己两天时间写完的异步网络编程框架，当然有很多地方需要改进，但是内核基本稳定了。并且在上面做了asocket封装，编写网络程序非常方便。todo(dirlt):考虑写篇文章介绍一些 
+   - [[https://github.com/dirtysalt/sperm/tree/master/code/cc/itachi][itachi]] 自己两天时间写完的异步网络编程框架，当然有很多地方需要改进，但是内核基本稳定了。并且在上面做了asocket封装，编写网络程序非常方便。todo(dirlt):考虑写篇文章介绍一些
    - [[file:./libev.org][libev]] 开源的事件触发器。被认为是更高效的libevent. [[https://github.com/dirtysalt/sperm/tree/master/code/cc/itachi][itachi]] 这个项目开始想自己编写事件触发器，但是发现工作比较琐碎枯燥，所以底层还是选择使用libev.
    - [[file:hpserver.org][HPServer]] 开源的网络编程框架。可以当做一个入门级的网络编程框架阅读。这个是我最开始阅读的网络编程框架(1st).
    - [[file:nmstl.org][NMSTL]] 开源的网络编程框架。一个很早期的作品，代码十分简洁。主要是内部实现了SEDA的思想。这个是我第二个阅读的网络编程框架(2nd).
    - [[file:muduo.org][Muduo]] 开源的网络编程框架。作者理想中的网络编程框架实现，里面有很多mina/netty的影子。这个是我三个阅读的网络编程框架(3rd).
-   - [[file:kylin.org][Kylin]] Baidu in-house的异步编程框架，是[[http://weibo.com/linshiding][linsd(百度首席架构师林仕鼎)]]的神作，通过阅读这个框架的代码让我理解了异步编程模型。这个是我第四个阅读的网络编程框架(4th). 
+   - [[file:kylin.org][Kylin]] Baidu in-house的异步编程框架，是[[http://weibo.com/linshiding][linsd(百度首席架构师林仕鼎)]]的神作，通过阅读这个框架的代码让我理解了异步编程模型。这个是我第四个阅读的网络编程框架(4th).
    - [[file:zeromq.org][ZeroMQ]] 开源的消息传输系统。颠覆我们思考和编写网络通信程序的方式。todo(dirlt):只是阅读了文档和API，可以考虑阅读一下代码.
    - [[file:ace.org][ACE]] 开源的网络编程框架。非常重量级，也被人诟病为学术产物而不是适合生产实践。todo(dirlt):只是有大概的了解，有待更深入的研究.
    - [[file:apache.org][Apache]] 历史悠久的开源HTTP服务器。 an effort to develop and maintain an open-source HTTP server for modern operating systems including UNIX and Windows NT
@@ -100,9 +100,9 @@
    - [[file:dbms.org][DBMS]] DBMS(database management system)现在正在研究。打算首先阅读一下数据库系统基础教程(A First Course in Database Systems by Jeffrey D. Ullman),然后看看另外一本也是Jeffrey D. Ullman写的数据库系统实现(Database System Implementation).主要是了解DBMS方面的理论和大致实现，之后会稍微结合现有数据库实现阅读代码(MySQL/PostgreSQL).
    - [[file:leveldb.org][LevelDB]] Google的开源kv存储系统。支持billion级别的数据量，适合于写少读多的情况。当时阅读的时候是从github上面clone下来的，可能还存相当多的bug.
    - [[file:mongodb.org][MongoDB]] 面向文档的分布式存储系统，但是却可以针对文档字段索引来加快查询。功能上比通常我们认为的NoSQL强但是弱于RDBMS.
-   - [[file:redis.org][Redis]] 内存存储系统，支持丰富的数据类型以及相应的计算(支持持久化)。外围包装网络访问接口(并且提供了丰富的客户端),可以比较方便地在分布式系统内或者是环境下面使用.
+   - [[file:redis.org][Redis]] 内存存储系统，支持丰富的数据类型以及相应的计算(支持持久化)。外围包装网络访问接口(并且提供了丰富的客户端),可以比较方便地在分布式系统内或者是环境下面使用. [[file:./redis-code.org][代码分析]]
    - [[file:mysql.org][MySQL]] 开源关系型数据库。The world's most popular open source database.
-   - [[file:./galera.org][Galera]] 基于MySQL的同步多主备份集群(synchronous multi-master replication cluster).
+   - [[file:./galera.org][Galera]] 基于MySQL的同步多主备份集群(synchronous multi-master replication cluster). [[file:galera-code.org][代码分析]]
    - [[file:ssd.org][SSD]] solid state disk.固态硬盘
      - [[file:./solid-state-revolution-in-depth-on-how-ssd-really-work.org][Solid-state revolution: in-depth on how SSDs really work]] ssd发展演变，内部构造和工作方式
      - [[file:./ssd-gc-and-trim.org][固态硬盘技术解析之垃圾回收和TRIM指令]]
@@ -118,18 +118,18 @@
      - [[file:./you-can-not-sacrifice-partition-tolerance.org][You Can’t Sacrifice Partition Tolerance]]
      - [[file:the-anatomy-of-the-google-architecture.org][The Anatomy Of The Google Architecture]] @2009 Google架构的深入解析，属于非官方文档，是一个非Google的友人收集各种资料汇集起来的
      - [[file:./building-scalable-highly-concurrent-and-fault-tolerant-systems.org][Building Scalable, Highly Concurrent & Fault-Tolerant Systems: Lessons Learned]]
-     - [[file:./data-structures-and-algorithms-for-big-databases.org][Data Structures and Algorithms for Big Databases]] 
+     - [[file:./data-structures-and-algorithms-for-big-databases.org][Data Structures and Algorithms for Big Databases]]
      - [[file:./building-software-systems-at-google-and-lessons-learned.org][Building Software Systems at Google and Lessons Learned]] @Stanford-2010 Jeff Dean
      - [[file:./web-search-for-a-planet.org][Web Search for a Planet]] @2003 Google Web Search
      - [[file:./case-study-gfs-evolution-on-fast-forward.org][Case Study GFS: Evolution on Fast-forward]] @2009 GFS1
      - [[file:./how-to-beat-the-cap-theorem.org][How to beat the CAP theorem]]
      - [[file:./google-cluster-computing-faculty-traning-workshop.org][Google Cluster Computing Faculty Training Workshop]]
      - [[file:./mapreduce-a-major-step-backwards.org][MapReduce: A major step backwards]] PDBMS阵营对MR阵营的批评
-     - [[file:./mapreduce-a-major-step-backwards-ii.org][MapReduce: A major step backwards-ii]] PDBMS阵营对MR阵营的第二轮批评 
+     - [[file:./mapreduce-a-major-step-backwards-ii.org][MapReduce: A major step backwards-ii]] PDBMS阵营对MR阵营的第二轮批评
      - [[file:./a-comparison-of-approaches-to-large-scale-data-analysis.org][A Comparison of Approaches to Large-Scale Data Analysis]]
      - [[file:./mapreduce-a-flexible-data-processing-tool.org][MapReduce: A Flexible Data Processing Tool]] MR阵营对PDBMS阵营的回应
-     - [[file:./mapreduce-and-parellel-dbmss-friends-or-foes.org][MapReduce and Parallel DBMSs: Friends or Foes?]] PDBMS阵营和MR阵营达成和解 
-     - [[file:./mapreduce-versus-parellel-dbms.org][MapReduce Versus Parallel DBMS]] 
+     - [[file:./mapreduce-and-parellel-dbmss-friends-or-foes.org][MapReduce and Parallel DBMSs: Friends or Foes?]] PDBMS阵营和MR阵营达成和解
+     - [[file:./mapreduce-versus-parellel-dbms.org][MapReduce Versus Parallel DBMS]]
      - [[file:./distributed-algorithms-in-nosql-databases.org][Distributed Algorithms in NoSQL Databases]]
      - [[file:./mapreduce-a-minor-step-forward.org][MapReduce: A Minor Step Forward]] James Hamilton对PDBMS和MR的看法
      - [[file:./large-scale-data-and-computation-chanllenges-and-opportunities.org][Large-Scale Data and Computation: Challenges and Opportunities]] @Stanford-2013 Jeff Dean
@@ -137,7 +137,7 @@
      - [[file:./apache-hadoop-goes-realtime-at-facebook.org][Apache Hadoop Goes Realtime at Facebook]]
      - [[file:./designs-lessons-and-advice-from-building-large-distributed-systems.org][Designs, Lessons and Advice from Building Large Distributed Systems]] @LADIS-2009 Jeff Dean
      - [[file:./tail-at-scale.org][The Tail at Scale]] @2013 CACM Jeff Dean
-     - [[file:./realtime-big-data-analytics-emerging-architecture.org][Real-Time Big Data Analytics: Emerging Architecture]] 
+     - [[file:./realtime-big-data-analytics-emerging-architecture.org][Real-Time Big Data Analytics: Emerging Architecture]]
      - [[file:./unveil-google-app-engine.org][探索Google App Engine背后的奥秘]]
      - [[file:./beating-the-cap-theorem-checklist.org][Beating the CAP Theorem Checklist]] "遇到声称能突破CAP原理的民科的时候，用这个checklist来对付他" via @delphij
      - [[file:./in-stream-big-data-processing.org][In-Stream Big Data Processing]] 流式处理系统一些需要解决的问题以及方法
@@ -180,7 +180,7 @@
    - [[file:./pnuts.org][PNUTS]] Yahoo的分布式数据库。
    - [[file:./voldemort.org][Voldemort]] a Dynamo like distributed key-value storage system.
    - [[file:riak.org][Riak]] a NoSQL database implementing the principles from Amazon's Dynamo paper in Erlang/C/C++/Javascript.
-   - [[file:./couchbase.org][CouchBase]] CouchDB(by CouchOne) + [[file:memcached.org][Memcached]](by Membase). a Dynamo like distributed document-oriented storage system whose closest competitor is [[file:mongodb.org][MongoDB]]. 
+   - [[file:./couchbase.org][CouchBase]] CouchDB(by CouchOne) + [[file:memcached.org][Memcached]](by Membase). a Dynamo like distributed document-oriented storage system whose closest competitor is [[file:mongodb.org][MongoDB]].
    - [[file:./zbase.org][zBase]] Zynga. A high-performance, elastic, distributed key-value store
    - [[file:./samza.org][Samza]] LinkedIn的的分布式流式处理系统，现在是Apache下面的项目。
    - [[file:./presto.org][Presto]] Facebook的大规模数据实时查询系统，可以认为是Google的 [[file:./dremel.org][Dremel]] 的开源实现。
@@ -188,7 +188,7 @@
    - [[file:./raft.org][Raft]] 分布式一致性算法
 
 ** Programming Language
-   - [[file:prog-lang.org][Programming Language]] including following languages:     
+   - [[file:prog-lang.org][Programming Language]] including following languages:
      - [[file:cpp.org][C/C++]] # C++ (pronounced "cee plus plus") is a statically typed, free-form, multi-paradigm, compiled, general-purpose programming language. It is regarded as an intermediate-level language, as it comprises a combination of both high-level and low-level language features. [[http://en.wikipedia.org/wiki/C%2B%2B][Wikipedia]]
      - [[file:scheme.org][Scheme]] # Scheme is a functional programming language and one of the two main dialects of the programming language Lisp. [[http://en.wikipedia.org/wiki/Scheme_%28programming_language%29][Wikipedia]]
      - [[file:java.org][Java]] # Java is a programming language originally developed by James Gosling at Sun Microsystems (which has since merged into Oracle Corporation) and released in 1995 as a core component of Sun Microsystems' Java platform. The language derives much of its syntax from C and C++ but has a simpler object model and fewer low-level facilities. [[http://en.wikipedia.org/wiki/Java_%28programming_language%29][Wikipedia]]
@@ -220,13 +220,13 @@
    - [[file:./aosa.org][The Architecture of Open Source Applications]]
    - [[file:./producing-open-source-software.org][Producing Open Source Software]]
    - [[file:./google-io.org][Google I/O]]
-     
+
 ** 42.195 About Me
 My name is Zhang Yan. I get MS. at [[http://www.sdu.edu.cn/][Shandong University]] on Computer Science and BEng. at [[http://www.sdu.edu.cn/][Shandong University]] on Electronic Engineering. I currently work as Software Architect in Data Platform Team at [[http://www.umeng.com/][Umeng]] which focus on mobile analytics since 2012.5 where I manily work on building the infrastructure of big data processing. From 2010.6 to 2012.6, I have been a Senior Software Engineer at [[http://www.baidu.com/][Baidu]] Infrastructure Tream where I wrote libraries, tools, services and distributed systems. From 2008.7 to 2010.6, I have been a Software Engineering Intern at [[http://www.baidu.com/][Baidu]] Component Tream where I wrote libraries and tools. You can dig me more on my linkedin(or [[file:./resume.org][resume]]).
 
 My code name is [[file:images/mysterious.gif][dirtysalt]] or dirlt. It's translated from my chinese name. The translation works as following:
    - Zhang pronounce like 'dirty' in cn
-   - Yan pronounce like in 'salt' in cn 
+   - Yan pronounce like in 'salt' in cn
    - then my code name is the combination of 'dirty' and 'salt' as 'dirtysalt'
    - 'dirtysalt' can be abbreviated to 'dirlt'.
 
