@@ -10,7 +10,7 @@
 namespace common {
 namespace lkfree {
 
-template<typename T, const int number = 1024* 1024>
+template<typename T, const int number = 1024 * 1024>
 class SampleMemoryAllcator {
 public:
   struct Entry {
