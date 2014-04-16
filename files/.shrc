@@ -157,7 +157,7 @@ stop_node() {
     /dev/shm/galera$idx/mysql-galera stop
 }
 conn_node() {
-    local idx=$1
+    local idx=$1; shift
     mysql --sock=/dev/shm/galera$idx/mysql/var/mysqld.sock -u root -prootpass
 }
 log_node() {
@@ -167,8 +167,7 @@ log_node() {
 start_nodes() {
     if [ $# -gt 0 ]; then
         while [ $# -gt 0 ]; do
-            local idx=$1
-            shift
+            local idx=$1; shift
             # start seqentially.
             start_node $idx
         done
@@ -181,6 +180,13 @@ stop_nodes() {
 }
 remove_nodes() {
     cd ~/repo/galera-yan && ./tests/scripts/command.sh remove && cd -
+}
+change_master_to_node0() {
+    local idx=$1
+    local cmd="STOP SLAVE; \
+CHANGE MASTER TO MASTER_HOST='127.0.0.1', MASTER_PORT=3305, MASTER_USER='root', MASTER_PASSWORD='rootpass', MASTER_AUTO_POSITION = 1; \
+START SLAVE"
+    echo $cmd | conn_node $idx
 }
 mysql_stopd() {
     sudo /etc/init.d/mysql stop

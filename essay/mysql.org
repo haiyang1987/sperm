@@ -466,6 +466,17 @@ binlog-format有三种选择
    - If a timeout occurs without any slave having acknowledged the transaction, the master reverts to asynchronous replication. When at least one semisynchronous slave catches up, the master returns to semisynchronous replication.（如果超时之前没有确认事务的话，那么master会转到async模式，直到有一个semi-sync slave追上为止）
    - Semisynchronous replication must be enabled on both the master and slave sides. If semisynchronous replication is disabled on the master, or enabled on the master but on no slaves, the master uses asynchronous replication.（slave和master两端都必须打开semi-sync）
 
+GTID(global trx id)(since MySQL 5.6)
+   - https://dev.mysql.com/doc/refman/5.6/en/replication-gtids.html
+   - http://www.mysqlperformanceblog.com/2013/02/08/how-to-createrestore-a-slave-using-gtid-replication-in-mysql-5-6/
+需要使用下面参数
+   - gtid_mode=ON
+   - log-bin
+   - log-slave-updates
+   - enforce-gtid-consistency=true
+   - server_id
+*note(dirlt): much eaiser to handle master-slave replication and failover situation*
+
 ** 配置文件
    - ~/.my.cnf overrides /etc/my.cnf
    - [client] MySQL客户端程序选项组标记
