@@ -402,7 +402,7 @@ easy_oprofile() {
     echo "Source directory: $srcdir"
     echo "Assembly file: $afile"
     echo "Command: $command"
-    
+
     sudo opcontrol --reset
     sudo opcontrol --no-vmlinux --separate=lib --start --image=$ifile
     $command
@@ -419,8 +419,8 @@ package_install() {
         exit 1
     fi
     local NAME=$1; shift
-    local PARAMS=$@    
-    case $NAME in 
+    local PARAMS=$@
+    case $NAME in
         *.tar.gz)
             local SRC=`basename $NAME .tar.gz`
             rm -rf $SRC
@@ -434,8 +434,7 @@ package_install() {
     esac
     cd $SRC
     local CONFIG="./configure $PARAMS --enable-shared=no --enable-static=yes"
-    CFLAGS="-fPIC" CXXFLAGS="-fPIC" $CONFIG   
+    CFLAGS="-fPIC" CXXFLAGS="-fPIC" $CONFIG
     make -j 8;make install
-    cd -   
+    cd -
 }
-
