@@ -386,3 +386,56 @@ install_hosts() {
 shadowsocks() {
     cd ~/.private/shadowsocks && ./local.py && cd -
 }
+
+easy_oprofile() {
+    if [ $# -lt 5 ]; then
+        echo "easy_oprofile image-file(ELF) report-file source-directory asm-file command"
+        exit 1
+    fi
+    local ifile=$1; shift
+    local rfile=$1; shift
+    local srcdir=$1; shift
+    local afile=$1; shift
+    local command=$@
+    echo "Image file: $ifile"
+    echo "Report file: $rfile"
+    echo "Source directory: $srcdir"
+    echo "Assembly file: $afile"
+    echo "Command: $command"
+    
+    sudo opcontrol --reset
+    sudo opcontrol --no-vmlinux --separate=lib --start --image=$ifile
+    $command
+    sudo opcontrol --dump
+    sudo opcontrol --shutdown
+    sudo opreport -l image:$ifile -o $rfile
+    sudo opannotate -s --output-dir=$srcdir $ifile
+    sudo opannotate -a $ifile > $afile
+}
+
+package_install() {
+    if [ $# -lt 2 ]; then
+        echo "package_install package(tar.gz or tar.bz2) configure-parameters"
+        exit 1
+    fi
+    local NAME=$1; shift
+    local PARAMS=$@    
+    case $NAME in 
+        *.tar.gz)
+            local SRC=`basename $NAME .tar.gz`
+            rm -rf $SRC
+            tar xzf $NAME
+            ;;
+        *.tar.bz2)
+            local SRC=`basename $NAME .tar.bz2`
+            rm -rf $SRC
+            tar xjf $NAME
+            ;;
+    esac
+    cd $SRC
+    local CONFIG="./configure $PARAMS --enable-shared=no --enable-static=yes"
+    CFLAGS="-fPIC" CXXFLAGS="-fPIC" $CONFIG   
+    make -j 8;make install
+    cd -   
+}
+
