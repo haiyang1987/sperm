@@ -1,113 +1,121 @@
 #!/usr/bin/env bash
 #Copyright (C) dirlt
 
-# mac or ubuntu.
-MAC=0
-kernel=`uname -s`
-if [ $kernel"X" = "DarwinX" ]
-then
-    MAC=1
-fi
-
 # basic path.
-PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/sbin:$PATH
-MANPATH=/usr/local/share/man:/usr/share/man:$MANPATH
+export PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/sbin:$PATH
+export MANPATH=/usr/local/share/man:/usr/share/man:$MANPATH
+
+# mac or ubuntu.
+is_mac() {
+    if [ $(uname -s) = "Darwin" ]; then echo "1"; else echo "0"; fi
+}
 
 # cdh related.
-CDH3=0
-CDH4_2_0=0
-CDH4_3_0=1
+configure_cdh() {
+    local CDH3=0
+    local CDH4_2_0=0
+    local CDH4_3_0=1
 
-if [ $MAC = 1 ]; then
-    export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.7.0_17.jdk/Contents/Home/
-    export HADOOP_LZO=/Users/dirlt/repo/hadoop-lzo/
-    export HADOOP_CLASSPATH=.:$HADOOP_LZO/build/hadoop-lzo-0.4.17-SNAPSHOT.jar
-    export JAVA_LIBRARY_PATH=$HADOOP_LZO/build/native/Mac_OS_X-x86_64-64/lib/
-else
-    export JAVA_HOME=/usr/lib/jvm/java-6-openjdk-amd64/
-
-    if [ $CDH3 = 1 ]; then
-	export HADOOP_HOME=$HOME/utils/hadoop-0.20.2-cdh3u3/
-	export HADOOP_CONF_DIR=$HADOOP_HOME/conf
-	export HBASE_HOME=$HOME/utils/hbase-0.90.4-cdh3u3/
-	export HBASE_CONF_DIR=$HBASE_HOME/conf
-	export OOZIE_HOME=$HOME/utils/oozie-2.3.2-cdh3u3/
-	export OOZIE_URL="http://localhost:11000/oozie" # default url
-	export HIVE_HOME=$HOME/utils/hive-0.7.1-cdh3u3/
+    # mac
+    if [ $(is_mac) = 1 ]; then
+        HADOOP_CLASSPATH=.:$HADOOP_LZO/build/hadoop-lzo-0.4.17-SNAPSHOT.jar
+        JAVA_LIBRARY_PATH=$HADOOP_LZO/build/native/Mac_OS_X-x86_64-64/lib/
+    else
+        if [ $CDH3 = 1 ]; then
+	    export HADOOP_HOME=$HOME/utils/hadoop-0.20.2-cdh3u3/
+	    export HADOOP_CONF_DIR=$HADOOP_HOME/conf
+	    export HBASE_HOME=$HOME/utils/hbase-0.90.4-cdh3u3/
+	    export HBASE_CONF_DIR=$HBASE_HOME/conf
+	    export OOZIE_HOME=$HOME/utils/oozie-2.3.2-cdh3u3/
+	    export OOZIE_URL="http://localhost:11000/oozie" # default url
+	    export HIVE_HOME=$HOME/utils/hive-0.7.1-cdh3u3/
+        fi
+        if [ $CDH4_2_0 = 1 ]; then
+	    export HADOOP_HOME=$HOME/utils/hadoop-2.0.0-cdh4.2.0
+	    export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop/
+	    export HBASE_HOME=$HOME/utils/hbase-0.94.2-cdh4.2.0/
+	    export HBASE_CONF_DIR=$HBASE_HOME/conf
+	    export HIVE_HOME=$HOME/utils/hive-0.10.0-cdh4.2.0/
+        fi
+        if [ $CDH4_3_0 = 1 ]; then
+	    export HADOOP_HOME=$HOME/utils/hadoop-2.0.0-cdh4.3.0
+	    export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop/
+	    export HBASE_HOME=$HOME/utils/hbase-0.94.6-cdh4.3.0/
+	    export HBASE_CONF_DIR=$HBASE_HOME/conf
+	    export HIVE_HOME=$HOME/utils/hive-0.10.0-cdh4.3.0/
+        fi
+        HADOOP_CLASSPATH=.:$HADOOP_HOME/lib/hadoop-lzo-0.4.15.jar
+        JAVA_LIBRARY_PATH=$HADOOP_HOME/lib/native/Linux-amd64-64:$HADOOP_HOME/lib/native
     fi
-
-    if [ $CDH4_2_0 = 1 ]; then
-	export HADOOP_HOME=$HOME/utils/hadoop-2.0.0-cdh4.2.0
-	export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop/
-	export HBASE_HOME=$HOME/utils/hbase-0.94.2-cdh4.2.0/
-	export HBASE_CONF_DIR=$HBASE_HOME/conf
-	export HIVE_HOME=$HOME/utils/hive-0.10.0-cdh4.2.0/
-    fi
-
-    if [ $CDH4_3_0 = 1 ]; then
-	export HADOOP_HOME=$HOME/utils/hadoop-2.0.0-cdh4.3.0
-	export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop/
-	export HBASE_HOME=$HOME/utils/hbase-0.94.6-cdh4.3.0/
-	export HBASE_CONF_DIR=$HBASE_HOME/conf
-	export HIVE_HOME=$HOME/utils/hive-0.10.0-cdh4.3.0/
-    fi
-
-    export JAVA_LIBRARY_PATH=$HADOOP_HOME/lib/native/Linux-amd64-64:$HADOOP_HOME/lib/native
-    export HADOOP_CLASSPATH=.:$HADOOP_HOME/lib/hadoop-lzo-0.4.15.jar
-
     PATH=$HADOOP_HOME/bin:$PATH
     PATH=$HADOOP_HOME/sbin:$PATH
     PATH=$HBASE_HOME/bin:$PATH
     PATH=$OOZIE_HOME/bin:$PATH
     PATH=$HIVE_HOME/bin:$PATH
 
-fi
-
-# jdk and jvm.
-export CLASSPATH=.:./target/classes:./target/dependency:$JAVA_HOME/lib/tools.jar:$JAVA_HOME/lib/dt.jar:$HADOOP_CLASSPATH:$CLASSPATH
-export LD_LIBRARY_PATH=.:$JAVA_LIBRARY_PATH:$LD_LIBRARY_PATH
-PATH=$JAVA_HOME/bin:$PATH
-
-# texmacs.
-PATH=$HOME/utils/TeXmacs-1.0.7-static-gnu-linux/bin:$PATH
-
-# maven.
-PATH=$HOME/utils/apache-maven-3.0.4/bin:$PATH
-PATH=$HOME/utils/apache-maven-3.2.1/bin:$PATH
-
-# protocol buffers.
-PATH=$HOME/utils/protobuf-2.3.0/build/bin:$PATH
-PATH=$HOME/utils/protobuf-2.5.0/build/bin:$PATH
-PATH=$HOME/utils/protobuf-2.4.1/build/bin:$PATH
-
-# golang
-export GOROOT=$HOME/utils/go
-export GOPATH=$HOME/go/
-PATH=$GOROOT/bin:$PATH
-
-golang_doc_server() {
-    godoc -http=:6060
+    export HADOOP_CLASSPATH
+    export JAVA_LIBRARY_PATH
+    export PATH
 }
+configure_cdh
 
-# scala.
-export SCALA_HOME=$HOME/utils/scala-2.10.2
-PATH=$SCALA_HOME/bin:$PATH
+# java related.
+configure_java() {
+    if [ $(is_mac) = 1 ]; then
+        JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.7.0_17.jdk/Contents/Home/
+    else
+        JAVA_HOME=/usr/lib/jvm/java-6-openjdk-amd64/
+    fi
+    CLASSPATH=$JAVA_HOME/lib/tools.jar:$JAVA_HOME/lib/dt.jar:$HADOOP_CLASSPATH:$CLASSPATH
+    CLASSPATH=.:./target/classes:./target/dependency:$CLASSPATH
+    LD_LIBRARY_PATH=$JAVA_LIBRARY_PATH:$LD_LIBRARY_PATH
+    PATH=$JAVA_HOME/bin:$PATH
 
-# sbt
-export SBT_HOME=$HOME/utils/sbt
-PATH=$SBT_HOME/bin:$PATH
-export SBT_OPTS="-Dsbt.global.base=$HOME/.sbt -Dsbt.ivy.home=$HOME/.ivy2"
+    export JAVA_HOME
+    export CLASSPATH
+    export LD_LIBRARY_PATH
+    export PATH
+}
+configure_java
 
-# ccache
-PATH=/usr/lib/ccache:$PATH
+# utilities related.
+configure_utils() {
+    # texmacs.
+    PATH=$HOME/utils/TeXmacs-1.0.7-static-gnu-linux/bin:$PATH
 
-# export path and manpath.
-PATH=$HOME/utils/bin:$PATH
-export PATH
-export MANPATH
+    # maven.
+    PATH=$HOME/utils/apache-maven-3.0.4/bin:$PATH
+    PATH=$HOME/utils/apache-maven-3.2.1/bin:$PATH
 
-# other settings.
-export EDITOR=vim
+    # protocol buffers.
+    PATH=$HOME/utils/protobuf-2.3.0/build/bin:$PATH
+    PATH=$HOME/utils/protobuf-2.5.0/build/bin:$PATH
+    PATH=$HOME/utils/protobuf-2.4.1/build/bin:$PATH
+
+    # golang
+    export GOROOT=$HOME/utils/go
+    export GOPATH=$HOME/go/
+    PATH=$GOROOT/bin:$PATH
+
+    # scala.
+    export SCALA_HOME=$HOME/utils/scala-2.10.2
+    PATH=$SCALA_HOME/bin:$PATH
+
+    # sbt
+    export SBT_HOME=$HOME/utils/sbt
+    PATH=$SBT_HOME/bin:$PATH
+    export SBT_OPTS="-Dsbt.global.base=$HOME/.sbt -Dsbt.ivy.home=$HOME/.ivy2"
+
+    # ccache
+    PATH=/usr/lib/ccache:$PATH
+
+    # utils/bin
+    PATH=$HOME/utils/bin:$PATH
+
+    export PATH
+    export MANPATH
+}
+configure_utils
 
 # git related.
 git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --"
@@ -203,10 +211,10 @@ build5.5r() {
 build5.6r() {
     cd ~/repo/galera-yan && MYSQL_SRC=$HOME/repo/wsrep-5.6 ./scripts/mysql/build.sh -i -b --no-strip && cd -
 }
-w_url5.5() {
+wsrep_url5.5() {
     echo "http://bazaar.launchpad.net/~codership/codership-mysql/wsrep-5.5/revision/$1"
 }
-w_url5.6() {
+wsrep_url5.6() {
     echo "http://bazaar.launchpad.net/~codership/codership-mysql/5.6/revision/$1"
 }
 test_seesaw() {
@@ -220,25 +228,31 @@ test_stopcont() {
     round=${1:-4}
     ~/repo/galera-yan/tests/test_stopcont/run.sh 4
 }
-w_ci() {
+wsrep_commit() {
     local bugid=$1
     local message=$2
     bzr commit --fixes lp:$bugid -m "References lp:$bugid $message"
 }
-g_ci() {
+galera_commit() {
     local ticketid=$1
     local message=$2
     svn commit -m "Refs #$ticketid:$message"
 }
-g_debug_build() {
+galera_debug_build() {
     cd ~/repo/galera-yan && scons debug=0 -j8 && cd -
 }
 
 # others
+export EDITOR=vim
+
 alias dstat='dstat -cdlmnpsy'
 
 pgrep() {
   ps aux | grep $1
+}
+
+golang_doc_server() {
+    godoc -http=:6060
 }
 
 apt_update() {
