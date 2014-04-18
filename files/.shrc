@@ -401,6 +401,16 @@ shadowsocks() {
     cd ~/.private/shadowsocks && ./local.py && cd -
 }
 
+shadowsocks_once() {
+    local port_info
+    port_info=$(lsof -i:62221 -Pn | grep "(LISTEN)")
+    if [ -z $port_info ]; then
+        echo "start shadowsocks..."
+        cd ~/.private/shadowsocks && (./local.py >/tmp/shadowsocks.out 2>&1 &)
+    fi
+}
+shadowsocks_once
+
 easy_oprofile() {
     if [ $# -lt 5 ]; then
         echo "easy_oprofile image-file(ELF) report-file source-directory asm-file command"

@@ -40,4 +40,3 @@ source $ZSH/oh-my-zsh.sh
 
 # echo "source ~/.shrc"
 source ~/.shrc
-
