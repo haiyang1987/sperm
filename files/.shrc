@@ -284,8 +284,18 @@ apt_update() {
 }
 
 home_http_server() {
-    cd ~ && sudo python -m SimpleHTTPServer 80 && cd -
+    cd ~ && python -m SimpleHTTPServer 8080 && cd -
 }
+
+home_http_server_once() {
+    local port_info
+    port_info=$(lsof -i:8080 -Pn | grep "(LISTEN)")
+    if [ -z $port_info ]; then
+        echo "start home_http_server..."
+        cd ~ && (python -m SimpleHTTPServer 8080 >/tmp/home_http_server.out 2>&1 &)
+    fi
+}
+home_http_server_once
 
 cxx_indent() {
     dos2unix $@
