@@ -12,11 +12,11 @@ const char *str;
   const char *char_ptr;
   const unsigned long int *longword_ptr;
   unsigned long int longword, himagic, lomagic;
-  
+
   // 首先是需要对齐到unsigned long int这个长度.
   // 之后就是每个unsigned long int来进行判断.
   // 这样可以加快速度
-  
+
   /* Handle the first few characters by reading one character at a time.
    * Do this until CHAR_PTR is aligned on a longword boundary.  */
   for (char_ptr = str; ((unsigned long int) char_ptr
@@ -32,7 +32,7 @@ const char *str;
   // 为了简化处理的话，我们可以认为sizeof(longword)==8，这样
   // himagic = 0x8080808080808080L
   // lomagic = 0x0101010101010101L
-  
+
   /* Bits 31, 24, 16, and 8 of this number are zero.  Call these bits
    * the "holes."  Note that there is a hole just to the left of
    * each byte, with an extra at the end:
@@ -58,14 +58,14 @@ const char *str;
    * if *any of the four* bytes in the longword in question are zero.  */
   for (;;) {
     longword = *longword_ptr++;
-    
+
     // 这里原理非常简单,假设在unsigned long int里面存在一个0的话
     // 那么0-lomagic的话会造成高位为1.如果!=0的话那么至少>=1就不会造成对应字节高字节为1了.
     // 当然这里还有一种情况就是这个不是一个ASCII字符.
     // 使用& ~longword来判断的话,如果高位就为1的话那么就会置为0,这样就排除了非ASCII情况.
     // 然后& himagic的话,来判断是否有高位为1.如果有的话说明这几个字节里面存在0.
     // 如果存在0的话那么就只是针对这8个字节进行枚举
-    
+
     if (((longword - lomagic) & ~longword & himagic) != 0) {
       /* Which of the bytes was the zero?  If none of them were, it was
        * a misfire; continue the search.  */
@@ -233,11 +233,11 @@ CONCISE针对这个部分稍微改进了一下
 可以看到最大的范围是31 + 2^25 * 31 = 1040187423 , 如果从0开始的话，那么就是[0,1040187422]
 
 下面是一个例子， Compressed representation of the set {3, 5, 31–93, 1024, 1028, 1 040 187 422}.
-   - The word #0 is used to represent integers in the range 0–30, 
+   - The word #0 is used to represent integers in the range 0–30,
    - word #1 for integers in 31–92, （5bit为0，说明这个31bit是完全填充。25bit=1表示后面1 * 31个bit全为1，范围就是从31到31(start) + 31 + 31 - 1 = 92.
    - word #2 for integers 93–1022, （5bit为1，说明下一个31bit的第一个元素是反转的也就是93。范围从93到93(start) + 31 + 29 * 31 - 1 = 1022
-   - word #3 for integers 1023–1053, 
-   - word #4 for integers 1054–1 040 187 391, 
+   - word #3 for integers 1023–1053,
+   - word #4 for integers 1054–1 040 187 391,
    - and word #5 for integers 1 040 187 392–1 040 187 422.
 file:./images/concise-concise.png
 
@@ -261,7 +261,7 @@ def tree_dist(root):
     mr=max(e,f)+1 # 右子树高度
     path=ml+mr+1 # root内部最长距离
     return (max(a,d,path),ml,mr)
-            
+
 def TreeDistance(root):
     return tree_dist(root)[0]
 #+END_SRC
@@ -285,7 +285,7 @@ class Solution {
     int s = side(root,&p);
     return max(s,p);
   }
-  
+
   // path means max sum in root, but not contains root node,
   // so it does not contribute the parent.(but if contains root node, it doesn't matter)
   // because we just get max of it.
@@ -298,20 +298,20 @@ class Solution {
       int rp;
       int r= side(root->right,&rp);
       *path = max(r,rp);
-      return max(0,r) + root->val;      
+      return max(0,r) + root->val;
     } else if(root->right == NULL) {
       int lp;
       int l = side(root->left,&lp);
       *path = max(l,lp);
       return max(0,l) + root->val;
     } else {
-      int lp,rp;    
+      int lp,rp;
       int l = side(root->left,&lp);
       int r = side(root->right,&rp);
       int p = max(max(l,r),max(lp,rp));
       p = max(p, max(0,l) + max(0,r) + root->val);
       *path = p;
-      return max(max(0,l), max(0,r)) + root->val;      
+      return max(max(0,l), max(0,r)) + root->val;
     }
   }
 };
@@ -329,14 +329,14 @@ class Solution {
 思考的关键在于，主持人这个行为对你当前选择的概率是没有任何影响的。因为无论如何主持人都可以打开一扇空门出来。
 
 *** 等概率选取链表元素问题
-等概率选取未知长度的链表中的元素，要求是只能够遍历这个链表一次。下面是代码， *注意这里的wanted会不断地被更新* 
+等概率选取未知长度的链表中的元素，要求是只能够遍历这个链表一次。下面是代码， *注意这里的wanted会不断地被更新*
 #+BEGIN_SRC C++
 int nmatch = 0;
 for ( p=list; p!=NULL; p=p->next ){
     if ( rand() % ++nmatch == 0 ){
         wanted = p;
     }
-} 
+}
 #+END_SRC
 
 这个问题可以如此考虑，假设长度为n，那么最后一个元素被选出（选中）的概率为1/n，然后我们考虑倒数第二个元素选出的概率
@@ -484,7 +484,7 @@ class Solution {
   }
 };
 #+END_SRC
- 
+
 -----
 
 另外一个题目的变形是 http://oj.leetcode.com/problems/container-with-most-water/ 题目的大致要求是找到两个点，这两个点围成的container蓄水最多。似乎没有O(n^2)以下的算法了，但是可以做比较深度的减枝。假设两个点是xi,xj.有两个特性可以用来减枝。
@@ -514,7 +514,7 @@ class Solution {
     }
     return res;
   }
-};     
+};
 #+END_SRC
 
 *** 赔率系统设计问题
@@ -550,7 +550,7 @@ note(dirlt)：2012.6.14
 
 ** TopCoder
 *** 安装和配置
-安装topcoder非常简单： 
+安装topcoder非常简单：
    - 确认安装好javaws，因为topcoder客户端是一个java applet
    - 下载topcoder的客户端 # wget  http://www.topcoder.com/contest/arena/ContestAppletProd.jnlp
    - 启动这个applet之后就就可以进入arena了。
@@ -559,8 +559,8 @@ note(dirlt)：2012.6.14
    - code processor
    - file edit
    - TZTester
-这些插件都可以在这里找到 http://community.topcoder.com/tc?module=Static&d1=applet&d2=plugins 
- 
+这些插件都可以在这里找到 http://community.topcoder.com/tc?module=Static&d1=applet&d2=plugins
+
 三个插件的下载地址分别是：
    - http://community.topcoder.com/contest/classes/TZTester/TZTester.jar
    - http://community.topcoder.com/contest/classes/CodeProcessor/CodeProcessor.jar
@@ -568,7 +568,7 @@ note(dirlt)：2012.6.14
 
 下载完成之后在topcoder客户端里面的options->Editor里面进行配置
    - Add增加一个Editor
-   - EntryPoint填写 codeprocessor.EntryPoint 
+   - EntryPoint填写 codeprocessor.EntryPoint
    - ClassPath将前面三个jar选择上
    - 然后选择这个为Default Editor
    - 然后点击Configure
@@ -576,7 +576,7 @@ note(dirlt)：2012.6.14
    - processor class填写 tangentz.TZTester
 
 继续点击Configure选项，在General这个部分基本上没有什么需要修改的：
-   - read/write problem to ./TopCoder/code # 将题目保存到TopCoder/code目录里面
+   - read/write problem to ./topcoder # 将题目保存到topcoder目录里面
    - *todo(dirlt):more*
 然后就是配置Code Template。如果使用C++的话，那么可以考虑使用下面的模板
 #+BEGIN_SRC C++
@@ -620,41 +620,43 @@ int main() {
 以后每次打开题目都会在本地保存一份代码，并且里面附带测试用例，本地完成之后直接load即可保存到远程。nice!!!
 
 *** 初次DIV2
-file:./images/virgin-topcoder-div2.jpg 
+file:./images/virgin-topcoder-div2.jpg
+
+*** srm div2 series
+https://github.com/dirtysalt/sperm/tree/master/code/tc-srm
 
 ** 计算机科学最重要的32个算法
 http://www.infoq.com/cn/news/2012/08/32-most-important-algorithms
- 
-   1. A* 搜索算法 
-   2. 集束搜索(又名定向搜索，Beam Search) 
-   3. 二分查找 
-   4. 分支界定算法(Branch and Bound) 
-   5. Buchberger算法 
-   6. 数据压缩 
-   7. Diffie-Hellman密钥交换算法 
-   8. Dijkstra算法 
-   9. 离散微分算法(Discrete differentiation) 
-   10. 动态规划算法(Dynamic Programming) 
-   11. 欧几里得算法(Euclidean algorithm) 
-   12. 期望-最大算法(Expectation-maximization algorithm, EM-Training)
-   13. 快速傅里叶变换 
-   14. 梯度下降(Gradient descent) 
-   15. 哈希算法(Hashing) 
-   16. 堆排序(Heaps) 
-   17. Karatsuba乘法 
-   18. LLL算法(Lenstra-Lenstra-Lovasz lattice reduction) 
-   19. 最大流量算法(Maximum flow) 
-   20. 合并排序(Merge Sort) 
-   21. 牛顿法(Newton's method) 
-   22. Q-learning学习算法 
-   23. 两次筛法(Quadratic Sieve) 
-   24. RANSAC 
-   25. RSA 
-   26. Sch&#246;nhage-Strassen算法 
-   27. 单纯型算法(Simplex Algorithm) 
-   28. 奇异值分解 
-   29. 求解线性方程组(Solving a system of linear equations) 
-   30. Strukturtensor算法 
-   31. 合并查找算法(Union-find) 
-   32. 维特比算法 
 
+   1. A* 搜索算法
+   2. 集束搜索(又名定向搜索，Beam Search)
+   3. 二分查找
+   4. 分支界定算法(Branch and Bound)
+   5. Buchberger算法
+   6. 数据压缩
+   7. Diffie-Hellman密钥交换算法
+   8. Dijkstra算法
+   9. 离散微分算法(Discrete differentiation)
+   10. 动态规划算法(Dynamic Programming)
+   11. 欧几里得算法(Euclidean algorithm)
+   12. 期望-最大算法(Expectation-maximization algorithm, EM-Training)
+   13. 快速傅里叶变换
+   14. 梯度下降(Gradient descent)
+   15. 哈希算法(Hashing)
+   16. 堆排序(Heaps)
+   17. Karatsuba乘法
+   18. LLL算法(Lenstra-Lenstra-Lovasz lattice reduction)
+   19. 最大流量算法(Maximum flow)
+   20. 合并排序(Merge Sort)
+   21. 牛顿法(Newton's method)
+   22. Q-learning学习算法
+   23. 两次筛法(Quadratic Sieve)
+   24. RANSAC
+   25. RSA
+   26. Sch&#246;nhage-Strassen算法
+   27. 单纯型算法(Simplex Algorithm)
+   28. 奇异值分解
+   29. 求解线性方程组(Solving a system of linear equations)
+   30. Strukturtensor算法
+   31. 合并查找算法(Union-find)
+   32. 维特比算法
