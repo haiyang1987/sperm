@@ -144,6 +144,7 @@ export LC_ALL="en_US.UTF-8"
 # export MYSQL_SRC=$HOME/repo/wsrep-5.6
 export MYSQL_SRC=$HOME/repo/wsrep-5.5
 export MYSQL_DIR=$MYSQL_SRC/build_release
+export GALERA_SRC=$HOME/repo/galera-yan
 
 start_node() {
     local idx=$1
@@ -157,6 +158,7 @@ start_node() {
     fi
     local clutser_address="gcomm://127.0.0.1:$cluster_port?pc.wait_prim=false&gmcast.listen_addr=tcp://0.0.0.0:$node_port"
     local cmd="MYSQL_PORT=$mysql_port /dev/shm/galera$idx/mysql-galera -g '$clutser_address' $option start"
+    # local cmd="MYSQL_PORT=$mysql_port /dev/shm/galera$idx/mysql-galera $option start"
     echo $cmd
     eval $cmd
 }
@@ -180,14 +182,14 @@ start_nodes() {
             start_node $idx
         done
     else
-        cd ~/repo/galera-yan && ./tests/scripts/command.sh start && cd -
+        cd $GALERA_SRC && ./tests/scripts/command.sh start && cd -
     fi
 }
 stop_nodes() {
-    cd ~/repo/galera-yan && ./tests/scripts/command.sh stop && cd -
+    cd $GALERA_SRC && ./tests/scripts/command.sh stop && cd -
 }
 remove_nodes() {
-    cd ~/repo/galera-yan && ./tests/scripts/command.sh remove && cd -
+    cd $GALERA_SRC && ./tests/scripts/command.sh remove && cd -
 }
 change_master_to_node0() {
     local idx=$1
@@ -199,17 +201,22 @@ START SLAVE"
 mysql_stopd() {
     sudo /etc/init.d/mysql stop
 }
+test_cpconf() {
+    cd ~/.private/galera && \
+        cp cluster.conf nodes.conf my0.cnf my1.cnf my2.cnf common_my.cnf $GALERA_SRC/tests/conf/ \
+        && cd -
+}
 build5.5d() {
-    cd ~/repo/galera-yan && MYSQL_SRC=$HOME/repo/wsrep-5.5 ./scripts/mysql/build.sh -i -b -d --no-strip && cd -
+    cd $GALERA_SRC && MYSQL_SRC=$HOME/repo/wsrep-5.5 ./scripts/mysql/build.sh -i -b -d --no-strip && cd -
 }
 build5.6d() {
-    cd ~/repo/galera-yan && MYSQL_SRC=$HOME/repo/wsrep-5.6 ./scripts/mysql/build.sh -i -b -d --no-strip && cd -
+    cd $GALERA_SRC && MYSQL_SRC=$HOME/repo/wsrep-5.6 ./scripts/mysql/build.sh -i -b -d --no-strip && cd -
 }
 build5.5r() {
-    cd ~/repo/galera-yan && MYSQL_SRC=$HOME/repo/wsrep-5.5 ./scripts/mysql/build.sh -i -b --no-strip && cd -
+    cd $GALERA_SRC && MYSQL_SRC=$HOME/repo/wsrep-5.5 ./scripts/mysql/build.sh -i -b --no-strip && cd -
 }
 build5.6r() {
-    cd ~/repo/galera-yan && MYSQL_SRC=$HOME/repo/wsrep-5.6 ./scripts/mysql/build.sh -i -b --no-strip && cd -
+    cd $GALERA_SRC && MYSQL_SRC=$HOME/repo/wsrep-5.6 ./scripts/mysql/build.sh -i -b --no-strip && cd -
 }
 wsrep_url5.5() {
     echo "http://bazaar.launchpad.net/~codership/codership-mysql/wsrep-5.5/revision/$1"
@@ -219,14 +226,14 @@ wsrep_url5.6() {
 }
 test_seesaw() {
     round=${1:-4}
-    ~/repo/galera-yan/tests/test_seesaw/run.sh $round
+    $GALERA_SRC/tests/test_seesaw/run.sh $round
 }
 test_seesaw_sst() {
     KILL_RATE=1 SST_RATE=1 test_seesaw $@
 }
 test_stopcont() {
     round=${1:-4}
-    ~/repo/galera-yan/tests/test_stopcont/run.sh 4
+    $GALERA_SRC/tests/test_stopcont/run.sh 4
 }
 wsrep_commit() {
     local bugid=$1
@@ -239,7 +246,7 @@ galera_commit() {
     svn commit -m "Refs #$ticketid:$message"
 }
 galera_debug_build() {
-    cd ~/repo/galera-yan && scons debug=0 -j8 && cd -
+    cd $GALERA_SRC && scons debug=0 -j8 && cd -
 }
 
 # others
