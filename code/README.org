@@ -3,13 +3,11 @@ use ./dep-install to install all following packages.
    - sudo apt-get install libprotobuf-dev
    - sudo apt-get install libprotoc-dev
    - sudo apt-get install libev-dev
-   - sudo apt-get install libzmq-dev
    - sudo apt-get install libgoogle-perftools-dev
    - sudo apt-get install google-perftools   
    - sudo apt-get install flex
    - sudo apt-get install bison
 * cc
-   - sasuke // a half-async-half-sync rpc server implementation based on zeromq. (http://www.zeromq.org/)
    - itachi // a asynchronous programming framework based on libev. (http://software.schmorp.de/pkg/libev.html)
    - bench // a benchmark collection of system call performance.
    - astyle // a c(or c++, or java)-liked language code formatter.(http://astyle.sourceforge.net/astyle.html)

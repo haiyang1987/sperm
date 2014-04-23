@@ -2,7 +2,7 @@
  * Copyright (C) dirlt
  */
 
-#include "common/lkfree.h"
+#include "common/lock_free.h"
 typedef common::lkfree::SampleMemoryAllcator<int> IntSampleMemoryAllocator;
 
 int main() {

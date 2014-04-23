@@ -1,4 +1,0 @@
-package sample;
-message Echo {
-  optional string content=1;   
-};

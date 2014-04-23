@@ -8,11 +8,6 @@ env=Environment(CPPPATH=['.'],
                 CXXFLAGS='-W -Wall -g -Werror -Wno-unused-parameter -O2 -UDEBUG -fPIC')
 env.StaticLibrary('common/common',Glob('common/*.cc'))
 
-# --------------------sasuke--------------------
-env=Environment(CPPPATH=['.'],
-                CXXFLAGS='-W -Wall -g -Werror -O2 -DDEBUG -fPIC')
-env.StaticLibrary('sasuke/sasuke',Glob('sasuke/rpc.cc'))
-
 # --------------------itachi--------------------
 env=Environment(CPPPATH=['.'],
                 CXXFLAGS='-W -Wall -g -Werror -O2 -UDEBUG -fPIC')
@@ -30,7 +25,6 @@ env=Environment(CPPPATH=['.'],
 env.StaticLibrary('nasty/nasty',Glob('nasty/*.cc'))
 
 SConscript(['common/test/SConstruct',
-            'sasuke/test/SConstruct',
             'itachi/test/SConstruct',
             'bench/SConstruct',
             'astyle/test/SConstruct',
