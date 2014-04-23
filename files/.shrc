@@ -147,7 +147,8 @@ export MYSQL_DIR=$MYSQL_SRC/build_release
 export GALERA_SRC=$HOME/repo/galera-yan
 
 start_node() {
-    local idx=$1
+    local idx=$1; shift
+    local extra_options=$@
     local mysql_port=$((3305-idx))
     local node_port=$((4566-2*idx))
     local cluster_port=4566
@@ -157,7 +158,7 @@ start_node() {
         option="--mysql-opt --wsrep-new-cluster"
     fi
     local clutser_address="gcomm://127.0.0.1:$cluster_port?pc.wait_prim=false&gmcast.listen_addr=tcp://0.0.0.0:$node_port"
-    local cmd="MYSQL_PORT=$mysql_port /dev/shm/galera$idx/mysql-galera -g '$clutser_address' $option start"
+    local cmd="MYSQL_PORT=$mysql_port /dev/shm/galera$idx/mysql-galera -g '$clutser_address' $option $extra_options start"
     # local cmd="MYSQL_PORT=$mysql_port /dev/shm/galera$idx/mysql-galera $option start"
     echo $cmd
     eval $cmd

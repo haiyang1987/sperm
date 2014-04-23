@@ -1,3 +1,0 @@
-#!/bin/bash
-rm /usr/lib/jvm/java-6-sun/jre/bin/java && ln -s /usr/lib/jvm/java-6-sun/jre/bin/strace-java /usr/lib/jvm/java-6-sun/jre/bin/java
-

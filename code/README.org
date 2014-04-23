@@ -12,10 +12,12 @@ use ./dep-install to install all following packages.
    - sasuke // a half-async-half-sync rpc server implementation based on zeromq. (http://www.zeromq.org/)
    - itachi // a asynchronous programming framework based on libev. (http://software.schmorp.de/pkg/libev.html)
    - bench // a benchmark collection of system call performance.
-   - astyle // a C/C++/Java language code formatter.(http://astyle.sourceforge.net/astyle.html)
+   - astyle // a c(or c++, or java)-liked language code formatter.(http://astyle.sourceforge.net/astyle.html)
    - nasty // a lisp-like language frontend based on flex/bison.
+   - common
+   - playboard
+   - vmtouch
 * java
-all of them are just for test, none for production.:(
    - asynchbase
    - finagle
    - guava
@@ -33,10 +35,6 @@ all of them are just for test, none for production.:(
 * scala
    - akka
    - finagle
-* sh
-   - jstrace // hook java and do strace to it.
-   - tjvm // generate template for JVM project.
-   - utils // 
-
 * leetcode
-* topcoder
+* tc-srm
+
