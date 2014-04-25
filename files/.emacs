@@ -429,5 +429,5 @@
 ;; (global-set-key "\C-chdv" 'describe-variable) ;; help describe variable.
 ;; (global-set-key "\C-chdk" 'describe-key) ;; help describe key.
 (global-set-key "\C-c;" 'comment-or-uncomment-region)
-;; (global-set-key "\C-x." 'multi-term)
+(global-set-key "\C-x." 'multi-term)
 (menu-bar-mode 1)
