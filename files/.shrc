@@ -26,8 +26,6 @@ configure_cdh() {
 	    export HADOOP_CONF_DIR=$HADOOP_HOME/conf
 	    export HBASE_HOME=$HOME/utils/hbase-0.90.4-cdh3u3/
 	    export HBASE_CONF_DIR=$HBASE_HOME/conf
-	    export OOZIE_HOME=$HOME/utils/oozie-2.3.2-cdh3u3/
-	    export OOZIE_URL="http://localhost:11000/oozie" # default url
 	    export HIVE_HOME=$HOME/utils/hive-0.7.1-cdh3u3/
         fi
         if [ $CDH4_2_0 = 1 ]; then
@@ -46,13 +44,11 @@ configure_cdh() {
         fi
         HADOOP_CLASSPATH=.:$HADOOP_HOME/lib/hadoop-lzo-0.4.15.jar
         JAVA_LIBRARY_PATH=$HADOOP_HOME/lib/native/Linux-amd64-64:$HADOOP_HOME/lib/native
+        PATH=$HADOOP_HOME/bin:$PATH
+        PATH=$HADOOP_HOME/sbin:$PATH
+        PATH=$HBASE_HOME/bin:$PATH
+        PATH=$HIVE_HOME/bin:$PATH
     fi
-    PATH=$HADOOP_HOME/bin:$PATH
-    PATH=$HADOOP_HOME/sbin:$PATH
-    PATH=$HBASE_HOME/bin:$PATH
-    PATH=$OOZIE_HOME/bin:$PATH
-    PATH=$HIVE_HOME/bin:$PATH
-
     export HADOOP_CLASSPATH
     export JAVA_LIBRARY_PATH
     export PATH
@@ -307,7 +303,7 @@ home_http_server() {
 home_http_server_once() {
     local port_info
     port_info=$(lsof -i:8080 -Pn | grep "(LISTEN)")
-    if [ -z $port_info ]; then
+    if [ -z "$port_info" ]; then
         echo "start home_http_server..."
         cd ~ && (python -m SimpleHTTPServer 8080 >/tmp/home_http_server.out 2>&1 &)
     fi
@@ -431,7 +427,7 @@ shadowsocks() {
 shadowsocks_once() {
     local port_info
     port_info=$(lsof -i:62221 -Pn | grep "(LISTEN)")
-    if [ -z $port_info ]; then
+    if [ -z "$port_info" ]; then
         echo "start shadowsocks..."
         cd ~/.private/shadowsocks && (./local.py >/tmp/shadowsocks.out 2>&1 &)
     fi

@@ -186,6 +186,7 @@
    - [[file:./presto.org][Presto]] Facebook的大规模数据实时查询系统，可以认为是Google的 [[file:./dremel.org][Dremel]] 的开源实现。
    - [[file:./paxos.org][Paxos]] 分布式一致性算法
    - [[file:./raft.org][Raft]] 分布式一致性算法
+   - [[file:./totem.org][Totem]] 分布式一致性算法
 
 ** Programming Language
    - [[file:prog-lang.org][Programming Language]] including following languages:

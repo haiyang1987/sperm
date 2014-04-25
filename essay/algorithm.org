@@ -653,7 +653,7 @@ http://www.infoq.com/cn/news/2012/08/32-most-important-algorithms
    23. 两次筛法(Quadratic Sieve)
    24. RANSAC
    25. RSA
-   26. Sch&#246;nhage-Strassen算法
+   26. Schonhage-Strassen算法
    27. 单纯型算法(Simplex Algorithm)
    28. 奇异值分解
    29. 求解线性方程组(Solving a system of linear equations)
