@@ -42,7 +42,7 @@
    - [[file:./note/mobile-foreign-business.org][手机国际业务]]
    - [[file:./note/helsinki-travel.org][赫尔辛基印象]]
    - [[file:./note/sfo-travel.org][旧金山印象]]
- 
+
 ** 印记
    - [[file:note/fun.org][挺搞笑的]]
    - [[file:note/excerpt.org][网络摘抄]]
@@ -55,7 +55,7 @@
      - [[file:./note/the-mythical-man-month.org][人月神话(The Mythical Man-Month)]]
      - [[file:./note/the-pragmatic-programmer.org][程序员修炼之道(The Pragmatic Programmer)]]
      - [[file:./note/dreaming-in-code.org][梦断代码(Dreaming in Code)]]
-     - [[file:./note/refactoring-improving-the-design-of-existing-code.org][重构-改善既有代码的设计(Refactoring: Improving the Design of Existing Code)]] 
+     - [[file:./note/refactoring-improving-the-design-of-existing-code.org][重构-改善既有代码的设计(Refactoring: Improving the Design of Existing Code)]]
      - [[file:./note/code-quality-the-open-source-perspective.org][高质量程序设计艺术(Code Quality The Open Source Perspective)]]
      - [[file:./note/virtual-machine-design-and-implementation-in-c-cpp.org][虚拟机设计与实现(Virtual Machine Design and Implementation in C/C++)]]
      - [[file:./note/structured-computer-organization.org][结构化计算机组成(Strcutured Computer Organization)]]
@@ -77,7 +77,7 @@
      - [[file:note/the-economic-naturalist.org][牛奶可乐经济学(The Economic Naturalist)]]
      - [[file:note/venture-captial.org][风险投资(Venture Captial)]]
      - [[file:./note/baked-in-creating-products-and-business-that-market-themselves.org][自营销(Baked In: Creating Products and Businesses That Market Themselves)]]
-     - [[file:./note/dear-andreas.org][亲爱的安德烈]] 
+     - [[file:./note/dear-andreas.org][亲爱的安德烈]]
      - [[file:./note/rework.org][Rework]]
      - [[file:note/pragmatic-thinking-and-learning.org][程序员的思维修炼(Pragmatic Thinking and Learning - Refactor Your Wetware)]]
      - [[file:./note/getting-real.org][Getting Real]]
@@ -113,5 +113,4 @@
    - [[file:./note/that-man-looks-like-a-dog.org][(ZZ)那个人好像一条狗]]
    - [[file:./note/talk-with-nenad.org][和Nenad的交流]]
    - [[file:./note/retrospect-2013.org][回顾2013]]
-
-
+   - [[file:note/what-is-diff-between-winner-and-loser.org][温拿和卢瑟差别在哪里]]
