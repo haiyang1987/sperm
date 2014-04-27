@@ -1,0 +1,5 @@
+* what-happens-to-older-developers.org
+#+TITLE: What Happens to Older Developers?
+   - http://christfollower.me/#D140313ADVICE
+   - https://news.ycombinator.com/item?id=7372997
+   - https://news.ycombinator.com/item?id=7427542

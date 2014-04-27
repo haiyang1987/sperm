@@ -114,3 +114,4 @@
    - [[file:./note/talk-with-nenad.org][和Nenad的交流]]
    - [[file:./note/retrospect-2013.org][回顾2013]]
    - [[file:note/what-is-diff-between-winner-and-loser.org][温拿和卢瑟差别在哪里]]
+   - [[file:note/what-happens-to-older-developers.org][What Happens to Older Developers?]]
