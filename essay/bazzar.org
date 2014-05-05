@@ -4,10 +4,11 @@
    - https://launchpad.net/
 
 -----
+
    - bzr branch <repo> # git clone
-   - bzr pull #
+   - bzr pull
    - bzr push <repo>
-     - --create-prefix #
+     - create-prefix # create if not exist
 
 -----
 
@@ -15,10 +16,9 @@
    - bzr uncommit
    - bzr add/remove
    - bzr revert # git checkout
-   - bzr merge
-     - --uncommited #
 
 -----
+
    - bzr log/diff -r[a]..[b]
    - bzr status
-   - bzr revno # revision number
+   - bzr revno # current revision number

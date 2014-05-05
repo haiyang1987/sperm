@@ -2,7 +2,7 @@
 #+OPTIONS: H:5
 
 参考资源
-   - Git – Fast Version Control System. http://git.or.cz/index.html 
+   - Git – Fast Version Control System. http://git.or.cz/index.html
    - Git 简易指南. http://rogerdudler.github.com/git-guide/index.zh.html
    - Git Tutorial. http://www.vogella.com/articles/Git/article.html
    - Pro Git. http://git-scm.com/book/zh
@@ -36,7 +36,7 @@ git本地仓库由下面三棵树构成：
    - git rm <files> 从HEAD删除
    - git rm --cached <files> 从INDEX删除
    - git mv 重命名文件
-   - git log 察看日志   
+   - git log 察看日志
 
 *** remote
    - git remote -v 显示远程仓库信息（本地信息）
@@ -70,8 +70,9 @@ Git使用的标签有两种类型：轻量级的（lightweight）和含附注的
    - git tag <tag-name> [<sha1>] 添加轻量标签
    - git push <repo> <tag> /--tags 推送某个标签或者是全部的标签
 
-** git log/diff
-todo(dirlt):
+** git merge
+   - git cherry-pick <commit-id> # pick commit to merge
+   - git diff > {patch} / git apply {patch} # 制作patch以及应用patch
 
 ** git flow
 参考资源
@@ -80,12 +81,12 @@ todo(dirlt):
    - Git分支管理策略 http://www.ruanyifeng.com/blog/2012/07/git.html
 
 git-flow主要推行的就是一种开发方式，然后通过工具来配合这种开发方式。git-flow分为下面几类分支：
-   - master 线上使用版本始终都是ready状态。    
+   - master 线上使用版本始终都是ready状态。
    - develop 作为开发基线版本。
    - feature 专门用于开发特性(可以有很多).
    - release 开发到一定阶段发布的版本，作为master candidate.(直接在上面做bug修复)
    - hotfix master上面出现bug临时修复(可以有很多).
-     
+
 然后说说各个分支之间的关系(这个在链接里面给出的图表示非常清楚)
    - master
      - 第一个版本之后，就会从master开出develop
@@ -110,3 +111,16 @@ git-flow主要推行的就是一种开发方式，然后通过工具来配合这
      - OK之后合并到master和develop
 关系还是非常清楚的(不过我这里可能描述比较混乱).
 
+** FAQ
+*** 合并多个commit
+合并两个commit
+#+BEGIN_VERSE
+$ git reset --soft HEAD^1
+$ git commit --amend
+#+END_VERSE
+
+合并最后n个commit
+#+BEGIN_VERSE
+$ git rebase -i HEAD~n
+>>>> 然后替换第n个pick为s保存
+#+END_VERSE

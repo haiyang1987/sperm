@@ -6,5 +6,4 @@ todo(dirlt):
 ** svn repo
 ** svn branch
 ** svn tag
-** svn log/diff
-
+** svn merge

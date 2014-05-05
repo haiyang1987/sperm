@@ -136,6 +136,12 @@ export LC_ALL="en_US.UTF-8"
 # export LANG="zh_CN.UTF-8"
 # export LC_ALL="zh_CN.UTF-8"
 
+export IDEA_HOME=$HOME/utils/idea-IC-123.72
+# intellij IDEA !!!
+start_idea() {
+    (sh $IDEA_HOME/bin/idea.sh >/tmp/idea.out 2>&1 &)
+}
+
 # galera
 # export MYSQL_SRC=$HOME/repo/wsrep-5.6
 export MYSQL_SRC=$HOME/repo/wsrep-5.5
