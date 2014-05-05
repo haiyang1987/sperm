@@ -1,0 +1,8 @@
+* todo
+div2
+
+| SRM | 500                      | 1000 |
+|-----+--------------------------+------|
+| 615 | LongLongTripDiv2.cc      |      |
+| 616 | ColorfulCoinsEasy.cc     |      |
+| 617 | SlimeXSlimonadeTycoon.cc |      |

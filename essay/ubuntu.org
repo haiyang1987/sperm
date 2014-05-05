@@ -85,8 +85,8 @@
    - #sudo apt-get install texlive-fonts-recommended
    - #sudo apt-get install texinfo
    - #sudo apt-get install sun-java6-jdk
-   - #sudo apt-get install openjdk-6-jdk
-   - #sudo apt-get install openjdk-6-doc
+   - sudo apt-get install openjdk-6-jdk
+   - sudo apt-get install openjdk-6-doc
    - sudo apt-get install openvpn
    - sudo apt-get install lzop
    - sudo apt-get install liblzo2-dev

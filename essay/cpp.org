@@ -6,7 +6,7 @@
  - Thinking in C++
  - http://www.cplusplus.com/doc/tutorial/
  - TCC : Tiny C Compiler http://bellard.org/tcc/
- - 
+ -
 
 ** TC++PL
 学习C++时，最主要的事情就是集中关注概念，不要迷失在语言的技术细节里面，学习语言的目的是成为一个更好的程序员，对于程序设计和设计技术的理解远远比语言细节重要.在实践性程序设计中，理解语言中最晦涩难懂的语言特征或者使用大量的不同特征并不能够获得什么利益:-).C++支持一种逐步推进的学习方式，就是说一开始就可以来使用C++编写实际的东西，同时C++支持多种程序设计范型，能够使得你大致线形地学习它的概念，并且在学习过程中不断收到实际效益。
@@ -28,7 +28,7 @@ new/delete和C的内存分配有很多区别，主要的改进在进行了很多
    * 加入了异常分配失败抛出bad_alloc
    * 提供了一种方法设置handler在分配失败的时候调用set_new_handler()
    * 默认的new还进行检查以确信在传递地址给构造函数之前内存分配成功
-   * 允许重载全局new/delete和某个类的new/delete 
+   * 允许重载全局new/delete和某个类的new/delete
 
 **** new重载
 用户可以重载new/delete来实现全局new/delete或者是某个类的new/delete.原型有下面这些
@@ -87,7 +87,7 @@ int main(){
 **** new异常规格
 从new的异常规格可以看到，如果是普通的调用的话可能会抛出std::bad_alloc这个异常，但是原型里面还有
 #+BEGIN_SRC C++
-void* operator new(std::size_t, const std::nothrow_t&) throw(); 
+void* operator new(std::size_t, const std::nothrow_t&) throw();
 #+END_SRC
 这种使用placement来通知new不抛出异常的的接口，语义是返回NULL来告诉app分配失败。要使用这个函数也非常简单
 #+BEGIN_SRC C++
@@ -173,7 +173,7 @@ int main() {
 #+BEGIN_EXAMPLE
 [dirlt@localhost ~]$ ./a.out
 0xbff031b0
-0xbff031b0 
+0xbff031b0
 #+END_EXAMPLE
 
 在onComplete这里我们希望处理一个A*抽象类型。假设我们从外围上面保证传入onComplete是一个B或者是B的子类型。
@@ -213,7 +213,7 @@ int main() {
 #+BEGIN_EXAMPLE
 [dirlt@localhost ~]$ ./a.out
 o:0xbfff9aa0 pb->g:0xbfff9aa0
-c:0xbfff9a9c c.g:0xbfff9aa0 
+c:0xbfff9a9c c.g:0xbfff9aa0
 #+END_EXAMPLE
 
 问题出来了，并不像我们想的那样，pb->g和c.g的地址是一样的。但是神奇的是，o和c的地址是不一样的。这是为什么呢？原因就在于static_cast.在传参的时候，根据形参和实参之间的类型信息来进行指针的转换。 *也就是说，static_cast能够正确处理类型系统。而这点reintrepret_cast是做不到的。*
@@ -243,7 +243,7 @@ class A{
   }
 };
 void foo(){
-  static A a;  
+  static A a;
 }
 int main(){
   foo();
@@ -264,10 +264,10 @@ _Z3foov:
 .LCFI4:
 	subq	$32, %rsp
 .LCFI5:
-	cmpb	$0, _ZGVZ3foovE1a(%rip) 
+	cmpb	$0, _ZGVZ3foovE1a(%rip)
 	jne	.L10
 	movl	$_ZGVZ3foovE1a, %edi
-	call	__cxa_guard_acquire 
+	call	__cxa_guard_acquire
 	testl	%eax, %eax
 	je	.L10
 	movb	$0, -1(%rbp)
@@ -276,7 +276,7 @@ _Z3foov:
 	call	_ZN1AC1Ev
 .LEHE0:
 	movl	$_ZGVZ3foovE1a, %edi
-	call	__cxa_guard_release 
+	call	__cxa_guard_release
 	jmp	.L10
 .L19:
 	movq	%rax, -24(%rbp)
@@ -308,7 +308,7 @@ hook函数调用有两种方式，一种是hook我们代码内部的函数，这
 **** hook编译时函数
 在gcc编译的时候需要加入-finstrument-functions这个选项之后，那么每个函数调用之前和之后都会调用
    - __cyg_profile_func_enter
-   - __cyg_profile_func_exit 
+   - __cyg_profile_func_exit
 这两个函数是gcc内置函数，_enter函数能够在函数调用之前进行调用，_exit函数能够在函数调用退出之后调用，原型分别是
 #+BEGIN_SRC C++
 // this是这个callee函数地址
@@ -353,7 +353,7 @@ extern "C" {
 void* malloc(size_t size){
     write(2,"do malloc\n",strlen("do malloc\n")+1); // 这里不能够用printf,因为内部可能会调用malloc
     static void* (*pmalloc)(size_t size)=0;
-    if(!pmalloc){        
+    if(!pmalloc){
         pmalloc=(void*(*)(size_t size))(dlsym(RTLD_NEXT,"malloc"));
     }
     return pmalloc(size);
@@ -361,8 +361,8 @@ void* malloc(size_t size){
 
 void free(void *p){
     write(2,"do free\n",strlen("do free\n")+1);
-    static void (*pfree)(void* p)=0;    
-    if(!pfree){        
+    static void (*pfree)(void* p)=0;
+    if(!pfree){
         pfree=(void(*)(void* p))(dlsym(RTLD_NEXT,"free"));
     }
     return pfree(p);
@@ -462,7 +462,7 @@ class B{
    - Reflection
    - FieldDescriptor
 
-具体代码可以参考 [[https://github.com/dirtysalt/sperm/blob/master/code/cc/common/proto_dynamic.h][code/cc/common/proto_dynamic.h]] 以及 [[https://github.com/dirtysalt/sperm/blob/master/code/cc/common/test/test_proto_dynamic.cc][code/cc/common/test/test_proto_dynamic.cc]]
+具体代码可以参考 [[https://github.com/dirtysalt/sperm/blob/master/code/cc/playboard/test_proto_dynamic.cc][code/cc/playboard/test_proto_dynamic.cc]]
 
 ** misc
 *** 诡异的性能问题
@@ -493,7 +493,7 @@ static const int NUMBER = 10000000;
 static const char* PREFIX = "s";
 
 static void action() {
-  double start = gettime_ms();  
+  double start = gettime_ms();
   map<string, long> dict;
   char buf[64];
   char buf2[64];
@@ -511,7 +511,7 @@ static void action() {
 }
 
 static void action2() {
-  double start = gettime_ms();  
+  double start = gettime_ms();
   map<int, long> dict;
   for(int i = 0; i < NUMBER; i++) {
     dict[i] = i;
@@ -520,7 +520,7 @@ static void action2() {
     dict[i] += dict[(i + 1000) % NUMBER];
   }
   double end = gettime_ms();
-  printf("%.2lf\n", end - start);  
+  printf("%.2lf\n", end - start);
 }
 
 int main() {
@@ -532,23 +532,23 @@ int main() {
 
 *在自己的Ubuntu机器下面使用g++4.6编译* 运行结果如下。可以看到测试组1里面action2运行时间为2.9s左右，而测试组2里面action2运行时间为8.5s *时间差别很大*
 #+BEGIN_EXAMPLE
-➜  playboard git:(master) ✗ g++ map_perf_test.cc -O2             
-➜  playboard git:(master) ✗ ./a.out 
+➜  playboard git:(master) ✗ g++ map_perf_test.cc -O2
+➜  playboard git:(master) ✗ ./a.out
 19764.38
 2957.30
 ➜  playboard git:(master) ✗ g++ map_perf_test.cc -O2
-➜  playboard git:(master) ✗ ./a.out                 
+➜  playboard git:(master) ✗ ./a.out
 8521.25
 #+END_EXAMPLE
 
 可能是编译器的原因？ *在自己的Ubuntu机器下面clang++来编译，时间差别同样很大*
 #+BEGIN_EXAMPLE
 ➜  playboard git:(master) ✗ clang++ map_perf_test.cc -O2
-➜  playboard git:(master) ✗ ./a.out 
+➜  playboard git:(master) ✗ ./a.out
 19494.99
 3052.83
 ➜  playboard git:(master) ✗ clang++ map_perf_test.cc -O2
-➜  playboard git:(master) ✗ ./a.out 
+➜  playboard git:(master) ✗ ./a.out
 8495.00
 #+END_EXAMPLE
 
@@ -572,4 +572,3 @@ playboard git:(master) ✗ g++ map_perf_test.cc -O2
    - 在action调用之后的action2没有调用任何系统调用分配内存，都是在用户态完成。
    - 而如果没有action先调用的话，action2就需要自己调用brk（4737次）,mmap（17次），所以比较耗时。
 改用 [[file:tcmalloc.org][tcmalloc]] 之后没有这个问题了。tcmalloc调用brk（541次），mmap（500次）。
-

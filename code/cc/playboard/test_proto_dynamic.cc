@@ -2,15 +2,16 @@
  * Copyright (C) dirlt
  */
 
-#ifndef __SPERM_CC_COMMON_PROTO_DYNAMIC_H__
-#define __SPERM_CC_COMMON_PROTO_DYNAMIC_H__
-
+#include <cassert>
 #include <iostream>
 #include <google/protobuf/descriptor.h>
 #include <google/protobuf/compiler/importer.h>
 #include <google/protobuf/dynamic_message.h>
+#include "sample.pb.h"
 
-namespace common {
+using namespace google::protobuf;
+using namespace google::protobuf::compiler;
+using namespace sample;
 
 // ------------------------------------------------------------
 // simplify usage of dynamic message in protobuf.
@@ -62,6 +63,29 @@ private:
   google::protobuf::compiler::Importer importer_;
 }; // class ProtoDynamic
 
-} // namespace common
+int main() {
+  std::string data;
+  {
+    // create message dynamicly.
+    ProtoDynamic dynamic;
+    const FileDescriptor* fd = dynamic.import("sample.proto");
+    assert(fd);
+    const Descriptor* desc = dynamic.findMessageTypeByName(fd, "sample.Session");
+    assert(desc);
+    MessageFactory* factory = dynamic.newMessageFactory(fd);
+    Message* msg = factory->GetPrototype(desc)->New();
+    const Reflection* reflection = msg->GetReflection();
+    assert(reflection);
 
-#endif // __SPERM_CC_COMMON_PROTO_DYNAMIC_H__
+    reflection->SetString(msg, desc->FindFieldByName("user"), "dirlt");
+    reflection->SetString(msg, desc->FindFieldByName("passwd"), "fuck");
+    msg->SerializeToString(&data);
+  }
+  {
+    Session session;
+    session.ParseFromString(data);
+    assert(strcmp(session.user().c_str(), "dirlt") == 0);
+    assert(strcmp(session.passwd().c_str(), "fuck") == 0);
+  }
+  return 0;
+}

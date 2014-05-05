@@ -19,7 +19,7 @@ namespace {
 
 const ::google::protobuf::Descriptor* Session_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-Session_reflection_ = NULL;
+  Session_reflection_ = NULL;
 
 }  // namespace
 
@@ -37,15 +37,15 @@ void protobuf_AssignDesc_sample_2eproto() {
   };
   Session_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-    Session_descriptor_,
-    Session::default_instance_,
-    Session_offsets_,
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Session, _has_bits_[0]),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Session, _unknown_fields_),
-    -1,
-    ::google::protobuf::DescriptorPool::generated_pool(),
-    ::google::protobuf::MessageFactory::generated_factory(),
-    sizeof(Session));
+      Session_descriptor_,
+      Session::default_instance_,
+      Session_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Session, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Session, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(Session));
 }
 
 namespace {
@@ -53,7 +53,7 @@ namespace {
 GOOGLE_PROTOBUF_DECLARE_ONCE(protobuf_AssignDescriptors_once_);
 inline void protobuf_AssignDescriptorsOnce() {
   ::google::protobuf::GoogleOnceInit(&protobuf_AssignDescriptors_once_,
-                                     &protobuf_AssignDesc_sample_2eproto);
+                 &protobuf_AssignDesc_sample_2eproto);
 }
 
 void protobuf_RegisterTypes(const ::std::string&) {
@@ -147,8 +147,7 @@ const ::google::protobuf::Descriptor* Session::descriptor() {
 }
 
 const Session& Session::default_instance() {
-  if (default_instance_ == NULL) protobuf_AddDesc_sample_2eproto();
-  return *default_instance_;
+  if (default_instance_ == NULL) protobuf_AddDesc_sample_2eproto();  return *default_instance_;
 }
 
 Session* Session::default_instance_ = NULL;
@@ -175,12 +174,12 @@ void Session::Clear() {
 }
 
 bool Session::MergePartialFromCodedStream(
-  ::google::protobuf::io::CodedInputStream* input) {
+    ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-        // optional string user = 1;
+      // optional string user = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -195,12 +194,12 @@ bool Session::MergePartialFromCodedStream(
         if (input->ExpectTag(18)) goto parse_passwd;
         break;
       }
-
+      
       // optional string passwd = 2;
       case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-        parse_passwd:
+         parse_passwd:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_passwd()));
           ::google::protobuf::internal::WireFormat::VerifyUTF8String(
@@ -212,7 +211,7 @@ bool Session::MergePartialFromCodedStream(
         if (input->ExpectAtEnd()) return true;
         break;
       }
-
+      
       default: {
       handle_uninterpreted:
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
@@ -230,7 +229,7 @@ bool Session::MergePartialFromCodedStream(
 }
 
 void Session::SerializeWithCachedSizes(
-  ::google::protobuf::io::CodedOutputStream* output) const {
+    ::google::protobuf::io::CodedOutputStream* output) const {
   // optional string user = 1;
   if (has_user()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
@@ -239,7 +238,7 @@ void Session::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteString(
       1, this->user(), output);
   }
-
+  
   // optional string passwd = 2;
   if (has_passwd()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
@@ -248,15 +247,15 @@ void Session::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteString(
       2, this->passwd(), output);
   }
-
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-      unknown_fields(), output);
+        unknown_fields(), output);
   }
 }
 
 ::google::protobuf::uint8* Session::SerializeWithCachedSizesToArray(
-  ::google::protobuf::uint8* target) const {
+    ::google::protobuf::uint8* target) const {
   // optional string user = 1;
   if (has_user()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
@@ -266,7 +265,7 @@ void Session::SerializeWithCachedSizes(
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
         1, this->user(), target);
   }
-
+  
   // optional string passwd = 2;
   if (has_passwd()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
@@ -276,32 +275,32 @@ void Session::SerializeWithCachedSizes(
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
         2, this->passwd(), target);
   }
-
+  
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-               unknown_fields(), target);
+        unknown_fields(), target);
   }
   return target;
 }
 
 int Session::ByteSize() const {
   int total_size = 0;
-
+  
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     // optional string user = 1;
     if (has_user()) {
       total_size += 1 +
-                    ::google::protobuf::internal::WireFormatLite::StringSize(
-                      this->user());
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->user());
     }
-
+    
     // optional string passwd = 2;
     if (has_passwd()) {
       total_size += 1 +
-                    ::google::protobuf::internal::WireFormatLite::StringSize(
-                      this->passwd());
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->passwd());
     }
-
+    
   }
   if (!unknown_fields().empty()) {
     total_size +=
@@ -352,7 +351,7 @@ void Session::CopyFrom(const Session& from) {
 }
 
 bool Session::IsInitialized() const {
-
+  
   return true;
 }
 

@@ -37,32 +37,32 @@ class Session;
 // ===================================================================
 
 class Session : public ::google::protobuf::Message {
-public:
+ public:
   Session();
   virtual ~Session();
-
+  
   Session(const Session& from);
-
+  
   inline Session& operator=(const Session& from) {
     CopyFrom(from);
     return *this;
   }
-
+  
   inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
     return _unknown_fields_;
   }
-
+  
   inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
     return &_unknown_fields_;
   }
-
+  
   static const ::google::protobuf::Descriptor* descriptor();
   static const Session& default_instance();
-
+  
   void Swap(Session* other);
-
+  
   // implements Message ----------------------------------------------
-
+  
   Session* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
@@ -70,28 +70,26 @@ public:
   void MergeFrom(const Session& from);
   void Clear();
   bool IsInitialized() const;
-
+  
   int ByteSize() const;
   bool MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input);
+      ::google::protobuf::io::CodedInputStream* input);
   void SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const;
+      ::google::protobuf::io::CodedOutputStream* output) const;
   ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
-  int GetCachedSize() const {
-    return _cached_size_;
-  }
-private:
+  int GetCachedSize() const { return _cached_size_; }
+  private:
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const;
-public:
-
+  public:
+  
   ::google::protobuf::Metadata GetMetadata() const;
-
+  
   // nested types ----------------------------------------------------
-
+  
   // accessors -------------------------------------------------------
-
+  
   // optional string user = 1;
   inline bool has_user() const;
   inline void clear_user();
@@ -102,7 +100,7 @@ public:
   inline void set_user(const char* value, size_t size);
   inline ::std::string* mutable_user();
   inline ::std::string* release_user();
-
+  
   // optional string passwd = 2;
   inline bool has_passwd() const;
   inline void clear_passwd();
@@ -113,26 +111,26 @@ public:
   inline void set_passwd(const char* value, size_t size);
   inline ::std::string* mutable_passwd();
   inline ::std::string* release_passwd();
-
+  
   // @@protoc_insertion_point(class_scope:sample.Session)
-private:
+ private:
   inline void set_has_user();
   inline void clear_has_user();
   inline void set_has_passwd();
   inline void clear_has_passwd();
-
+  
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
-
+  
   ::std::string* user_;
   ::std::string* passwd_;
-
+  
   mutable int _cached_size_;
   ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
-
+  
   friend void  protobuf_AddDesc_sample_2eproto();
   friend void protobuf_AssignDesc_sample_2eproto();
   friend void protobuf_ShutdownFile_sample_2eproto();
-
+  
   void InitAsDefaultInstance();
   static Session* default_instance_;
 };
