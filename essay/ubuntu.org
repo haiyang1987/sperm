@@ -5,7 +5,7 @@
 千万不要抱有一朝一兮就可以搞定的想法。最好的话身边有一个群体，大家都使用Ubuntu这个东西。
 这样如果有什么问题的话，大家就比较容易找到解决办法，直到自己完全适应为止。推荐安装下面这些软件：
 
-   - sudo apt-get install vlc # 视频
+   - #sudo apt-get install vlc # 视频
    - #sudo apt-get install pidgin # 聊天
    - #sudo apt-get install stardict # 词典
    - #sudo apt-get install amarok # 音乐
@@ -28,13 +28,13 @@
    - sudo apt-get install sqlite3
    - #sudo apt-get install eclipse
    - sudo apt-get install python-dev
-   - sudo apt-get install libevent-dev
+   - #sudo apt-get install libevent-dev
    - sudo apt-get install python-gevent
    - sudo apt-get install python-gevent-doc
    - #sudo apt-get install gunicorn
    - #sudo apt-get install maven2
    - sudo apt-get install maven
-   - sudo apt-get install ant
+   - #sudo apt-get install ant
    - #sudo apt-get install ttyload
    - sudo apt-get install autoconf
    - sudo apt-get install libtool
@@ -67,7 +67,7 @@
    - sudo apt-get install ibus-sunpinyin
    - sudo apt-get install xsunpinyin
    - sudo apt-get install python-xlib # 需要在emacs下面调用ibus
-   - sudo apt-get install chromium-browser # 实验性质版本
+   - #sudo apt-get install chromium-browser # 实验性质版本
    - #sudo apt-get install google-chrome-stable # 稳定版本
    - #sudo apt-get install firefox
    - #sudo apt-get install thunderbird
@@ -85,8 +85,8 @@
    - #sudo apt-get install texlive-fonts-recommended
    - #sudo apt-get install texinfo
    - #sudo apt-get install sun-java6-jdk
-   - sudo apt-get install openjdk-6-jdk
-   - sudo apt-get install openjdk-6-doc
+   - #sudo apt-get install openjdk-6-jdk
+   - #sudo apt-get install openjdk-6-doc
    - sudo apt-get install openvpn
    - sudo apt-get install lzop
    - sudo apt-get install liblzo2-dev
@@ -104,8 +104,8 @@
    - sudo apt-get install check
    - sudo apt-get install libaio-dev
    - sudo apt-get install libncurses5-dev
-   - sudo apt-get install google-mock
-   - sudo apt-get install tsocks
+   - #sudo apt-get install google-mock
+   - #sudo apt-get install tsocks
    - sudo apt-get install mysql-server
    - sudo apt-get install graphviz
    - sudo apt-get install rar

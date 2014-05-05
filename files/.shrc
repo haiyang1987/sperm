@@ -348,7 +348,7 @@ vpn_umeng_dp() {
 
 install_files() {
     mkdir -p ~/utils/bin
-    for target in uinstall uhosts time-machine
+    for target in uhosts
     do
         echo "installing $target..."
         rm -rf ~/utils/bin/$target
@@ -491,4 +491,92 @@ package_install() {
 set_core_dump_param() {
     ulimit -c unlimited
     sudo sysctl -q -w kernel.core_pattern="/tmp/core.%e.%p.%t"
+}
+
+install_ubuntu_packages() {
+    cat ~/repo/sperm/essay/ubuntu.org | grep "^   - sudo apt-get" | \
+        awk '{print $5;}' | xargs sudo apt-get install -y
+}
+
+_time_machine_sync_dir() {
+    local src=$1
+    local dst=$2
+    local d=$3
+    mkdir -p "$dst/$d/"
+    echo "sync $d..."
+    rsync -arz --no-times "$src/$d/" "$dst/$d/"
+}
+
+_time_machine_sync_utils() {
+    local src=$1
+    local dst=$2
+    mkdir -p "$dst/utils"
+    local pkgs=$(find $src/utils/ -maxdepth 1 -type f)
+    for p in $pkgs
+    do
+	echo "sync $p..."
+	p=`basename $p`
+	rsync -az --no-times $src/utils/$p $dst/utils/$p
+    done
+}
+
+time_machine() {
+    rm -f /tmp/ubuntu-backup
+    ln -s "/media/Expansion Drive/Ubuntu Backup/" /tmp/ubuntu-backup
+
+    # check condition.
+    local pwd=`pwd`
+    if [ ! -d "$pwd/dirlt" ]; then
+        echo "are you at right directory???"
+        return
+    fi
+
+    # determine source and destination.
+    local base=`basename "$pwd"`
+    local home=/home/dirlt/
+    local backup=/tmp/ubuntu-backup/dirlt
+
+    if [ "X$base" = "Xhome" ]; then
+        local src=$backup
+        local dst=$home
+    else
+        local src=$home
+        local dst=$backup
+    fi
+
+    echo "$src ---> $dst"
+
+    local UTILS="yes"
+    local SHARE="yes"
+    local M2="yes"
+    while test $# -gt 0
+    do
+        case $1 in
+	    --no-utils)
+	        UTILS="no"
+	        ;;
+	    --no-share)
+	        SHARE="no"
+	        ;;
+	    --no-m2)
+	        M2="no"
+	        ;;
+        esac
+        shift 1
+    done
+    if [ $UTILS = "yes" ] ; then _time_machine_sync_utils $src $dst; fi
+    if [ $SHARE = "yes" ] ; then _time_machine_sync_dir $src $dst "share" ; fi
+    if [ $M2 = "yes" ] ; then _time_machine_sync_dir $src $dst ".m2" ; fi
+}
+
+print_proc_netstat() {
+    cat /proc/net/netstat | awk 'BEGIN { ln=0; tcp=0; ip=0; }
+{
+  ln++; if(ln==1) tcp=NF; else if(ln==3) ip=NF;
+  for(i=1;i<=NF;i++) d[ln,i]=$i;
+}
+END {
+  for(i=2;i<=tcp;i++) printf("%25s => %10d\n", d[1,i], d[2,i]);
+  for(i=2;i<=ip;i++) printf("%25s => %10d\n", d[3,i], d[4,i]);
+}'
 }
