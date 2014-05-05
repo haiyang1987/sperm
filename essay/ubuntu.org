@@ -114,6 +114,7 @@
    - sudo apt-get install tree
    - sudo apt-get install swig
    - sudo apt-get install tcpdump
+   - sudo apt-get install python-pip
 
 ** 系统配置
 *** 察看ubuntu内部版本

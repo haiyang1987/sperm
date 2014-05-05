@@ -140,7 +140,7 @@ export LC_ALL="en_US.UTF-8"
 # export MYSQL_SRC=$HOME/repo/wsrep-5.6
 export MYSQL_SRC=$HOME/repo/wsrep-5.5
 export MYSQL_DIR=$MYSQL_SRC/build_release
-export GALERA_SRC=$HOME/repo/galera-yan
+export GALERA_SRC=$HOME/repo/galera
 
 start_node() {
     local idx=$1; shift
@@ -153,7 +153,8 @@ start_node() {
         cluster_port=4564
         option="--mysql-opt --wsrep-new-cluster"
     fi
-    local clutser_address="gcomm://127.0.0.1:$cluster_port?pc.wait_prim=false&gmcast.listen_addr=tcp://0.0.0.0:$node_port"
+    local clutser_address="gcomm://127.0.0.1:$cluster_port?pc.wait_prim=false&gmcast.listen_addr=tcp://0.0.0.0:$node_port&pc.recovery=1"
+    #local clutser_address="gcomm://127.0.0.1:$cluster_port?pc.wait_prim=false&gmcast.listen_addr=tcp://0.0.0.0:$node_port"
     local cmd="MYSQL_PORT=$mysql_port /dev/shm/galera$idx/mysql-galera -g '$clutser_address' $option $extra_options start"
     # local cmd="MYSQL_PORT=$mysql_port /dev/shm/galera$idx/mysql-galera $option start"
     echo $cmd
@@ -179,14 +180,14 @@ start_nodes() {
             start_node $idx
         done
     else
-        cd $GALERA_SRC && ./tests/scripts/command.sh start && cd -
+        cd $GALERA_SRC && ./tests/scripts/command.sh start ; cd -
     fi
 }
 stop_nodes() {
-    cd $GALERA_SRC && ./tests/scripts/command.sh stop && cd -
+    cd $GALERA_SRC && ./tests/scripts/command.sh stop ; cd -
 }
 remove_nodes() {
-    cd $GALERA_SRC && ./tests/scripts/command.sh remove && cd -
+    cd $GALERA_SRC && ./tests/scripts/command.sh remove ; cd -
 }
 change_master_to_node0() {
     local idx=$1
@@ -204,16 +205,16 @@ test_cpconf() {
         && cd -
 }
 build5.5d() {
-    cd $GALERA_SRC && MYSQL_SRC=$HOME/repo/wsrep-5.5 ./scripts/mysql/build.sh -i -b -d --no-strip && cd -
+    cd $GALERA_SRC && MYSQL_SRC=$HOME/repo/wsrep-5.5 ./scripts/mysql/build.sh -i -b -d --no-strip ; cd -
 }
 build5.6d() {
-    cd $GALERA_SRC && MYSQL_SRC=$HOME/repo/wsrep-5.6 ./scripts/mysql/build.sh -i -b -d --no-strip && cd -
+    cd $GALERA_SRC && MYSQL_SRC=$HOME/repo/wsrep-5.6 ./scripts/mysql/build.sh -i -b -d --no-strip ; cd -
 }
 build5.5r() {
-    cd $GALERA_SRC && MYSQL_SRC=$HOME/repo/wsrep-5.5 ./scripts/mysql/build.sh -i -b --no-strip && cd -
+    cd $GALERA_SRC && MYSQL_SRC=$HOME/repo/wsrep-5.5 ./scripts/mysql/build.sh -i -b --no-strip ; cd -
 }
 build5.6r() {
-    cd $GALERA_SRC && MYSQL_SRC=$HOME/repo/wsrep-5.6 ./scripts/mysql/build.sh -i -b --no-strip && cd -
+    cd $GALERA_SRC && MYSQL_SRC=$HOME/repo/wsrep-5.6 ./scripts/mysql/build.sh -i -b --no-strip ; cd -
 }
 wsrep_url5.5() {
     echo "http://bazaar.launchpad.net/~codership/codership-mysql/wsrep-5.5/revision/$1"
@@ -240,10 +241,11 @@ wsrep_commit() {
 galera_commit() {
     local ticketid=$1
     local message=$2
-    svn commit -m "Refs #$ticketid:$message"
+    #svn commit -m "Refs #$ticketid:$message"
+    gca -m "Refs #$ticketid:$message"
 }
 galera_debug_build() {
-    cd $GALERA_SRC && scons debug=0 -j8 && cd -
+    cd $GALERA_SRC && scons debug=0 -j8 ; cd -
 }
 
 # others
@@ -297,7 +299,7 @@ apt_update() {
 }
 
 home_http_server() {
-    cd ~ && python -m SimpleHTTPServer 8080 && cd -
+    cd ~ && python -m SimpleHTTPServer 8080 ; cd -
 }
 
 home_http_server_once() {
@@ -305,7 +307,7 @@ home_http_server_once() {
     port_info=$(lsof -i:8080 -Pn | grep "(LISTEN)")
     if [ -z "$port_info" ]; then
         echo "start home_http_server..."
-        cd ~ && (python -m SimpleHTTPServer 8080 >/tmp/home_http_server.out 2>&1 &)
+        cd ~ && (python -m SimpleHTTPServer 8080 >/tmp/home_http_server.out 2>&1 &) ; cd -
     fi
 }
 home_http_server_once
@@ -341,7 +343,7 @@ cxx_indent() {
 }
 
 vpn_umeng_dp() {
-    cd ~/.private/vpn-umeng-dp && sudo openvpn --config client.conf && cd -
+    cd ~/.private/vpn-umeng-dp && sudo openvpn --config client.conf ; cd -
 }
 
 install_files() {
@@ -421,7 +423,7 @@ install_hosts() {
 }
 
 shadowsocks() {
-    cd ~/.private/shadowsocks && ./local.py && cd -
+    cd ~/.private/shadowsocks && ./local.py ; cd -
 }
 
 shadowsocks_once() {
@@ -429,7 +431,7 @@ shadowsocks_once() {
     port_info=$(lsof -i:62221 -Pn | grep "(LISTEN)")
     if [ -z "$port_info" ]; then
         echo "start shadowsocks..."
-        cd ~/.private/shadowsocks && (./local.py >/tmp/shadowsocks.out 2>&1 &)
+        cd ~/.private/shadowsocks && (./local.py >/tmp/shadowsocks.out 2>&1 &) ; cd -
     fi
 }
 shadowsocks_once
@@ -484,4 +486,9 @@ package_install() {
     CFLAGS="-fPIC" CXXFLAGS="-fPIC" $CONFIG
     make -j 8;make install
     cd -
+}
+
+set_core_dump_param() {
+    ulimit -c unlimited
+    sudo sysctl -q -w kernel.core_pattern="/tmp/core.%e.%p.%t"
 }

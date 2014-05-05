@@ -1,4 +1,4 @@
-* what-happens-to-older-developers.org
+* what-happens-to-older-developers
 #+TITLE: What Happens to Older Developers?
 
 -----
