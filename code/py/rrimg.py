@@ -66,6 +66,7 @@ class Robot:
         return cached.keys()
 
     def run2(self, urls):
+        assert(self.pageNum = 1)
         if os.path.exists(self.saved):
             fp = open(self.saved)
             cached = json.load(fp)
@@ -87,8 +88,7 @@ class Robot:
             htmlPage = self.getHTMLPage(url)
             links = self.ExtractLinks(htmlPage, self.reObj)
             if len(links) == 0 : continue
-            lk = links[0]
-            lk = string.split(lk, ':', maxsplit=1)[1][1:-1]
+            lk = string.split(links[0], ':', maxsplit = 1)[1][1:-1]
             lk = lk.replace('\\','')
             print lk
             cached[url]=lk
@@ -153,7 +153,7 @@ def createPhotoLink():
     urls = map(lambda x : 'http://page.renren.com%s'%(x), js.keys())
 
     reObj = re.compile(r'\"(largeurl|large)\":"[^"]+"')
-    robot = Robot('', '', reObj, 'photo.link')
+    robot = Robot('', 1, reObj, 'photo.link')
     robot.run2(urls)
 
 def downloadPhoto():
