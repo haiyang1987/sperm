@@ -35,4 +35,5 @@ use ./dep-install to install all following packages.
    - finagle
 * leetcode
 * tc-srm
-
+* py
+   - rrimg
