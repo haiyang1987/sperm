@@ -586,3 +586,14 @@ END {
   for(i=2;i<=ip;i++) printf("%25s => %10d\n", d[3,i], d[4,i]);
 }'
 }
+
+random_picture() {
+    local image_path=${1:-"$HOME/renren/images/"}
+    local num=$(ls $image_path 2>/dev/null| wc -l)
+    if [ $num = 0 ]; then return ; fi
+    local rand=$(date +%N)
+    local n=$((rand%num))
+    local awk_cmd="BEGIN {ln=0;} { ln++; if (ln==$n) print \$0;}"
+    local fname=$(ls $image_path | awk $awk_cmd)
+    (eog "$image_path/$fname" &)
+}
