@@ -247,8 +247,8 @@ wsrep_commit() {
 galera_commit() {
     local ticketid=$1
     local message=$2
-    #svn commit -m "Refs #$ticketid:$message"
-    gca -m "Refs #$ticketid:$message"
+    #svn commit -m "Refs #$ticketid: $message"
+    gca -m "Refs #$ticketid: $message"
 }
 galera_debug_build() {
     cd $GALERA_SRC && scons debug=0 -j8 ; cd -
