@@ -2,7 +2,9 @@
 ** Links & Abbr.
 Code
    - https://code.launchpad.net/~codership/wsrep/trunk
-   - https://code.launchpad.net/~codership/galera/3.x
+   - https://code.launchpad.net/~codership/galera/3.x (on lp)
+   - https://github.com/codership/galera (on github)
+   - https://code.launchpad.net/~codership/codership-mysql/wsrep-5.5
    - https://code.launchpad.net/~codership/codership-mysql/5.6
 
 Official

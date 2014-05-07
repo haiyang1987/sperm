@@ -1,4 +1,8 @@
 * galerac
+代码整体结构示意图
+
+file:./images/galera-code-structure.png
+
 ** overview
    - asio # asynchronous io.
    - chromium # compiler related code.
@@ -6,7 +10,7 @@
    - galera # replicator.
    - galerautils # common utilities.
    - garb # arbitrator
-   - gcache # cache.
+   - gcache # general cache.
    - gcomm # group communication.
    - gcs # group control system.
    - scripts
@@ -156,7 +160,7 @@ capabilities
      - while sqlgen keep updating db
    - test_upgrade # rotate and upgrade nodes.
 
-*note(dirlt): depends sqlgen and glb*
-   - put sqlgen to tests/bin
-   - install libgbl.so to /user/local/lib
+*setup test environment*
+   - put sqlgen(which is not open-sourced) to tests/bin
+   - install libgbl.so (https://github.com/codership/glb) to /user/local/lib
    - install mysql client.
