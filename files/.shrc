@@ -428,6 +428,15 @@ install_hosts() {
     sudo cp ~/.private/files/hosts /etc/hosts
 }
 
+update_hosts() {
+    local url=${SMART_HOSTS_URL:-"http://smarthosts.googlecode.com/svn/trunk/hosts"}
+    local hosts="$HOME/.private/files/hosts"
+    cat $hosts | awk 'BEGIN {f=0;} /^#SmartHosts/ {f=1;} {if(f==0) print $0;}' > /tmp/hosts
+    curl -S $url 2>/dev/null >> /tmp/hosts
+    cp $hosts $hosts.bak
+    cp /tmp/hosts $hosts
+}
+
 shadowsocks() {
     cd ~/.private/shadowsocks && ./local.py ; cd -
 }

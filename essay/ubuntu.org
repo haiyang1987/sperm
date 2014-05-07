@@ -103,7 +103,7 @@
    - sudo apt-get install libboost-all-dev
    - sudo apt-get install check
    - sudo apt-get install libaio-dev
-   - sudo apt-get install libncurses5-dev
+   - #sudo apt-get install libncurses5-dev
    - #sudo apt-get install google-mock
    - #sudo apt-get install tsocks
    - sudo apt-get install mysql-server
@@ -115,6 +115,7 @@
    - sudo apt-get install swig
    - sudo apt-get install tcpdump
    - sudo apt-get install python-pip
+   - sudo apt-get install python-sphinx
 
 ** 系统配置
 *** 察看ubuntu内部版本
