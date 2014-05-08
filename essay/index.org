@@ -186,8 +186,6 @@
      - [[file:./presto.org][Presto]] Facebook的大规模数据实时查询系统，可以认为是Google的 [[file:./dremel.org][Dremel]] 的开源实现。
 
 
-
-
 ** Programming Language
    - [[file:prog-lang.org][Programming Language]] including following languages:
      - [[file:cpp.org][C/C++]] # C++ (pronounced "cee plus plus") is a statically typed, free-form, multi-paradigm, compiled, general-purpose programming language. It is regarded as an intermediate-level language, as it comprises a combination of both high-level and low-level language features. [[http://en.wikipedia.org/wiki/C%2B%2B][Wikipedia]]
