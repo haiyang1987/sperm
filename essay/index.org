@@ -146,6 +146,8 @@
      - [[file:./application-resilience-in-a-service-oriented-architecture.org][Application Resilience in a Service-oriented Architecture]]
      - [[file:./building-data-science-teams.org][Building Data Science Teams]]
    - [[file:streambase.org][StreamBase]] 在实现Baidu in-house的分布式实时流式计算系统之前，调研的商用流式计算系统。没有办法获得源代码只能够从文档中猜测其内部实现以及参考其提供的功能与接口。
+   - [[file:storm.org][Storm]] Twitter的分布式实时流式处理系统。这个在实现Baidu in-house的分布式实时流式计算系统的时候也做过调研，但是当时不是很深入。
+   - [[file:kafka.org][Kafka]] Apache的分布式消息系统。似乎在高可用性方面还有很多事情需要做。
    - [[file:chubby.org][Chubby]] Google为松耦合分布式系统开发的锁服务，但是在现实中还可以作为名字服务来使用。
    - [[file:gfs.org][GFS]] Google分布式基础架构的分布式文件系统。
    - [[file:mapreduce.org][MapReduce]] Google分布式基础架构的分布式计算系统。
@@ -158,35 +160,33 @@
      - [[file:oozie.org][Oozie]] Apache Hadoop项目的工作流系统，可以将多个MapReduce作业组合到一个逻辑单元中。支持作业之间的相互依赖，同时允许时间以及数据来触发作业。
      - [[file:hive.org][Hive]] Apache Hadoop项目的数据仓库平台，以HDFS/HBase为数据仓库存储平台，底层执行引擎是MapReduce，上层提供类SQL的HiveQL数据查询语言。
      - [[file:pig.org][Pig]] Apache Hadoop项目的计算语言，用于简化MapReduce任务的编写。事实上底层可以很多其他的计算引擎比如Spark等。
-   - [[file:tez.org][Tez]] Apache项目，可以有效地优化MapReduce组成的DAG。通常Pig/Hive都是生成这种DAG的，所以可以认为是替换了Pig/Hive的执行引擎。
    - [[file:dremel.org][Dremel]] Google针对大数据查询的交互式系统，传说可以在3秒内搞定PB级别的数据。
-   - [[file:power-drill.org][PowerDrill]] Dremel系统底层列式存储另外一种实现。
-   - [[file:pregel.org][Pregel]] Google针对大规模图算法设计的分布式编程框架。
-   - [[file:percolator.org][Percolator]] Google的增量数据处理分布式系统。
-   - [[file:storm.org][Storm]] Twitter的分布式实时流式处理系统。这个在实现Baidu in-house的分布式实时流式计算系统的时候也做过调研，但是当时不是很深入。
-   - [[file:kafka.org][Kafka]] Apache的分布式消息系统。似乎在高可用性方面还有很多事情需要做。
    - [[file:impala.org][Impala]] Cloudera的大规模数据实时查询系统，可以认为是Google的 [[file:dremel.org][Dremel]] 的开源实现。
    - [[file:druid.org][Druid]] MetaMarket的大规模数据实时查询系统，可以认为是Google的 [[file:dremel.org][Dremel]] 的开源实现。
+   - [[file:pregel.org][Pregel]] Google针对大规模图算法设计的分布式编程框架。
+   - [[file:percolator.org][Percolator]] Google的增量数据处理分布式系统。
+   - [[file:tenzing.org][Tenzing]] Google的数据仓库平台，和Hive系统非常类似。
    - [[file:megastore.org][Megastore]] Google的跨地域级别的分布式存储系统，底层存储系统为 [[file:bigtable.org][BigTable]]
    - [[file:spanner.org][Spanner]] Google的全球级别的分布式存储系统。
    - [[file:f1.org][F1]] Google的分布式RDMBS，底层存储系统为 [[file:spanner.org][Spanner]]
-   - [[file:opentsdb.org][OpenTSDB]] 在 [[file:hbase.org][HBase]] 上构建的分布式可扩展的基于时间序列的数据库，最典型的应用场景就是用来存储集群性能以及应用统计数据。
-   - [[file:tenzing.org][Tenzing]] Google的数据仓库平台，和Hive系统非常类似。
    - [[file:dapper.org][Dapper]] Google大型分布式系统的追踪设施。能够追踪分布式系统中各个组件之间相互调用关系并且记录性能数据进行性能分析。
    - [[file:gwp.org][GWP]] Google Wide Profiling. Google数据中心级别的profile系统。
+   - [[file:opentsdb.org][OpenTSDB]] 在 [[file:hbase.org][HBase]] 上构建的分布式可扩展的基于时间序列的数据库，最典型的应用场景就是用来存储集群性能以及应用统计数据。
    - [[file:./spark.org][Spark]] AMPLab的分布式计算系统，现在是Apache下面的项目。
    - [[file:dynamo.org][Dynamo]] Amazon的分布式数据库。
-   - [[file:./cassandra.org][Cassandra]] 类Dynamo的开源分布式数据库。
-   - [[file:./pnuts.org][PNUTS]] Yahoo的分布式数据库。
-   - [[file:./voldemort.org][Voldemort]] a Dynamo like distributed key-value storage system.
-   - [[file:riak.org][Riak]] a NoSQL database implementing the principles from Amazon's Dynamo paper in Erlang/C/C++/Javascript.
-   - [[file:./couchbase.org][CouchBase]] CouchDB(by CouchOne) + [[file:memcached.org][Memcached]](by Membase). a Dynamo like distributed document-oriented storage system whose closest competitor is [[file:mongodb.org][MongoDB]].
-   - [[file:./zbase.org][zBase]] Zynga. A high-performance, elastic, distributed key-value store
-   - [[file:./samza.org][Samza]] LinkedIn的的分布式流式处理系统，现在是Apache下面的项目。
-   - [[file:./presto.org][Presto]] Facebook的大规模数据实时查询系统，可以认为是Google的 [[file:./dremel.org][Dremel]] 的开源实现。
-   - [[file:./paxos.org][Paxos]] 分布式一致性算法
-   - [[file:./raft.org][Raft]] 分布式一致性算法
-   - [[file:./totem.org][Totem]] 分布式一致性算法
+   - [[file:./cassandra.org][Cassandra]] / [[file:riak.org][Riak]] / [[file:./voldemort.org][Voldemort]] 类Dynamo的开源分布式数据库。
+   - [[file:./paxos.org][Paxos]] / [[file:./raft.org][Raft]] / [[file:./totem.org][Totem]] 分布式一致性算法。
+   - SOMETHING MAY NEVER GONNA TO READ
+     - [[file:tez.org][Tez]] Apache项目，可以有效地优化MapReduce组成的DAG。通常Pig/Hive都是生成这种DAG的，所以可以认为是替换了Pig/Hive的执行引擎。
+     - [[file:power-drill.org][PowerDrill]] Dremel系统底层列式存储另外一种实现。
+     - [[file:./pnuts.org][PNUTS]] Yahoo的分布式数据库。
+     - [[file:./couchbase.org][CouchBase]] CouchDB(by CouchOne) + [[file:memcached.org][Memcached]](by Membase). a Dynamo like distributed document-oriented storage system whose closest competitor is [[file:mongodb.org][MongoDB]].
+     - [[file:./zbase.org][zBase]] Zynga. A high-performance, elastic, distributed key-value store
+     - [[file:./samza.org][Samza]] LinkedIn的的分布式流式处理系统，现在是Apache下面的项目。
+     - [[file:./presto.org][Presto]] Facebook的大规模数据实时查询系统，可以认为是Google的 [[file:./dremel.org][Dremel]] 的开源实现。
+
+
+
 
 ** Programming Language
    - [[file:prog-lang.org][Programming Language]] including following languages:

@@ -1,5 +1,4 @@
 * samza
    - http://samza.incubator.apache.org/
-   - 
 
 todo(dirlt):
