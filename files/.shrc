@@ -244,16 +244,20 @@ test_stopcont() {
     round=${1:-4}
     $GALERA_SRC/tests/test_stopcont/run.sh 4
 }
-wsrep_commit() {
-    local bugid=$1
+git_commit() {
+    local issue_id=$1
     local message=$2
-    bzr commit --fixes lp:$bugid -m "References lp:$bugid $message"
+    gca -m "Refs #$issue_id: $message"
 }
-galera_commit() {
-    local ticketid=$1
+svn_commit() {
+    local ticket_id=$1
     local message=$2
-    #svn commit -m "Refs #$ticketid: $message"
-    gca -m "Refs #$ticketid: $message"
+    svn commit -m "Refs #$ticket_id: $message"
+}
+bzr_commit() {
+    local bug_id=$1
+    local message=$2
+    bzr commit --fixes lp:$bug_id -m "References lp:$bug_id $message"
 }
 galera_debug_build() {
     cd $GALERA_SRC && scons debug=0 -j8 ; cd -
