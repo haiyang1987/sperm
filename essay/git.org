@@ -30,9 +30,12 @@ git本地仓库由下面三棵树构成：
    - git commit --amend 修改最后一次提交
    - git checkout -- <files> 放弃本地修改，将INDEX移到WD
    - git checkout HEAD -- <files> 放弃本地修改，HEAD移到INDEX和WD
-   - git reset HEAD <files> 保留本地修改，取消INDEX
    - git diff WD和INDEX差别
    - git diff --cached INDEX和HEAD差别
+   - git diff > {patch} / git apply [-R] {patch} # 制作patch以及应用patch. -R可以撤销patch.
+   - git reset HEAD <files> 保留本地修改，取消INDEX
+   - git reset --hard <commit-id> # 回退到某个commit-id，包括commit/index信息.
+   - git reset --soft <commit-id> # 回退到某个commit-id，只是commit不包括index.
    - git rm <files> 从HEAD删除
    - git rm --cached <files> 从INDEX删除
    - git mv 重命名文件
@@ -54,9 +57,11 @@ git本地仓库由下面三棵树构成：
    - git checkout -b <branch> 创建并且切换分支
    - git branch -d <branch> 删除分支 / -D <branch> 强制删除分支
    - git push <repo> <branch> 将本地branch HEAD信息推送到远程repo的branch
+   - git push -f # 如果本地某个commit已经提交到server, 但是想修改这个commit并且重新push, 可以使用在这个命令
    - git push <repo> :<branch> 将删除分支信息推送。 *note(dirlt):这个可以这样理解，:之前表示null,将null推到branch相当于清空x。*
    - git pull <repo> 将远程repo合并到本地HEAD
    - git merge <branch> 将本地branch进行合并
+   - git cherry-pick <commit-id> # pick commit to merge
    - git fetch <repo> <branch> 将远程repo的branch拉到本地但是并不进行任何修改
 
 如果合并过来的分支，是当前分支的child的话，那么执行fast-forward合并，否则会执行普通的合并生成一个新的node，这个node是两个分支的共同child。
@@ -69,10 +74,6 @@ Git使用的标签有两种类型：轻量级的（lightweight）和含附注的
    - git show <tag-name> 察看相应标签的版本信息
    - git tag <tag-name> [<sha1>] 添加轻量标签
    - git push <repo> <tag> /--tags 推送某个标签或者是全部的标签
-
-** git merge
-   - git cherry-pick <commit-id> # pick commit to merge
-   - git diff > {patch} / git apply {patch} # 制作patch以及应用patch
 
 ** git flow
 参考资源

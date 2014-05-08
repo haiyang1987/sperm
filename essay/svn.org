@@ -2,8 +2,3 @@
 #+OPTIONS: H:5
 
 todo(dirlt):
-
-** svn repo
-** svn branch
-** svn tag
-** svn merge

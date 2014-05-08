@@ -159,10 +159,15 @@ start_node() {
         cluster_port=4564
         option="--mysql-opt --wsrep-new-cluster"
     fi
-    local clutser_address="gcomm://127.0.0.1:$cluster_port?pc.wait_prim=false&gmcast.listen_addr=tcp://0.0.0.0:$node_port&pc.recovery=1"
-    #local clutser_address="gcomm://127.0.0.1:$cluster_port?pc.wait_prim=false&gmcast.listen_addr=tcp://0.0.0.0:$node_port"
+    local PC_RECOVERY=1
+    local gcs_address_param=''
+    if [ $PC_RECOVERY -eq 1 ]; then
+        # turn off new cluster if pc.recovery is on.
+        option=''
+        gcs_address_param='&pc.recovery=1'
+    fi
+    local clutser_address="gcomm://127.0.0.1:$cluster_port?pc.wait_prim=false&gmcast.listen_addr=tcp://0.0.0.0:$node_port$gcs_address_param"
     local cmd="MYSQL_PORT=$mysql_port /dev/shm/galera$idx/mysql-galera -g '$clutser_address' $option $extra_options start"
-    # local cmd="MYSQL_PORT=$mysql_port /dev/shm/galera$idx/mysql-galera $option start"
     echo $cmd
     eval $cmd
 }
