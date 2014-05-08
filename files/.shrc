@@ -456,15 +456,16 @@ shadowsocks_once() {
 }
 shadowsocks_once
 
+# deprecated now !!!
 easy_oprofile() {
     if [ $# -lt 5 ]; then
-        echo "easy_oprofile image-file(ELF) report-file source-directory asm-file command"
+        echo "easy_oprofile image-file(ELF) command"
         exit 1
     fi
     local ifile=$1; shift
-    local rfile=$1; shift
-    local srcdir=$1; shift
-    local afile=$1; shift
+    local rfile="oprof.rpt"
+    local srcdir="."
+    local afile="oprof.asm"
     local command=$@
     echo "Image file: $ifile"
     echo "Report file: $rfile"
@@ -522,7 +523,7 @@ _time_machine_sync_dir() {
     local src=$1
     local dst=$2
     local d=$3
-    mkdir -p "$dst/$d/"
+    mkdir -p "$dst/$d/" 2>/dev/null
     echo "sync $d..."
     rsync -arz --no-times "$src/$d/" "$dst/$d/"
 }
@@ -530,9 +531,8 @@ _time_machine_sync_dir() {
 _time_machine_sync_utils() {
     local src=$1
     local dst=$2
-    mkdir -p "$dst/utils"
-    local pkgs=$(find $src/utils/ -maxdepth 1 -type f)
-    for p in $pkgs
+    mkdir -p "$dst/utils" 2>/dev/null
+    for p in `find $src/utils/ -maxdepth 1 -type f`
     do
 	echo "sync $p..."
 	p=`basename $p`
@@ -544,15 +544,14 @@ time_machine() {
     rm -f /tmp/ubuntu-backup
     ln -s "/media/Expansion Drive/Ubuntu Backup/" /tmp/ubuntu-backup
 
-    # check condition.
-    local pwd=`pwd`
-    if [ ! -d "$pwd/dirlt" ]; then
+    PWD=$(pwd)
+    if [ ! -d "$PWD/dirlt" ]; then
         echo "are you at right directory???"
         return
     fi
 
     # determine source and destination.
-    local base=`basename "$pwd"`
+    local base=`basename "$PWD"`
     local home=/home/dirlt/
     local backup=/tmp/ubuntu-backup/dirlt
 

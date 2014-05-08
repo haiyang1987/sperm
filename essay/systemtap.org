@@ -9,8 +9,8 @@
      - sudo apt-get install elfutils # 可能需要安装
    - *note(dirlt)：linux还自带perf工具也能够观察kernel行为*
 
-** Introduction
-systemtap的工作原理是使用linux提供的kprobe接口 *todo(dirlt):more about kprobe* ，将用户需要观测linux系统的行为转换成为c（使用kprobe)并且编译成为kernel object然后运行。 
+** getting started
+systemtap的工作原理是使用linux提供的kprobe接口 *todo(dirlt):more about kprobe* ，将用户需要观测linux系统的行为转换成为c（使用kprobe)并且编译成为kernel object然后运行。
 systemtap使用一种触发式的工作方式，通过安装探针（probe）来监控系统的行为，一旦探针事件出现的话就会触发对应的代码。代码使用自己定义的语言，和C语言非常类似。
 
 file:./images/systemtap-prepare-workflow.gif
@@ -30,10 +30,10 @@ file:./images/systemtap-run-workflow.gif
 #+BEGIN_EXAMPLE
 [dirlt@umeng-ubuntu-pc] >  sudo stap -ve 'probe begin { log("hello world") exit() }'
 Pass 1: parsed user script and 76 library script(s) using 92476virt/22592res/2616shr kb, in 80usr/0sys/85real ms.
-Pass 2: analyzed script: 1 probe(s), 2 function(s), 0 embed(s), 0 global(s) using 93000virt/23472res/2816shr kb, in 0usr/0sys/4real 
-ms.                                                                                                                                
+Pass 2: analyzed script: 1 probe(s), 2 function(s), 0 embed(s), 0 global(s) using 93000virt/23472res/2816shr kb, in 0usr/0sys/4real
+ms.
 Pass 3: translated to C into "/tmp/stapbx8Gpk/stap_7703b9bd08bd359932cf8da12019f6d8_813.c" using 93000virt/23628res/2964shr kb, in 0
-usr/0sys/0real ms.                                                                                                                 
+usr/0sys/0real ms.
 Pass 4: compiled C into "stap_7703b9bd08bd359932cf8da12019f6d8_813.ko" in 3240usr/510sys/4048real ms.
 Pass 5: starting run.
 hello world
@@ -41,8 +41,8 @@ Pass 5: run completed in 10usr/10sys/600real ms.
 
 [dirlt@umeng-ubuntu-pc] >  sudo stap -ve 'probe begin { log("hello world") exit() }'
 Pass 1: parsed user script and 76 library script(s) using 92476virt/22592res/2616shr kb, in 80usr/10sys/85real ms.
-Pass 2: analyzed script: 1 probe(s), 2 function(s), 0 embed(s), 0 global(s) using 93000virt/23472res/2816shr kb, in 0usr/0sys/4real 
-ms.                                                                                                                                
+Pass 2: analyzed script: 1 probe(s), 2 function(s), 0 embed(s), 0 global(s) using 93000virt/23472res/2816shr kb, in 0usr/0sys/4real
+ms.
 Pass 3: using cached /home/dirlt/.systemtap/cache/77/stap_7703b9bd08bd359932cf8da12019f6d8_813.c
 Pass 4: using cached /home/dirlt/.systemtap/cache/77/stap_7703b9bd08bd359932cf8da12019f6d8_813.ko
 Pass 5: starting run.
@@ -90,9 +90,9 @@ file:./images/systemtap-processing-steps.png
      - The probe run concludes when the user sends an interrupt to the driver, or when the probe script runs an exit primitive. (This primitive might simply send a SIGINT to the running user-level driver process.) 通过发起信号结束
 
 *** Programming
-   - A systemtap script file has the suffix “.stp” 
+   - A systemtap script file has the suffix “.stp”
    - A script file is a sequence of top-level constructs, of which there are three types: 下面这些元素组成
-     - probe definitions, 
+     - probe definitions,
      - auxiliary function definitions, 辅助函数定义
      - and global variable declarations. 全局变量
      - These may occur in any order, and forward references are permitted. 可以向前引用
@@ -110,7 +110,7 @@ file:./images/systemtap-processing-steps.png
 	- function("fn")
 	  - fn可以使用?,*做通配
         - function("fn@filename")
-	- function("fn@filename:lineno") 
+	- function("fn@filename:lineno")
 	- function(0x1f) PC address located.
         - .callees 可以指定这个fn所有调用的函数
 	- .return fn返回时候触发，默认是.entry
@@ -228,4 +228,3 @@ todo(dirlt):
 
 ** language
 todo(dirlt):
-

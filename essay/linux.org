@@ -5,7 +5,7 @@
 **** /proc/meminfo
 系统中关于当前内存的利用状况等的信息，常由free命令使用；可以使用文件查看命令直接读取此文件，其内容显示为两列，前者为统计属性，后者为对应的值；
 #+BEGIN_EXAMPLE
-[dirlt@umeng-ubuntu-pc] > cat /proc/meminfo 
+[dirlt@umeng-ubuntu-pc] > cat /proc/meminfo
 MemTotal:        3960316 kB
 MemFree:          202908 kB
 Buffers:           53632 kB
@@ -61,18 +61,18 @@ DirectMap2M:     4052992 kB
    - “procs_blocked”：当前被阻塞的任务的数目；
 
 #+BEGIN_EXAMPLE
-[dirlt@umeng-ubuntu-pc] > cat /proc/stat 
+[dirlt@umeng-ubuntu-pc] > cat /proc/stat
 cpu  25175536 13184 10088010 208990815 1165440 37 29476 0 0 0
 cpu0 7597990 7286 3089511 49810301 706702 37 23258 0 0 0
 cpu1 7914370 3065 2901460 50300065 188223 0 2403 0 0 0
 cpu2 4922712 1228 2039477 54300492 171151 0 1921 0 0 0
 cpu3 4740463 1604 2057560 54579955 99363 0 1892 0 0 0
-intr 8881387947 2112 3 0 0 0 0 0 0 1 0 0 0 3175452 0 0 0 0 0 0 0 3554144 0 0 224677 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6681668 12 51519086 12401 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0                                                                                                                                  
+intr 8881387947 2112 3 0 0 0 0 0 0 1 0 0 0 3175452 0 0 0 0 0 0 0 3554144 0 0 224677 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6681668 12 51519086 12401 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 ctxt 12584201613
 btime 1345525951
 processes 234445
@@ -80,12 +80,12 @@ procs_running 3
 procs_blocked 0
 softirq 304218476 0 151026247 103572 14071723 3554590 0 262575 55846497 864372 78488900
 #+END_EXAMPLE
-     
+
 **** /proc/swaps
 当前系统上的交换分区及其空间利用信息，如果有多个交换分区的话，则会每个交换分区的信息分别存储于/proc/swap目录中的单独文件中，而其优先级数字越低，被使用到的可能性越大；
 
 #+BEGIN_EXAMPLE
-[dirlt@umeng-ubuntu-pc] > cat /proc/swaps 
+[dirlt@umeng-ubuntu-pc] > cat /proc/swaps
 Filename                                Type            Size    Used    Priority
 /dev/sda5                               partition       4103164 1423572 -1
 #+END_EXAMPLE
@@ -93,7 +93,7 @@ Filename                                Type            Size    Used    Priority
 **** /proc/cmdline
 在启动时传递至内核的相关参数信息，这些信息通常由lilo或grub等启动管理工具进行传递；
 #+BEGIN_EXAMPLE
-[dirlt@umeng-ubuntu-pc] > cat /proc/cmdline 
+[dirlt@umeng-ubuntu-pc] > cat /proc/cmdline
 BOOT_IMAGE=/boot/vmlinuz-3.2.0-27-generic root=UUID=b25db1c7-e694-4eed-8d11-ea33047338cb ro quiet splash vt.handoff=7
 #+END_EXAMPLE
 
@@ -101,7 +101,7 @@ BOOT_IMAGE=/boot/vmlinuz-3.2.0-27-generic root=UUID=b25db1c7-e694-4eed-8d11-ea33
 系统上次启动以来的运行时间，如下所示，其第一个数字表示系统运行时间，第二个数字表示系统空闲时间，单位是秒；系统上次启动以来的运行时间，如下所示，其第一个数字表示系统运行时间，第二个数字表示系统空闲时间，单位是秒；
 
 #+BEGIN_EXAMPLE
-[dirlt@umeng-ubuntu-pc] > cat /proc/uptime 
+[dirlt@umeng-ubuntu-pc] > cat /proc/uptime
 621137.39 2116303.76
 #+END_EXAMPLE
 
@@ -116,7 +116,7 @@ Linux version 3.2.0-27-generic (buildd@allspice) (gcc version 4.6.3 (Ubuntu/Lina
 **** /proc/mounts
 系统当前挂载的所有文件系统.第一列表示挂载的设备，第二列表示在当前目录树中的挂载点，第三点表示当前文件系统的类型，第四列表示挂载属性（ro或者rw），第五列和第六列用来匹配/etc/mtab文件中的转储（dump）属性；
 #+BEGIN_EXAMPLE
-[dirlt@umeng-ubuntu-pc] > cat /proc/mounts 
+[dirlt@umeng-ubuntu-pc] > cat /proc/mounts
 rootfs / rootfs rw 0 0
 sysfs /sys sysfs rw,nosuid,nodev,noexec,relatime 0 0
 proc /proc proc rw,nosuid,nodev,noexec,relatime 0 0
@@ -137,7 +137,7 @@ gvfs-fuse-daemon /home/dirlt/.gvfs fuse.gvfs-fuse-daemon rw,nosuid,nodev,relatim
 **** /proc/modules
 当前装入内核的所有模块名称列表，可以由lsmod命令使用，也可以直接查看；如下所示，其中第一列表示模块名，第二列表示此模块占用内存空间大小，第三列表示此模块有多少实例被装入，第四列表示此模块依赖于其它哪些模块，第五列表示此模块的装载状态（Live：已经装入；Loading：正在装入；Unloading：正在卸载），第六列表示此模块在内核内存（kernel memory）中的偏移量；
 #+BEGIN_EXAMPLE
-[dirlt@umeng-ubuntu-pc] > cat /proc/modules 
+[dirlt@umeng-ubuntu-pc] > cat /proc/modules
 pci_stub 12622 1 - Live 0x0000000000000000
 vboxpci 23200 0 - Live 0x0000000000000000 (O)
 vboxnetadp 13382 0 - Live 0x0000000000000000 (O)
@@ -164,7 +164,7 @@ snd_timer 29990 2 snd_pcm,snd_seq, Live 0x0000000000000000
 snd_seq_device 14540 3 snd_seq_midi,snd_rawmidi,snd_seq, Live 0x0000000000000000
 parport_pc 32866 1 - Live 0x0000000000000000
 snd 78855 18 snd_hda_codec_realtek,snd_hda_intel,snd_hda_codec,snd_hwdep,snd_pcm,snd_rawmidi,snd_seq,snd_timer,snd_seq_device, Live 0
-x0000000000000000                                                                                                                   
+x0000000000000000
 psmouse 87692 0 - Live 0x0000000000000000
 serio_raw 13211 0 - Live 0x0000000000000000
 soundcore 15091 1 snd, Live 0x0000000000000000
@@ -191,7 +191,7 @@ r8169 62099 0 - Live 0x0000000000000000
 **** /proc/crypto
 系统上已安装的内核使用的密码算法及每个算法的详细信息列表
 #+BEGIN_EXAMPLE
-[dirlt@umeng-ubuntu-pc] > cat /proc/crypto 
+[dirlt@umeng-ubuntu-pc] > cat /proc/crypto
 name         : cbc(aes)
 driver       : cbc(aes-generic)
 module       : kernel
@@ -310,7 +310,7 @@ digestsize   : 4
    - Linux系统中Load Average含义 – Linux Kernel Exploration http://ilinuxkernel.com/?p=869
 保存关于CPU和磁盘I/O的负载平均值，其前三列分别表示每1秒钟、每5秒钟及每15秒的负载平均值，类似于uptime命令输出的相关信息；第四列是由斜线隔开的两个数值，前者表示当前正由内核调度的实体（进程和线程）的数目，后者表示系统当前存活的内核调度实体的数目；第五列表示此文件被查看前最近一个由内核创建的进程的PID.
 #+BEGIN_EXAMPLE
-[dirlt@umeng-ubuntu-pc] > cat /proc/loadavg 
+[dirlt@umeng-ubuntu-pc] > cat /proc/loadavg
 2.46 2.14 2.16 15/736 11012
 #+END_EXAMPLE
 
@@ -318,7 +318,7 @@ digestsize   : 4
 保存当前由内核锁定的文件的相关信息，包含内核内部的调试数据；每个锁定占据一行，且具有一个惟一的编号；如下输出信息中每行的第二列表示当前锁定使用的锁定类别，POSIX表示目前较新类型的文件锁，由lockf系统调用产生，FLOCK是传统的UNIX文件锁，由flock系统调用产生；第三列也通常由两种类型，ADVISORY表示不允许其他用户锁定此文件，但允许读取，MANDATORY表示此文件锁定期间不允许其他用户任何形式的访问；
 
 #+BEGIN_EXAMPLE
-[dirlt@umeng-ubuntu-pc] > cat /proc/locks 
+[dirlt@umeng-ubuntu-pc] > cat /proc/locks
 1: POSIX  ADVISORY  WRITE 18536 08:01:1573063 0 9223372036854775806
 2: POSIX  ADVISORY  WRITE 3187 08:03:1970738 0 0
 3: POSIX  ADVISORY  WRITE 3187 08:03:1971423 0 0
@@ -356,11 +356,11 @@ digestsize   : 4
 在内核中频繁使用的对象（如inode、dentry等）都有自己的cache，即slab pool，而/proc/slabinfo文件列出了这些对象相关slap的信息；详情可以参见内核文档中slapinfo的手册页；
 
 #+BEGIN_EXAMPLE
-[dirlt@umeng-ubuntu-pc] > sudo cat /proc/slabinfo                                                                                    
-[sudo] password for dirlt: 
+[dirlt@umeng-ubuntu-pc] > sudo cat /proc/slabinfo
+[sudo] password for dirlt:
 slabinfo - version: 2.1
 # name            <active_objs> <num_objs> <objsize> <objperslab> <pagesperslab> : tunables <limit> <batchcount> <sharedfactor> : sla
-bdata <active_slabs> <num_slabs> <sharedavail>                                                                                      
+bdata <active_slabs> <num_slabs> <sharedavail>
 ip6_dst_cache        100    100    320   25    2 : tunables    0    0    0 : slabdata      4      4      0
 UDPLITEv6              0      0   1024   16    4 : tunables    0    0    0 : slabdata      0      0      0
 UDPv6                 64     64   1024   16    4 : tunables    0    0    0 : slabdata      4      4      0
@@ -468,7 +468,7 @@ kmem_cache_node      128    128     64   64    1 : tunables    0    0    0 : sla
 当前系统虚拟内存的多种统计数据，信息量可能会比较大，这因系统而有所不同，可读性较好；
 
 #+BEGIN_EXAMPLE
-[dirlt@umeng-ubuntu-pc] > cat /proc/vmstat 
+[dirlt@umeng-ubuntu-pc] > cat /proc/vmstat
 nr_free_pages 39606
 nr_inactive_anon 207905
 nr_active_anon 575539
@@ -571,7 +571,7 @@ thp_split 0
 内存区域（zone）的详细信息列表
 
 #+BEGIN_EXAMPLE
-[dirlt@umeng-ubuntu-pc] > cat /proc/zoneinfo 
+[dirlt@umeng-ubuntu-pc] > cat /proc/zoneinfo
 Node 0, zone      DMA
   pages free     3977
         min      65
@@ -825,7 +825,7 @@ TODO:
 00400000-004e0000 r-xp 00000000 08:01 4456452                            /bin/bash
 006df000-006e0000 r--p 000df000 08:01 4456452                            /bin/bash
 006e0000-006e9000 rw-p 000e0000 08:01 4456452                            /bin/bash
-006e9000-006ef000 rw-p 00000000 00:00 0 
+006e9000-006ef000 rw-p 00000000 00:00 0
 02411000-024ac000 rw-p 00000000 00:00 0                                  [heap]
 7f81aa605000-7f81aa611000 r-xp 00000000 08:01 5770912                    /lib/x86_64-linux-gnu/libnss_files-2.15.so
 7f81aa611000-7f81aa810000 ---p 0000c000 08:01 5770912                    /lib/x86_64-linux-gnu/libnss_files-2.15.so
@@ -839,7 +839,7 @@ TODO:
 7f81aaa35000-7f81aac34000 ---p 00017000 08:01 5770906                    /lib/x86_64-linux-gnu/libnsl-2.15.so
 7f81aac34000-7f81aac35000 r--p 00016000 08:01 5770906                    /lib/x86_64-linux-gnu/libnsl-2.15.so
 7f81aac35000-7f81aac36000 rw-p 00017000 08:01 5770906                    /lib/x86_64-linux-gnu/libnsl-2.15.so
-7f81aac36000-7f81aac38000 rw-p 00000000 00:00 0 
+7f81aac36000-7f81aac38000 rw-p 00000000 00:00 0
 7f81aac38000-7f81aac40000 r-xp 00000000 08:01 5770908                    /lib/x86_64-linux-gnu/libnss_compat-2.15.so
 7f81aac40000-7f81aae3f000 ---p 00008000 08:01 5770908                    /lib/x86_64-linux-gnu/libnss_compat-2.15.so
 7f81aae3f000-7f81aae40000 r--p 00007000 08:01 5770908                    /lib/x86_64-linux-gnu/libnss_compat-2.15.so
@@ -849,7 +849,7 @@ TODO:
 7f81ab6d7000-7f81ab8d6000 ---p 001b3000 08:01 5770861                    /lib/x86_64-linux-gnu/libc-2.15.so
 7f81ab8d6000-7f81ab8da000 r--p 001b2000 08:01 5770861                    /lib/x86_64-linux-gnu/libc-2.15.so
 7f81ab8da000-7f81ab8dc000 rw-p 001b6000 08:01 5770861                    /lib/x86_64-linux-gnu/libc-2.15.so
-7f81ab8dc000-7f81ab8e1000 rw-p 00000000 00:00 0 
+7f81ab8dc000-7f81ab8e1000 rw-p 00000000 00:00 0
 7f81ab8e1000-7f81ab8e3000 r-xp 00000000 08:01 5770874                    /lib/x86_64-linux-gnu/libdl-2.15.so
 7f81ab8e3000-7f81abae3000 ---p 00002000 08:01 5770874                    /lib/x86_64-linux-gnu/libdl-2.15.so
 7f81abae3000-7f81abae4000 r--p 00002000 08:01 5770874                    /lib/x86_64-linux-gnu/libdl-2.15.so
@@ -859,9 +859,9 @@ TODO:
 7f81abd07000-7f81abd0b000 r--p 00022000 08:01 5770958                    /lib/x86_64-linux-gnu/libtinfo.so.5.9
 7f81abd0b000-7f81abd0c000 rw-p 00026000 08:01 5770958                    /lib/x86_64-linux-gnu/libtinfo.so.5.9
 7f81abd0c000-7f81abd2e000 r-xp 00000000 08:01 5770841                    /lib/x86_64-linux-gnu/ld-2.15.so
-7f81abf12000-7f81abf15000 rw-p 00000000 00:00 0 
+7f81abf12000-7f81abf15000 rw-p 00000000 00:00 0
 7f81abf25000-7f81abf2c000 r--s 00000000 08:01 2884820                    /usr/lib/x86_64-linux-gnu/gconv/gconv-modules.cache
-7f81abf2c000-7f81abf2e000 rw-p 00000000 00:00 0 
+7f81abf2c000-7f81abf2e000 rw-p 00000000 00:00 0
 7f81abf2e000-7f81abf2f000 r--p 00022000 08:01 5770841                    /lib/x86_64-linux-gnu/ld-2.15.so
 7f81abf2f000-7f81abf31000 rw-p 00023000 08:01 5770841                    /lib/x86_64-linux-gnu/ld-2.15.so
 7fffccd69000-7fffccd8a000 rw-p 00000000 00:00 0                          [stack]
@@ -889,7 +889,7 @@ Provides information about memory usage, measured in pages. The columns are:
    - text text (code)
    - lib library (unused in Linux 2.6)
    - data data + stack
-   - dt dirty pages (unused in Linux 2.6) 
+   - dt dirty pages (unused in Linux 2.6)
 
 *** /proc/sys
 在/proc/sys下面有一些可以动态修改的内核参数，有两种方式可以修改这些参数。
@@ -1062,11 +1062,11 @@ dirlt@dirlt-virtual-machine:~/github/sperm/essay$ cat /proc/sys/vm/overcommit_ra
 *note(dirlt)@2013-05-25: 我copy了一份内容过来*
 
 对于这些脏页的写回策略是：
-   - 首先判断脏页比例是否超过dirty_ratio.如果没有的话那么直接退出 
+   - 首先判断脏页比例是否超过dirty_ratio.如果没有的话那么直接退出
    - 然后开始将脏页刷到磁盘直到比率小于dirty_ratio.（此时write会阻塞）
    - 判断脏页比例是否超过dirty_background_ratio或者是超过dirty_background_bytes.如果没有那么退出。
    - 如果超过的话那么就会启动pdflush daemon后台进程刷新脏页。（此时write不会阻塞）
- 
+
 注意到这里可能启动pdflush daemon在后台刷新脏页。另外系统每隔dirty_writeback_centisecs时间会启动
 pdflush daemon将脏页刷到磁盘上面。而pdflush daemon工作方式是这样的，检查脏页是否存在超过
 dirty_expire_centisecs时间的，如果超过的话那么就会在后台刷新这些脏页。
@@ -1086,12 +1086,12 @@ dirty_expire_centisecs时间的，如果超过的话那么就会在后台刷新�
      - mem_notify 如果出现OOM情况的话可以通知到userspace
      - cgroup OOM notifier 允许某个task来监控一群tasks，如果出现OOM的话会通知这个task
      - /dev/mem_notify 这个设备文件上面包含内存事件，task可以poll这个文件来获取通知
-   - Linux 的 Out-of-Memory (OOM) Killer - DBA Notes http://www.dbanotes.net/database/linux_outofmemory_oom_killer.html 
-   - OOM killer "Out of Memory: Killed process" SOLUTIONS / SUMMARY http://www.redaht.com/archives/redhat-list/2007-August/msg00060.html   
+   - Linux 的 Out-of-Memory (OOM) Killer - DBA Notes http://www.dbanotes.net/database/linux_outofmemory_oom_killer.html
+   - OOM killer "Out of Memory: Killed process" SOLUTIONS / SUMMARY http://www.redaht.com/archives/redhat-list/2007-August/msg00060.html
      - 情况主要是在32位机器下面LowMem不够使用出现OOM的情况。 *todo(dirlt)：不太清楚这个LowMem是物理还是虚拟内存*
    - LinuxDevCenter.com: When Linux Runs Out of Memory http://linuxdevcenter.com/lpt/a/6808
    - Respite from the OOM killer [LWN.net] http://lwn.net/Articles/104179/  *note(dirlt)：似乎overcommit_memory设置成为2也不能够完全避免OOM*
-     
+
 This enables or disables panic on out-of-memory feature.
 
 If this is set to 0, the kernel will kill some rogue process, called oom_killer.  Usually, oom_killer can kill rogue processes and system will survive.
@@ -1109,7 +1109,7 @@ The default value is 0. 1 and 2 are for failover of clustering. Please select ei
 本地port分配范围.
 
 **** /proc/sys/net/ipv4/tcp_tw_reuse
-重复使用处于TIME_WAIT的socket. 
+重复使用处于TIME_WAIT的socket.
 
 Allow  to  reuse  TIME_WAIT sockets for new connections when it is safe from protocol viewpoint.
 
@@ -1205,6 +1205,7 @@ The JBD is the [[http://kerneltrap.org/node/6741][journaling block device]] that
 ** system utility
 file:./images/linux-analysis-and-tools.jpg
 
+*** /SYS DEV/
 *** mpstat
 mpstat - Report processors related statistics.
 
@@ -1355,25 +1356,6 @@ Total:     9212084    4519868    4692216
    - Swap:used 交换分区使用大小
    - Swap:free 可以使用的分区大小
 
-*** dmesg
-能够察看开机时启动信息(启动信息保存在/var/log/dmesg文件里)
-#+BEGIN_EXAMPLE
-[dirlt@localhost.localdomain]$ dmesg | less
-Linux version 2.6.23.1-42.fc8 (kojibuilder@xenbuilder4.fedora.phx.redhat.com) (gcc version 4.1.2 20070925 (Red Hat 4.1.2-33)) #1 SMP Tue Oct 30 13:55:12 EDT 2007
-BIOS-provided physical RAM map:
- BIOS-e820: 0000000000000000 - 000000000009f800 (usable)
- BIOS-e820: 000000000009f800 - 00000000000a0000 (reserved)
- BIOS-e820: 00000000000ca000 - 00000000000cc000 (reserved)
- BIOS-e820: 00000000000dc000 - 0000000000100000 (reserved)
- BIOS-e820: 0000000000100000 - 000000000fef0000 (usable)
- BIOS-e820: 000000000fef0000 - 000000000feff000 (ACPI data)
- BIOS-e820: 000000000feff000 - 000000000ff00000 (ACPI NVS)
- BIOS-e820: 000000000ff00000 - 0000000010000000 (usable)
- BIOS-e820: 00000000fec00000 - 00000000fec10000 (reserved)
- BIOS-e820: 00000000fee00000 - 00000000fee01000 (reserved)
- BIOS-e820: 00000000fffe0000 - 0000000100000000 (reserved)
-#+END_EXAMPLE
-
 *** taskset
 可以用来获取和修改进程的CPU亲和性。
    - taskset -c 1,2,3 cmd (指定在CPU #1,#2,#3上运行cmd)
@@ -1394,68 +1376,7 @@ BIOS-provided physical RAM map:
 #+END_EXAMPLE
 
 *** lsof
-todo(zhangyan04):
-
-*** quota
-http://blog.itpub.net/post/7184/488931
-
-quota用来为用户编辑磁盘配额。
-   - 初始化磁盘配额功能
-修改/etc/fstab增加usrquota以及grpquota
-#+BEGIN_EXAMPLE
-/dev/hdb1 /home/extra ext3 defaults,noatime,usrquota,grpquota 1 2
-#+END_EXAMPLE
-
-   - 建立磁盘配额文件
-#+BEGIN_EXAMPLE
-# cd /home/extra
-# touch aquota.user
-# touch aquota.group
-# chmod 600 aquota.user
-# chmod 600 aquota.group
-#+END_EXAMPLE
-
-   - 重新挂载磁盘。mount -o remount /home/extra
-   - 扫描磁盘，初始化磁盘配额表。修改之前建立的aquota文件。/sbin/quotacheck -uvg /home/extra
-
-   - 编辑用户磁盘配额
-如果为用户设定可以使用/usr/sbin/edquota -u testuser,如果需要为群组设定的话/usr/sbin/edquota -g testgrp.
-#+BEGIN_EXAMPLE
-Disk quotas for user testuser (uid 517):
-Filesystem blocks soft hard inodes soft hard
-/dev/hdb1 0 0 0 0 0 0
-#+END_EXAMPLE
-各个字段含义如下：
-   - blocks：已经使用的磁盘块(1k bytes)
-   - soft：软限额大小，如果用户超出了这个限额，系统会发出警告，如果在设定的时间内还没有回到该限额以下，系统将拒绝该用户使用额外的磁盘空间。
-   - hard：硬限额，用户不允许超出的磁盘限制
-   - inodes：用户已经使用的inodes数
-   - soft和hard含义同上，不过，这里是限制用户创建的文件/目录总数。
-可以使用/usr/sbin/edquota -t来修改软限额期限。
-
-   - 启动磁盘配额可以使用/sbin/quotaon -av,关闭磁盘配额可以使用/sbin/quotaoff -av.
-   - 查看整体磁盘配额可以使用/usr/sbin/repquota -a,查看用户配额情况可以使用quota -vu test
-
-可以对WWW空间，FTP空间，Email空间进行磁盘配额限制。Quota只能基于磁盘分区进行配额管理，不能基于目录进行配额管理，因此只能把数据存放在有配额限制的分区，再用符号链接到实际应用的目录。
-*** crontab
-crontab就是为了能够使得工作自动化在特定的时间或者是时间间隔执行特定的程序。crontab -e就可以编辑crontab配置文件，默认是vim编辑器。crontab配置文件里面可以像shell一样定义变量，之后就是任务描述，每一个任务分为6个字段: minute hour day month week command
-   1. minute范围是0-59
-   2. hour范围是0-23
-   3. day范围是1-31
-   4. month范围是1-12
-   5. week范围是0-7[0/7表示Sun]
-对于每个字段可以有3种表示方式
-   1. - 表示匹配所有时间
-   2. num 表示完全匹配
-   3. num1-num2 表示匹配范围
-   4. num1,num2,num3... 进行枚举匹配
-   5. num1-num2/interval 表示从num1-num2时间段内每interval间隔
-对于系统级别的crontab配置文件在/etc/crontab貌似里面还多了一个用户字段.下面是几个配置的例子:
-#+BEGIN_EXAMPLE
-0 6 * * * /home/dirlt/platform/apache/bin/apachectl restart 每天早上6点重启apache
-0,30 18-23 * * * /home/dirlt/platform/apache/bin/apachectl restart 每天18-23时候每隔半小时重启apache
-\* 23-7/1 * * * /* 23-7/1 * * * /usr/local/apache/bin/apachectl restart 每天从23到次日7点每隔一小时重启apache
-#+END_EXAMPLE
+todo(dirlt):
 
 *** hdparm
 hdparm - get/set hard disk parameters
@@ -1480,25 +1401,11 @@ sunrpc on /var/lib/nfs/rpc_pipefs type rpc_pipefs (rw)
 我们关注自己读写目录，比如通常在/home下面，这里就是使用的device就是/dev/mapper/VolGroup00-LogVol00
 
 todo(dirlt):好多选项都不太清楚是什么意思.
-*** nmon
-http://nmon.sourceforge.net/pmwiki.php Nigel's performance Monitor for Linux
-
-todo(dirlt):
-
 *** pmap
 todo(dirlt):
 
 *** strace
 todo(dirlt):
-
-*** uptime
-todo(dirlt):
-
-*** top
-todo(dirlt):
-
-*** pmap
-todo(dirlt)
 
 *** iostat
 iostat主要用来观察io设备的负载情况的。首先我们看看iostat的样例输出
@@ -1579,11 +1486,15 @@ sda               0.00     0.00    0.00    0.00     0.00     0.00     0.00     0
    - svctm todo(dirlt):don't use it.
    - %util CPU在处理IO请求时的百分比.可以认为是IO设备使用率.
 
-*** blockdev
-todo(dirlt):
+*** vmtouch
+https://github.com/hoytech/vmtouch
 
-*** systemtap
-todo(dirlt): http://sourceware.org/systemtap/
+*note(dirlt)：可以用来warmup数据，使用参数似乎也比较简单*
+
+里面有一些系统调用比较值得注意和学习：
+   - mlock/munlock 能够将一部分的内存lock住而不会切换到swap分区上面。
+   - mlockall/munlockall 将进程所有的内存都lock住而不会切换到swap分区上面。
+   - posix_fadvise 针对fd做一些访问模式的预测
 
 *** latencytop
 todo(dirlt): https://latencytop.org/
@@ -1593,21 +1504,13 @@ todo(dirlt): https://latencytop.org/
 
 todo(dirlt)：
 
-*** htop
-可以认为是top的升级版本，个人感觉比top好用很多
-
-todo(dirlt)：
-
-*** cssh
-todo(dirlt):
-
 *** dstat
 todo(dirlt): https://github.com/dagwieers/dstat
 
 http://weibo.com/1840408525/AdGkO3uEL dstat -lamps
 
 *** slurm
-Simple Linux Utility for Resource Management 
+Simple Linux Utility for Resource Management
 todo(dirlt): https://computing.llnl.gov/linux/slurm/
 
 *** sar
@@ -1948,6 +1851,53 @@ tcp        0   1024 tc-hpc-dev.tc.baidu.c:19870 tc-com-test00.tc.baid:60745 ESTA
    - User
    - PID/Program name
 
+*** tcpdump
+todo(zhangyan04):
+
+*** iftop
+todo(dirlt): http://www.ex-parrot.com/~pdw/iftop/
+
+*** iftraf
+todo(dirlt): http://iptraf.seul.org/
+
+*** rsync
+常用选项：
+   - -a --archive
+   - -r --recursive
+   - -v --verbose
+   - -z --compress
+
+常用命令：
+   - 同步目录 rsync -avrz /dir/ user@host:/dir/ *note(dirlt):注意目录后面需要加上/*
+   - 同步文件 rysnc -vz /dir/file1 user@host:/dir/file
+
+*** iodump
+*** iopp
+*** nethogs
+todo(dirlt):
+
+*** slabtop
+slabtop - display kernel slab cache information in real time
+
+*** nmon
+nmon - systems administrator, tuner, benchmark tool.
+
+http://nmon.sourceforge.net/pmwiki.php Nigel's performance Monitor for Linux
+
+*** collectl
+collectl http://collectl.sourceforge.net/ *todo(dirlt):似乎相当不错，将很多关键信息都做了收集和整合*
+
+*** numactl
+todo(dirlt):
+
+*** jnettop
+todo(dirlt):
+
+*** glances
+http://nicolargo.github.io/glances/
+
+todo(dirlt):
+
 *** ifconfig
 ifconfig - configure a network interface
 
@@ -2007,18 +1957,172 @@ lo        Link encap:Local Loopback
 
 使用ifconfig能够创建虚拟网卡绑定IP sudo ifconfig <name> <ip>, 如果需要关闭这个虚拟网卡的话可以ifconfig <name> down.即可。
 
-*** /sbin/ip
-todo(zhangyan04):
 
-*** ping
-todo(zhangyan04):
 
-*** route
-todo(zhangyan04):
 
-*** tcpdump
-todo(zhangyan04):
+*** ps(process snapshot)
+进程状态有下面几种：
+   - D    uninterruptible sleep (usually IO)
+   - R    running or runnable (on run queue)
+   - S    interruptible sleep (waiting for an event to complete)
+   - T    stopped, either by a job control signal or because it is being traced.
+   - W    paging (not valid since the 2.6.xx kernel)
+   - X    dead (should never be seen)
+   - Z    defunct ("zombie") process, terminated but not reaped by its parent.
+   - <    high-priority (not nice to other users)
+   - N    low-priority (nice to other users)
+   - L    has pages locked into memory (for real-time and custom IO)
+   - s    is a session leader
+   - l    is multi-threaded (using CLONE_THREAD, like NPTL pthreads do)
+   - +    is in the foreground process group.
 
+-----
+
+在使用ubuntu的apt-get时候，可能会出现一些异常的状况，我们直接终止了apt-get。但是这个时候apt-get软件本身出于一个不正常的状态，
+导致之后不能够启动apt-get。如果观察进程的话会出现下面一些可疑的进程
+#+BEGIN_EXAMPLE
+dp@dp1:~$ ps aux | grep "apt"
+root      3587  0.0  0.0  36148 22800 ?        Ds   Oct08   0:00 /usr/bin/dpkg --status-fd 50 --unpack --auto-deconfigure /var/cache/apt/archives/sgml-data_2.0.4_all.deb
+root      9579  0.0  0.0  35992 22744 ?        Ds   Oct19   0:00 /usr/bin/dpkg --status-fd 50 --unpack --auto-deconfigure /var/cache/apt/archives/iftop_0.17-16_amd64.deb
+root     25957  0.0  0.0  36120 22796 ?        Ds   Nov05   0:00 /usr/bin/dpkg --status-fd 50 --unpack --auto-deconfigure /var/cache/apt/archives/iftop_0.17-16_amd64.deb /var/cache/apt/archives/iotop_0.4-1_all.deb
+dp       30586  0.0  0.0   7628  1020 pts/2    S+   08:59   0:00 grep --color=auto apt
+#+END_EXAMPLE
+这些进程的父进程都是init进程，并且状态是uninterruptible sleep，给kill -9也没有办法终止，唯一的办法只能reboot机器来解决这个问题。关于这个问题可以看stackoverflow上面的解答 How to stop 'uninterruptible' process on Linux? - Stack Overflow http://stackoverflow.com/questions/767551/how-to-stop-uninterruptible-process-on-linux
+   - Simple answer: you cannot. Longer answer: the uninterruptable sleep means the process will not be woken up by signals. It can be only woken up by what it's waiting for. When I get such situations eg. with CD-ROM, I usually reset the computer by using suspend-to-disk and resuming.
+   - The D state basically means that the process is waiting for disk I/O, or other block I/O that can't be interrupted. Sometimes this means the kernel or device is feverishly trying to read a bad block (especially from an optical disk). Sometimes it means there's something else. The process cannot be killed until it gets out of the D state. Find out what it is waiting for and fix that. The easy way is to reboot. Sometimes removing the disk in question helps, but that can be rather dangerous: unfixable catastrophic hardware failure if you don't know what you're doing (read: smoke coming out).
+
+*** ulimit
+todo(dirlt)
+
+*** sysprof
+Sysprof - Statistical, system-wide Profiler for Linux : http://sysprof.com/
+
+
+*** /SYS ADMIN/
+*** uptime
+*** top
+*** htop
+*** ttyload
+*** dmesg
+能够察看开机时启动信息(启动信息保存在/var/log/dmesg文件里)
+#+BEGIN_EXAMPLE
+[dirlt@localhost.localdomain]$ dmesg | less
+Linux version 2.6.23.1-42.fc8 (kojibuilder@xenbuilder4.fedora.phx.redhat.com) (gcc version 4.1.2 20070925 (Red Hat 4.1.2-33)) #1 SMP Tue Oct 30 13:55:12 EDT 2007
+BIOS-provided physical RAM map:
+ BIOS-e820: 0000000000000000 - 000000000009f800 (usable)
+ BIOS-e820: 000000000009f800 - 00000000000a0000 (reserved)
+ BIOS-e820: 00000000000ca000 - 00000000000cc000 (reserved)
+ BIOS-e820: 00000000000dc000 - 0000000000100000 (reserved)
+ BIOS-e820: 0000000000100000 - 000000000fef0000 (usable)
+ BIOS-e820: 000000000fef0000 - 000000000feff000 (ACPI data)
+ BIOS-e820: 000000000feff000 - 000000000ff00000 (ACPI NVS)
+ BIOS-e820: 000000000ff00000 - 0000000010000000 (usable)
+ BIOS-e820: 00000000fec00000 - 00000000fec10000 (reserved)
+ BIOS-e820: 00000000fee00000 - 00000000fee01000 (reserved)
+ BIOS-e820: 00000000fffe0000 - 0000000100000000 (reserved)
+#+END_EXAMPLE
+
+*** quota
+http://blog.itpub.net/post/7184/488931
+
+quota用来为用户编辑磁盘配额。
+   - 初始化磁盘配额功能
+修改/etc/fstab增加usrquota以及grpquota
+#+BEGIN_EXAMPLE
+/dev/hdb1 /home/extra ext3 defaults,noatime,usrquota,grpquota 1 2
+#+END_EXAMPLE
+
+   - 建立磁盘配额文件
+#+BEGIN_EXAMPLE
+# cd /home/extra
+# touch aquota.user
+# touch aquota.group
+# chmod 600 aquota.user
+# chmod 600 aquota.group
+#+END_EXAMPLE
+
+   - 重新挂载磁盘。mount -o remount /home/extra
+   - 扫描磁盘，初始化磁盘配额表。修改之前建立的aquota文件。/sbin/quotacheck -uvg /home/extra
+
+   - 编辑用户磁盘配额
+如果为用户设定可以使用/usr/sbin/edquota -u testuser,如果需要为群组设定的话/usr/sbin/edquota -g testgrp.
+#+BEGIN_EXAMPLE
+Disk quotas for user testuser (uid 517):
+Filesystem blocks soft hard inodes soft hard
+/dev/hdb1 0 0 0 0 0 0
+#+END_EXAMPLE
+各个字段含义如下：
+   - blocks：已经使用的磁盘块(1k bytes)
+   - soft：软限额大小，如果用户超出了这个限额，系统会发出警告，如果在设定的时间内还没有回到该限额以下，系统将拒绝该用户使用额外的磁盘空间。
+   - hard：硬限额，用户不允许超出的磁盘限制
+   - inodes：用户已经使用的inodes数
+   - soft和hard含义同上，不过，这里是限制用户创建的文件/目录总数。
+可以使用/usr/sbin/edquota -t来修改软限额期限。
+
+   - 启动磁盘配额可以使用/sbin/quotaon -av,关闭磁盘配额可以使用/sbin/quotaoff -av.
+   - 查看整体磁盘配额可以使用/usr/sbin/repquota -a,查看用户配额情况可以使用quota -vu test
+
+可以对WWW空间，FTP空间，Email空间进行磁盘配额限制。Quota只能基于磁盘分区进行配额管理，不能基于目录进行配额管理，因此只能把数据存放在有配额限制的分区，再用符号链接到实际应用的目录。
+*** crontab
+crontab就是为了能够使得工作自动化在特定的时间或者是时间间隔执行特定的程序。crontab -e就可以编辑crontab配置文件，默认是vim编辑器。crontab配置文件里面可以像shell一样定义变量，之后就是任务描述，每一个任务分为6个字段: minute hour day month week command
+   1. minute范围是0-59
+   2. hour范围是0-23
+   3. day范围是1-31
+   4. month范围是1-12
+   5. week范围是0-7[0/7表示Sun]
+对于每个字段可以有3种表示方式
+   1. - 表示匹配所有时间
+   2. num 表示完全匹配
+   3. num1-num2 表示匹配范围
+   4. num1,num2,num3... 进行枚举匹配
+   5. num1-num2/interval 表示从num1-num2时间段内每interval间隔
+对于系统级别的crontab配置文件在/etc/crontab貌似里面还多了一个用户字段.下面是几个配置的例子:
+#+BEGIN_EXAMPLE
+0 6 * * * /home/dirlt/platform/apache/bin/apachectl restart 每天早上6点重启apache
+0,30 18-23 * * * /home/dirlt/platform/apache/bin/apachectl restart 每天18-23时候每隔半小时重启apache
+\* 23-7/1 * * * /* 23-7/1 * * * /usr/local/apache/bin/apachectl restart 每天从23到次日7点每隔一小时重启apache
+#+END_EXAMPLE
+
+*** ntp
+   - ntp.org: Home of the Network Time Protocol http://www.ntp.org/ *note(dirlt):这个项目应该是非常复杂的*
+
+ntp(network time protocol)是用来做机器时间同步的，包含下面几个组件：
+   - ntpd(ntp daemon) 后台进程可以用来从其他机器上面同步时间，也可以为其他机器提供时间同步。配置文件是/etc/ntpd.conf.
+   - ntpq(ntp query) 查询当前时间同步的情况。
+   - ntpdate(ntp date) 和其他机器进行同步，不可以和ntpd共同使用。
+
+#+BEGIN_EXAMPLE
+[dirlt@umeng-ubuntu-pc] > sudo /etc/init.d/ntp start
+ * Starting NTP server ntpd
+   ...done.
+[dirlt@umeng-ubuntu-pc] > sudo /usr/sbin/ntpdate cn.pool.ntp.org
+12 Nov 17:08:07 ntpdate[30044]: the NTP socket is in use, exiting
+[dirlt@umeng-ubuntu-pc] > sudo /etc/init.d/ntp stop
+ * Stopping NTP server ntpd
+   ...done.
+[dirlt@umeng-ubuntu-pc] > sudo /usr/sbin/ntpdate cn.pool.ntp.org
+12 Nov 17:08:22 ntpdate[30061]: adjust time server 202.112.31.197 offset -0.071953 sec
+[dirlt@umeng-ubuntu-pc] > ntpq -p
+     remote           refid      st t when poll reach   delay   offset  jitter
+==============================================================================
+ netmon2.dcs1.bi 121.182.147.191  2 u    7   64    1  405.743   10.731   0.000
+ 202-150-213-154 133.243.238.163  2 u    8   64    1  171.722  -131.73   0.000
+ dns1.synet.edu. 223.255.185.2    2 u    7   64    1  166.558  -39.375   0.000
+ Hshh.org        66.220.9.122     2 u    6   64    1   41.734  -109.29   0.000
+ europium.canoni 193.79.237.14    2 u    4   64    1  673.181  -240.24   0.000
+#+END_EXAMPLE
+
+一个最重要的问题就是，daemon以什么时间间隔来和指定的server进行同步。
+   - How does it work? http://www.ntp.org/ntpfaq/NTP-s-algo.htm#AEN2082
+ntp是可以在minpoll和maxpoll指定的时间间隔内来选择同步间隔的，默认使用minpoll也就是64seconds.
+
+其实如果不考虑为其他机器提供服务的话，完全可以在cron里面使用ntpdate来进行同步。
+
+*** cssh
+todo(dirlt):
+
+
+*** /HTTP BENCH TOOL/
 *** httperf
 download http://www.hpl.hp.com/research/linux/httperf/
 
@@ -2043,7 +2147,7 @@ note(dirlt):关于session-oriented这个概念，是后来看了论文里面才�
 
 #+BEGIN_EXAMPLE
 httperf --num-calls=10 --num-conns=100 --http-version=1.1 --method=GET --rate=10 --timeout=2.0 --server=dp5 --
-port=12347 --uri="/tell?reqid=3&account=dirlt&timeout=1000&reqtype=geographic&imei=123"   
+port=12347 --uri="/tell?reqid=3&account=dirlt&timeout=1000&reqtype=geographic&imei=123"
 #+END_EXAMPLE
 
 常用选项
@@ -2090,8 +2194,8 @@ note(dirlt):不过httperf采用select模型，导致最大连接数存在上限�
 #+BEGIN_EXAMPLE
               Total: connections 30000 requests 29997 replies 29997 test-duration 299.992 s
 
-              Connection rate: 100.0 conn/s (10.0 ms/conn, <=14 concurrent connections) 
-              Connection time [ms]: min 1.4 avg 3.0 max 163.4 median 1.5 stddev 7.3 
+              Connection rate: 100.0 conn/s (10.0 ms/conn, <=14 concurrent connections)
+              Connection time [ms]: min 1.4 avg 3.0 max 163.4 median 1.5 stddev 7.3
               Connection time [ms]: connect 0.6
               Connection length [replies/conn]: 1.000
 
@@ -2265,135 +2369,6 @@ echo set style data linespoints >> gnuplot.cmd
 
 todo(dirlt):后续可能需要学习如何使用autobench分布式测试，因为httperf该死的select模型。
 
-*** iftop
-todo(dirlt): http://www.ex-parrot.com/~pdw/iftop/
-
-*** iftraf
-todo(dirlt): http://iptraf.seul.org/
-
-*** rsync
-常用选项：
-   - -a --archive
-   - -r --recursive
-   - -v --verbose
-   - -z --compress
-
-常用命令：
-   - 同步目录 rsync -avrz /dir/ user@host:/dir/ *note(dirlt):注意目录后面需要加上/*
-   - 同步文件 rysnc -vz /dir/file1 user@host:/dir/file
-
-*** ttyload
-*** iodump
-*** iopp
-*** screen
-**** 使用screen启动后台任务
-   - screen创建一个新会话
-   - 在会话里面执行命令
-   - C-a d从这个会话里面detach出来
-   - screen -s <session> 可以重新attach上这个会话
-
-*** ps(process snapshot)
-进程状态有下面几种：
-   - D    uninterruptible sleep (usually IO) 
-   - R    running or runnable (on run queue)
-   - S    interruptible sleep (waiting for an event to complete)
-   - T    stopped, either by a job control signal or because it is being traced.
-   - W    paging (not valid since the 2.6.xx kernel)
-   - X    dead (should never be seen)
-   - Z    defunct ("zombie") process, terminated but not reaped by its parent.
-   - <    high-priority (not nice to other users)
-   - N    low-priority (nice to other users)
-   - L    has pages locked into memory (for real-time and custom IO)
-   - s    is a session leader
-   - l    is multi-threaded (using CLONE_THREAD, like NPTL pthreads do)
-   - +    is in the foreground process group.
-
------
-
-在使用ubuntu的apt-get时候，可能会出现一些异常的状况，我们直接终止了apt-get。但是这个时候apt-get软件本身出于一个不正常的状态，
-导致之后不能够启动apt-get。如果观察进程的话会出现下面一些可疑的进程
-#+BEGIN_EXAMPLE
-dp@dp1:~$ ps aux | grep "apt"
-root      3587  0.0  0.0  36148 22800 ?        Ds   Oct08   0:00 /usr/bin/dpkg --status-fd 50 --unpack --auto-deconfigure /var/cache/apt/archives/sgml-data_2.0.4_all.deb
-root      9579  0.0  0.0  35992 22744 ?        Ds   Oct19   0:00 /usr/bin/dpkg --status-fd 50 --unpack --auto-deconfigure /var/cache/apt/archives/iftop_0.17-16_amd64.deb
-root     25957  0.0  0.0  36120 22796 ?        Ds   Nov05   0:00 /usr/bin/dpkg --status-fd 50 --unpack --auto-deconfigure /var/cache/apt/archives/iftop_0.17-16_amd64.deb /var/cache/apt/archives/iotop_0.4-1_all.deb
-dp       30586  0.0  0.0   7628  1020 pts/2    S+   08:59   0:00 grep --color=auto apt
-#+END_EXAMPLE
-这些进程的父进程都是init进程，并且状态是uninterruptible sleep，给kill -9也没有办法终止，唯一的办法只能reboot机器来解决这个问题。关于这个问题可以看stackoverflow上面的解答 How to stop 'uninterruptible' process on Linux? - Stack Overflow http://stackoverflow.com/questions/767551/how-to-stop-uninterruptible-process-on-linux
-   - Simple answer: you cannot. Longer answer: the uninterruptable sleep means the process will not be woken up by signals. It can be only woken up by what it's waiting for. When I get such situations eg. with CD-ROM, I usually reset the computer by using suspend-to-disk and resuming.
-   - The D state basically means that the process is waiting for disk I/O, or other block I/O that can't be interrupted. Sometimes this means the kernel or device is feverishly trying to read a bad block (especially from an optical disk). Sometimes it means there's something else. The process cannot be killed until it gets out of the D state. Find out what it is waiting for and fix that. The easy way is to reboot. Sometimes removing the disk in question helps, but that can be rather dangerous: unfixable catastrophic hardware failure if you don't know what you're doing (read: smoke coming out).
-
-*** ulimit
-    TODO(
-*** ntp
-   - ntp.org: Home of the Network Time Protocol http://www.ntp.org/ *note(dirlt):这个项目应该是非常复杂的*
-
-ntp(network time protocol)是用来做机器时间同步的，包含下面几个组件：
-   - ntpd(ntp daemon) 后台进程可以用来从其他机器上面同步时间，也可以为其他机器提供时间同步。配置文件是/etc/ntpd.conf.
-   - ntpq(ntp query) 查询当前时间同步的情况。
-   - ntpdate(ntp date) 和其他机器进行同步，不可以和ntpd共同使用。
-
-#+BEGIN_EXAMPLE
-[dirlt@umeng-ubuntu-pc] > sudo /etc/init.d/ntp start
- * Starting NTP server ntpd
-   ...done.
-[dirlt@umeng-ubuntu-pc] > sudo /usr/sbin/ntpdate cn.pool.ntp.org
-12 Nov 17:08:07 ntpdate[30044]: the NTP socket is in use, exiting
-[dirlt@umeng-ubuntu-pc] > sudo /etc/init.d/ntp stop
- * Stopping NTP server ntpd
-   ...done.
-[dirlt@umeng-ubuntu-pc] > sudo /usr/sbin/ntpdate cn.pool.ntp.org
-12 Nov 17:08:22 ntpdate[30061]: adjust time server 202.112.31.197 offset -0.071953 sec
-[dirlt@umeng-ubuntu-pc] > ntpq -p
-     remote           refid      st t when poll reach   delay   offset  jitter
-==============================================================================
- netmon2.dcs1.bi 121.182.147.191  2 u    7   64    1  405.743   10.731   0.000
- 202-150-213-154 133.243.238.163  2 u    8   64    1  171.722  -131.73   0.000
- dns1.synet.edu. 223.255.185.2    2 u    7   64    1  166.558  -39.375   0.000
- Hshh.org        66.220.9.122     2 u    6   64    1   41.734  -109.29   0.000
- europium.canoni 193.79.237.14    2 u    4   64    1  673.181  -240.24   0.000
-#+END_EXAMPLE
-
-一个最重要的问题就是，daemon以什么时间间隔来和指定的server进行同步。
-   - How does it work? http://www.ntp.org/ntpfaq/NTP-s-algo.htm#AEN2082
-ntp是可以在minpoll和maxpoll指定的时间间隔内来选择同步间隔的，默认使用minpoll也就是64seconds.
-
-其实如果不考虑为其他机器提供服务的话，完全可以在cron里面使用ntpdate来进行同步。
-
-*** nethogs
-todo(dirlt):
-
-*** slabtop
-slabtop - display kernel slab cache information in real time
-
-*** nmon
-nmon - systems administrator, tuner, benchmark tool.
-
-*** watch
-watch - execute a program periodically, showing output fullscreen todo(dirlt):
-
-*** collectl
-collectl http://collectl.sourceforge.net/ *todo(dirlt):似乎相当不错，将很多关键信息都做了收集和整合*
-
-*** vmtouch
-https://github.com/hoytech/vmtouch *note(dirlt)：可以用来warmup数据，使用参数似乎也比较简单*
-
-里面有一些系统调用比较值得注意和学习：
-   - mlock/munlock 能够将一部分的内存lock住而不会切换到swap分区上面。
-   - mlockall/munlockall 将进程所有的内存都lock住而不会切换到swap分区上面。
-   - posix_fadvise 针对fd做一些访问模式的预测
-
-*** numactl
-todo(dirlt):
-
-*** jnettop
-todo(dirlt):
-
-*** glances
-http://nicolargo.github.io/glances/
-
-todo(dirlt):
-
 ** kernel
 *** vmlinuz
 vmlinuz是可引导的、压缩的内核。“vm”代表“Virtual Memory”。Linux 支持虚拟内存，不像老的操作系统比如DOS有640KB内存的限制。Linux能够使用硬盘空间作为虚拟内存，因此得名“vm”。vmlinuz是可执行的Linux内核，它位于/boot/vmlinuz，它一般是一个软链接。vmlinux是未压缩的内核，vmlinuz是vmlinux的压缩文件。
@@ -2443,13 +2418,13 @@ file:./images/tcp-packet-transmission.png
 *note(dirlt):在wangyx的帮助下这个配置在ifconfig下面找到了*
 #+BEGIN_EXAMPLE
 ➜  ~  ifconfig
-eth0      Link encap:Ethernet  HWaddr 12:31:40:00:49:d1  
+eth0      Link encap:Ethernet  HWaddr 12:31:40:00:49:d1
           inet addr:10.170.78.31  Bcast:10.170.79.255  Mask:255.255.254.0
           inet6 addr: fe80::1031:40ff:fe00:49d1/64 Scope:Link
           UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
           RX packets:13028359 errors:0 dropped:0 overruns:0 frame:0
           TX packets:9504902 errors:0 dropped:0 overruns:0 carrier:0
-          collisions:0 txqueuelen:1000 
+          collisions:0 txqueuelen:1000
           RX bytes:2464083770 (2.4 GB)  TX bytes:20165782073 (20.1 GB)
           Interrupt:25
 #+END_EXAMPLE
@@ -2497,7 +2472,7 @@ print os.system('java X')
 
 返回值不为1而是256，对此解释是这样的
 #+BEGIN_EXAMPLE
-a 16-bit number, whose low byte is the signal number that killed the process, and whose high byte is the exit status (if the signal number is zero); the high bit of the low byte is set if a core file was produced. 
+a 16-bit number, whose low byte is the signal number that killed the process, and whose high byte is the exit status (if the signal number is zero); the high bit of the low byte is set if a core file was produced.
 #+END_EXAMPLE
 
 -----
@@ -2578,7 +2553,7 @@ May  2 18:24:21 umeng-ubuntu-pc kernel: [ 1188.717622] CPU3: Package temperature
 
 我的操作顺序计划是这样的：
    1. 将dp20的glibc copy到自己的目录下面/home/dp/dirlt/libc-2.11.so
-   2. 将dp45的glibc backup. mv /lib64/libc-2.12.so /lib64/libc-2.12.bak.so（补充一点，就是在lib64下面还有软链接 libc.so.6 -> libc-2.12.so，这个文件应该是被程序查找使用的） 
+   2. 将dp45的glibc backup. mv /lib64/libc-2.12.so /lib64/libc-2.12.bak.so（补充一点，就是在lib64下面还有软链接 libc.so.6 -> libc-2.12.so，这个文件应该是被程序查找使用的）
    3. cp /home/dp/dirlt/libc-2.11.so /lib64/libc-2.12.so
 但是进行到2之后就发现cp不可用了，并且ls等命令也不能够使用了。原因非常简单，就是因为2之后libc.so.6没有对应的文件了，而cp,ls这些基本的命令依赖于这个动态链接库。
 
@@ -2598,7 +2573,7 @@ May  2 18:24:21 umeng-ubuntu-pc kernel: [ 1188.717622] CPU3: Package temperature
 todo(dirlt): what is the correct way to do it(change glibc)
 
 -----
-@2013-08-03 
+@2013-08-03
 
 A copy of the C library was found in an unexpected directory | Blog : http://blog.i-al.net/2013/03/a-copy-of-the-c-library-was-found-in-an-unexpected-directory/
 
@@ -2607,7 +2582,7 @@ A copy of the C library was found in an unexpected directory | Blog : http://blo
    - mv libc.so librt.so  /root # 将glibc等相关的so移动到root账号下面，主要不要移动软连接文件。
    - LD_PRELOAD=/root/libc.so:/root/librt.so bash # 这个时候如果执行bash是找不到glibc等so了，所以需要使用LD_PRELOAD来预先加载
    - apt-get install # 在这个bash下面使用apt-get来安装和升级glibc.
- 
+
 *** 允许不从tty执行sudo
 修改/etc/sudoers文件，注释掉
 #+BEGIN_EXAMPLE
