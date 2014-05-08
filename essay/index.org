@@ -4,7 +4,6 @@
 
 ** Ads
    - [[file:jobs.org][Jobs]] at [[http://www.umeng.com/][友盟(Umeng)]] 可以找我推荐
-   - *关注微信号* [[file:images/bigdatavalue-qrcode.jpg][bigdatavalue]] , *探索大数据商业化*
    - recomended tech [[file:link.org][Link]] and personal non-tech [[file:./note.org][Note]]
 
 ** Operating System
@@ -184,7 +183,6 @@
      - [[file:./zbase.org][zBase]] Zynga. A high-performance, elastic, distributed key-value store
      - [[file:./samza.org][Samza]] LinkedIn的的分布式流式处理系统，现在是Apache下面的项目。
      - [[file:./presto.org][Presto]] Facebook的大规模数据实时查询系统，可以认为是Google的 [[file:./dremel.org][Dremel]] 的开源实现。
-
 
 ** Programming Language
    - [[file:prog-lang.org][Programming Language]] including following languages:
