@@ -73,7 +73,9 @@
    - #sudo apt-get install thunderbird
    - sudo apt-get install dkms
    - sudo apt-get install virtualbox
+   - sudo apt-get install virtualbox-dkms
    - sudo apt-get install virtualbox-guest-additions # 设置windows虚拟机共享文件夹
+   - sudo apt-get install virtualbox-guest-dkms
    - sudo apt-get install ntp
    - sudo apt-get install systemtap
    - sudo apt-get install clojure

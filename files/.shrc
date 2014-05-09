@@ -278,14 +278,14 @@ golang_doc_server() {
 
 apt_update() {
     # google chrome
-    # wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-    # sudo apt-add-repository "deb http://dl.google.com/linux/chrome/deb/ stable main"
+    wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+    sudo apt-add-repository "deb http://dl.google.com/linux/chrome/deb/ stable main"
 
     # virtualbox
-    # wget -q -O - http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc -O- | sudo apt-key add -
+    wget -q -O - http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc -O- | sudo apt-key add -
     # sudo apt-add-repository "deb http://download.virtualbox.org/virtualbox/debian raring contrib"
     # sudo apt-add-repository "deb http://download.virtualbox.org/virtualbox/debian quantal contrib"
-    # sudo apt-add-repository "deb http://download.virtualbox.org/virtualbox/debian precise contrib"
+    sudo apt-add-repository "deb http://download.virtualbox.org/virtualbox/debian precise contrib"
     # sudo apt-add-repository "deb http://download.virtualbox.org/virtualbox/debian oneiric contrib"
     # sudo apt-add-repository "deb http://download.virtualbox.org/virtualbox/debian natty contrib"
     # sudo apt-add-repository "deb http://download.virtualbox.org/virtualbox/debian maverick contrib non-free"
