@@ -146,6 +146,7 @@
      - [[file:./building-data-science-teams.org][Building Data Science Teams]]
    - [[file:streambase.org][StreamBase]] 在实现Baidu in-house的分布式实时流式计算系统之前，调研的商用流式计算系统。没有办法获得源代码只能够从文档中猜测其内部实现以及参考其提供的功能与接口。
    - [[file:storm.org][Storm]] Twitter的分布式实时流式处理系统。这个在实现Baidu in-house的分布式实时流式计算系统的时候也做过调研，但是当时不是很深入。
+   - [[file:./samza.org][Samza]] LinkedIn的的分布式流式处理系统，现在是Apache下面的项目。
    - [[file:kafka.org][Kafka]] Apache的分布式消息系统。似乎在高可用性方面还有很多事情需要做。
    - [[file:chubby.org][Chubby]] Google为松耦合分布式系统开发的锁服务，但是在现实中还可以作为名字服务来使用。
    - [[file:gfs.org][GFS]] Google分布式基础架构的分布式文件系统。
@@ -181,7 +182,6 @@
      - [[file:./pnuts.org][PNUTS]] Yahoo的分布式数据库。
      - [[file:./couchbase.org][CouchBase]] CouchDB(by CouchOne) + [[file:memcached.org][Memcached]](by Membase). a Dynamo like distributed document-oriented storage system whose closest competitor is [[file:mongodb.org][MongoDB]].
      - [[file:./zbase.org][zBase]] Zynga. A high-performance, elastic, distributed key-value store
-     - [[file:./samza.org][Samza]] LinkedIn的的分布式流式处理系统，现在是Apache下面的项目。
      - [[file:./presto.org][Presto]] Facebook的大规模数据实时查询系统，可以认为是Google的 [[file:./dremel.org][Dremel]] 的开源实现。
 
 ** Programming Language
