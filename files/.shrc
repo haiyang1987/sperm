@@ -605,7 +605,7 @@ END {
 }
 
 random_picture() {
-    local image_path=${1:-"$HOME/share/renren/images/"}
+    local image_path=${1:-"$HOME/ws/rr/images/"}
     local num=$(ls $image_path 2>/dev/null| wc -l)
     if [ $num = 0 ]; then return ; fi
     local rand=$(date +%N)
