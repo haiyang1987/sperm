@@ -118,6 +118,7 @@
    - sudo apt-get install tcpdump
    - sudo apt-get install python-pip
    - sudo apt-get install python-sphinx
+   - # sudo apt-get install vagrant # 版本过低
 
 ** 系统配置
 *** 察看ubuntu内部版本

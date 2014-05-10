@@ -57,6 +57,7 @@
      - [[file:build-system.org][BuildSystem]] 在实现Baidu in-house的构建工具Comake2之前，做过构建系统的调研总结出来的。在语法表达上面(非常重要)借鉴了SCons,考虑了其他构建系统提供的功能。
        - [[file:maven.org][Maven]] 主要针对Java开发的基于工程对象模型(POM, Project Object Model)构建系统，主要记录了一些使用方面的问题和解决办法。
        - [[file:./sbt.org][SBT]] Simple(or Scala?) Build Tool
+     - [[file:./vagrant.org][Vagrant]] 用来构件虚拟开发环境的工具，底层可以使用多种虚拟化技术(现在支持非常好的是VirtualBox)
    - Desktop
      - [[file:ubuntu.org][Ubuntu]] 如何更好地使用Ubuntu. [[file:note/struggle-with-ubuntu.org][之前有过痛苦的经历]] 。主要记录自己使用出现的问题。
      - [[file:fvwm.org][FVWM]] F* Virtual Windows Manager.Linux下面高度可定制化的窗口管理器。

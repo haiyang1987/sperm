@@ -129,6 +129,7 @@ git config --global alias.last 'log -1 HEAD'
 # private key.
 ssh-add ~/.ssh/id_rsa 2>/dev/null
 ssh-add ~/.ssh/github 2>/dev/null
+bzr launchpad-login yan.zhang
 
 # language.
 export LANG="en_US.UTF-8"
