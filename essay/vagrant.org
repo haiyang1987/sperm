@@ -20,6 +20,27 @@
    - vagrant destroy  # 销毁当前虚拟机
    - vagrant package # 将当前虚拟机打包
 
+** FAQ
+*** 启动多台虚拟机
+http://docs.vagrantup.com/v2/multi-machine/index.html
+
+启动多个虚拟机，并且每个虚拟机使用不同的环境
+
+#+BEGIN_EXAMPLE
+  # Every Vagrant virtual environment requires a box to build off of.
+  config.vm.define "centos" do |m| # 定义centos机器
+    m.vm.box = "centos" # 使用centos环境
+  end
+  config.vm.define "debian" do |m|
+    m.vm.box = "debian"
+  end
+  config.vm.define "freebsd" do |m|
+    m.vm.box = "freebsd"
+  end
+#+END_EXAMPLE
+
+操作这台机器的话只需要在命令之后指定机器名称即可，比如vagrant ssh centos
+
 ** troubleshooting
 -----
 
