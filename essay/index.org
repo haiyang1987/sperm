@@ -164,6 +164,8 @@
    - [[file:dremel.org][Dremel]] Google针对大数据查询的交互式系统，传说可以在3秒内搞定PB级别的数据。
    - [[file:impala.org][Impala]] Cloudera的大规模数据实时查询系统，可以认为是Google的 [[file:dremel.org][Dremel]] 的开源实现。
    - [[file:druid.org][Druid]] MetaMarket的大规模数据实时查询系统，可以认为是Google的 [[file:dremel.org][Dremel]] 的开源实现。
+   - [[file:power-drill.org][PowerDrill]] Google有一个数据实时查询系统，针对的数据规模比 [[file:./dremel.org][Dremel]] 要小但是处理速度更快。
+   - [[file:./presto.org][Presto]] Facebook的大规模数据实时查询系统，可以认为是Google的 [[file:./dremel.org][Dremel]] 的开源实现。
    - [[file:pregel.org][Pregel]] Google针对大规模图算法设计的分布式编程框架。
    - [[file:percolator.org][Percolator]] Google的增量数据处理分布式系统。
    - [[file:tenzing.org][Tenzing]] Google的数据仓库平台，和Hive系统非常类似。
@@ -176,14 +178,12 @@
    - [[file:./spark.org][Spark]] AMPLab的分布式计算系统，现在是Apache下面的项目。
    - [[file:dynamo.org][Dynamo]] Amazon的分布式数据库。
    - [[file:./cassandra.org][Cassandra]] / [[file:riak.org][Riak]] / [[file:./voldemort.org][Voldemort]] 类Dynamo的开源分布式数据库。
+   - [[file:./zbase.org][zBase]] Zynga. A high-performance, elastic, distributed key-value store.
+   - [[file:./pnuts.org][PNUTS]] Yahoo的分布式数据库。
    - [[file:./paxos.org][Paxos]] / [[file:./raft.org][Raft]] / [[file:./totem.org][Totem]] 分布式一致性算法。
-   - SOMETHING MAY NEVER GONNA TO READ
+   - SOMETHING I MAY NEVER GONNA TO READ
      - [[file:tez.org][Tez]] Apache项目，可以有效地优化MapReduce组成的DAG。通常Pig/Hive都是生成这种DAG的，所以可以认为是替换了Pig/Hive的执行引擎。
-     - [[file:power-drill.org][PowerDrill]] Dremel系统底层列式存储另外一种实现。
-     - [[file:./presto.org][Presto]] Facebook的大规模数据实时查询系统，可以认为是Google的 [[file:./dremel.org][Dremel]] 的开源实现。
      - [[file:./couchbase.org][CouchBase]] CouchDB(by CouchOne) + [[file:memcached.org][Memcached]](by Membase). a Dynamo like distributed document-oriented storage system whose closest competitor is [[file:mongodb.org][MongoDB]].
-     - [[file:./zbase.org][zBase]] Zynga. A high-performance, elastic, distributed key-value store
-     - [[file:./pnuts.org][PNUTS]] Yahoo的分布式数据库。
 
 ** Programming Language
    - [[file:prog-lang.org][Programming Language]] including following languages:
