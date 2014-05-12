@@ -4,7 +4,7 @@
    - link: http://research.google.com/archive/chubby.html
    - title: The Chubby lock service for loosely-coupled distributed systems
    - author: Mike Burrows(Google Inc)
-   - date: 2006    
+   - date: 2006
 
 ** Abstract
    - lock service to allow its clients to sync activities and agree on basic information about their environment.
@@ -188,6 +188,8 @@ KeepAlive reply spent in flight, and the rate at which the master's clock is adv
    - If a client holds a handle H on a node and any oper-ation on H fails because the associated session has ex-pired, all subsequent operations on H (except Close() andPoison()) will fail in the same way. Clients can use this to guarantee that network and server outages cause only a suffix of a sequence of operations to be lost, rather than an arbitrary subsequence, thus allowing complex changes to be marked as committed with a final write.
 
 *** Fail-overs
+file:./images/chubby-grace-period-in-master-fail-over.png
+
    - When a master fails or otherwise loses mastership, it dis-cards its in-memory state about sessions, handles, and locks. The authoritative timer for session leases runs at the master, so until a new master is elected the session lease timer is stopped; this is legal because it is equiva-lent to extending the client’s leas.(如果master fail的话那么会丢弃内存内部的状态，其lease也会停止计时) todo(dirlt):这里没有明白最后面这句话是什么意思。
    - If a master election occurs quickly, clients can contact the new master before their local (approximate) lease timers expire. If the elec-tion takes a long time, clients flush their caches and wait for the grace period while trying to find the new master. Thus the grace period allows sessions to be maintained across fail-overs that exceed the normal lease timeout.(如果master在grace period之前选举出来的话，那么client就可以在session断开之前连接上master.但是如果选举使用了很长时间的话，那么session就断开了，对于client来说的话就需要重新进行连接。因此引入grace period的意图就是为能够在master failover期间依然保持session).
    - 论文给出了一个master出现failover的时序图。todo(dirlt):这里对于时序图最不能够理解的一点就是为什么需要引入master lease M3.这里的M3是一个conservative assumption.
@@ -200,7 +202,7 @@ KeepAlive reply spent in flight, and the rate at which the master's clock is adv
      - It emits a fail-over event to each session; this causes clients to flush their caches (because they may have missed invalidations), and to warn applications that other events may have been lost.(对于每个session都会触发一个fail over event.对于事件里面就是master fail over事件。然后client需要清空其cache因为这些client可能之前错过了cache invalidation.然后会通知app可能会造成一些事件丢失，需要用户重新对状态做scan)
      - The master waits until each session acknowledges the fail-over event or lets its session expire.(master等待session返回invalidation ack或者是等待cache lease超时时间)
      - The master allows all operations to proceed.
-     - If a client uses a handle created prior to the fail-over (determined from the value of a sequence number in the handle), the master recreates the in-memory representation of the handle and honours the call. If such a recreated handle is closed, the master records it in memory so that it cannot be recreated in this master epoch; this ensures that a delayed or dupli-cated network packet cannot accidentally recreate a closed handle. A faulty client can recreate a closed handle in a future epoch, but this is harmless given that the client is already faulty. todo(dirlt): what does that mean??? 
+     - If a client uses a handle created prior to the fail-over (determined from the value of a sequence number in the handle), the master recreates the in-memory representation of the handle and honours the call. If such a recreated handle is closed, the master records it in memory so that it cannot be recreated in this master epoch; this ensures that a delayed or dupli-cated network packet cannot accidentally recreate a closed handle. A faulty client can recreate a closed handle in a future epoch, but this is harmless given that the client is already faulty. todo(dirlt): what does that mean???
      - After some interval (a minute, say), the master deletes ephemeral files that have no open file han-dles. Clients should refresh handles on ephemeral files during this interval after a fail-over. This mech-anism has the unfortunate effect that ephemeral files may not disappear promptly if the last client on such a file loses its session during a fail-over.(过一段时间间隔之后比如1分钟，master会检查所有的临时文件是否有client所持有，如果没有的话那么就会删除。这种情况发生在如果存在client创建一个临时文件，之后master挂掉，client没有在指定时间内将session维持上，导致会存在临时文件没有立刻删除)
    - Readers will be unsurprised to learn that the fail-over code, which is exercised far less often than other parts of the system, has been a rich source of interesting bugs.(这个过程比较麻烦，而且也比较少发生所以bugs可能会非常多)
    - note(dirlt):这里存在grace peirod好处就是可以在这段时间内可以让master进行选举，同时让client library自动进行这些重连操作，这些对于app来说的话都将影响减少到最少(会有一些事件通知发生).但是这个grace period不能够无限长。在这个grace period时间内所有的操作都是block住的，一旦grace peirod over之后对于这些操作都会返回错误。如果grace period无限长的话那么所有操作都会block住，虽然可能超过grace period之后master就会选举出来，这也算是设计上的折衷吧，所以grace period时间选定需要考虑master election以及master recovery的时间。论文里面提到默认是45s.
@@ -259,6 +261,8 @@ newly replaced replica without placing load on replicas that are in service.todo
 
 ** Use, surprises and design errors
 *** Use and behaviour
+file:./images/chubby-statistics.png
+
    - The following table gives statistics taken as a snapshot of a Chubby cell; the RPC rate was a seen over a ten-minute period. The numbers are typical of cells in Google. Several things can be seen:(论文中给出了一个cell使用统计情况，RPC一段时间内观察的数据):
      - 大部分文件都用来做name service.
      - configuration, ACL, 元文件(类似于文件系统superblock)使用也比较多

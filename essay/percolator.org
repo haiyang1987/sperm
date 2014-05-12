@@ -1,6 +1,6 @@
 * percolator
    - link: http://research.google.com/pubs/pub36726.html
-   - title: Large-scale Incremental Processing Using Distributed Transactions and Notifications 
+   - title: Large-scale Incremental Processing Using Distributed Transactions and Notifications
    - author: dpeng@google.com, fdabek@google.com
    - date: 2010
 
@@ -19,25 +19,25 @@
    - The indexing system could store the repository in a DBMS and update individual documents while using transactions to maintain invariants. However, existing DBMSs can’t handle the sheer volume of data: Google’s indexing system stores tens of petabytes across thou-sands of machines .（可以将repo存放在dbms里面然后使用事务来保证不变量，但是dbms不能够承受住google的PB规模的数据）
    - Distributed storage systems like Bigtable can scale to the size of our repository but don’t provide tools to help programmers maintain data invariants in the face of concurrent updates.（而bigtable虽然可以扩展到支撑这些数据，但是却没有提供功能来维护不变量）
    - An ideal data processing system for the task of main-taining the web search index would be optimized for in-cremental processing; （我们需要的就是一个增量处理系统）
-     - that is, it would allow us to main-tain a very large repository of documents and update it efficiently as each new document was crawled. 
+     - that is, it would allow us to main-tain a very large repository of documents and update it efficiently as each new document was crawled.
      - Given that the system will be processing many small updates concurrently, an ideal system would also provide mech- anisms for maintaining invariants despite concurrent up-dates and for keeping track of which updates have been processed.（对于这个增量系统需要提供的机制包括下面两个，这也是percolator主要关注的两个方面：1）提供机制来维护不变量 2）能够追踪那些updates已经被处理过）
 
 
 -----
 
-The remainder of this paper describes a particular in-cremental processing system: Percolator. 
+The remainder of this paper describes a particular in-cremental processing system: Percolator.
    - Percolator pro-vides the user with random access to a multi-PB reposi-tory. Random access allows us to process documents in-dividually, avoiding the global scans of the repository that MapReduce requires. To achieve high throughput, many threads on many machines need to transform the repository concurrently, so Percolator provides ACID-compliant transactions to make it easier for programmers to reason about the state of the repository; we currently implement snapshot isolation semantics.（提供随即访问PB级别repo的能力，允许对数据进行随机访问。为了达到高并发在多个机器上面使用多个线程同时对repo进行更新，因此percolator也提供了ACID兼容的事务实现来满足维持不变量这个需求，事务实现是snapshot isolation的语义） *todo(dirlt)：snapshot isolation wikipedia？*
    - In addition to reasoning about concurrency, program-mers of an incremental system need to keep track of the state of the incremental computation. To assist them in this task, Percolator provides observers: pieces of code that are invoked by the system whenever a user-specified column changes. Percolator applications are structured as a series of observers; each observer completes a task and creates more work for “downstream” observers by writing to the table. An external process triggers the first observer in the chain by writing initial data into the table.（为了能够追踪到哪些修改，percolator提供了observer，就是event-driven意思。percolator提供会监控哪些cell存在变化，如果存在变化就会调用关注这些cell的observer。这种效应是会不断触发的。而第一个触发通常是通过外部程序修改table来启动的）
    - Percolator was built specifically for incremental pro-cessing and is not intended to supplant existing solutions for most data processing tasks. Computations where the result can’t be broken down into small updates (sorting a file, for example) are better handled by MapReduce. Also, the computation should have strong consistency requirements; otherwise, Bigtable is sufficient. Finally, the computation should be very large in some dimen-sion (total data size, CPU required for transformation, etc.); smaller computations not suited to MapReduce or Bigtable can be handled by traditional DBMSs.（percolator并不是要代替现有一些数据处理解决方案。如果计算不能够拆分成为小的update的话那么最好依然使用MR来完成，如果计算不要求强一致性的话那么使用bigtable来作为存储也是足够的，如果计算规模本身就不大的话那么使用传统的DBMS也是可以搞定的）
    - Since cleanup is synchronized on the primary lock, it is safe to clean up locks held by live clients; however, this incurs a performance penalty since rollback forces the transaction to abort. So, a transaction will not clean up a lock unless it suspects that a lock belongs to a dead or stuck worker.（对于一个cleanup lock来说，我们必须判断造成这个lock存在的事务是否还在，如果这个事务属于一个已经挂掉的worker的话，那么就可以开始做cleanup lock的工作了）
    - Percolator uses simple mechanisms to determine the liveness of another transaction. Running workers write a token into the Chubby lockservice to indicate they belong to the system; other workers can use the existence of this token as a sign that the worker is alive (the token is automatically deleted when the process exits). （percolator使用一种简单的方法判断事务是否存在，对于每个worker上面启动的事务来说，应该都会在chubby上面记录。同时每个worker也会在上面获得一个session）
    - To handle a worker that is live, but not working, we additionally write the wall time into the lock; a lock that contains a too-old wall time will be cleaned up even if the worker’s liveness token is valid. To handle long- running commit operations, workers periodically update this wall time while committing.（为了防止worker只是live但是没有working，worker会每隔一段时间修改自己的active time，证明自己是在working的。判断某个事务由那个worker发起，同时判断这个worker是否在working，就可以判断这个transaction是否有效）
-     
+
 ** Design
    - Percolator provides two main abstractions for per-forming incremental processing at large scale: （为增量处理提供了两种抽象）
      - ACID transactions over a random-access repository and （在随机访问的repo上面提供了满足ACID的事务）
      - ob-servers, a way to organize an incremental computation.（用来组织增量计算的observer）
-   - A Percolator system consists of three binaries that run on every machine in the cluster: a Percolator worker, a Bigtable tablet server, and a GFS chunkserver.（在每个计算机器上面都会运行percolator worker，worker是application但是底层使用了percolator library）   
+   - A Percolator system consists of three binaries that run on every machine in the cluster: a Percolator worker, a Bigtable tablet server, and a GFS chunkserver.（在每个计算机器上面都会运行percolator worker，worker是application但是底层使用了percolator library）
 file:./images/percolator-dependencies.png
    - The system also depends on two small services: the timestamp oracle and the lightweight lock service. The timestamp oracle pro-vides strictly increasing timestamps: a property required for correct operation of the snapshot isolation protocol. Workers use the lightweight lock service to make the search for dirty notifications more efficient.（系统还依赖两个service，timestamp oracle以及lock service）
      - timestamp oracle主要就是为了提供timestamp snapshot isolation保证的，分配递增的timestamp
@@ -56,7 +56,7 @@ percolator API封装了对于bigtable的访问，但是和bigtable api非常类�
 | c:write  | Committed data present; stores the Bigtable timestamp of the data                      |
 | c:data   | Stores the data itself                                                                 |
 | c:notify | Hint: observers may need to run                                                        |
-| c:ack O  | Observer “O” has run ; stores start timestamp of successful last run                   | 
+| c:ack O  | Observer “O” has run ; stores start timestamp of successful last run                   |
 这里稍微提前解释一下每个column的含义：（这个后面在阅读到percolator transaction pseudo code时候就会理解）
    - lock // 哪个writer拿到了这个cell的lock
    - write // 写入数据的时间（和bigtable本身提供的timestamp区分开）
@@ -96,7 +96,7 @@ In databases, and transaction processing (transaction management), snapshot isol
 
 
 #+BEGIN_VERSE
-The main reason for its adoption is that it allows better performance than serializability, yet still avoids most of the concurrency anomalies that serializability avoids (but not always all). In practice snapshot isolation is implemented within multiversion concurrency control (MVCC), where generational values of each data item (versions) are maintained: MVCC is a common way to increase concurrency and performance by generating a new version of a database object each time the object is written, and allowing transactions' read operations of several last relevant versions (of each object). 
+The main reason for its adoption is that it allows better performance than serializability, yet still avoids most of the concurrency anomalies that serializability avoids (but not always all). In practice snapshot isolation is implemented within multiversion concurrency control (MVCC), where generational values of each data item (versions) are maintained: MVCC is a common way to increase concurrency and performance by generating a new version of a database object each time the object is written, and allowing transactions' read operations of several last relevant versions (of each object).
 #+END_VERSE
 采用snapshot isolation而不是serialiability，是因为使用这种方法可以获得更好的读性能，并且避免了大部分并发异常，通常使用MVCC来实现。
 
@@ -128,7 +128,7 @@ Snapshot isolation does not provide serializability，这个问题以下面的ps
    - T1准备写cell数据为30，而T2准备读取cell数据。
    - 但是T1写cell数据时刻为3，因此只有在3时候以后在才会在cell上面加lock
    - 而T2在2时刻读取cell时候发现没有lock，那么直接读取到了数据10
-整个过程，按照我们的理解：既然T1首先发起了，那么T2读取的数据应该是30才对。但是如果按照这种逻辑来说，整个读的延迟就非常大了，而"The main advantage of snapshot isolation over a serializable proto-col is more efficient reads.". 
+整个过程，按照我们的理解：既然T1首先发起了，那么T2读取的数据应该是30才对。但是如果按照这种逻辑来说，整个读的延迟就非常大了，而"The main advantage of snapshot isolation over a serializable proto-col is more efficient reads.".
 其实"Snapshot isolation pro-tects against write-write conflicts: if transactions A and B, running concurrently, write to the same cell, at most one will commit. " 主要还是为了解决write-write conflicts。下图就是一个解决了ww conflict的例子：
 file:./images/percolator-write-write-conflicts.png
 
@@ -160,7 +160,7 @@ class Transaction {
     }
   }
   // Prewrite tries to lock cell w, returning false in case of conflict.
-  bool Prewrite(Write w, Write primary) { 
+  bool Prewrite(Write w, Write primary) {
     Column c = w.col;
     bigtable::Txn T = bigtable::StartRowTransaction(w.row);
     // Abort on writes after our start timestamp . . .
@@ -173,7 +173,7 @@ class Transaction {
     T.Write(w.row, c+"lock", start ts , // 写入lock，内容是primary row和col
             {primary.row, primary.col});
     // The primary’s location.
-    return T.Commit(); 
+    return T.Commit();
   }
   bool Commit() {
     Write primary = writes [0];
@@ -186,7 +186,7 @@ class Transaction {
     Write p = primary;
     bigtable::Txn T = bigtable::StartRowTransaction(p.row);
     if (!T.Read(p.row, p.col+"lock", [start ts , start ts ])) // 重新检查之前的锁是否还在？如果还在的话那么写入数据并且删除掉锁。这个必须是一个事务操作，而这个点就是commit point
-      return false;     
+      return false;
     // 之后提交数据，修改write时间并且将lock清除掉。
     // aborted while working
     T.Write(p.row, p.col+"write", commit ts,
