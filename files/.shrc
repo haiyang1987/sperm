@@ -192,14 +192,20 @@ start_nodes() {
             start_node $idx
         done
     else
-        cd $GALERA_SRC && ./tests/scripts/command.sh start ; cd -
+        cd $GALERA_SRC
+        ./tests/scripts/command.sh start
+        cd -
     fi
 }
 stop_nodes() {
-    cd $GALERA_SRC && ./tests/scripts/command.sh stop ; cd -
+    cd $GALERA_SRC
+    ./tests/scripts/command.sh stop
+    cd -
 }
 remove_nodes() {
-    cd $GALERA_SRC && ./tests/scripts/command.sh remove ; cd -
+    cd $GALERA_SRC
+    ./tests/scripts/command.sh remove
+    cd -
 }
 change_master_to_node0() {
     local idx=$1
@@ -212,21 +218,42 @@ mysql_stopd() {
     sudo /etc/init.d/mysql stop
 }
 test_cpconf() {
-    cd ~/.private/galera && \
-        cp cluster.conf nodes.conf my0.cnf my1.cnf my2.cnf common_my.cnf $GALERA_SRC/tests/conf/ \
-        && cd -
+    cd ~/.private/galera
+    cp cluster.conf nodes.conf common_my.cnf $GALERA_SRC/tests/conf/
+    local node_num=$(grep "NODE_NUM=" nodes.conf | cut -d= -f 2)
+    for ((i=0;i<$node_num;i++))
+    do
+        local idx=$i
+        local sid=$((idx+1))
+        local port=$((4566-2*idx))
+        local segment=$((idx%3+1))
+        sed -e "s/{idx}/$idx/g" \
+            -e "s/{port}/$port/g" \
+            -e "s/{segment}/$segment/g" \
+            -e "s/{sid}/$sid/g" \
+            my.cnf > $GALERA_SRC/tests/conf/my$i.cnf
+    done
+    cd -
 }
 build5.5d() {
-    cd $GALERA_SRC && MYSQL_SRC=$HOME/repo/wsrep-5.5 ./scripts/mysql/build.sh -i -b -d --no-strip ; cd -
+    cd $GALERA_SRC
+    MYSQL_SRC=$HOME/repo/wsrep-5.5 ./scripts/mysql/build.sh -i -b -d --no-strip
+    cd -
 }
 build5.6d() {
-    cd $GALERA_SRC && MYSQL_SRC=$HOME/repo/wsrep-5.6 ./scripts/mysql/build.sh -i -b -d --no-strip ; cd -
+    cd $GALERA_SRC
+    MYSQL_SRC=$HOME/repo/wsrep-5.6 ./scripts/mysql/build.sh -i -b -d --no-strip
+    cd -
 }
 build5.5r() {
-    cd $GALERA_SRC && MYSQL_SRC=$HOME/repo/wsrep-5.5 ./scripts/mysql/build.sh -i -b --no-strip ; cd -
+    cd $GALERA_SRC
+    MYSQL_SRC=$HOME/repo/wsrep-5.5 ./scripts/mysql/build.sh -i -b --no-strip
+    cd -
 }
 build5.6r() {
-    cd $GALERA_SRC && MYSQL_SRC=$HOME/repo/wsrep-5.6 ./scripts/mysql/build.sh -i -b --no-strip ; cd -
+    cd $GALERA_SRC
+    MYSQL_SRC=$HOME/repo/wsrep-5.6 ./scripts/mysql/build.sh -i -b --no-strip
+    cd -
 }
 wsrep_url5.5() {
     echo "http://bazaar.launchpad.net/~codership/codership-mysql/wsrep-5.5/revision/$1"
@@ -261,7 +288,9 @@ bzr_commit() {
     bzr commit --fixes lp:$bug_id -m "References lp:$bug_id $message"
 }
 galera_debug_build() {
-    cd $GALERA_SRC && scons debug=0 -j8 ; cd -
+    cd $GALERA_SRC
+    scons debug=0 -j8
+    cd -
 }
 
 # others
@@ -315,7 +344,9 @@ apt_update() {
 }
 
 home_http_server() {
-    cd ~ && python -m SimpleHTTPServer 8080 ; cd -
+    cd ~
+    python -m SimpleHTTPServer 8080
+    cd -
 }
 
 home_http_server_once() {
@@ -323,7 +354,9 @@ home_http_server_once() {
     port_info=$(lsof -i:8080 -Pn | grep "(LISTEN)")
     if [ -z "$port_info" ]; then
         echo "start home_http_server..."
-        cd ~ && (python -m SimpleHTTPServer 8080 >/tmp/home_http_server.out 2>&1 &) ; cd -
+        cd ~
+        (python -m SimpleHTTPServer 8080 >/tmp/home_http_server.out 2>&1 &)
+        cd -
     fi
 }
 home_http_server_once
@@ -359,7 +392,9 @@ cxx_indent() {
 }
 
 vpn_umeng_dp() {
-    cd ~/.private/vpn-umeng-dp && sudo openvpn --config client.conf ; cd -
+    cd ~/.private/vpn-umeng-dp
+    sudo openvpn --config client.conf
+    cd -
 }
 
 install_files() {
@@ -448,7 +483,9 @@ update_hosts() {
 }
 
 shadowsocks() {
-    cd ~/.private/shadowsocks && ./local.py ; cd -
+    cd ~/.private/shadowsocks
+    ./local.py
+    cd -
 }
 
 shadowsocks_once() {
@@ -456,7 +493,9 @@ shadowsocks_once() {
     port_info=$(lsof -i:62221 -Pn | grep "(LISTEN)")
     if [ -z "$port_info" ]; then
         echo "start shadowsocks..."
-        cd ~/.private/shadowsocks && (./local.py >/tmp/shadowsocks.out 2>&1 &) ; cd -
+        cd ~/.private/shadowsocks
+        (./local.py >/tmp/shadowsocks.out 2>&1 &)
+        cd -
     fi
 }
 shadowsocks_once
