@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 #Copyright (C) dirlt
 
+#echo "configuring common part..."
 # basic path.
 export PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/sbin:$PATH
 export MANPATH=/usr/local/share/man:/usr/share/man:$MANPATH
@@ -129,7 +130,9 @@ git config --global alias.last 'log -1 HEAD'
 # private key.
 ssh-add ~/.ssh/id_rsa 2>/dev/null
 ssh-add ~/.ssh/github 2>/dev/null
-bzr launchpad-login yan.zhang
+lp_login() {
+    bzr launchpad-login yan.zhang
+}
 
 # language.
 export LANG="en_US.UTF-8"
@@ -143,6 +146,7 @@ start_idea() {
     (sh $IDEA_HOME/bin/idea.sh >/tmp/idea.out 2>&1 &)
 }
 
+#echo "configuring galera part..."
 # galera
 # export MYSQL_SRC=$HOME/repo/wsrep-5.6
 export MYSQL_SRC=$HOME/repo/wsrep-5.5
@@ -153,22 +157,11 @@ start_node() {
     local idx=$1; shift
     local extra_options=$@
     local mysql_port=$((3305-idx))
-    local node_port=$((4566-2*idx))
-    local cluster_port=4566
     local option=''
     if [ $idx -eq 0 ]; then
-        cluster_port=4564
         option="--mysql-opt --wsrep-new-cluster"
     fi
-    local PC_RECOVERY=0
-    local gcs_address_param=''
-    if [ $PC_RECOVERY -eq 1 ]; then
-        # turn off new cluster if pc.recovery is on.
-        option=''
-        gcs_address_param='&pc.recovery=1'
-    fi
-    local clutser_address="gcomm://127.0.0.1:$cluster_port?pc.wait_prim=false&gmcast.listen_addr=tcp://0.0.0.0:$node_port$gcs_address_param"
-    local cmd="MYSQL_PORT=$mysql_port /tmp/galera$idx/mysql-galera -g '$clutser_address' $option $extra_options start"
+    local cmd="MYSQL_PORT=$mysql_port /tmp/galera$idx/mysql-galera $option $extra_options start"
     echo $cmd
     eval $cmd
 }
@@ -221,20 +214,36 @@ test_cpconf() {
     cd ~/.private/galera
     cp cluster.conf nodes.conf common_my.cnf $GALERA_SRC/tests/conf/
     local node_num=$(grep "NODE_NUM=" nodes.conf | cut -d= -f 2)
+    local cluster_address=""
     for ((i=0;i<$node_num;i++))
     do
         local idx=$i
         local sid=$((idx+1))
+        #local segment=$((idx%3+1))
+        local segment=0
+
+        # local ip="192.168.100."$((103+i))
+        # local port=4566
+
+        local ip="127.0.0.1"
         local port=$((4566-2*idx))
-        local segment=$((idx%3+1))
+        if [ $i = 0 ]; then
+            cluster_address="$ip:$port"
+        else
+            cluster_address="$cluster_address,$ip:$port"
+        fi
         sed -e "s/{idx}/$idx/g" \
             -e "s/{port}/$port/g" \
             -e "s/{segment}/$segment/g" \
             -e "s/{sid}/$sid/g" \
+            -e "s/{ip}/$ip/g" \
             my.cnf > $GALERA_SRC/tests/conf/my$i.cnf
     done
+    sed -e "s/{wsrep_cluster_address}/$cluster_address/g" \
+        common_my.cnf > $GALERA_SRC/tests/conf/common_my.cnf
     cd -
 }
+
 build5.5d() {
     cd $GALERA_SRC
     MYSQL_SRC=$HOME/repo/wsrep-5.5 ./scripts/mysql/build.sh -i -b -d --no-strip
@@ -293,6 +302,7 @@ galera_debug_build() {
     cd -
 }
 
+#echo "configuring utility part..."
 # others
 export EDITOR=vim
 

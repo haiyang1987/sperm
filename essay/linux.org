@@ -1955,10 +1955,9 @@ lo        Link encap:Local Loopback
    - RX bytes 接收字节
    - TX bytes 发送字节
 
-使用ifconfig能够创建虚拟网卡绑定IP sudo ifconfig <name> <ip>, 如果需要关闭这个虚拟网卡的话可以ifconfig <name> down.即可。
-
-
-
+使用ifconfig能够创建虚拟网卡绑定IP
+   - sudo ifconfig <name> <ip>
+   - sudo ifconfig <name> down # 销毁虚拟网卡
 
 *** ps(process snapshot)
 进程状态有下面几种：
@@ -2120,6 +2119,47 @@ ntp是可以在minpoll和maxpoll指定的时间间隔内来选择同步间隔的
 
 *** cssh
 todo(dirlt):
+
+*** iptables
+查看当前过滤规则 iptables -L/-S
+#+BEGIN_EXAMPLE
+➜  ~GALERA_SRC git:(yan) sudo iptables -L
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination
+
+Chain FORWARD (policy ACCEPT)
+target     prot opt source               destination
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination
+
+➜  ~GALERA_SRC git:(yan) sudo iptables -S
+-P INPUT ACCEPT
+-P FORWARD ACCEPT
+-P OUTPUT ACCEPT
+#+END_EXAMPLE
+
+可以使用 iptables -A [chain] [chain-specification]来添加规则
+#+BEGIN_EXAMPLE
+sudo iptables -A INPUT -s "192.168.100.104" -d "192.168.100.105" -j DROP
+#+END_EXAMPLE
+其中chain指INPUT, 之后部分都是chain-specification. 其中s表示过滤源地址，d表示目的地址，而-j而表示动作。
+
+可以使用 iptables -D 来删除规则。其中规则既可以使用rule-num来引用，也可以使用chain-specification来指定
+#+BEGIN_EXAMPLE
+➜  ~GALERA_SRC git:(yan) sudo iptables -S
+-P INPUT ACCEPT
+-P FORWARD ACCEPT
+-P OUTPUT ACCEPT
+-A INPUT -s 192.168.100.104/32 -d 192.168.100.105/32 -j DROP
+-A INPUT -s 192.168.100.105/32 -d 192.168.100.104/32 -j DROP
+➜  ~GALERA_SRC git:(yan) sudo iptables -D INPUT 1
+➜  ~GALERA_SRC git:(yan) sudo iptables -D INPUT -s 192.168.100.105/32 -d 192.168.100.104/32 -j DROP
+➜  ~GALERA_SRC git:(yan) sudo iptables -S
+-P INPUT ACCEPT
+-P FORWARD ACCEPT
+-P OUTPUT ACCEPT
+#+END_EXAMPLE
 
 
 *** /HTTP BENCH TOOL/
