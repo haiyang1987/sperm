@@ -210,7 +210,24 @@ START SLAVE"
 mysql_stopd() {
     sudo /etc/init.d/mysql stop
 }
+
+# --mips ; use multiple ips
+# --mseg ; use multiple segment
 test_cpconf() {
+    local MIPS=0
+    local MSEG=0
+    while test $# -gt 0
+    do
+        case $1 in
+            --mips)
+                MIPS=1
+                ;;
+            --mseg)
+                MSEG=1
+                ;;
+        esac
+        shift 1
+    done
     cd ~/.private/galera
     cp cluster.conf nodes.conf common_my.cnf $GALERA_SRC/tests/conf/
     local node_num=$(grep "NODE_NUM=" nodes.conf | cut -d= -f 2)
@@ -219,14 +236,16 @@ test_cpconf() {
     do
         local idx=$i
         local sid=$((idx+1))
-        #local segment=$((idx%3+1))
         local segment=0
-
-        # local ip="192.168.100."$((103+i))
-        # local port=4566
-
+        if [ $MSEG = 1 ]; then
+            segment=$((idx%3+1))
+        fi
         local ip="127.0.0.1"
         local port=$((4566-2*idx))
+        if [ $MIPS = 1 ]; then
+            ip="192.168.100."$((103+i))
+            port=4566
+        fi
         if [ $i = 0 ]; then
             cluster_address="$ip:$port"
         else
