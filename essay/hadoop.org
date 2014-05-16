@@ -565,11 +565,6 @@ export HBASE_OPTS="-ea -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+UseCMSCompa
 
 #+END_SRC
 
-*** With SSD
-   - The Truth About MapReduce Performance on SSDs | Cloudera Developer Blog : http://blog.cloudera.com/blog/2014/03/the-truth-about-mapreduce-performance-on-ssds/
-   - HDFS: Hadoop and Solid State Drives : http://hadoopblog.blogspot.com/2012/05/hadoop-and-solid-state-drives.html
-todo(dirlt):
-
 ** Hadoop权威指南
 *** 初识Hadoop
 古代，人们用牛来拉中午，当一头牛拉不动一根圆木的时候，他们不曾想过培育更大更壮的牛。同样，我们也不需要尝试开发超级计算机，而应试着结合使用更多计算机系统。

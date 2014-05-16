@@ -14,7 +14,6 @@
    - For improved durability, redundant copies of the checkpoint and journal can be made at other servers. Dur-ing restarts the NameNode restores the namespace by reading the namespace and replaying the journal.（对于这个image在远程上面也会进行备份来提高可用性）
    - The locations of block replicas may change over time and are not part of the persistent checkpoint.（这个和gfs相同都是通过chunkserver启动之后汇报chunk来完成的）
 
-
 **** DataNode
    - Each block replica on a DataNode is represented by two files in the local host’s native file system. The first file contains the data itself and the second file is block’s metadata including checksums for the block data and the block’s generation stamp.（block存储上包含两个文件，一个是数据文件，另外一个就是checksum文件，并且包含block generation stamp。这个stamp可能就是用来标记old chunk的，类似于gfs里面的chunk version number）
    - During startup each DataNode connects to the NameNode and performs a handshake. The purpose of the handshake is to verify the namespace ID and the software version of the DataNode. If either does not match that of the NameNode the DataNode automatically shuts down.（datanode启动的时候会和namenode交互，交换namespace id和software version id,如果两者不匹配的话，那么datanode就会shutdown。这个是为了处理兼容性问题，这个在从cdh3升级到cdh4时候需要考虑。兼容性问题猜想会涉及到RPC以及存储格式处理上）
@@ -45,7 +44,7 @@ file:./images/hdfs-data-flow.png
 
 **** CheckpointNode
    - The NameNode in HDFS, in addition to its primary role serving client requests, can alternatively execute either of two other roles, either a CheckpointNode or a BackupNode. The role is specified at the node startup.（checkpoint node和backup node是namenode一种，可以在启动的时候直接指定角色）
-   - The CheckpointNode periodically combines the existing checkpoint and journal to create a new checkpoint and an empty journal.（checkpoint node做的事情就是合并chkp以及journal） 
+   - The CheckpointNode periodically combines the existing checkpoint and journal to create a new checkpoint and an empty journal.（checkpoint node做的事情就是合并chkp以及journal）
    - The CheckpointNode usually runs on a different host from the NameNode since it has the same memory re-quirements as the NameNode. （对于checkpoint node来说通常也会host在另外一机器上面因为和namenode占用了相同内存大小。我理解这个checkpointnode并没有服务，而仅仅是为了做checkpoint。在合并chkp需要在内存里面进行merge以及update等操作，所以也是相当占用内存的）
    - It downloads the current check-point and journal files from the NameNode, merges them lo-cally, and returns the new checkpoint back to the NameNode（实现上比较奇怪，是从namenode download下chkp和journal来进行合并的，然后将chkp传回给namenode）
    -  For a large cluster, it takes an hour to process a week-long journal. Good practice is to create a daily checkpoint.（对于大型clutser来说恢复周级别的journal需要小时，所以每天做一次chkp还是比较合理的）
@@ -90,7 +89,7 @@ file:./images/hdfs-cluster-topology-example.png
       - No rack contains more than two replicas of the same block, provided there are sufficient racks on the cluster.
 
 **** Replication management
-   - The NameNode detects that a block has become under- or over-replicated when a block report from a DataNode arrives. 
+   - The NameNode detects that a block has become under- or over-replicated when a block report from a DataNode arrives.
    - When a block becomes over replicated, the NameNode chooses a replica to remove. The NameNode will prefer not to reduce the number of racks that host replicas, and secondly prefer to remove a replica from the DataNode with the least amount of available disk space. The goal is to balance storage utilization across DataNodes without reducing the block’s availability.（如果over-replicated的话，那么会选择一个replica移除。首先考虑不要减少rack数目，然后考虑从磁盘空间空闲最少的节点删除。）
    - When a block becomes under-replicated, it is put in the rep- lication priority queue. A block with only one replica has the highest priority, while a block with a number of replicas that is greater than two thirds of its replication factor has the lowest priority. （对于under-replicated来说，会将这个请求加入队列。1个replica有最高优先级）
    - A background thread periodically scans the head of the replication queue to decide where to place new replicas. Block replication follows a similar policy as that of the new block placement. （后台线程扫描这个queue决定如何进行这个block replication，使用的策略和block placement非常类似）
@@ -140,7 +139,7 @@ Large HDFS clusters at Yahoo! include about 3500 nodes. A typical cluster node h
    - 63million blocks（每个文件的block比较低）
    - 平均每个datanode上面有5.4w个blocks
    - 每天user app产生2million文件
-     
+
 **** Durability of Data
    - for a large cluster, the prob-ability of losing a block during one year is less than .005 *todo(dirlt)：这个是怎么计算出来的呢？*
    - 分析数据丢失
@@ -164,7 +163,7 @@ Large HDFS clusters at Yahoo! include about 3500 nodes. A typical cluster node h
 
 *** FUTURE WORK
   - NameNode的自动恢复。现在BackupNode已经算是Warm NameNode了，但是缺少block reports，所以如果切换到BackupNode的话还需要block reports比较耗时。如果BackupNode能够同时接收block reports的话，那么可以作为Hot NameNode存在。
-  - NameNode的扩展性问题。NameNode现在瓶颈在于内存使用上，尤其是当内存块使用完的时候出现GC更加糟糕有时候需要restart。虽然我们鼓励用户创建大文件，并且增加了配额管理以及archive tool,但是依然没有解决本质问题。     
+  - NameNode的扩展性问题。NameNode现在瓶颈在于内存使用上，尤其是当内存块使用完的时候出现GC更加糟糕有时候需要restart。虽然我们鼓励用户创建大文件，并且增加了配额管理以及archive tool,但是依然没有解决本质问题。
 
 ** HDFS Reliability(2008)
    - http://blog.cloudera.com/wp-content/uploads/2010/03/HDFS_Reliability.pdf
@@ -182,16 +181,16 @@ The rack placement policy1 is managed by the name node, and replicas are placed 
 Currently the policy is fixed, however there is a proposal to make it pluggable. See https://issues.apache.org/jira/browse/HADOOP-3799
 
 If a data node fails while the block is being written, it is removed from the pipeline. When the current block has been written, the name node will re-replicate it to make up for the missing replica due to the failed data node. Subsequent blocks will be written using a new pipeline with the required number of data nodes.（如果在pipeline上面有一个dn没有写成功的话是否直接返回， *todo(dirlt):然后通过re-replicate的机制来善后???* 。剩余的blocks还是按照新的逻辑走，和上一个block的pipeline没有关系）
- 
+
 **** Clients
 **** Secondary Name Node
 **** Safe mode
 When the name node starts it enters a state where the filesystem is read only, and no blocks are replicated or deleted. This is called "safe mode". Safe mode is needed to allow the name node to do two things: 在safemode下面所有数据只是只读的，在这期间完成两件事情
    1. Reconstruct the state of the filesystem by loading the image file into memory and replaying the edit log. 恢复NN状态。
    2. Generate the mapping between blocks and data nodes by waiting for enough of the data nodes to check in. 等待足够数量的dn checkin之后，重构block和node之间的映射关系。
-     - If the name node didn't wait for the data nodes to check in, it would think that blocks were under-replicated and start re-replicating blocks across the cluster. 
-     - Instead, the name node waits until enough data nodes check in to account for a configurable percentage of blocks (99.9% by default), which satisfy the minimum replication level (1 by default). （等待足够数量的block都出现并且满足一定的备份数目） 
-The name node then waits a further fixed amount of time (30 seconds by default) to allow the cluster to settle down before exiting safe mode.（然后等待30s离开safe mode) 
+     - If the name node didn't wait for the data nodes to check in, it would think that blocks were under-replicated and start re-replicating blocks across the cluster.
+     - Instead, the name node waits until enough data nodes check in to account for a configurable percentage of blocks (99.9% by default), which satisfy the minimum replication level (1 by default). （等待足够数量的block都出现并且满足一定的备份数目）
+The name node then waits a further fixed amount of time (30 seconds by default) to allow the cluster to settle down before exiting safe mode.（然后等待30s离开safe mode)
 
 **** Tools
 **** Snapshots
@@ -204,10 +203,10 @@ Data loss can occur for the following reasons:
 **** Hardware failures
 How does Hadoop detect hardware failures?
    - The name node would notice that the data node is not sending heartbeats, then after a certain time period (10 minutes by default) it considers the node as dead, at which point it will re-replicate the blocks that were on the failed data node using replicas stored on other nodes of the cluster.(dn故障检测通过心跳完成）
-   - Detecting corrupt data requires a different approach. The principal technique is to use checksums to check for corruption.（通过校验来检测数据损坏） 
+   - Detecting corrupt data requires a different approach. The principal technique is to use checksums to check for corruption.（通过校验来检测数据损坏）
      - Corruption may occur during transmission of the block over the network, or when it is written to or read from disk. In Hadoop, the data nodes verify checksums on receipt of the block. If any checksum is invalid the data node will complain and the block will be resent. A block's checksums are stored along with the block data, to allow further integrity checks.（传输出现损坏的话那么需要进行重传，然后checksum也会被保存下来用于后续检查）
      - This is not sufficient to ensure that the data will be successfully read from disk in an uncorrupted state, so all reads from HDFS verify the block checksums too. Failures are reported to the name node, which organizes re-replication of the healthy replicas.（后续读取数据的时候也会进行检查）
-     - Because HDFS is often used to store data that isn't read very often, detecting corrupt data when it is read is undesirable: the failure may go undetected for a long period, during which other replicas may have failed. To remedy this, each data node runs a background thread to check block integrity. If it finds a corrupt block, it informs the name node which replicates the block from its uncorrupted replicas, and arranges for the corrupt block to be deleted. Blocks are re-verified every three weeks to protect against disk errors over time.（部分数据可能很少会被读取，因此在读取的时候检查坏块就不太现实。所以在每个dn上面都会存在一个后台线程定期检查所有的块看是否损坏。如果损坏的话那么需要重新做replication. 通常这个线程是每3周启动一次） 
+     - Because HDFS is often used to store data that isn't read very often, detecting corrupt data when it is read is undesirable: the failure may go undetected for a long period, during which other replicas may have failed. To remedy this, each data node runs a background thread to check block integrity. If it finds a corrupt block, it informs the name node which replicates the block from its uncorrupted replicas, and arranges for the corrupt block to be deleted. Blocks are re-verified every three weeks to protect against disk errors over time.（部分数据可能很少会被读取，因此在读取的时候检查坏块就不太现实。所以在每个dn上面都会存在一个后台线程定期检查所有的块看是否损坏。如果损坏的话那么需要重新做replication. 通常这个线程是每3周启动一次）
 
 **** Software errors
 
@@ -216,9 +215,9 @@ How does Hadoop detect hardware failures?
 **** Use three or more replicas
 **** Protect the name node
 To avoid this catastrophic scenario the name node should have special treatment:
-   1. The name node should write its persistent metadata to multiple local disks. If one physical disk fails then there is a backup of the data on another disk. RAID can be used in this case too.(用RAID来提高可靠性） 
-   2. The name node should write its persistent metadata to a remote NFS mount. If the name node fails, then there is a backup of the data on NFS.（用NFS来做提高可靠性） 
-   3. The secondary name node should run on a separate node to the primary. In the case of losing all of the primary's data (local disks and NFS), the secondary can provide a stale copy of the metadata. Since it is stale, there will be some data loss, but it will be a known amount of data loss, since the secondary makes periodic backups of the metadata on a configurable schedule（secondary nn和nn分开部署） 
+   1. The name node should write its persistent metadata to multiple local disks. If one physical disk fails then there is a backup of the data on another disk. RAID can be used in this case too.(用RAID来提高可靠性）
+   2. The name node should write its persistent metadata to a remote NFS mount. If the name node fails, then there is a backup of the data on NFS.（用NFS来做提高可靠性）
+   3. The secondary name node should run on a separate node to the primary. In the case of losing all of the primary's data (local disks and NFS), the secondary can provide a stale copy of the metadata. Since it is stale, there will be some data loss, but it will be a known amount of data loss, since the secondary makes periodic backups of the metadata on a configurable schedule（secondary nn和nn分开部署）
    4. Make backups of the name node's persistent metadata. You should keep multiple copies of different ages (1 day, 1 week, 1 month) to allow recovery in the case of corruption. A convenient way to do this is to use the checkpoints on the secondary as the source of the backup. These backups should be verified; at present the only way to do this is to start a new name node (on a separate, unreachable network to the production cluster) to visually check that it can reconstruct the filesystem metadata.（定期备份并且进行校验，一个简单的校验方法就是用这个image去启动一个namenode）
    5. Use directory quotas to set a maximum number of files that may live in the filesystem namespace. This measure prevents the destablizing effect of the name node running out of memory due to too many files being created in the system.（提高文件数量上限）
 
@@ -255,7 +254,7 @@ In these cases, extra care is needed when performing an upgrade of Hadoop, since
 | Capacity | 10PB   | 14PB     |
 | Nodes    | 10K    | 4K       |
 | Clients  | 100K   | 15K      |
-| Files    | 100M   | 60M      | 
+| Files    | 100M   | 60M      |
 
 The question is now whether the goals are feasible with the current system architecture. And the main concern is the single namespace server architec- ture. This article studies scalability and performance limitations imposed on HDFS by this architecture.（其实这篇文章主要是想分析在single-namespace-server这个架构下面可扩展性以及性能的极限）
 
@@ -272,9 +271,9 @@ The question is now whether the goals are feasible with the current system archi
    - Block Reports, Heartbeats
      - A data-node identifies block replicas in its possession to the name-node by sending a block report. A block report contains block ID, length, and the gen- eration stamp for each block replica.
        - The first block report is sent immediately after the data-node registration.
-       - Subsequently, block reports are sent periodically every hour by default and serve as a sanity check（时间间隔1小时） 
+       - Subsequently, block reports are sent periodically every hour by default and serve as a sanity check（时间间隔1小时）
      - During normal operation, data-nodes periodically send heartbeats to the name-node to indicate that the data-node is alive.
-       - The default heartbeat interval is three seconds. （心跳间隔3s） 
+       - The default heartbeat interval is three seconds. （心跳间隔3s）
        - If the name-node does not receive a heartbeat from a data-node in 10 minutes, it pronounces the data-node dead and schedules its blocks for replication on other nodes.（10min没有接收到心跳那么认为死亡）
        - Heartbeats also carry information about total and used disk capacity and the number of data transfers currently performed by the node, which plays an important role in the name-node’s space and load-balancing decisions.（心跳携带信息还包含磁盘使用情况等）
        - The communication on HDFS clusters is organized in such a way that the name-node does not call data-nodes directly. It uses heartbeats to reply to the data-nodes with important instructions. The instructions include com- mands to:（而对于nn来说通过在心跳里面piggyback一些信息来操作dn)
@@ -289,7 +288,7 @@ The question is now whether the goals are feasible with the current system archi
        - 200M blocks / 10K nodes = 20K blocks/node. 需要考虑blocks replication factor是3，那么每个节点上有60k个blocks。This is the size of an average block report sent by a data-node to the name-node.
        - The sending of block reports is randomized so that they do not come to the name-node together or in large waves. Thus, the average number of block reports the name-node receives is 10,000/hour, which is about three reports per second. *note(dirlt)：这里假设dn发送report都是均匀地发送。那么nn每个小时接收到10k block reports，每个block report里面有60K个blocks.相当于3/s*
        - The heartbeats are not explicitly randomized by the current implementa- tion and, in theory, can hit the name-node together, although the likelihood of this is very low. Nevertheless, let’s assume that the name-node should be able to handle 10,000 heartbeats per second on a 10,000 node cluster. *note(dirlt): 如果均匀发送心跳而心跳间隔是3s的话，那么应该是3k/s.但是考虑到均匀发送概率比较低，所以假设NN每秒需要处理10k heartbeats*
-     - In order to measure the name-node performance, I implemented a bench- mark called *NNThroughputBenchmark*, which now is a standard part of the HDFS code base. 
+     - In order to measure the name-node performance, I implemented a bench- mark called *NNThroughputBenchmark*, which now is a standard part of the HDFS code base.
        - NNThroughputBenchmark is a single-node benchmark, which starts a name-node and runs a series of client threads on the same node. Each client repetitively performs the same name-node operation by directly calling the name-node method implementing this operation. Then the benchmark mea- sures the number of operations performed by the name-node per second.
        - The reason for running clients locally rather than remotely from different nodes is to avoid any communication overhead caused by RPC connections and serialization, and thus reveal the upper bound of pure name-node per- formance.（没有远端发起的原因是因为有RPC代价开销，另外我感觉结果统计也不太好完成）
        - Number of blocks processed in block reports per second == 639713 / 60K blocks per block report = 10/s. 而NN接收为3/s, 所以占据30%。
@@ -299,14 +298,14 @@ The question is now whether the goals are feasible with the current system archi
    - Resonable Load Expections
      - DFSIO was one of the first standard benchmarks for HDFS. The bench- mark is a map-reduce job with multiple mappers and a single reducer. Each mapper writes (reads) bytes to (from) a distinct file. Mappers within the job either all write or all read, and each mapper transfers the same amount of data. The mappers collect the I/O stats and pass them to the reducer. The reducer averages them and summarizes the I/O throughput for the job. The key measurement here is the byte transfer rate of an average mapper.(使用DFSIO来测算吞吐，mapper进行读取然后将统计数据交给reducer)
        - Average read throughput == 66 MB/s
-       - Average write throughput == 40 MB/s 
+       - Average write throughput == 40 MB/s
      - Another series of throughput results produced by NNThroughputBench- mark (Table 4) measures the number of “open” (the same as “get block loca- tion”) and “create” operations processed by the name-node per second:
        - Get block locations == 126,119 ops/s
        - Create new block == 5,600 ops/s
      - 然后考虑MapReduce对HDFS操作，每个map读取一个block。假设block size = 128MB，而每个file有1.5block。这样有的block就会是128MB, 有的是64MB，平均下来96MB. 并且假设写block也是96MB
        - Read Only. 每个map读取花去 96 / 66 ~= 1.45s. 这期间相当有10k client发起了Get block location操作，相当10k/1.45s = 68750/s. 低于126119 * 0.7.  *所以NN不会限制read性能。*
        - Write Only. 每个map写入花去 96 / 40 ~= 2.4. 这期间想当有10k client发起了Create new block操作，相当10k/2.4s = 41667/s. 高于 5600 * 0.7,  *所以NN会限制write性能。*
-     - We have seen that a 10,000 node HDFS cluster with a single name-node is expected to handle well a workload of 100,000 readers, but even 10,000 writers can produce enough workload to saturate the name-node, making it a bottleneck for linear scaling. Such a large difference in performance is attributed to get block locations (read workload) being a memory-only operation, while creates (write work- load) require journaling, which is bounded by the local hard drive perfor- mance.（这个差距的根源还是在于，get操作是从memory里面完成的，而write操作需要journal） 
+     - We have seen that a 10,000 node HDFS cluster with a single name-node is expected to handle well a workload of 100,000 readers, but even 10,000 writers can produce enough workload to saturate the name-node, making it a bottleneck for linear scaling. Such a large difference in performance is attributed to get block locations (read workload) being a memory-only operation, while creates (write work- load) require journaling, which is bounded by the local hard drive perfor- mance.（这个差距的根源还是在于，get操作是从memory里面完成的，而write操作需要journal）
 
 *** Final Notes
 
@@ -344,8 +343,8 @@ http://hortonworks.com/blog/why-not-raid-0-its-about-time-and-snowflakes/
      - 主要问题是，如果一旦一块磁盘出现问题的话，那么所有的磁盘上的数据都需要进行replication.因为RAID0是strip存储的，每个disk上面可能存储一个small block（64KB），而HDFS使用64MB作为block。这就意味着1个HDFS block在10 RAID0 disks上面的话会分摊在10个disk上面，如果一个disk出现问题的话，那么所有的HDFS block都发生损坏就都要进行replication
    - Every Disk is a Unique Snowflake
      - On RAID-0 Storage the disk accesses go at the rate of the slowest disk. RAID0带宽瓶颈限制在slowest disk上面
-     - The 2011 paper, [[http://static.usenix.org/event/hotos11/tech/final_files/Krevat.pdf][Disks Are Like Snowflakes: No Two Are Alike]], measured the performance of modern disk drives, and discovered that they can vary in data IO rates by 20%, even when they are all writing to same part of the hard disk. 
-     - if you have eight disks, some will be faster than the others, right from day one. And your RAID-0 storage will deliver the performance of the slowest disk right from the day you unpack it from its box and switch it on. 
+     - The 2011 paper, [[http://static.usenix.org/event/hotos11/tech/final_files/Krevat.pdf][Disks Are Like Snowflakes: No Two Are Alike]], measured the performance of modern disk drives, and discovered that they can vary in data IO rates by 20%, even when they are all writing to same part of the hard disk.
+     - if you have eight disks, some will be faster than the others, right from day one. And your RAID-0 storage will deliver the performance of the slowest disk right from the day you unpack it from its box and switch it on.
 
 *** Hadoop I/O: Sequence, Map, Set, Array, BloomMap Files | Apache Hadoop for the Enterprise | Cloudera
 http://blog.cloudera.com/blog/2011/01/hadoop-io-sequence-map-set-array-bloommap-files/
@@ -381,6 +380,16 @@ SetFile是基于MapFile完成的，只不过value = NullWritable
 ArrayFile也是基于MapFile完成的，只不过key = LongWriatble，然后每次写入都会+1
 
 BloomMapFile扩展了MapFile添加了一个bloom文件，存储的是DynamicBloomFilter序列化内容。在判断key是否在MapFile之前，先走BloomFilter.
+
+*** The Truth About MapReduce Performance on SSDs | Cloudera Developer Blog
+http://blog.cloudera.com/blog/2014/03/the-truth-about-mapreduce-performance-on-ssds/
+
+todo(dirlt):
+
+*** HDFS: Hadoop and Solid State Drive
+http://hadoopblog.blogspot.com/2012/05/hadoop-and-solid-state-drives.html
+
+todo(dirlt):
 
 ** 日志分析
 *** All datanodes are bad. Aborting
@@ -432,7 +441,7 @@ Missing blocks: 1
 #+BEGIN_EXAMPLE
 dp@dp2:~$ hadoop fsck /hbase/.corrupt/dp18.umeng.com%3A60020.1349065853563 -files -locations -blocks -racks
 FSCK started by dp (auth:SIMPLE) from /10.18.10.55 for path /hbase/.corrupt/dp18.umeng.com%3A60020.1349065853563 at Mon Oct 08 15:17:07 CST 2012
-/hbase/.corrupt/dp18.umeng.com%3A60020.1349065853563 66050 bytes, 1 block(s): 
+/hbase/.corrupt/dp18.umeng.com%3A60020.1349065853563 66050 bytes, 1 block(s):
 /hbase/.corrupt/dp18.umeng.com%3A60020.1349065853563: CORRUPT block blk_6229461233186357508
  Under replicated blk_6229461233186357508_18529950. Target Replicas is 3 but found 1 replica(s).
 0. blk_6229461233186357508_18529950 len=66050 repl=1 [/default-rack/10.18.10.71:50010]
@@ -495,7 +504,7 @@ uri = file:///
 而如果以hadoop来运行的话，因为configuration首先会加载conf/core-site.xml里面存在fs.default.name，因此运行结果如下
 #+BEGIN_EXAMPLE
 ➜  hdfs git:(master) ✗ export HADOOP_CLASSPATH=./target/classes
-➜  hdfs git:(master) ✗ hadoop com.dirlt.java.hdfs.GetFS        
+➜  hdfs git:(master) ✗ hadoop com.dirlt.java.hdfs.GetFS
 fs.default.name = hdfs://localhost:9000
 uri = hdfs://localhost:9000
 uri = file:///
@@ -513,7 +522,7 @@ uri = file:///
      - *note(dirlt)：但是似乎不太work.参考代码 [[https://github.com/dirtysalt/sperm/blob/master/code/java/hdfs/src/main/java/com/dirlt/java/hdfs/TestConsistency.java][com.dirlt.java.hdfs.TestConsistency]]*
 
 *** 读写进度
-   - hdfs每次将64KB数据写入datanode pipeline的时候都会调用progress.     
+   - hdfs每次将64KB数据写入datanode pipeline的时候都会调用progress.
    - 对于本地文件系统的话，可以跟进到RawLocalFileSystem.create发现progress这个方法并没有使用。
    - 对于分布式文件系统的话，可以跟进到DFSClient.DFSOutputStream.DataStreamer在run里面调用progress
      - 但是过程似乎有点复杂，所以也不确实是否真的写入64KB才会调用progress
@@ -545,7 +554,7 @@ uri = file:///
 代码如下：
 #+BEGIN_SRC Java
 // 通过上面调用获得所有namenodes.
-// final Collection<URI> namenodes = DFSUtil.getNsServiceRpcUris(conf); 
+// final Collection<URI> namenodes = DFSUtil.getNsServiceRpcUris(conf);
 
   static int run(Collection<URI> namenodes, final Parameters p,
       Configuration conf) throws IOException, InterruptedException {
@@ -558,18 +567,18 @@ uri = file:///
       for (URI uri : namenodes) {
         connectors.add(new NameNodeConnector(uri, conf));
       }
-    
+
       boolean done = false;
       for(int iteration = 0; !done; iteration++) {
         done = true;
         Collections.shuffle(connectors); // 并不是顺序对nn做balance的
         for(NameNodeConnector nnc : connectors) {
           // 创建Balancer对象，参数是 1.和nn的connection 2.balance parameters 3.configuration.
-          final Balancer b = new Balancer(nnc, p, conf); 
+          final Balancer b = new Balancer(nnc, p, conf);
           // 调用Balancer对象run方法进行balance，iteration可以汇报当前是多少轮调度
           final ReturnStatus r = b.run(iteration, formatter);
           if (r == ReturnStatus.IN_PROGRESS) {
-            done = false; 
+            done = false;
           } else if (r != ReturnStatus.SUCCESS) {
             //must be an error statue, return.
             return r.code;
@@ -591,7 +600,7 @@ uri = file:///
 
 Parameters有两个控制参数
    - BalancingPolicy # 对Node还是Pool来做balance.默认是Node
-   - threshold # per node/pool disk util 和 avg disk util 百分比的差值小于多少的话停止balance过程，默认是10  
+   - threshold # per node/pool disk util 和 avg disk util 百分比的差值小于多少的话停止balance过程，默认是10
 
 ***** BalancingPolicy
 定义如何计算disk util，包括计算per node/pool disk util 和 avg disk util. 根据Node和Pool不同特性有两个实现，
@@ -639,9 +648,9 @@ Node实现
     @Override
     void accumulateSpaces(DatanodeInfo d) {
       totalCapacity += d.getCapacity();
-      totalUsedSpace += d.getDfsUsed();  
+      totalUsedSpace += d.getDfsUsed();
     }
-    
+
     @Override
     double getUtilization(DatanodeInfo d) {
       return d.getDfsUsed()*100.0/d.getCapacity();
@@ -683,15 +692,15 @@ public class Balancer {
   final private static long MAX_BLOCKS_SIZE_TO_FETCH = 2*1024*1024*1024L; //2GB // 每次最多选中2GB大小的blocks来做shuffle.
   private static long WIN_WIDTH = 5400*1000L; // 1.5 hour
 
-  /** The maximum number of concurrent blocks moves for 
+  /** The maximum number of concurrent blocks moves for
    * balancing purpose at a datanode
    */
   public static final int MAX_NUM_CONCURRENT_MOVES = 5; // 单个datanode最多同时5个block move同时进行
-   
+
   private final NameNodeConnector nnc; // NN连接
   private final BalancingPolicy policy; // 均衡策略
-  private final double threshold; // 
-  
+  private final double threshold; //
+
   // all data node lists
   // 这些列表含义后面会解释
   private Collection<Source> overUtilizedDatanodes
@@ -702,13 +711,13 @@ public class Balancer {
                                = new LinkedList<BalancerDatanode>();
   private Collection<BalancerDatanode> underUtilizedDatanodes
                                = new LinkedList<BalancerDatanode>();
-   
+
   // source节点和sink节点
   private Collection<Source> sources
                                = new HashSet<Source>();
   private Collection<BalancerDatanode> targets
                                = new HashSet<BalancerDatanode>();
-  
+
   // 保存所有调度出现过的Block. note(dirlt)：似乎是遗留代码，没有实际用途
   private Map<Block, BalancerBlock> globalBlockList
                  = new HashMap<Block, BalancerBlock>();
@@ -717,16 +726,16 @@ public class Balancer {
 
   // Map storage IDs to BalancerDatanodes
   // 所有datanodes，通过storageID来区分
-  private Map<String, BalancerDatanode> datanodes 
+  private Map<String, BalancerDatanode> datanodes
                  = new HashMap<String, BalancerDatanode>();
 
-  // 集群网络拓扑结构  
+  // 集群网络拓扑结构
   private NetworkTopology cluster = new NetworkTopology();
-  
+
   // 后台线程池
   final static private int MOVER_THREAD_POOL_SIZE = 1000;
   // 完成移动操作线程池
-  final private ExecutorService moverExecutor = 
+  final private ExecutorService moverExecutor =
     Executors.newFixedThreadPool(MOVER_THREAD_POOL_SIZE);
   final static private int DISPATCHER_THREAD_POOL_SIZE = 200;
   // 完成分发操作线程池
@@ -739,7 +748,7 @@ public class Balancer {
 
   // 每次检查block move是否完成的等待时间间隔，30s
   // The sleeping period before checking if block move is completed again
-  static private long blockMoveWaitTime = 30000L;  
+  static private long blockMoveWaitTime = 30000L;
 }
 #+END_SRC
 
@@ -764,7 +773,7 @@ public class Balancer {
         LOG.info( "Need to move "+ StringUtils.byteDesc(bytesLeftToMove)
             + " to make the cluster balanced." );
       }
-      
+
       /* Decide all the nodes that will participate in the block move and
        * the number of bytes that need to be moved from one node to another
        * in this iteration. Maximum bytes to be moved per node is
@@ -778,9 +787,9 @@ public class Balancer {
         LOG.info( "Will move " + StringUtils.byteDesc(bytesToMove) +
             " in this iteration");
       }
-      
-      /* For each pair of <source, target>, start a thread that repeatedly 
-       * decide a block to be moved and its proxy source, 
+
+      /* For each pair of <source, target>, start a thread that repeatedly
+       * decide a block to be moved and its proxy source,
        * then initiates the move until all bytes are moved or no more block
        * available to move.
        * Exit no byte has been moved for 5 consecutive iterations.
@@ -816,7 +825,7 @@ public class Balancer {
       3. isBelowOrEqualAvgUtilized # du <= avg-du && du > avg-du - threshood,类型BalancerDatanode
       4. underUtilizedDatanodes # du < avg-du - threshold, 类型BalancerDatanode
    3. 计算需要移动多少字节才能够完全平衡
-     
+
 #+BEGIN_SRC Java
   private long initNodes(DatanodeInfo[] datanodes) {
     // compute average utilization
@@ -828,11 +837,11 @@ public class Balancer {
     }
     policy.initAvgUtilization();
 
-    /*create network topology and all data node lists: 
+    /*create network topology and all data node lists:
      * overloaded, above-average, below-average, and underloaded
      * we alternates the accessing of the given datanodes array either by
      * an increasing order or a decreasing order.
-     */  
+     */
     long overLoadedBytes = 0L, underLoadedBytes = 0L;
     shuffleArray(datanodes);
     for (DatanodeInfo datanode : datanodes) {
@@ -860,7 +869,7 @@ public class Balancer {
         } else {
           assert isUnderUtilized(datanodeS) : "isUnderUtilized("
               + datanodeS.getDisplayName() + ")=" + isUnderUtilized(datanodeS)
-              + ", utilization=" + datanodeS.utilization; 
+              + ", utilization=" + datanodeS.utilization;
           this.underUtilizedDatanodes.add(datanodeS);
           underLoadedBytes += (long)((avg-threshold-
               datanodeS.utilization)*datanodeS.datanode.getCapacity()/100.0);
@@ -883,7 +892,7 @@ public class Balancer {
     chooseNodes(true);
     // Then match nodes on different racks
     chooseNodes(false);
-    
+
     assert (datanodes.size() >= sources.size()+targets.size())
       : "Mismatched number of datanodes (" +
       datanodes.size() + " total, " +
@@ -905,15 +914,15 @@ public class Balancer {
      * one or more underUtilized datanodes (targets).
      */
     chooseTargets(underUtilizedDatanodes.iterator(), onRack); // 以under util节点为target. over util节点为source.
-    
-    /* match each remaining overutilized datanode (source) to 
+
+    /* match each remaining overutilized datanode (source) to
      * below average utilized datanodes (targets).
      * Note only overutilized datanodes that haven't had that max bytes to move
      * satisfied in step 1 are selected
      */
     chooseTargets(belowAvgUtilizedDatanodes.iterator(), onRack); // 以below util为target. over util节点为source.
 
-    /* match each remaining underutilized datanode to 
+    /* match each remaining underutilized datanode to
      * above average utilized datanodes.
      * Note only underutilized datanodes that have not had that max bytes to
      * move satisfied in step 1 are selected.
@@ -926,7 +935,7 @@ public class Balancer {
 寻找和over util匹配的target.
 
 #+BEGIN_SRC Java
-private void chooseTargets(  
+private void chooseTargets(
       Iterator<BalancerDatanode> targetCandidates, boolean onRackTarget ) {
     for (Iterator<Source> srcIterator = overUtilizedDatanodes.iterator();
         srcIterator.hasNext();) {
@@ -994,7 +1003,7 @@ private void chooseTargets(
 #+BEGIN_SRC Java
   private void chooseSources(
       Iterator<Source> sourceCandidates, boolean onRackSource) {
-    for (Iterator<BalancerDatanode> targetIterator = 
+    for (Iterator<BalancerDatanode> targetIterator =
       underUtilizedDatanodes.iterator(); targetIterator.hasNext();) {
       BalancerDatanode target = targetIterator.next();
       while (chooseSource(target, sourceCandidates, onRackSource)) {
@@ -1069,7 +1078,7 @@ private void chooseTargets(
       // 发起者是source, 因为只有source才有信息知道应该向哪些target做move.
       futures[i++] = dispatcherExecutor.submit(source.new BlockMoveDispatcher());
     }
-    
+
     // wait for all dispatcher threads to finish
     for (Future<?> future : futures) {
       try {
@@ -1078,11 +1087,11 @@ private void chooseTargets(
         LOG.warn("Dispatcher thread failed", e.getCause());
       }
     }
-    
+
     // 等待完成
     // wait for all block moving to be done
     waitForMoveCompletion();
-    
+
     // 本次move多少字节
     return bytesMoved.get()-bytesLastMoved;
   }
@@ -1122,12 +1131,12 @@ private void chooseTargets(
     this.underUtilizedDatanodes.clear();
     this.datanodes.clear();
     this.sources.clear();
-    this.targets.clear();  
+    this.targets.clear();
     this.policy.reset();
     cleanGlobalBlockList();
     this.movedBlocks.cleanup();
   }
-  
+
   /* Remove all blocks from the global block list except for the ones in the
    * moved list.
    */
@@ -1152,12 +1161,12 @@ private void chooseTargets(
    * Cleanup method triggers the check if blocks in the old window are
    * more than 1.5 hour old. If yes, purge the old window and then
    * move blocks in current window to old window.
-   */ 
+   */
     private long lastCleanupTime = Time.now();
     final private static int CUR_WIN = 0;
     final private static int OLD_WIN = 1;
     final private static int NUM_WINS = 2;
-    final private List<HashMap<Block, BalancerBlock>> movedBlocks = 
+    final private List<HashMap<Block, BalancerBlock>> movedBlocks =
       new ArrayList<HashMap<Block, BalancerBlock>>(NUM_WINS);
 
     /* remove old blocks */
@@ -1179,7 +1188,7 @@ private void chooseTargets(
    - timeout = 20min
    - source sent block size = 2 * scheduledSize # scheduledSize在NN balance iteration的chooseNodes阶段设置，上限10GB
      - *note(dirlt)：factor == 2 是为何？*
-   - target receive block size = scheduledSize 
+   - target receive block size = scheduledSize
 
 ***** BalancerDatanode
 保存sink节点，也就是说其disk util比较低，可以接收disk util比较高的节点的数据来做平衡。
@@ -1196,10 +1205,10 @@ private void chooseTargets(
     private List<PendingBlockMove> pendingBlocks = // pending block move操作队列
       // source节点将所有操作封装成为PendingBlockMove添加到target的这个队列
       // target队列在move
-      new ArrayList<PendingBlockMove>(MAX_NUM_CONCURRENT_MOVES); 
+      new ArrayList<PendingBlockMove>(MAX_NUM_CONCURRENT_MOVES);
 
-    /* Constructor 
-     * Depending on avgutil & threshold, calculate maximum bytes to move 
+    /* Constructor
+     * Depending on avgutil & threshold, calculate maximum bytes to move
      */
    // 构造函数和Source是相同的，所以里面处理了两种逻辑
     private BalancerDatanode(DatanodeInfo node, BalancingPolicy policy, double threshold) {
@@ -1210,10 +1219,10 @@ private void chooseTargets(
 
       // 计算这个datanode上面最多能够增加/减少多少数据
       if (utilization >= avgUtil+threshold
-          || utilization <= avgUtil-threshold) { 
+          || utilization <= avgUtil-threshold) {
         maxSizeToMove = (long)(threshold*datanode.getCapacity()/100);
       } else {
-        maxSizeToMove = 
+        maxSizeToMove =
           (long)(Math.abs(avgUtil-utilization)*datanode.getCapacity()/100);
       }
       if (utilization < avgUtil ) { // 如果增加数据需要考虑磁盘空间是否足够
@@ -1221,7 +1230,7 @@ private void chooseTargets(
       }
       this.maxSize2Move = Math.min(MAX_SIZE_TO_MOVE, maxSizeToMove); // 10GB是单次移动上限
     }
-    
+
     /** Decide if still need to move more bytes */
     protected boolean isMoveQuotaFull() { // 本次移动quota是否满？
       return scheduledSize<maxSize2Move;
@@ -1272,7 +1281,7 @@ Source继承BalancerDatanode. 但是感觉代码差别还是比较大的，所�
      */
     private List<BalancerBlock> srcBlockList
             = new ArrayList<BalancerBlock>();
-    
+
     /** Add a node task */
     private void addNodeTask(NodeTask task) {
       assert (task.datanode != this) :
@@ -1282,7 +1291,7 @@ Source继承BalancerDatanode. 但是感觉代码差别还是比较大的，所�
     }
 }
 #+END_SRC
-    
+
 ***** Source::BlockMoveDispatcher
 在NN balance iteration里面dispatchBlockMoves使用了这个类，这个类非常简单直接调用dispatchBlocks方法
 
@@ -1305,9 +1314,9 @@ source如何发起block move.
      * when the source's block list falls below a threshold, it asks
      * the namenode for more blocks.
      * It terminates when it has dispatch enough block move tasks or
-     * it has received enough blocks from the namenode, or 
+     * it has received enough blocks from the namenode, or
      * the elapsed time of the iteration has exceeded the max time limit.
-     */ 
+     */
     private static final long MAX_ITERATION_TIME = 20*60*1000L; //20 mins
     private void dispatchBlocks() { // 这个函数具体执行Block Move操作
       long startTime = Time.now();
@@ -1322,11 +1331,11 @@ source如何发起block move.
           pendingBlock.scheduleBlockMove(); // 发起移动操作
           continue;
         }
-        
+
         /* Since we can not schedule any block to move,
          * filter any moved blocks from the source block list and
          * check if we should fetch more blocks from the namenode
-         */       
+         */
         filterMovedBlocks(); // filter already moved blocks
         // 如果当前blocks比较少的话，那么请求nn返回更多blocks.
         if (shouldFetchMoreBlocks()) {
@@ -1338,17 +1347,17 @@ source如何发起block move.
             LOG.warn("Exception while getting block list", e);
             return;
           }
-        } 
-        
+        }
+
         // check if time is up or not
         // 如果时间过长的话那么终止
         if (Time.now()-startTime > MAX_ITERATION_TIME) {
           isTimeUp = true;
           continue;
         }
-        
+
         /* Now we can not schedule any block to move and there are
-         * no new blocks added to the source block list, so we wait. 
+         * no new blocks added to the source block list, so we wait.
          */
         try {
           synchronized(Balancer.this) {
@@ -1371,7 +1380,7 @@ source如何发起block move.
     private long getBlockList() throws IOException {
       // final private static long MAX_BLOCKS_SIZE_TO_FETCH = 2*1024*1024*1024L; //2GB
       // 一次获取blocks不要太多
-      BlockWithLocations[] newBlocks = nnc.namenode.getBlocks(datanode, 
+      BlockWithLocations[] newBlocks = nnc.namenode.getBlocks(datanode,
         Math.min(MAX_BLOCKS_SIZE_TO_FETCH, blocksToReceive)).getBlocks();
       long bytesReceived = 0;
       for (BlockWithLocations blk : newBlocks) {
@@ -1385,7 +1394,7 @@ source如何发起block move.
           } else {
             block.clearLocations();
           }
-        
+
           synchronized (block) {
             // 修改这个block对象里面存储位置
             // update locations
@@ -1431,7 +1440,7 @@ source如何发起block move.
    * 2. the block does not have a replica on the target;
    * 3. doing the move does not reduce the number of racks that the block has
    */
-  private boolean isGoodBlockCandidate(Source source, 
+  private boolean isGoodBlockCandidate(Source source,
       BalancerDatanode target, BalancerBlock block) {
     // check if the block is moved or not
     if (movedBlocks.contains(block)) { // 这个block是否已经移动？
@@ -1451,7 +1460,7 @@ source如何发起block move.
         for (BalancerDatanode loc : block.locations) {
           // 因为这个block已经在source上了，并且上面条件source和target不再一个rack
           // 下面就是要检查是其他节点和target在同一个rack
-          if (cluster.isOnSameRack(loc.datanode, target.datanode)) { 
+          if (cluster.isOnSameRack(loc.datanode, target.datanode)) {
             notOnSameRack = false;
             break;
           }
@@ -1463,7 +1472,7 @@ source如何发起block move.
       } else {
         // good if source is on the same rack as on of the replicas
         for (BalancerDatanode loc : block.locations) {
-          if (loc != source && 
+          if (loc != source &&
               cluster.isOnSameRack(loc.datanode, source.datanode)) {
             goodBlock = true;
             break;
@@ -1479,7 +1488,7 @@ source如何发起block move.
 从srcBlockList里面过滤在一段时间内已经移动过的block. 实现可以参考MovedBlocks.
 
 #+BEGIN_SRC Java
-    /* iterate all source's blocks to remove moved ones */    
+    /* iterate all source's blocks to remove moved ones */
     private void filterMovedBlocks() {
       for (Iterator<BalancerBlock> blocks=getBlockIterator();
             blocks.hasNext();) {
@@ -1493,7 +1502,7 @@ source如何发起block move.
 ***** Source::shouldFetchMoreBlocks
 是否应该尝试获取更多的blocks.
 
-#+BEGIN_SRC Java    
+#+BEGIN_SRC Java
     // srcBlockList大小<5并且还有余量来获取blocks.
     private static final int SOURCE_BLOCK_LIST_MIN_SIZE=5;
     /* Return if should fetch more blocks from namenode */
@@ -1523,12 +1532,12 @@ source如何发起block move.
         NodeTask task = tasks.next();
         BalancerDatanode target = task.getDatanode();
         PendingBlockMove pendingBlock = new PendingBlockMove();
-        if ( target.addPendingBlock(pendingBlock) ) { 
+        if ( target.addPendingBlock(pendingBlock) ) {
           // target is not busy, so do a tentative block allocation
           pendingBlock.source = this;
           pendingBlock.target = target;
           if ( pendingBlock.chooseBlockAndProxy() ) {
-            long blockSize = pendingBlock.block.getNumBytes(); 
+            long blockSize = pendingBlock.block.getNumBytes();
             scheduledSize -= blockSize; // note(dirlt):其实这个操作没有用，因为scheduledSize是在chooseNodes静态计算之后，在实际操作阶段并不影响逻辑
             task.size -= blockSize; // 这个task上向target最多传输size.
             if (task.size == 0) { // note(dirlt):==0是否会正常？
@@ -1560,7 +1569,7 @@ private class PendingBlockMove {
 ***** PendingBlockMove::chooseBlockAndProxy
 #+BEGIN_SRC Java
     private boolean chooseBlockAndProxy() {
-      // iterate all source's blocks until find a good one    
+      // iterate all source's blocks until find a good one
       for (Iterator<BalancerBlock> blocks=
         source.getBlockIterator(); blocks.hasNext();) { // 遍历source每个块
         if (markMovedIfGoodBlock(blocks.next())) { // 如果满足条件那么获取这个block并且从iterator删除返回
@@ -1608,7 +1617,7 @@ private class PendingBlockMove {
 
 #+BEGIN_SRC Java
     /* Now we find out source, target, and block, we need to find a proxy
-     * 
+     *
      * @return true if a proxy is found; otherwise false
      */
     private boolean chooseProxySource() {
@@ -1655,15 +1664,15 @@ private class PendingBlockMove {
 *** BlockPlacementPolicy
 *note(dirlt):hadoop-2.0.0-cdh4.3.0*
 
-就像之前论文里面提到的，block placement策略上没有考虑磁盘利用率问题，可能造成disk util上各个节点出现imbalance情况，需要靠balancer来做均衡。 
+就像之前论文里面提到的，block placement策略上没有考虑磁盘利用率问题，可能造成disk util上各个节点出现imbalance情况，需要靠balancer来做均衡。
 
 **** Interface
 BlockPlacementPolicy负责块放置策略，本身是抽象类，有默认实现是BlockPlacementPolicyDefault。接口有下面这些，其意义注释上还是比较好理解的。
 
 #+BEGIN_SRC Java
   /**
-   * choose <i>numOfReplicas</i> data nodes for <i>writer</i> 
-   * to re-replicate a block with size <i>blocksize</i> 
+   * choose <i>numOfReplicas</i> data nodes for <i>writer</i>
+   * to re-replicate a block with size <i>blocksize</i>
    * If not, return as many as we can.
    *
    * @param srcPath the file to which this chooseTargets is being invoked.
@@ -1687,7 +1696,7 @@ BlockPlacementPolicy负责块放置策略，本身是抽象类，有默认实现
   /**
    * Verify that the block is replicated on at least minRacks different racks
    * if there is more than minRacks rack in the system.
-   * 
+   *
    * @param srcPath the full pathname of the file to be verified
    * @param lBlk block with locations
    * @param minRacks number of racks the block should be replicated to
@@ -1699,20 +1708,20 @@ BlockPlacementPolicy负责块放置策略，本身是抽象类，有默认实现
                                            int minRacks);
 
   /**
-   * Decide whether deleting the specified replica of the block still makes 
+   * Decide whether deleting the specified replica of the block still makes
    * the block conform to the configured block placement policy.
-   * 
+   *
    * @param srcBC block collection of file to which block-to-be-deleted belongs
    * @param block The block to be deleted
    * @param replicationFactor The required number of replicas for this block
    * @param existingReplicas The replica locations of this block that are present
-                  on at least two unique racks. 
+                  on at least two unique racks.
    * @param moreExistingReplicas Replica locations of this block that are not
                    listed in the previous parameter.
    * @return the replica that is the best candidate for deletion
    */
   abstract public DatanodeDescriptor chooseReplicaToDelete(BlockCollection srcBC,
-                                      Block block, 
+                                      Block block,
                                       short replicationFactor,
                                       Collection<DatanodeDescriptor> existingReplicas,
                                       Collection<DatanodeDescriptor> moreExistingReplicas);
@@ -1723,13 +1732,13 @@ BlockPlacementPolicy负责块放置策略，本身是抽象类，有默认实现
   /**
    * Get an instance of the configured Block Placement Policy based on the
    * value of the configuration paramater dfs.block.replicator.classname.
-   * 
+   *
    * @param conf the configuration to be used
    * @param stats an object that is used to retrieve the load on the cluster
    * @param clusterMap the network topology of the cluster
    * @return an instance of BlockPlacementPolicy
    */
-  public static BlockPlacementPolicy getInstance(Configuration conf, 
+  public static BlockPlacementPolicy getInstance(Configuration conf,
                                                  FSClusterStats stats,
                                                  NetworkTopology clusterMap) {
     Class<? extends BlockPlacementPolicy> replicatorClass =
@@ -1779,7 +1788,7 @@ BlockPlacementPolicyDefault实现上将srcPath忽略了，并没有对某个文�
     if (numOfReplicas == 0 || clusterMap.getNumOfLeaves()==0) {
       return new DatanodeDescriptor[0];
     }
-      
+
     if (excludedNodes == null) {
       excludedNodes = new HashMap<Node, Node>();
     }
@@ -1790,22 +1799,22 @@ BlockPlacementPolicyDefault实现上将srcPath忽略了，并没有对某个文�
       numOfReplicas -= (totalNumOfReplicas-clusterSize);
       totalNumOfReplicas = clusterSize;
     }
-      
-    int maxNodesPerRack = 
+
+    int maxNodesPerRack =
       (totalNumOfReplicas-1)/clusterMap.getNumOfRacks()+2; // note(dirlt)：如果rack要分布均匀replica的话，那么每个rack需要的节点
     // note(dirlt)：但是这个名字似乎有点混淆
     // note(dirlt):这个作用是如果防止在这个rack上的replicas过多的话，那么可能不被认为是good target. 参见isGoodTarget
-      
-    List<DatanodeDescriptor> results = 
+
+    List<DatanodeDescriptor> results =
       new ArrayList<DatanodeDescriptor>(chosenNodes);
     for (Node node:chosenNodes) {
       excludedNodes.put(node, node); // 对于已经选中节点那么便不考虑
     }
-      
+
     if (!clusterMap.contains(writer)) { // 如果writer没有包含在集群里面的话那么设置为null.
       writer=null;
     }
-      
+
     // 不考虑那些已经stale的节点，所谓stale的节点应该是长期没有和nn通信而处于状态相对落后的节点。
     boolean avoidStaleNodes = (stats != null
         && stats.isAvoidingStaleDataNodesForWrite());
@@ -1815,9 +1824,9 @@ BlockPlacementPolicyDefault实现上将srcPath忽略了，并没有对某个文�
     if (!returnChosenNodes) { // 如果不返回已经选择节点的话那么删除之
       results.removeAll(chosenNodes);
     }
-      
-    // sorting nodes to form a pipeline 
-    // 组合成为pipeline. 
+
+    // sorting nodes to form a pipeline
+    // 组合成为pipeline.
     return getPipeline((writer==null)?localNode:writer,
                        results.toArray(new DatanodeDescriptor[results.size()]));
   }
@@ -1839,8 +1848,8 @@ BlockPlacementPolicyDefault实现上将srcPath忽略了，并没有对某个文�
     if (numOfReplicas == 0 || clusterMap.getNumOfLeaves()==0) {
       return writer;
     }
-    int totalReplicasExpected = numOfReplicas + results.size(); // 
-      
+    int totalReplicasExpected = numOfReplicas + results.size(); //
+
     int numOfResults = results.size();
     boolean newBlock = (numOfResults==0); // 是否为初次开辟
     if (writer == null && !newBlock) { // 如果没有发起者并且选择出来了节点的话，那么直接用results[0]
@@ -1848,11 +1857,11 @@ BlockPlacementPolicyDefault实现上将srcPath忽略了，并没有对某个文�
     }
 
     // Keep a copy of original excludedNodes
-    final HashMap<Node, Node> oldExcludedNodes = avoidStaleNodes ? 
-        new HashMap<Node, Node>(excludedNodes) : null; 
+    final HashMap<Node, Node> oldExcludedNodes = avoidStaleNodes ?
+        new HashMap<Node, Node>(excludedNodes) : null;
     try {
       if (numOfResults == 0) { // 初次开辟节点
-        writer = chooseLocalNode(writer, excludedNodes, blocksize, 
+        writer = chooseLocalNode(writer, excludedNodes, blocksize,
             maxNodesPerRack, results, avoidStaleNodes);
         if (--numOfReplicas == 0) {
           return writer;
@@ -1860,7 +1869,7 @@ BlockPlacementPolicyDefault实现上将srcPath忽略了，并没有对某个文�
       }
       if (numOfResults <= 1) { // 如果之前results <= 1的话，那么选择一个和results[0]不同rack的节点
         chooseRemoteRack(1, results.get(0), excludedNodes, blocksize,
-            maxNodesPerRack, results, avoidStaleNodes); 
+            maxNodesPerRack, results, avoidStaleNodes);
         if (--numOfReplicas == 0) {
           return writer;
         }
@@ -1869,10 +1878,10 @@ BlockPlacementPolicyDefault实现上将srcPath忽略了，并没有对某个文�
         // 如果前两个相同rack的话，那么选择一个results[0]不同rack的节点
         if (clusterMap.isOnSameRack(results.get(0), results.get(1))) {
           chooseRemoteRack(1, results.get(0), excludedNodes,
-                           blocksize, maxNodesPerRack, 
+                           blocksize, maxNodesPerRack,
                            results, avoidStaleNodes);
         } else if (newBlock){ // note(dirlt): 应该不会到达这个条件的
-          chooseLocalRack(results.get(1), excludedNodes, blocksize, 
+          chooseLocalRack(results.get(1), excludedNodes, blocksize,
                           maxNodesPerRack, results, avoidStaleNodes);
         } else { // 从发起者write相同的rack选择一个节点
           chooseLocalRack(writer, excludedNodes, blocksize, maxNodesPerRack,
@@ -1896,7 +1905,7 @@ BlockPlacementPolicyDefault实现上将srcPath忽略了，并没有对某个文�
 
         // excludedNodes contains the initial excludedNodes and nodes that were
         // not chosen because they were stale, decommissioned, etc.
-        // We need to additionally exclude the nodes that were added to the 
+        // We need to additionally exclude the nodes that were added to the
         // result list in the successful calls to choose*() above.
         for (Node node : results) {
           oldExcludedNodes.put(node, node);
@@ -1917,7 +1926,7 @@ BlockPlacementPolicyDefault实现上将srcPath忽略了，并没有对某个文�
 
 #+BEGIN_SRC Java
   /* choose <i>localMachine</i> as the target.
-   * if <i>localMachine</i> is not available, 
+   * if <i>localMachine</i> is not available,
    * choose a node on the same rack
    * @return the chosen node
    */
@@ -1936,14 +1945,14 @@ BlockPlacementPolicyDefault实现上将srcPath忽略了，并没有对某个文�
     if (preferLocalNode) { // 默认为true
       // otherwise try local machine first
       Node oldNode = excludedNodes.put(localMachine, localMachine); // 添加localMachine并且返回原来值，这里非常巧妙
-      if (oldNode == null) { // was not in the excluded list 
+      if (oldNode == null) { // was not in the excluded list
         if (isGoodTarget(localMachine, blocksize, maxNodesPerRack, false,
             results, avoidStaleNodes)) { // 是否为good target. 如果OK, 那么添加
           results.add(localMachine);
           return localMachine;
         }
-      } 
-    }      
+      }
+    }
     // try a node on local rack
     return chooseLocalRack(localMachine, excludedNodes, blocksize, // 不然选择和localMachine相同rack的节点
         maxNodesPerRack, results, avoidStaleNodes);
@@ -1955,7 +1964,7 @@ BlockPlacementPolicyDefault实现上将srcPath忽略了，并没有对某个文�
 #+BEGIN_SRC Java
   private boolean isGoodTarget(DatanodeDescriptor node,
                                long blockSize, int maxTargetPerRack,
-                               List<DatanodeDescriptor> results, 
+                               List<DatanodeDescriptor> results,
                                boolean avoidStaleNodes) {
     return isGoodTarget(node, blockSize, maxTargetPerRack, this.considerLoad,
         results, avoidStaleNodes);
@@ -1968,25 +1977,25 @@ BlockPlacementPolicyDefault实现上将srcPath忽略了，并没有对某个文�
 
 #+BEGIN_SRC Java
   /**
-   * Determine if a node is a good target. 
-   * 
+   * Determine if a node is a good target.
+   *
    * @param node The target node
    * @param blockSize Size of block
-   * @param maxTargetPerRack Maximum number of targets per rack. The value of 
-   *                       this parameter depends on the number of racks in 
+   * @param maxTargetPerRack Maximum number of targets per rack. The value of
+   *                       this parameter depends on the number of racks in
    *                       the cluster and total number of replicas for a block
    * @param considerLoad whether or not to consider load of the target node
-   * @param results A list containing currently chosen nodes. Used to check if 
+   * @param results A list containing currently chosen nodes. Used to check if
    *                too many nodes has been chosen in the target rack.
    * @param avoidStaleNodes Whether or not to avoid choosing stale nodes
-   * @return Return true if <i>node</i> has enough space, 
-   *         does not have too much load, 
+   * @return Return true if <i>node</i> has enough space,
+   *         does not have too much load,
    *         and the rack does not have too many nodes.
    */
   protected boolean isGoodTarget(DatanodeDescriptor node,
                                long blockSize, int maxTargetPerRack,
                                boolean considerLoad,
-                               List<DatanodeDescriptor> results,                           
+                               List<DatanodeDescriptor> results,
                                boolean avoidStaleNodes) {
     // check if the node is (being) decommissed
     if (node.isDecommissionInProgress() || node.isDecommissioned()) { // 如果这个节点在下线
@@ -2009,7 +2018,7 @@ BlockPlacementPolicyDefault实现上将srcPath忽略了，并没有对某个文�
         return false;
       }
     }
-    
+
     long remaining = node.getRemaining() -  // 剩余磁盘空间
                      (node.getBlocksScheduled() * blockSize);  // 可能需要写入多少
     // check the remaining capacity of the target machine
@@ -2021,7 +2030,7 @@ BlockPlacementPolicyDefault实现上将srcPath忽略了，并没有对某个文�
       }
       return false;
     }
-      
+
     // check the communication traffic of the target machine
     // load通过datanode上的active connection来判断，如果>2.0 * avgLoad的话，那么认为此节点当前压力比较大
     if (considerLoad) {
@@ -2039,7 +2048,7 @@ BlockPlacementPolicyDefault实现上将srcPath忽略了，并没有对某个文�
         return false;
       }
     }
-      
+
     // check if the target rack has chosen too many nodes
     // 如果target rack上面replicas数量过多的话
     String rackname = node.getNetworkLocation();
@@ -2080,7 +2089,7 @@ BlockPlacementPolicyDefault实现上将srcPath忽略了，并没有对某个文�
       return chooseRandom(NodeBase.ROOT, excludedNodes, blocksize,
           maxNodesPerRack, results, avoidStaleNodes);
     }
-      
+
     // choose one from the local rack
     try {
       return chooseRandom(localMachine.getNetworkLocation(), excludedNodes,
@@ -2088,7 +2097,7 @@ BlockPlacementPolicyDefault实现上将srcPath忽略了，并没有对某个文�
     } catch (NotEnoughReplicasException e1) { // 找不到和这个localMachine相同rack的节点，那么从results里面挑选第一个和localMachine不同节点机器
       // 因为总体逻辑看到了，第二个节点和第一个节点通常不是同一rack，所以第二个节点rack上可能能够找到可用节点。
       // find the second replica
-      DatanodeDescriptor newLocal=null; 
+      DatanodeDescriptor newLocal=null;
       for(Iterator<DatanodeDescriptor> iter=results.iterator();
           iter.hasNext();) {
         DatanodeDescriptor nextNode = iter.next();
@@ -2135,7 +2144,7 @@ BlockPlacementPolicyDefault实现上将srcPath忽略了，并没有对某个文�
           avoidStaleNodes);
     } catch (NotEnoughReplicasException e) {
       chooseRandom(numOfReplicas-(results.size()-oldNumOfReplicas), // 如果replicas个数不够，那么只能选择相同rack
-                   localMachine.getNetworkLocation(), excludedNodes, blocksize, 
+                   localMachine.getNetworkLocation(), excludedNodes, blocksize,
                    maxReplicasPerRack, results, avoidStaleNodes);
     }
   }
@@ -2156,7 +2165,7 @@ BlockPlacementPolicyDefault实现上将srcPath忽略了，并没有对某个文�
                             List<DatanodeDescriptor> results,
                             boolean avoidStaleNodes)
     throws NotEnoughReplicasException {
-      
+
     int numOfAvailableNodes =
       clusterMap.countNumOfAvailableNodes(nodes, excludedNodes.keySet());
     StringBuilder builder = null;
@@ -2167,13 +2176,13 @@ BlockPlacementPolicyDefault实现上将srcPath忽略了，并没有对某个文�
     }
     boolean badTarget = false;
     while(numOfReplicas > 0 && numOfAvailableNodes > 0) {
-      DatanodeDescriptor chosenNode = 
+      DatanodeDescriptor chosenNode =
         (DatanodeDescriptor)(clusterMap.chooseRandom(nodes));
       Node oldNode = excludedNodes.put(chosenNode, chosenNode);
       if (oldNode == null) {
         numOfAvailableNodes--;
 
-        if (isGoodTarget(chosenNode, blocksize, 
+        if (isGoodTarget(chosenNode, blocksize,
               maxNodesPerRack, results, avoidStaleNodes)) {
           numOfReplicas--;
           results.add(chosenNode);
@@ -2182,7 +2191,7 @@ BlockPlacementPolicyDefault实现上将srcPath忽略了，并没有对某个文�
         }
       }
     }
-      
+
     if (numOfReplicas>0) {
       String detail = enableDebugLogging;
       if (LOG.isDebugEnabled()) {
@@ -2201,7 +2210,7 @@ BlockPlacementPolicyDefault实现上将srcPath忽略了，并没有对某个文�
 
 #+BEGIN_SRC Java
   /* Return a pipeline of nodes.
-   * The pipeline is formed finding a shortest path that 
+   * The pipeline is formed finding a shortest path that
    * starts from the writer and traverses all <i>nodes</i>
    * This is basically a traveling salesman problem.
    */
@@ -2209,7 +2218,7 @@ BlockPlacementPolicyDefault实现上将srcPath忽略了，并没有对某个文�
                                            DatanodeDescriptor writer,
                                            DatanodeDescriptor[] nodes) {
     if (nodes.length==0) return nodes;
-      
+
     synchronized(clusterMap) {
       int index=0;
       if (writer == null || !clusterMap.contains(writer)) {
@@ -2265,7 +2274,7 @@ so trivial!
 #+END_SRC
 
 **** chooseReplicaToDelete
-   - bc是block所属的文件block collection 
+   - bc是block所属的文件block collection
    - block是要删除replica的block
    - replicationFactor是副本数目
    - first *note(dirlt)：我的理解是“block所在的节点，这些节点所在的rack上至少有两个副本”，但是comment似乎不是这么说的*
@@ -2281,7 +2290,7 @@ so trivial!
   public DatanodeDescriptor chooseReplicaToDelete(BlockCollection bc,
                                                  Block block,
                                                  short replicationFactor,
-                                                 Collection<DatanodeDescriptor> first, 
+                                                 Collection<DatanodeDescriptor> first,
                                                  Collection<DatanodeDescriptor> second) {
     // heartbeat = dfs.heartbeat.interval, 默认3s
     // multiplier = dfs.namenode.tolerate.heartbeat.multiplier, 默认是4
@@ -2311,7 +2320,7 @@ so trivial!
         minSpaceNode = node;
       }
     }
-    // 
+    //
     return oldestHeartbeatNode != null ? oldestHeartbeatNode : minSpaceNode;
   }
 
@@ -2323,5 +2332,3 @@ so trivial!
     return iter;
   }
 #+END_SRC
-
-
