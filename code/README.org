@@ -34,6 +34,5 @@ use ./dep-install to install all following packages.
    - akka
    - finagle
 * leetcode
-* tc-srm
 * py
    - rrimg
