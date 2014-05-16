@@ -4,14 +4,14 @@
    - [[http://www.linuxjournal.com/article/8211][Memory Ordering in Modern Microprocessors, Part I（推荐阅读）]]
    - [[http://www.linuxjournal.com/article/8212][Memory Ordering in Modern Microprocessors, Part II（推荐阅读）]]
    - http://highscalability.com/blog/2013/6/6/paper-memory-barriers-a-hardware-view-for-software-hackers.html Memory Barriers: A Hardware View For Software Hackers
-   - http://mechanical-sympathy.blogspot.com/2011/07/memory-barriersfences.html
+   - http://mechanical-sympathy.blogspot.com/2011/07/memory-barriersfences.html (http://hugozhu.myalert.info/2013/03/28/22-memory-barriers-or-fences.html)
 
 很早之前一直不理解内存屏障到底要解决什么问题，直到第一次编写lockfree queue的时候才稍微意识到，内存屏障这个问题在编写多线程和编写设备驱动时候需要考虑的。内存屏障有两种，一种是关于和编译器相关的内存屏障，一种是和CPU相关的内存屏障。
 
 ** 编译器内存屏障
 #+BEGIN_SRC C++
-// #define mfence_c() __asm__ __volatile__("": : :"memory") 
-#define barrier() __asm__ __volatile__("": : :"memory") 
+// #define mfence_c() __asm__ __volatile__("": : :"memory")
+#define barrier() __asm__ __volatile__("": : :"memory")
 
 #+END_SRC
 
@@ -61,7 +61,7 @@ barrier除了上面功能（强迫编译器刷新寄存器分配）之外，wyz�
     +There is no guarantee that any of the memory accesses specified before a memory
     +barrier will be complete by the completion of a memory barrier; the barrier can
     +be considered to draw a line in the access queue that accesses of the
-    +appropriate type may not cross. 
+    +appropriate type may not cross.
 #+END_VERSE
 
 关于多核Cache一致性问题的话对于programmer这一层似乎没有必要考虑。好比线程A,B（分摊在两个core和两个cpu cache上）共同操作同一个volatile bool flag.如果A将flag置为true的话，如果CPU底层不做好一致性协议的话，那么线程B可能就永远没有办法感知到这个值了（因为线程B每次都是从所在的CPU Cache来读取的，而从线程B所在CPU Cache每次读取的都是旧值）。而且如果是这样的话，对programmer负担很大，就是写完一次多核变量的话必须显示地调用Cache一致性函数（太麻烦了）。但是为了高效的话，搞不好会存在这样的CPU要求programmer显示地来控制CPU Cache以便提高效率。但是现在所接触到的Intel CPU底层都是会保证这点的。
@@ -90,6 +90,5 @@ CPU1 b=a+1
 #+BEGIN_VERSE
 Many CPU architectures therefore provide weaker memory-barrier instructions that do only one or the other of these two. Roughly speaking, a “read mem-ory barrier” marks only the invalidate queue and a “write memory barrier” marks only the store buffer. while a full-fledged memory barrier does both.
 
-The effect of this is that a read memory barrier orders only loads on the CPU that executes it, so that all loads preceding the read memory barrier will appear to have completed before any load following the read memory barrier. Similarly, a write memory barrier orders only stores, again on the CPU that executes it, and again so that all stores preceding the write memory barrier will appear to have com-pleted before any store following the write memory barrier. A full-fledged memory barrier orders both loads and stores, but again only on the CPU execut-ing the memory barrier. 
+The effect of this is that a read memory barrier orders only loads on the CPU that executes it, so that all loads preceding the read memory barrier will appear to have completed before any load following the read memory barrier. Similarly, a write memory barrier orders only stores, again on the CPU that executes it, and again so that all stores preceding the write memory barrier will appear to have com-pleted before any store following the write memory barrier. A full-fledged memory barrier orders both loads and stores, but again only on the CPU execut-ing the memory barrier.
 #+END_VERSE
-

@@ -425,7 +425,7 @@ default         192.168.189.2   0.0.0.0         UG    0      0        0 eth1
 todo(zhangyan04):如何复现一个主机不可达的错误???
 
 **** EADDRINUSE
-Local address is already in use. 
+Local address is already in use.
 
 发生这种情况通常是本地可用的port都使用完。可以通过下面这些办法解决：
    - 修改本地可用的port数量
@@ -1434,6 +1434,8 @@ A表示active一端(通常为client)，P表示passive一端(通常为server).
    - A->P ACK/y+1
 
 **** TIME_WAIT状态
+Coping with the TCP TIME-WAIT state on busy Linux servers | Vincent Bernat : http://vincent.bernat.im/en/blog/2014-tcp-time-wait-state-linux.html
+
 有关TCP状态中最不容易理解的就是TIME_WAIT这个状态了，这个状态是主动执行关闭的话会经历的状态，在这个状态停留时间
 是最长分节生命期(maximum segment liftime,MSL)的两倍，我们称为2MSL.MSL意思是任何一个IP数据报可能停留在网络中存活
 的最长时间，这个时间是一个有限值，不同系统设置不同。RFC建议值是2min，而BSD的传统实现是30s.TIME_WAIT状态存在有两个理由：

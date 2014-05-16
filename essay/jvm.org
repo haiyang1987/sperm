@@ -20,4 +20,4 @@
    - Understanding JVM Internals | CUBRID Blog http://www.cubrid.org/blog/dev-platform/understanding-jvm-internals
    - The Principles of Java Application Performance Tuning | CUBRID Blog : http://www.cubrid.org/blog/dev-platform/the-principles-of-java-application-performance-tuning/
    - Understanding JVM Internals, from Basic Structure to Java SE 7 Features | Architects Zone http://architects.dzone.com/articles/understanding-jvm-internals
-
+   - Garbage Collection Optimization for High-Throughput and Low-Latency Java Applications | LinkedIn Engineering : http://engineering.linkedin.com/garbage-collection/garbage-collection-optimization-high-throughput-and-low-latency-java-applications

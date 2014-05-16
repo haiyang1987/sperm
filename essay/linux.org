@@ -1996,6 +1996,7 @@ todo(dirlt)
 *** sysprof
 Sysprof - Statistical, system-wide Profiler for Linux : http://sysprof.com/
 
+*** ss
 
 *** /SYS ADMIN/
 *** uptime
