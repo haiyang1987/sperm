@@ -213,9 +213,11 @@ mysql_stopd() {
 
 # --mips ; use multiple ips
 # --mseg ; use multiple segment
+# --nums ; how many nodes
 test_cpconf() {
     local MIPS=0
     local MSEG=0
+    local NUMS=3
     while test $# -gt 0
     do
         case $1 in
@@ -225,14 +227,16 @@ test_cpconf() {
             --mseg)
                 MSEG=1
                 ;;
+            --nums)
+                shift 1
+                NUMS=$1
         esac
         shift 1
     done
     cd ~/.private/galera
-    cp cluster.conf nodes.conf common_my.cnf $GALERA_SRC/tests/conf/
-    local node_num=$(grep "NODE_NUM=" nodes.conf | cut -d= -f 2)
+    cp cluster.conf $GALERA_SRC/tests/conf/
     local cluster_address=""
-    for ((i=0;i<$node_num;i++))
+    for ((i=0;i<$NUMS;i++))
     do
         local idx=$i
         local sid=$((idx+1))
@@ -241,11 +245,13 @@ test_cpconf() {
             segment=$((idx%3+1))
         fi
         local ip="127.0.0.1"
-        local port=$((4566-2*idx))
+        local port=$((4566-3*idx))
         if [ $MIPS = 1 ]; then
             ip="192.168.100."$((103+i))
             port=4566
         fi
+        local sst_port=$((port-1))
+        local ist_port=$((port+1))
         if [ $i = 0 ]; then
             cluster_address="$ip:$port"
         else
@@ -256,10 +262,13 @@ test_cpconf() {
             -e "s/{segment}/$segment/g" \
             -e "s/{sid}/$sid/g" \
             -e "s/{ip}/$ip/g" \
+            -e "s/{sst_port}/$sst_port/g" \
             my.cnf > $GALERA_SRC/tests/conf/my$i.cnf
     done
     sed -e "s/{wsrep_cluster_address}/$cluster_address/g" \
         common_my.cnf > $GALERA_SRC/tests/conf/common_my.cnf
+    sed -e "s/{NODE_NUM}/$NUMS/g" \
+        nodes.conf > $GALERA_SRC/tests/conf/nodes.conf
     cd -
 }
 
@@ -290,15 +299,19 @@ wsrep_url5.6() {
     echo "http://bazaar.launchpad.net/~codership/codership-mysql/5.6/revision/$1"
 }
 test_seesaw() {
-    round=${1:-4}
+    local round=${1:-4}
     $GALERA_SRC/tests/test_seesaw/run.sh $round
 }
 test_seesaw_sst() {
     KILL_RATE=1 SST_RATE=1 test_seesaw $@
 }
 test_stopcont() {
-    round=${1:-4}
-    $GALERA_SRC/tests/test_stopcont/run.sh 4
+    local round=${1:-4}
+    $GALERA_SRC/tests/test_stopcont/run.sh $round
+}
+test_pc_recovery() {
+    local round=${1:-4}
+    $GALERA_SRC/tests/test_pc_recovery/run.sh $round
 }
 git_commit() {
     local issue_id=$1
@@ -585,6 +598,10 @@ package_install() {
 set_core_dump_param() {
     ulimit -c unlimited
     sudo sysctl -q -w kernel.core_pattern="/tmp/core.%e.%p.%t"
+}
+
+set_local_port_range() {
+    sudo sysctl -q -w net.ipv4.ip_local_port_range="32768	61000"
 }
 
 install_ubuntu_packages() {
