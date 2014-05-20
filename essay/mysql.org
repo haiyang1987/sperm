@@ -66,6 +66,8 @@ todo(dirlt)：
 
 CREATE TABLE table(...) ENGINE = InnoDB/MyISAM optionA = ... optionB = ...; # 创建表格时指定存储引擎
 
+SHOW TABLE STATUS; # 可以查看表格元信息包括使用的存储引擎
+
 *** MyISAM
    - MySQL默认使用的存储引擎
    - 通过FULLTEXT索引支持全文检索

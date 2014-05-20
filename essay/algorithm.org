@@ -548,6 +548,26 @@ note(dirlt)：2012.6.14
    - 如果某一方没有压钱的话，那么相当于是庄家自己在赌博。
    - 现实生活中是先看到赔率然后再下手的，下手之后这笔钱对应的赔率应该是不变的。而我们设计的模型是假设钱都已经到位了之后，我们再来定义赔率。
 
+*** 流式计算均值和方差
+   - http://en.wikipedia.org/wiki/Algorithms_for_calculating_variance
+   - http://www.johndcook.com/standard_deviation.html
+
+需要注意区分如下概念。可以参见wikipedia 
+   - http://en.wikipedia.org/wiki/Standard_deviation
+   - http://baike.baidu.com/view/172036.htm
+   - 标准差(standard deviation), 方差算术平方根
+   - 方差(variance, variance of an entire population)
+   - 样本标准差(sample standard deviation), 样本方差算术平方根
+   - 样本方差(sample variance, unbiased estimate of the population variance)
+
+对方差计算可以做如下简化, 其中Xi表示第i个元素，Xe表示平均值
+#+BEGIN_EXAMPLE
+th^2 * n = (X1-Xe)^2 + (X2-Xe)^2 + (X3-Xe)^2 + ... (Xi-Xe)^2 + .. (Xn-Xe)^2
+         = (X1^2 + X2^2 + ... Xi^2 + ... + Xn^2) - 2 * Xe * (X1 + X2 + ... Xi + ... Xn) + n * Xe^2
+         = (X1^2 + X2^2 + ... Xi^2 + ... + Xn^2) - 2 * Xe * n * Xe + n * Xe^2
+         = (X1^2 + X2^2 + ... Xi^2 + ... + Xn^2) - n * Xe^2
+#+END_EXAMPLE
+
 ** TopCoder
 *** 安装和配置
 安装topcoder非常简单：
