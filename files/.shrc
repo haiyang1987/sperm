@@ -153,6 +153,7 @@ export MYSQL_SRC=$HOME/repo/wsrep-5.5
 export MYSQL_DIR=$MYSQL_SRC/build_release
 export GALERA_SRC=$HOME/repo/galera
 
+# single mode.
 start_node() {
     local idx=$1; shift
     local extra_options=$@
@@ -173,22 +174,20 @@ conn_node() {
     local idx=$1; shift
     mysql --sock=/tmp/galera$idx/mysql/var/mysqld.sock -u root -prootpass
 }
+clear_state() {
+    local idx=$1; shift
+    rm -rf /tmp/galera$idx/mysql/var/grastate.dat
+}
 log_node() {
     local idx=$1
     less /tmp/galera$idx/mysql/var/mysqld.err
 }
+
+# batch mode.
 start_nodes() {
-    if [ $# -gt 0 ]; then
-        while [ $# -gt 0 ]; do
-            local idx=$1; shift
-            # start seqentially.
-            start_node $idx
-        done
-    else
-        cd $GALERA_SRC
-        ./tests/scripts/command.sh start
-        cd -
-    fi
+    cd $GALERA_SRC
+    ./tests/scripts/command.sh start
+    cd -
 }
 stop_nodes() {
     cd $GALERA_SRC
