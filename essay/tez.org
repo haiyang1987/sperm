@@ -1,4 +1,0 @@
-* tez
-   - http://hortonworks.com/hadoop/tez/
-
-todo(dirlt):

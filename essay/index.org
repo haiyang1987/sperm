@@ -182,9 +182,6 @@
    - [[file:./pnuts.org][PNUTS]] Yahoo的分布式数据库。
    - [[file:./paxos.org][Paxos]] / [[file:./raft.org][Raft]] / [[file:./totem.org][Totem]] 分布式一致性算法。
    - [[file:./manhattan.org][Manhattan]] Twitter的分布式数据库。
-   - SOMETHING I MAY NEVER GONNA TO READ
-     - [[file:tez.org][Tez]] Apache项目，可以有效地优化MapReduce组成的DAG。通常Pig/Hive都是生成这种DAG的，所以可以认为是替换了Pig/Hive的执行引擎。
-     - [[file:./couchbase.org][CouchBase]] CouchDB(by CouchOne) + [[file:memcached.org][Memcached]](by Membase). a Dynamo like distributed document-oriented storage system whose closest competitor is [[file:mongodb.org][MongoDB]].
 
 ** Programming Language
    - [[file:prog-lang.org][Programming Language]] including following languages:
