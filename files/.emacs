@@ -86,7 +86,7 @@
 (setq dired-recursive-copies 'top)
 (setq dired-recursive-deletes 'top)
 
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
+;;(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;;; ####################
 ;;; utility
