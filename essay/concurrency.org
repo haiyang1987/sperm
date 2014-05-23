@@ -22,4 +22,6 @@ http://msdn.microsoft.com/en-us/magazine/cc817398.aspx
 file:./images/single-multi-thread-event-driven.jpg
 
 ** Is Parallel Programming Hard, And, If So, What Can You Do About It?
+
 https://www.kernel.org/pub/linux/kernel/people/paulmck/perfbook/perfbook.html
+

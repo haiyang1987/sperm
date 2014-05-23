@@ -13,26 +13,26 @@
      - [[file:./busting-4-modern-hardware-myths-are-memory-hdds-and-ssds-really-random-access.org][Busting 4 Modern Hardware Myths - Are Memory, HDDs, And SSDs Really Random Access?]]
    - [[file:apue.org][APUE]] Unix环境高级编程(Advanced Programming Unix Environment),W. Richard Stevens的神作。笔记里面没有包含书最后的几个部分，比如终端，打印机等，因为我觉得可能大家都不太需要这个东西了。我还尝试将一些跨章节的概念整合到一起，这样比较容易从总体把握Unix编程环境。
    - [[file:linux.org][Linux]] 主要是介绍Linux下面一些工具使用以及和内核相关的知识。（将原来[[file:./APUE.org][APUE]] 和 [[file:./UNP.org][UNP]] 中的一部分内容放在这里面来了，这样可以保持这两篇内容比较稳定）
-   - [[file:pic.org][PIC]] 分析了一下PIC位置无关代码内部的原理以及和动态库之间的关系。通过阅读<深入理解计算机系统>并且结合实际的例子总结出来的。
-   - [[file:gcc-asm.org][GCC-Assembly]] 如何编写GCC内嵌汇编，以及一些关于GCC内嵌汇编的文章，主要是参考了<GCC Manual>. 但是自己对这个依然不是很了解。
-   - [[file:encoding.org][Encoding]] 介绍了GB2312/GBK/GB18030/Unicode/UTF16/UTF32/UTF8这几种字符编码格式。还是觉得UTF8在设计以及实现上都相对更加合理。
+     - [[file:pic.org][PIC]] 分析了一下PIC位置无关代码内部的原理以及和动态库之间的关系。通过阅读<深入理解计算机系统>并且结合实际的例子总结出来的。
+     - [[file:gcc-asm.org][GCC-Assembly]] 如何编写GCC内嵌汇编，以及一些关于GCC内嵌汇编的文章，主要是参考了<GCC Manual>. 但是自己对这个依然不是很了解。
+     - [[file:encoding.org][Encoding]] 介绍了GB2312/GBK/GB18030/Unicode/UTF16/UTF32/UTF8这几种字符编码格式。还是觉得UTF8在设计以及实现上都相对更加合理。
    - [[file:cpu.org][CPU]] CPU相关
      - [[file:simd.org][SIMD]] SIMD(Single Instruction Muitple Data)单指令多数据。这个笔记其实是Intel Reference Manual中关于SIMD指令的总结。里面包含了一些理解SIMD指令需要的知识，以及对SIMD指令进行了分类。遗憾的是里面没有什么过多的例子，毕竟这个是结合场景来使用的。
    - [[file:concurrency.org][Concurrency]] 并发
-   - [[file:coroutine.org][Coroutine]] 协程，轻量级线程。
-   - [[file:lock.org][Lock]] 锁的原理与不同实现
+     - [[file:coroutine.org][Coroutine]] 协程，轻量级线程。
+     - [[file:lock.org][Lock]] 锁的原理与不同实现
+     - [[file:akka.org][Akka]] Akka is a toolkit and runtime for building highly concurrent, distributed, and fault tolerant event-driven applications on the JVM.
    - [[file:memory.org][Memory]] 内存相关
      - [[file:./numa.org][NUMA]] Non-Uniform Memory Access. 非一致性内存访问
      - [[file:./memory-barrier.org][Memory Barrier]] 内存屏障
      - [[file:tcmalloc.org][TCMalloc]] Google的开源线程缓存内存分配器，解决多线程下面内存分配效率问题。
-   - [[file:continuation.org][Continuation]] 延续，异步编程一种实现。
    - [[file:sysperf.org][System-Peformance]] 系统性能相关
      - [[file:oprofile.org][OProfile]] OProfile(系统级profiler)的原理和应用。不过说实话没有分析过源代码(或者是自己技术背景不行)终究觉得对这个东西理解不够深入，而且自己也仅仅是使用OProfile功能的子集。
      - [[file:systemtap.org][SystemTap]] 通过将观察语句编译成为内核驱动，和linux内核提供的接口匹配，来深度地观察linux操作系统。
      - [[file:gperftools.org][gperftools]] Google的性能分析工具，[[file:tcmalloc.org][TCMalloc]] 实现也在里面。用来观察应用程序似乎是个不错的选择。
      - [[file:perf.org][Perf]] Linux系统自带的性能分析工具，支持硬件以及软件事件计数器，支持profile kernel以及user code.
-   - [[file:akka.org][Akka]] Akka is a toolkit and runtime for building highly concurrent, distributed, and fault tolerant event-driven applications on the JVM.
-   - [[file:./azkaban.org][Azkaban]] Linkedin的工作流系统，和 [[file:./oozie.org][Oozie]] 功能相似但是相比好用很多。UI不错，概念也比较清晰。
+     - [[file:./optimizing-software-in-cpp.org][Optimizing software in C++]]
+   - [[file:continuation.org][Continuation]] 延续，异步编程一种实现。 
 
 ** Compression Technology
    - [[file:snappy.org][Snappy]] Google的开源压缩解压库。在满足一定压缩比率的条件下着重提升压缩和解压速度。
@@ -182,6 +182,7 @@
    - [[file:./pnuts.org][PNUTS]] Yahoo的分布式数据库。
    - [[file:./paxos.org][Paxos]] / [[file:./raft.org][Raft]] 分布式一致性算法。
    - [[file:./manhattan.org][Manhattan]] Twitter的分布式数据库。
+   - [[file:./azkaban.org][Azkaban]] Linkedin的工作流系统，和 [[file:./oozie.org][Oozie]] 功能相似但是相比好用很多。UI不错，概念也比较清晰。
 
 ** Programming Language
    - [[file:prog-lang.org][Programming Language]] including following languages:

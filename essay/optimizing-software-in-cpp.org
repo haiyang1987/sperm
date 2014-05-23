@@ -1,0 +1,44 @@
+* optimizing-software-in-cpp
+#+TITLE: Optimizing software in C++(An optimization guide for Windows, Linux and Mac platforms)
+
+http://www.agner.org/optimize/
+
+** Multithreading
+It is important to distinguish between coarse-grained parallelism and fine-grained parallelism
+when deciding whether it is advantageous to do things in parallel. Coarse-grained
+parallelism refers to the situation where a long sequence of operations can be carried out
+independently of other tasks that are running in parallel. Fine-grained parallelism is the
+situation where a task is divided into many small subtasks, but it is impossible to work for
+very long on a particular subtask before coordination with other subtasks is necessary.
+
+Multithreading works more efficiently with coarse-grained parallelism than with fine-grained
+parallelism because communication and synchronization between the different cores is
+slow. If the granularity is too fine then it is not advantageous to split the tasks into multiple
+threads. Out-of-order execution (chapter 11) and vector operations (chapter 12) are more
+useful methods for exploiting fine-grained parallelism. （多线程适合解决粗粒度并行工作，OOO以及向量操作适合解决细粒度并行工作）
+
+In the case of data decomposition, we should preferably
+have no more threads with the same priority than the number of cores or logical processors
+available in the system. The number of logical processors available can be determined by a
+system call (e.g. GetProcessAffinityMask in Windows).（理想情况线程数目和逻辑/物理CPU core数目相同并且有相同优先级别）
+
+The multiple CPU cores or logical processors usually share the same cache, at least at the
+last cache level, and in some cases even the same level-1 cache. The advantage of sharing
+the same cache is that communication between threads becomes faster and that threads
+can share the same code and read-only data. The disadvantage is that the cache will be
+filled up if the threads use different memory areas, and there will be cache contentions if the
+threads write to the same memory areas.
+
+It is not good to have two or more threads
+writing to the same cache line, because the threads will invalidate each other's caches and
+cause large delays. The easiest way to make thread-specific data is to declare it locally in
+the thread function so that it is stored on the stack. Each thread has its own stack.
+Alternatively, you may define a structure or class for containing thread-specific data and
+make one instance for each thread. This structure or class should be aligned by at least the
+cache line size in order to avoid multiple threads writing to the same cache line. The cache
+line size is typically 64 bytes on contemporary processors. The cache line size may possibly
+be more (128 or 256 bytes) on future processors. （现代处理器的cache line典型值是64字节，未来可能扩展到128和256字节）
+
+** Using vector operations
+todo(dirlt)
+
